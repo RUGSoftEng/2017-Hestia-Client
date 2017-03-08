@@ -65,8 +65,7 @@ public class PeripheralFragment extends Fragment {
         offButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SendJSONFile2().execute("82.73.173.179", "openLock");
-
+                new SendJSONFile2().execute("82.73.173.179", "closeLock");
 
             }
         });

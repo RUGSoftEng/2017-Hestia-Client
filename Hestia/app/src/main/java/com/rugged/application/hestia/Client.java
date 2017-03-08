@@ -43,7 +43,7 @@ public class Client {
         // Stripping the text from the new-line separators is necessary to avoid
         // Strings line "abc...\n" -> the "\n" would be visible
         jsonObj.put("id", id);
-        jsonObj.put("action", action);
+        jsonObj.put("type", action);
         this.writeJSONToServer(jsonObj);
     }
 
