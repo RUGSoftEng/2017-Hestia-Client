@@ -5,6 +5,8 @@ package com.rugged.application.hestia; /**
  */
 
 
+import android.util.Log;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -12,6 +14,8 @@ import json.simple.*;
 
 
 public class Client {
+
+    private static final String TAG = "Client";
 
     private Socket clientSocket;
     private DataOutputStream outToServer;
@@ -42,13 +46,17 @@ public class Client {
         JSONObject jsonObj = new JSONObject();
         // Stripping the text from the new-line separators is necessary to avoid
         // Strings line "abc...\n" -> the "\n" would be visible
-        jsonObj.put("id", id);
         jsonObj.put("type", action);
-        this.writeJSONToServer(jsonObj);
+        jsonObj.put("id", id);
+        JSONObject jsonAction = new JSONObject();
+        jsonAction.put("action", jsonObj);
+
+        this.writeJSONToServer(jsonAction);
     }
 
     private void writeJSONToServer(JSONObject jsonObj) {
         try {
+            Log.i(TAG, jsonObj.toJSONString());
             this.outToServer.writeBytes(jsonObj.toJSONString() + '\n');
         } catch (IOException e) {
             e.printStackTrace();
