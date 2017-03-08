@@ -1,17 +1,20 @@
 package com.rugged.application.hestia;
 
 import android.content.Context;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
+/*
+* This class takes care of the list of peripherals, it is asingleton class since the application
+* should take care of only one PeripheralList
+*/
 
 public class PeripheralLab {
     private static PeripheralLab sPeripheralLab;
     private final static String TAG = "PeripheralLab";
 
     private List<Peripheral> mPeripherals;
+
 
     public static PeripheralLab get(Context context) {
         if (sPeripheralLab == null) {
@@ -22,6 +25,7 @@ public class PeripheralLab {
 
     private PeripheralLab(Context context) {
         mPeripherals = new ArrayList<>();
+        //set standard peripherals, is hardcoded for now
         Peripheral lock = new Peripheral();
         lock.setType("Lock");
         lock.setId(1);
@@ -31,7 +35,6 @@ public class PeripheralLab {
         light.setType("Light");
         light.setId(2);
         mPeripherals.add(light);
-
     }
 
     public List<Peripheral> getPeripherals() {
@@ -39,8 +42,6 @@ public class PeripheralLab {
     }
 
     public Peripheral getPeripheral(int id) {
-//        Log.i(TAG, "" + getPeripherals().get(0).getuuId());
-
         for (Peripheral p : mPeripherals) {
 
             if (p.getId() == id) {

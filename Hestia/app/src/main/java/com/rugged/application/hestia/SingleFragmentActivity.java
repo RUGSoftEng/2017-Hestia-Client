@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+//class to simply start new fragments without handling everything in a specific activity
 public abstract class SingleFragmentActivity extends FragmentActivity{
 
     protected abstract Fragment createFragment();

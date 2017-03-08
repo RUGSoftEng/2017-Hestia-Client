@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//fragment taking care of the list UI
 public class PeripheralListFragment extends Fragment {
 
     private RecyclerView myPeripheralRecyclerView;

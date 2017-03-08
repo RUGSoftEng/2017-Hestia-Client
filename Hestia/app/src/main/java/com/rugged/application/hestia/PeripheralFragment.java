@@ -17,6 +17,7 @@ import java.util.UUID;
  * Created by Mark on 4-3-2017.
  */
 
+//Fragment class taking care of a specific Peripheral
 public class PeripheralFragment extends Fragment {
     private Peripheral mPeripheral;
     //lock and unlock button
@@ -25,6 +26,7 @@ public class PeripheralFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //receive the id from the PeripheralActivity
         int peripheralId = (int) getActivity().getIntent()
                 .getSerializableExtra(PeripheralActivity.EXTRA_PERIPHERAl_ID);
         mPeripheral = PeripheralLab.get(getActivity()).getPeripheral(peripheralId);
@@ -76,9 +78,8 @@ public class PeripheralFragment extends Fragment {
         return v;
     }
 
+    //Thread classes taking care of sending commands
     private class SendJSONFile extends AsyncTask<String,Void,Void> {
-
-
         @Override
         protected Void doInBackground(String... strings) {
             Client client = new Client("82.73.173.179", 8000);
