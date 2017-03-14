@@ -4,7 +4,6 @@ package com.rugged.application.hestia; /**
  *   and DataOutputStream for Output
  */
 
-
 import android.util.Log;
 
 import java.io.DataOutputStream;
@@ -12,9 +11,7 @@ import java.io.IOException;
 import java.net.Socket;
 import json.simple.*;
 
-
 public class Client {
-
     private static final String TAG = "Client";
 
     private Socket clientSocket;
@@ -70,5 +67,4 @@ public class Client {
             e.printStackTrace();
         }
     }
-
 }

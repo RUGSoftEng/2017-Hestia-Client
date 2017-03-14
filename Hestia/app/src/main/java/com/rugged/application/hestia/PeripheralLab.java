@@ -1,20 +1,19 @@
+/*
+* This class takes care of the list of peripherals, it is a singleton class since the application
+* should take care of only one PeripheralList
+*/
+
 package com.rugged.application.hestia;
 
 import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-* This class takes care of the list of peripherals, it is asingleton class since the application
-* should take care of only one PeripheralList
-*/
-
 public class PeripheralLab {
     private static PeripheralLab sPeripheralLab;
     private final static String TAG = "PeripheralLab";
 
     private List<Peripheral> mPeripherals;
-
 
     public static PeripheralLab get(Context context) {
         if (sPeripheralLab == null) {

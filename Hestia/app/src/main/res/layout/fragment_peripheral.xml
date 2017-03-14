@@ -5,13 +5,13 @@
     >
 
     <Button
-        android:text="On"
+        android:text="@string/onText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/on_button"/>
 
     <Button
-        android:text="Off"
+        android:text="@string/offText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/off_button"/>
