@@ -16,7 +16,6 @@ public class PeripheralActivity extends SingleFragmentActivity{
         return intent;
     }
 
-
     @Override
     protected Fragment createFragment() {
         return new PeripheralFragment();

@@ -13,10 +13,6 @@ import android.widget.EditText;
 
 import java.util.UUID;
 
-/**
- * Created by Mark on 4-3-2017.
- */
-
 //Fragment class taking care of a specific Peripheral
 public class PeripheralFragment extends Fragment {
     private Peripheral mPeripheral;
@@ -30,9 +26,8 @@ public class PeripheralFragment extends Fragment {
         int peripheralId = (int) getActivity().getIntent()
                 .getSerializableExtra(PeripheralActivity.EXTRA_PERIPHERAl_ID);
         mPeripheral = PeripheralLab.get(getActivity()).getPeripheral(peripheralId);
-
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,28 +48,22 @@ public class PeripheralFragment extends Fragment {
                 onButton.setText("On");
                 offButton.setText("Off");
                 break;
-
-
         }
 
         onButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SendJSONFile().execute("82.73.173.179", "openLock");
+                new SendJSONFile().execute("172.20.10.2", "openLock");
             }
         });
 
         offButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SendJSONFile2().execute("82.73.173.179", "closeLock");
+                new SendJSONFile().execute("172.20.10.2", "closeLock");
 
             }
         });
-
-
-
-
         return v;
     }
 
@@ -82,24 +71,10 @@ public class PeripheralFragment extends Fragment {
     private class SendJSONFile extends AsyncTask<String,Void,Void> {
         @Override
         protected Void doInBackground(String... strings) {
-            Client client = new Client("82.73.173.179", 8000);
+            Client client = new Client("172.20.10.2", 8850);
             client.sendActionRequest(mPeripheral.getId(), "openLock");
             client.closeClientSocket();
             return null;
         }
     }
-
-    private class SendJSONFile2 extends AsyncTask<String,Void,Void> {
-
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            Client client = new Client("82.73.173.179", 8000);
-            client.sendActionRequest(mPeripheral.getId(), "closeLock");
-            client.closeClientSocket();
-            return null;
-        }
-    }
-
-
 }

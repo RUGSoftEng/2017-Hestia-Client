@@ -19,7 +19,8 @@ public class PeripheralListFragment extends Fragment {
     private PeripheralAdapter mAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
 
         myPeripheralRecyclerView = (RecyclerView) view.findViewById(R.id.peripheral_recycler_view);
@@ -45,15 +46,12 @@ public class PeripheralListFragment extends Fragment {
         public void bindPeripheral(Peripheral p) {
             mPeripheral = p;
             mTitleTextView.setText(mPeripheral.getId() + ". " + mPeripheral.getType());
-
         }
-
 
         @Override
         public void onClick(View view) {
             Intent intent = PeripheralActivity.newIntent(getActivity(), mPeripheral.getId());
             startActivity(intent);
-
         }
     }
 
@@ -92,12 +90,4 @@ public class PeripheralListFragment extends Fragment {
         mAdapter = new PeripheralAdapter(peripherals);
         myPeripheralRecyclerView.setAdapter(mAdapter);
     }
-
-
-
-
-
-
-
-
 }
