@@ -1,3 +1,7 @@
+/**
+ * This activity
+ */
+
 package com.rugged.application.hestia;
 
 import android.content.Context;

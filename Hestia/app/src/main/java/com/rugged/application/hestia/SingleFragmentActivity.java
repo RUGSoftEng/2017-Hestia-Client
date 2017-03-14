@@ -1,3 +1,7 @@
+/**
+ * This class smoothens the transition from an activity to a fragment.
+ */
+
 package com.rugged.application.hestia;
 
 import android.os.Bundle;

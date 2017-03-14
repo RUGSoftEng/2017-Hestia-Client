@@ -3,8 +3,11 @@ package com.rugged.application.hestia;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,8 @@ import java.util.List;
 
 //fragment taking care of the list UI
 public class PeripheralListFragment extends Fragment {
+
+    private final static String TAG = "PeripheralFragment";
 
     private RecyclerView myPeripheralRecyclerView;
     private PeripheralAdapter mAdapter;
@@ -25,6 +30,8 @@ public class PeripheralListFragment extends Fragment {
 
         myPeripheralRecyclerView = (RecyclerView) view.findViewById(R.id.peripheral_recycler_view);
         myPeripheralRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         updateUI();
 
