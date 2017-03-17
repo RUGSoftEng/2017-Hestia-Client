@@ -1,6 +1,7 @@
 package com.rugged.application.hestia;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,8 +25,9 @@ public class LoginActivity extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Check SharedPreferences, for remembered user/pass. Then redirect.
-
-
+        if(false){
+            gotoPeripheralListActivity();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -41,12 +43,13 @@ public class LoginActivity extends Activity  {
             @Override
             public void onClick(View v) {
                 if(checkCredentials(userField.getText().toString()
-                        , passField.getText().toString())){
+                        ,passField.getText().toString())){
                     // TODO: Input the data in SharedPreferences object,
 
                     // TODO: Redirect to the PeripheralListActivity
                     Toast.makeText(getApplicationContext(),
                             "Correct, redirecting now.",Toast.LENGTH_SHORT).show();
+                    gotoPeripheralListActivity();
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Wrong Credentials"
@@ -67,5 +70,10 @@ public class LoginActivity extends Activity  {
     public boolean checkCredentials(String username,String password){
         // TODO: Check credentials with server database
         return(username=="admin"&&password=="admin");
+    }
+
+    public void gotoPeripheralListActivity(){
+        Intent intent = new Intent(getApplicationContext(), PeripheralListActivity.class);
+        startActivity(intent);
     }
 }
