@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 //class to simply start new fragments without handling everything in a specific activity
-public abstract class SingleFragmentActivity extends FragmentActivity{
+public abstract class SingleFragmentActivity extends AppCompatActivity{
 
     protected abstract Fragment createFragment();
 

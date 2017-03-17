@@ -66,6 +66,6 @@ public class LoginActivity extends Activity  {
 
     public boolean checkCredentials(String username,String password){
         // TODO: Check credentials with server database
-        return(username=="admin"&&password=="admin");
+        return(username.equals("admin") && password.equals("admin"));
     }
 }
