@@ -2,10 +2,10 @@ package com.rugged.application.hestia;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,24 +19,23 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-//fragment taking care of the list UI
 public class PeripheralListFragment extends Fragment {
 
     private final static String TAG = "PeripheralListFragment";
-
-    private RecyclerView myPeripheralRecyclerView;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
-        Log.i(TAG, "Getting here");
 
         final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -44,44 +43,23 @@ public class PeripheralListFragment extends Fragment {
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
-        // preparing list data
-        prepareListData();
+
+        //request the list
+        try {
+            new RetrievePeripheralList().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
 
         listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
-//
-
-
         return view;
     }
-
-
-    private void prepareListData() {
-        /*TODO: Here the list of peripherals will be retrieved and added to the GUI, should be in
-        asynctask though
-        */
-
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        // Adding child data
-        listDataHeader.add("Lock");
-        listDataHeader.add("Light");
-
-        // Adding child data
-        List<String> lock = new ArrayList<String>();
-        lock.add("Lock 1");
-        lock.add("Lock 2");
-
-        List<String> light = new ArrayList<String>();
-        light.add("Light 1");
-        light.add("Light 2");
-        listDataChild.put(listDataHeader.get(0), lock); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), light);
-    }
-
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -117,11 +95,23 @@ public class PeripheralListFragment extends Fragment {
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this._context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = infalInflater.inflate(R.layout.list_item, null);
-            }
 
+                //inflate depending on toggle or slider
+                convertView = infalInflater.inflate(R.layout.list_item_toggle, null);
+
+                if (childText.contains("SLIDER")) {
+                    convertView = infalInflater.inflate(R.layout.list_item_slider, null);
+                } else {
+
+                }
+            }
             TextView txtListChild = (TextView) convertView
-                    .findViewById(R.id.lblListItem);
+                    .findViewById(R.id.lblListItem_toggle);
+            //name depending on toggle or slider
+            if (childText.contains("SLIDER")) {
+                txtListChild = (TextView) convertView
+                        .findViewById(R.id.lblListItem_slider);
+            }
 
             txtListChild.setText(childText);
             convertView.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +153,7 @@ public class PeripheralListFragment extends Fragment {
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this._context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
                 convertView = infalInflater.inflate(R.layout.list_group, null);
             }
 
@@ -183,6 +174,73 @@ public class PeripheralListFragment extends Fragment {
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
         }
+    }
+
+    private class RetrievePeripheralList extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //retrieve the Devices;
+            ArrayList<Activator> activators = new ArrayList<>();
+            activators.add(new Activator(0, false, "light_OnOROff", "TOGGLE"));
+            ArrayList<Activator> a2 = new ArrayList<>();
+            a2.add(new Activator(0, false, "Lock_OnOROff", "SLIDER"));
+            Device d1 = new Device(0, "Light 1", "Light", activators);
+            Device d2 = new Device(0, "Light 2", "Light", activators);
+            Device d3 = new Device(0, "lock 1", "Lock", a2);
+            ArrayList<Device> devices = new ArrayList<>();
+            devices.add(d1);
+            devices.add(d2);
+            devices.add(d3);
+
+
+
+            listDataHeader = new ArrayList<String>();
+            listDataChild = new HashMap<String, List<String>>();
+
+            /**
+             * TODO: retrieve the headers, although it would be possible to retrieve a header and
+             * then add its child data
+             */
+
+            // add header data
+            for (Device d : devices) {
+                if (!listDataHeader.contains(d.getType())) {
+                    listDataHeader.add(d.getType());
+                    listDataChild.put(d.getType(), new ArrayList<String>());
+                }
+                //find corresponding header for the child
+                listDataChild.get(d.getType()).add(d.getName() + " " +
+                        d.getActivators().get(0).getType());
+//                Log.i(TAG, listDataChild.get(d.getType()).toString());
+
+//                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
+            }
+//            Log.i(TAG, listDataChild.get(d1.getType()).size() + "");
+//                listDataHeader.add("Lock");
+//                listDataHeader.add("Light");
+//
+//                // Adding child data
+//                List<String> lock = new ArrayList<String>();
+//                lock.add("Lock 1");
+//                lock.add("Lock 2");
+//
+//                List<String> light = new ArrayList<String>();
+//                light.add("Light 1");
+//                light.add("Light 2");
+//
+//            //complete the list
+//                listDataChild.put(listDataHeader.get(0), lock); // Header, Child data
+//                listDataChild.put(listDataHeader.get(1), light);
+
+                return null;
+
+        }
+
+
+
+
     }
 
 
