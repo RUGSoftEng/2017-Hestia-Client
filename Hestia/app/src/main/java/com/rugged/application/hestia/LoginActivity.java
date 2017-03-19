@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import java.util.Locale;
 public class LoginActivity extends Activity  {
     Button loginButton;
     EditText userField,passField;
-    RadioButton rememberButton;
+    CheckBox rememberButton;
 
     TextView attemptsText;
     int counter = 10;
@@ -32,7 +33,7 @@ public class LoginActivity extends Activity  {
         loginButton = (Button)findViewById(R.id.loginButton);
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
-        rememberButton = (RadioButton)findViewById(R.id.rememberButton);
+        rememberButton = (CheckBox) findViewById(R.id.rememberButton);
 
         attemptsText = (TextView)findViewById(R.id.textView4);
         attemptsText.setVisibility(View.GONE);
