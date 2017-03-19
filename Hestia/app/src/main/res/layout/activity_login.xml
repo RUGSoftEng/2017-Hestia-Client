@@ -95,6 +95,4 @@
         android:layout_below="@+id/textView3"
         android:layout_alignLeft="@+id/textview"
         android:layout_alignStart="@+id/textview" />
-
-
 </RelativeLayout>

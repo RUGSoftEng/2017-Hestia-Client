@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 public class PeripheralListActivity extends SingleFragmentActivity{
-    private final static String TAG = "PeripheralListAcitivity";
+    private final static String TAG = "PeripheralListActivity";
     @Override
     protected Fragment createFragment() {
-        Log.i(TAG, "Stopped here");
+        Log.i(TAG, "Getting here");
         return new PeripheralListFragment();
     }
 }

@@ -2,4 +2,11 @@
     <string name="app_name">Hestia</string>
     <string name="offText">Off</string>
     <string name="onText">On</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string-array name="planets_array">
+        <item>one</item>
+        <item>two</item>
+        <item>three</item>
+    </string-array>
 </resources>
