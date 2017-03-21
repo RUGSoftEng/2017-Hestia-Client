@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public class Peripheral {
     private String type;
-    private UUID uuId;
     private int id;
 
     public int getId() {
@@ -13,14 +12,6 @@ public class Peripheral {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public UUID getuuId() {
-        return uuId;
-    }
-
-    public void setuuId(UUID uuId) {
-        this.uuId = uuId;
     }
 
     public String getType() {

@@ -1,5 +1,4 @@
 package com.rugged.application.hestia; /**
- * TODO: Find best options for Input and Output.
  * Currently we use BufferedReader for Input
  *   and DataOutputStream for Output
  */
@@ -53,7 +52,6 @@ public class Client {
 
     private void writeJSONToServer(JSONObject jsonObj) {
         try {
-            Log.i(TAG, jsonObj.toJSONString());
             this.outToServer.writeBytes(jsonObj.toJSONString() + '\n');
         } catch (IOException e) {
             e.printStackTrace();
