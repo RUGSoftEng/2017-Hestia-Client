@@ -15,6 +15,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +31,6 @@ public class PeripheralListFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,21 +42,20 @@ public class PeripheralListFragment extends Fragment {
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
-
-        //request the list
-        try {
-            new RetrievePeripheralList().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
 
         listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
 
-        // setting list adapter
         expListView.setAdapter(listAdapter);
+
+
+        //request the list
+        new RetrievePeripheralList().execute();
+
+
+
+        // setting list adapter
         return view;
     }
 
@@ -89,6 +87,15 @@ public class PeripheralListFragment extends Fragment {
         @Override
         public View getChildView(final int groupPosition, final int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
+            ArrayList<Activator> activators = new ArrayList<>();
+            activators.add(new Activator(0, false, "light_OnOROff", "TOGGLE"));
+
+//                Log.i(TAG, listDataChild.get(d.getType()).toString());
+
+//                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
+
+
+
 
             final String childText = (String) getChild(groupPosition, childPosition);
 
@@ -97,23 +104,25 @@ public class PeripheralListFragment extends Fragment {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 //inflate depending on toggle or slider
-                convertView = infalInflater.inflate(R.layout.list_item_toggle, null);
+                convertView = infalInflater.inflate(R.layout.list_item_slider, null);
+                Log.i(TAG, "called\t" + (convertView == null));
 
-                if (childText.contains("SLIDER")) {
-                    convertView = infalInflater.inflate(R.layout.list_item_slider, null);
-                } else {
-
-                }
+//                if (childText.contains("SLIDER")) {
+//                    convertView = infalInflater.inflate(R.layout.list_item_slider, null);
+//                    Log.i(TAG, "I am being called for the convertView");
+//                } else {
+//
+//                }
             }
-            TextView txtListChild = (TextView) convertView
-                    .findViewById(R.id.lblListItem_toggle);
-            //name depending on toggle or slider
-            if (childText.contains("SLIDER")) {
-                txtListChild = (TextView) convertView
-                        .findViewById(R.id.lblListItem_slider);
+            ViewSwitcher switcher = (ViewSwitcher) convertView.findViewById(R.id.my_switcher);
+            if (childText.contains("Toggle")) {
+                switcher.showNext(); //or switcher.showPrevious();
             }
+            TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem_slider);
+                txtListChild.setText(childText);
+//
 
-            txtListChild.setText(childText);
+
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -122,6 +131,9 @@ public class PeripheralListFragment extends Fragment {
                             + childPosition, Toast.LENGTH_SHORT).show();
                 }
             });
+            if (childText.contains("Toggle")) {
+                switcher.showPrevious(); //or switcher.showPrevious();
+            }
             return convertView;
         }
 
@@ -177,8 +189,6 @@ public class PeripheralListFragment extends Fragment {
     }
 
     private class RetrievePeripheralList extends AsyncTask<Void, Void, Void> {
-
-
         @Override
         protected Void doInBackground(Void... voids) {
             //retrieve the Devices;
@@ -195,9 +205,6 @@ public class PeripheralListFragment extends Fragment {
             devices.add(d3);
 
 
-
-            listDataHeader = new ArrayList<String>();
-            listDataChild = new HashMap<String, List<String>>();
 
             /**
              * TODO: retrieve the headers, although it would be possible to retrieve a header and
@@ -217,22 +224,8 @@ public class PeripheralListFragment extends Fragment {
 
 //                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
             }
-//            Log.i(TAG, listDataChild.get(d1.getType()).size() + "");
-//                listDataHeader.add("Lock");
-//                listDataHeader.add("Light");
-//
-//                // Adding child data
-//                List<String> lock = new ArrayList<String>();
-//                lock.add("Lock 1");
-//                lock.add("Lock 2");
-//
-//                List<String> light = new ArrayList<String>();
-//                light.add("Light 1");
-//                light.add("Light 2");
-//
-//            //complete the list
-//                listDataChild.put(listDataHeader.get(0), lock); // Header, Child data
-//                listDataChild.put(listDataHeader.get(1), light);
+            listAdapter.notifyDataSetChanged();
+
 
                 return null;
 

@@ -10,6 +10,7 @@ public class Activator {
     private String name;
     private String type;
 
+
     public Activator(int id, boolean value, String name, String type) {
         this.id = id;
         this.value = value;
