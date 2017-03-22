@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -95,11 +96,6 @@ public class PeripheralListFragment extends Fragment {
         @Override
         public View getChildView(final int groupPosition, final int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
-
-//                Log.i(TAG, listDataChild.get(d.getType()).toString());
-
-//                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
-
             final String childText = (String) getChild(groupPosition, childPosition);
 
             if (convertView == null) {
@@ -112,10 +108,6 @@ public class PeripheralListFragment extends Fragment {
 
             TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
                 txtListChild.setText(childText);
-//
-
-
-
 
             ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
@@ -186,16 +178,22 @@ public class PeripheralListFragment extends Fragment {
                                         }
                                     });
 
+                                    Button backButton = (Button) dialog.findViewById(R.id.back_button);
+                                    backButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            dialog.dismiss();
+                                        }
+                                    });
 
-//                                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-//                                    // if button is clicked, close the custom dialog
-//                                    dialogButton.setOnClickListener(new OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View v) {
-//                                            dialog.dismiss();
-//                                        }
-//                                    });
-
+                                    Button confirmButton = (Button) dialog.findViewById(R.id.confirm_button);
+                                    confirmButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            //send data to the server
+                                            dialog.dismiss();
+                                        }
+                                    });
                                     dialog.show();
 
                                     break;
