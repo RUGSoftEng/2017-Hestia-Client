@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ViewFlipper;
 
 import java.util.UUID;
 
@@ -19,51 +20,60 @@ public class PeripheralFragment extends Fragment {
     //lock and unlock button
     private Button onButton;
     private Button offButton;
+    private int peripheralId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //receive the id from the PeripheralActivity
-        int peripheralId = (int) getActivity().getIntent()
+        peripheralId = (int) getActivity().getIntent()
                 .getSerializableExtra(PeripheralActivity.EXTRA_PERIPHERAl_ID);
-        mPeripheral = PeripheralLab.get(getActivity()).getPeripheral(peripheralId);
+//        mPeripheral = PeripheralLab.get(getActivity()).getPeripheral(peripheralId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_peripheral, container, false);
-        onButton = (Button)v.findViewById(R.id.on_button);
-        offButton = (Button)v.findViewById(R.id.off_button);
-
-        switch (mPeripheral.getType()) {
-            case "Lock" :
-                onButton.setText("Lock");
-                offButton.setText("Unlock");
-                break;
-            case "Light" :
-                onButton.setText("Light on");
-                offButton.setText("Light off");
-                break;
-            default:
-                onButton.setText("On");
-                offButton.setText("Off");
-                break;
+        ViewFlipper vf = (ViewFlipper) v.findViewById( R.id.viewFlipper );
+        if (peripheralId % 2 == 0) {
+            vf.setDisplayedChild(vf.indexOfChild(v.findViewById(R.id.first_layout)));
+            //set the properties of the first layout here
+        } else {
+            vf.setDisplayedChild(vf.indexOfChild(v.findViewById(R.id.second_layout)));
+            //set the properties of the second layout here
         }
+//        onButton = (Button)v.findViewById(R.id.on_button);
+//        offButton = (Button)v.findViewById(R.id.off_button);
 
-        onButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new SendJSONFile().execute("172.20.10.2", "openLock");
-            }
-        });
+//        switch (mPeripheral.getType()) {
+//            case "Lock" :
+//                onButton.setText("Lock");
+//                offButton.setText("Unlock");
+//                break;
+//            case "Light" :
+//                onButton.setText("Light on");
+//                offButton.setText("Light off");
+//                break;
+//            default:
+//                onButton.setText("On");
+//                offButton.setText("Off");
+//                break;
+//        }
 
-        offButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new SendJSONFile().execute("172.20.10.2", "closeLock");
-
-            }
-        });
+//        onButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new SendJSONFile().execute("172.20.10.2", "openLock");
+//            }
+//        });
+//
+//        offButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new SendJSONFile().execute("172.20.10.2", "closeLock");
+//
+//            }
+//        });
         return v;
     }
 

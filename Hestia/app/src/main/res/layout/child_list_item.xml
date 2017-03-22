@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dip"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/child_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+
+    <Switch
+        android:id="@+id/light_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/imageview"
+        android:layout_toStartOf="@+id/imageview" />
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_launcher" />
+
+
+</RelativeLayout>

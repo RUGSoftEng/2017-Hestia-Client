@@ -1,18 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:layout_width="match_parent"
+    android:id="@+id/viewFlipper">
 
-    <Button
-        android:text="@string/onText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/on_button"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/first_layout"
+        >
 
-    <Button
-        android:text="@string/offText"
+        <Button
+            android:text="@string/onText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/on_button"/>
+
+        <Button
+            android:text="@string/offText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/off_button"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/off_button"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/second_layout"
+
+        >
+
+        <Button
+            android:text="@string/onText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/x_button"/>
+
+
+    </LinearLayout>
+
+
+
+
+
+</ViewFlipper>
+

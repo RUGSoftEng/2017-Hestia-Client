@@ -1,18 +1,27 @@
 package com.rugged.application.hestia;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -20,7 +29,6 @@ import android.widget.ViewSwitcher;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class PeripheralListFragment extends Fragment {
 
@@ -87,15 +95,10 @@ public class PeripheralListFragment extends Fragment {
         @Override
         public View getChildView(final int groupPosition, final int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
-            ArrayList<Activator> activators = new ArrayList<>();
-            activators.add(new Activator(0, false, "light_OnOROff", "TOGGLE"));
 
 //                Log.i(TAG, listDataChild.get(d.getType()).toString());
 
 //                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
-
-
-
 
             final String childText = (String) getChild(groupPosition, childPosition);
 
@@ -104,21 +107,10 @@ public class PeripheralListFragment extends Fragment {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 //inflate depending on toggle or slider
-                convertView = infalInflater.inflate(R.layout.list_item_slider, null);
-                Log.i(TAG, "called\t" + (convertView == null));
+                convertView = infalInflater.inflate(R.layout.child_list_item, null);
+            }
 
-//                if (childText.contains("SLIDER")) {
-//                    convertView = infalInflater.inflate(R.layout.list_item_slider, null);
-//                    Log.i(TAG, "I am being called for the convertView");
-//                } else {
-//
-//                }
-            }
-            ViewSwitcher switcher = (ViewSwitcher) convertView.findViewById(R.id.my_switcher);
-            if (childText.contains("Toggle")) {
-                switcher.showNext(); //or switcher.showPrevious();
-            }
-            TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem_slider);
+            TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
                 txtListChild.setText(childText);
 //
 
@@ -129,11 +121,102 @@ public class PeripheralListFragment extends Fragment {
                     //TODO: Go to the listitem
                     Toast.makeText(getActivity(), "Clicked group: " + groupPosition + ", childpos: "
                             + childPosition, Toast.LENGTH_SHORT).show();
+                    Intent intent = PeripheralActivity.newIntent(getActivity(), childPosition);
+                    startActivity(intent);
+
                 }
             });
-            if (childText.contains("Toggle")) {
-                switcher.showPrevious(); //or switcher.showPrevious();
-            }
+
+            ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
+
+            imageview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popup = new PopupMenu(getActivity(), view);
+                    popup.getMenuInflater().inflate(R.menu.popup,
+                            popup.getMenu());
+                    if (childText.contains("SLIDER")) {
+                        popup.getMenu().findItem(R.id.slide).setEnabled(true);
+                    }
+                    popup.show();
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.settings :
+                                    //do something
+                                    break;
+                                case R.id.delete :
+                                    //do something
+                                    break;
+                                case R.id.slide :
+                                    //show notification
+                                    final Dialog dialog = new Dialog(_context);
+                                    dialog.setContentView(R.layout.slide_dialog);
+                                    dialog.setTitle("Title...");
+                                    final RelativeLayout layout = (RelativeLayout) dialog.
+                                            findViewById(R.id.slide_dialog);
+                                    //change color accordingly to slider
+
+                                    // set the custom dialog components - text, image and button
+                                    final Switch switchButton = (Switch) dialog.findViewById(R.id.switch_dialog);
+
+                                    final SeekBar s = (SeekBar) dialog.findViewById(R.id.slide_seek_bar);
+                                    s.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                        @Override
+                                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                                            layout.setBackgroundColor(0xffffffff - seekBar.getProgress());
+                                            if (seekBar.getProgress() > 0) {
+                                                switchButton.setChecked(true);
+                                            }else {
+                                                switchButton.setChecked(false);
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                                        }
+
+                                        @Override
+                                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                                        }
+                                    });
+
+                                    switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                s.setProgress(s.getMax());
+                                            } else {
+                                                s.setProgress(0);
+                                            }
+                                        }
+                                    });
+
+
+//                                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+//                                    // if button is clicked, close the custom dialog
+//                                    dialogButton.setOnClickListener(new OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+
+                                    dialog.show();
+
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                }
+            });
             return convertView;
         }
 
@@ -218,8 +301,7 @@ public class PeripheralListFragment extends Fragment {
                     listDataChild.put(d.getType(), new ArrayList<String>());
                 }
                 //find corresponding header for the child
-                listDataChild.get(d.getType()).add(d.getName() + " " +
-                        d.getActivators().get(0).getType());
+                listDataChild.get(d.getType()).add(d.getName() + d.getActivators().get(0).getType());
 //                Log.i(TAG, listDataChild.get(d.getType()).toString());
 
 //                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
