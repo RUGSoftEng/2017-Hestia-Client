@@ -2,7 +2,6 @@ package com.rugged.application.hestia;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,8 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,10 +42,6 @@ public class PeripheralListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
 
-        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         listDataHeader = new ArrayList<String>();
@@ -58,11 +51,8 @@ public class PeripheralListFragment extends Fragment {
 
         expListView.setAdapter(listAdapter);
 
-
         //request the list
         new RetrievePeripheralList().execute();
-
-
 
         // setting list adapter
         return view;
@@ -153,7 +143,6 @@ public class PeripheralListFragment extends Fragment {
                                             }else {
                                                 switchButton.setChecked(false);
                                             }
-
                                         }
 
                                         @Override
