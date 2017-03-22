@@ -1,26 +1,30 @@
 package com.rugged.application.hestia;
 
-import java.util.UUID;
+import java.util.ArrayList;
 
+/**
+ * This class contains the clients internal representation of the peripheral connected to the
+ * server.
+ */
 public class Peripheral {
+    private int deviceId;
+    private String name;
     private String type;
-    private UUID uuId;
-    private int id;
+    ArrayList<Activator> activators;
+
+    public Device(int id, String name, String type, ArrayList<Activator> a) {
+        this.deviceId = id;
+        this.name = name;
+        this.type = type;
+        this.activators = a;
+    }
 
     public int getId() {
-        return id;
+        return deviceId;
     }
 
     public void setId(int id) {
-        this.id = id;
-    }
-
-    public UUID getuuId() {
-        return uuId;
-    }
-
-    public void setuuId(UUID uuId) {
-        this.uuId = uuId;
+        this.deviceId = id;
     }
 
     public String getType() {
@@ -31,9 +35,20 @@ public class Peripheral {
         this.type = type;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public ArrayList<Activator> getActivators() {
+        return activators;
+    }
 
-
+    public void setActivators(ArrayList<Activator> activators) {
+        this.activators = activators;
+    }
 
 }
