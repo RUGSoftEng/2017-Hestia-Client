@@ -1,12 +1,24 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools = "http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height = "match_parent" android:paddingLeft= "@dimen/activity_horizontal_margin"
     android:paddingRight = "@dimen/activity_horizontal_margin"
     android:paddingTop = "@dimen/activity_vertical_margin"
     android:paddingBottom = "@dimen/activity_vertical_margin" tools:context = ".LoginActivity">
 
-    <TextView android:text = "Login" android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@mipmap/hestia_logo_big" />
+
+    <TextView
+        android:text = "@string/loginText"
+        android:layout_width="wrap_content"
+        android:layout_marginTop ="175dp"
         android:layout_height = "wrap_content"
         android:id = "@+id/textview"
         android:textSize = "35sp"
@@ -17,11 +29,11 @@
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:id = "@+id/username"
-        android:hint = "Username"
+        android:hint = "@string/userHint"
         android:focusable = "true"
-        android:textColorHighlight = "#72ff00"
-        android:textColorHint = "#000000"
-        android:layout_marginTop = "46dp"
+        android:textColorHighlight = "@color/loginHighlight"
+        android:textColorHint = "@color/black"
+        android:layout_marginTop = "226dp"
         android:layout_alignParentLeft = "true"
         android:layout_alignParentStart = "true"
         android:layout_alignParentRight = "true"
@@ -38,13 +50,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/username"
         android:layout_alignEnd="@+id/username"
-        android:textColorHint="#000000"
-        android:hint="Password" />
+        android:textColorHint="@color/black"
+        android:hint="@string/passHint" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remember me:"
+        android:text="@string/rememberMeText"
         android:id="@+id/textView2"
         android:textSize="20sp"
         android:layout_below="@+id/password"
@@ -65,7 +77,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Attempts Left:"
+        android:text="@string/attemptsLeftText"
         android:id="@+id/textView3"
         android:textSize="20sp"
         android:layout_below="@+id/textView2"
@@ -89,7 +101,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="login"
+        android:text="@string/loginText"
         android:id="@+id/loginButton"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/textView3"
