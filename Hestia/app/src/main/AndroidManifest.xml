@@ -19,9 +19,6 @@
         </activity>
         <activity android:name=".PeripheralListActivity">
         </activity>
-        <activity
-            android:name=".PeripheralActivity">
-        </activity>
     </application>
 
 </manifest>

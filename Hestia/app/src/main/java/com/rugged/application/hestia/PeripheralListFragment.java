@@ -115,17 +115,7 @@ public class PeripheralListFragment extends Fragment {
 //
 
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO: Go to the listitem
-                    Toast.makeText(getActivity(), "Clicked group: " + groupPosition + ", childpos: "
-                            + childPosition, Toast.LENGTH_SHORT).show();
-                    Intent intent = PeripheralActivity.newIntent(getActivity(), childPosition);
-                    startActivity(intent);
 
-                }
-            });
 
             ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
@@ -307,9 +297,7 @@ public class PeripheralListFragment extends Fragment {
 //                listDataChild.put(d.getType(), listDataChild.get(d.getType()).add(d.getName()));
             }
             listAdapter.notifyDataSetChanged();
-
-
-                return null;
+            return null;
 
         }
 

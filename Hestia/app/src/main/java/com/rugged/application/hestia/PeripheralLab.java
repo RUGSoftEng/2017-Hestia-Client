@@ -25,15 +25,7 @@ public class PeripheralLab {
     private PeripheralLab(Context context) {
         mPeripherals = new ArrayList<>();
         //set standard peripherals, is hardcoded for now
-        Peripheral lock = new Peripheral();
-        lock.setType("Lock");
-        lock.setId(1);
-        mPeripherals.add(lock);
 
-        Peripheral light = new Peripheral();
-        light.setType("Light");
-        light.setId(2);
-        mPeripherals.add(light);
     }
 
     public List<Peripheral> getPeripherals() {
