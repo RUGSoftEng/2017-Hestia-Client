@@ -1,9 +1,5 @@
 package com.rugged.application.hestia;
 
-/**
- * Created by Mark on 19-3-2017.
- */
-
 public class Activator {
     private int id;
     private boolean value;
