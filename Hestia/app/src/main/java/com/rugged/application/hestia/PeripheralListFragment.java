@@ -1,7 +1,6 @@
 package com.rugged.application.hestia;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.http.RequestQueue;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
