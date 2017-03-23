@@ -1,3 +1,7 @@
+/*
+This class is the host of the PeripheralListFragment.
+ */
+
 package com.rugged.application.hestia;
 
 import android.support.v4.app.Fragment;

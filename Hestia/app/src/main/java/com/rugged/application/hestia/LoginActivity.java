@@ -1,3 +1,8 @@
+/* This class handles the login activity.
+ * It takes the fields from the layout, gets the values the user inputs and validates it.
+ * Furthermore it first checks the shared preferences of the phone if the user is remembered.
+ */
+
 package com.rugged.application.hestia;
 
 import android.app.Activity;
@@ -12,10 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Locale;
 
-/* This class handles the login activity.
- * It takes the fields from the layout, gets the values the user inputs and validates it.
- * Furthermore it first checks the shared preferences of the phone if the user is remembered.
- */
 public class LoginActivity extends Activity  {
     private Button loginButton;
     private EditText userField,passField;

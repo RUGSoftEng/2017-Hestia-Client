@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-//class to simply start new fragments without handling everything in a specific activity
 public abstract class SingleFragmentActivity extends AppCompatActivity{
 
     protected abstract Fragment createFragment();
@@ -40,6 +39,5 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-
     }
 }

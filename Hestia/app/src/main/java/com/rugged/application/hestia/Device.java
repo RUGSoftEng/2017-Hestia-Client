@@ -1,11 +1,12 @@
-package com.rugged.application.hestia;
-
-import java.util.ArrayList;
-
 /**
  * This class contains the clients internal representation of the peripheral connected to the
  * server.
  */
+
+package com.rugged.application.hestia;
+
+import java.util.ArrayList;
+
 public class Device {
     int deviceId;
     String name;

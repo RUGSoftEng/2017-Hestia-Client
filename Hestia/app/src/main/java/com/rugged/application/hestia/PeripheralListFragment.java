@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,26 +48,24 @@ public class PeripheralListFragment extends Fragment {
     }
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
-
-        private List<String> _listDataHeader; // header titles
+        private List<String> listDataHeader; // header titles
         // child data in format of header title, child title
-        private HashMap<String, List<Device>> _listDataChild;
+        private HashMap<String, List<Device>> listDataChild;
 
         private ExpandableListAdapter(List<String> listDataHeader,
                                      HashMap<String, List<Device>> listChildData) {
-
-            this._listDataHeader = listDataHeader;
-            this._listDataChild = listChildData;
+            this.listDataHeader = listDataHeader;
+            this.listDataChild = listChildData;
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosititon) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+            return this.listDataChild.get(this.listDataHeader.get(groupPosition))
                     .get(childPosititon).getName();
         }
 
         public Device getChildDevice(int groupPostition, int childPostion) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPostition))
+            return this.listDataChild.get(this.listDataHeader.get(groupPostition))
                     .get(childPostion);
         }
 
@@ -85,13 +82,12 @@ public class PeripheralListFragment extends Fragment {
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) getActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
                 //inflate depending on toggle or slider
                 convertView = infalInflater.inflate(R.layout.child_list_item, null);
             }
 
             TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
-                txtListChild.setText(childText);
+            txtListChild.setText(childText);
 
             ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
@@ -118,10 +114,10 @@ public class PeripheralListFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.settings :
-                                    //do something
+                                    //Settings
                                     break;
                                 case R.id.delete :
-                                    //do something
+                                    //Remove list item
                                     break;
                                 case R.id.slide :
                                     //show notification
@@ -141,18 +137,18 @@ public class PeripheralListFragment extends Fragment {
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+            return this.listDataChild.get(this.listDataHeader.get(groupPosition))
                     .size();
         }
 
         @Override
         public Object getGroup(int groupPosition) {
-            return this._listDataHeader.get(groupPosition);
+            return this.listDataHeader.get(groupPosition);
         }
 
         @Override
         public int getGroupCount() {
-            return this._listDataHeader.size();
+            return this.listDataHeader.size();
         }
 
         @Override

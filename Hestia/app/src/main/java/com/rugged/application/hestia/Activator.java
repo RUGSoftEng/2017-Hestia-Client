@@ -8,7 +8,6 @@ public class Activator<T> {
 
     private String requiredInfo;
 
-
     public Activator(int id, T state, String name, String type) {
         this.activatorId = id;
         this.state = state;
@@ -24,14 +23,9 @@ public class Activator<T> {
         this.activatorId = id;
     }
 
-
     public T getState() {
-
         return state;
     }
-
-
-
 
     public String getName() {
         return name;

@@ -1,8 +1,11 @@
+/*
+This class handles the dialog which is opened if a Device has the 'slide' option
+ */
+
 package com.rugged.application.hestia;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -11,7 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 
 public class SlideDialog extends Dialog {
-    public SlideDialog(@NonNull Context context) {
+    public SlideDialog(Context context) {
         super(context);
         setContentView(R.layout.slide_dialog);
         setTitle("Change your slide");
