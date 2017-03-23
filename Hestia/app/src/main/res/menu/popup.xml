@@ -9,5 +9,6 @@
         />
     <item android:id="@+id/slide"
         android:title="Slide"
-        android:enabled="false"/>
+        android:enabled="false"
+        android:visible="false"/>
 </menu>

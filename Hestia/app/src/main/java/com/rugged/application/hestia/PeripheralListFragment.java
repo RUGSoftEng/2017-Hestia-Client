@@ -1,29 +1,18 @@
 package com.rugged.application.hestia;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +33,10 @@ public class PeripheralListFragment extends Fragment {
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
 
-        listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild);
 
         expListView.setAdapter(listAdapter);
 
@@ -60,14 +49,13 @@ public class PeripheralListFragment extends Fragment {
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-        private Context _context;
         private List<String> _listDataHeader; // header titles
         // child data in format of header title, child title
         private HashMap<String, List<String>> _listDataChild;
 
-        public ExpandableListAdapter(Context context, List<String> listDataHeader,
+        private ExpandableListAdapter(List<String> listDataHeader,
                                      HashMap<String, List<String>> listChildData) {
-            this._context = context;
+
             this._listDataHeader = listDataHeader;
             this._listDataChild = listChildData;
         }
@@ -89,7 +77,7 @@ public class PeripheralListFragment extends Fragment {
             final String childText = (String) getChild(groupPosition, childPosition);
 
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context
+                LayoutInflater infalInflater = (LayoutInflater) getActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 //inflate depending on toggle or slider
@@ -109,6 +97,7 @@ public class PeripheralListFragment extends Fragment {
                             popup.getMenu());
                     if (childText.contains("SLIDER")) {
                         popup.getMenu().findItem(R.id.slide).setEnabled(true);
+                        popup.getMenu().findItem(R.id.slide).setVisible(true);
                     }
                     popup.show();
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -123,68 +112,8 @@ public class PeripheralListFragment extends Fragment {
                                     break;
                                 case R.id.slide :
                                     //show notification
-                                    final Dialog dialog = new Dialog(_context);
-                                    dialog.setContentView(R.layout.slide_dialog);
-                                    dialog.setTitle("Title...");
-                                    final RelativeLayout layout = (RelativeLayout) dialog.
-                                            findViewById(R.id.slide_dialog);
-                                    //change color accordingly to slider
-
-                                    // set the custom dialog components - text, image and button
-                                    final Switch switchButton = (Switch) dialog.findViewById(R.id.switch_dialog);
-
-                                    final SeekBar s = (SeekBar) dialog.findViewById(R.id.slide_seek_bar);
-                                    s.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                                        @Override
-                                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                                            layout.setBackgroundColor(0xffffffff - seekBar.getProgress());
-                                            if (seekBar.getProgress() > 0) {
-                                                switchButton.setChecked(true);
-                                            }else {
-                                                switchButton.setChecked(false);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onStartTrackingTouch(SeekBar seekBar) {
-
-                                        }
-
-                                        @Override
-                                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                                        }
-                                    });
-
-                                    switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                        @Override
-                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                            if (b) {
-                                                s.setProgress(s.getMax());
-                                            } else {
-                                                s.setProgress(0);
-                                            }
-                                        }
-                                    });
-
-                                    Button backButton = (Button) dialog.findViewById(R.id.back_button);
-                                    backButton.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-
-                                    Button confirmButton = (Button) dialog.findViewById(R.id.confirm_button);
-                                    confirmButton.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            //send data to the server
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                    final SlideDialog dialog = new SlideDialog(getActivity());
                                     dialog.show();
-
                                     break;
                                 default:
                                     break;
@@ -223,7 +152,8 @@ public class PeripheralListFragment extends Fragment {
                                  View convertView, ViewGroup parent) {
             String headerTitle = (String) getGroup(groupPosition);
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context
+
+                LayoutInflater infalInflater = (LayoutInflater) getActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 convertView = infalInflater.inflate(R.layout.list_group, null);
@@ -285,13 +215,6 @@ public class PeripheralListFragment extends Fragment {
             }
             listAdapter.notifyDataSetChanged();
             return null;
-
         }
-
-
-
-
     }
-
-
 }
