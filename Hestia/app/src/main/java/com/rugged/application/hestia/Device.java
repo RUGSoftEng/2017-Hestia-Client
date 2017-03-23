@@ -9,11 +9,13 @@ import java.util.ArrayList;
 public class Device {
     int deviceId;
     String name;
+    String type;
     ArrayList<Activator> activators;
 
     public Device(int id, String name, String type, ArrayList<Activator> a) {
         this.deviceId = id;
         this.name = name;
+        this.type = type;
         this.activators = a;
     }
 
@@ -33,7 +35,13 @@ public class Device {
         this.name = name;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public ArrayList<Activator> getActivators() {
         return activators;
