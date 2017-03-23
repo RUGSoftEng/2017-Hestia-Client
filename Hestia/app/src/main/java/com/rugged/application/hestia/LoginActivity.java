@@ -79,6 +79,7 @@ public class LoginActivity extends Activity  {
     private void gotoMainActivity(){
         Intent i = new Intent(LoginActivity.this, PeripheralListActivity.class);
         startActivity(i);
+        finish();
     }
 
     private void setSaveLogin(String username, String password){
