@@ -13,7 +13,7 @@ public class PeripheralLab {
     private static PeripheralLab sPeripheralLab;
     private final static String TAG = "PeripheralLab";
 
-    private List<Peripheral> mPeripherals;
+    private List<Device> mDevices;
 
     public static PeripheralLab get(Context context) {
         if (sPeripheralLab == null) {
@@ -23,22 +23,22 @@ public class PeripheralLab {
     }
 
     private PeripheralLab(Context context) {
-        mPeripherals = new ArrayList<>();
+        mDevices = new ArrayList<>();
         //set standard peripherals, is hardcoded for now
 
     }
 
-    public List<Peripheral> getPeripherals() {
-        return mPeripherals;
+    public List<Device> getPeripherals() {
+        return mDevices;
     }
 
-    public Peripheral getPeripheral(int id) {
-        for (Peripheral p : mPeripherals) {
-
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-        return null;
-    }
+//    public Device getPeripheral(int id) {
+//        for (Device p : mDevices) {
+//
+//            if (p.getId() == id) {
+//                return p;
+//            }
+//        }
+//        return null;
+//    }
 }

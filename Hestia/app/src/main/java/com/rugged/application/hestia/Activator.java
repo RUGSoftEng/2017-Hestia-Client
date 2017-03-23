@@ -1,34 +1,33 @@
 package com.rugged.application.hestia;
 
-public class Activator {
-    private int id;
-    private boolean value;
+public class Activator<T> {
+    private int activatorId;
     private String name;
-    private String type;
+    private String stateType;
+    private String state;
+    private String requiredInfo;
 
 
-    public Activator(int id, boolean value, String name, String type) {
-        this.id = id;
-        this.value = value;
+    public Activator(int id, String state, String name, String type) {
+        this.activatorId = id;
+        this.state = state;
         this.name = name;
-        this.type = type;
+        this.stateType = type;
     }
 
     public int getId() {
-        return id;
+        return activatorId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.activatorId = id;
     }
 
-    public boolean isValue() {
-        return value;
+
+    public String getState() {
+        return state;
     }
 
-    public void setValue(boolean value) {
-        this.value = value;
-    }
 
     public String getName() {
         return name;
@@ -39,13 +38,14 @@ public class Activator {
     }
 
     public String getType() {
-        return type;
+        return stateType;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.stateType = type;
     }
 
-
-
+    public String toString() {
+        return name + " " + state;
+    }
 }
