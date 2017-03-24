@@ -7,6 +7,18 @@ package com.rugged.application.hestia;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the internal representation of the device class on the client. The device contains an
+ * id with which we can reference its remote version on the server. The name string contains the
+ * local name of the device, for instance "Front door lock". The type string is used to denote the
+ * type of the device so a GUI can be generated with the right icons at the correct location.
+ * <p>
+ *     Finally, there is a list of activators. These activators represent all the actions which can
+ *     be performed remotely on the device. An activator can be for instance an On/Off switch, or
+ *     an intensity slider.
+ * </p>
+ * @see Activator
+ */
 public class Device {
     int deviceId;
     String name;

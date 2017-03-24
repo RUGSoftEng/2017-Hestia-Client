@@ -17,6 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
+ * GET request to the server to populate the device list.
+ *
+ * @see PeripheralListActivity
+ */
 public class PeripheralListFragment extends Fragment {
 
     private final static String TAG = "PeripheralListFragment";
@@ -26,6 +32,13 @@ public class PeripheralListFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<Device>> listDataChild;
 
+    /**
+     *
+     * @param inflater The layout inflater used to generate the layout hierarchy
+     * @param container The viewgroup with which the layout is instantiated
+     * @return A view of an expandable list linked to the listDataHeader and listDataChild
+     *         variables. Filling these lists will generate the GUI.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

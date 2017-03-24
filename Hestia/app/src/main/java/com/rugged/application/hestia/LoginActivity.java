@@ -17,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Locale;
 
+/**
+ * This class represents a login screen, complete with remember me function.
+ */
 public class LoginActivity extends Activity  {
     private Button loginButton;
     private EditText userField,passField;
