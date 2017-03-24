@@ -81,7 +81,7 @@ public class LoginActivity extends Activity  {
     }
 
     private void gotoMainActivity(){
-        Intent i = new Intent(LoginActivity.this, PeripheralListActivity.class);
+        Intent i = new Intent(LoginActivity.this, DeviceListActivity.class);
         startActivity(i);
         finish();
     }
