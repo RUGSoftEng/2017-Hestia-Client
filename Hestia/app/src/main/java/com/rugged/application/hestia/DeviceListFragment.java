@@ -67,7 +67,7 @@ public class DeviceListFragment extends Fragment {
             ArrayList<Activator> activators = new ArrayList<>();
             activators.add(new Activator<>(0, false, "light_OnOROff", "TOGGLE"));
             ArrayList<Activator> a2 = new ArrayList<>();
-            a2.add(new Activator<>(0, 0, "Lock_OnOROff", "SLIDER"));
+            a2.add(new Activator<>(1, 0, "Lock_OnOROff", "SLIDER"));
             Device d1 = new Device(0, "Light 1", "Light", activators);
             Device d2 = new Device(0, "Light 2", "Light", activators);
             Device d3 = new Device(0, "lock 1", "Lock", a2);
