@@ -18,7 +18,7 @@ import java.util.Random;
 public class SlideDialog extends Dialog {
     private final static String TAG = "SlideDialog";
 
-    public SlideDialog(Context context) {
+    public SlideDialog(Context context, Device d) {
         super(context);
         setContentView(R.layout.slide_dialog);
         setTitle("Change your slide");
