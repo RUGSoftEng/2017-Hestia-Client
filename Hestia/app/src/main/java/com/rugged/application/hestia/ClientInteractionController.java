@@ -2,17 +2,7 @@ package com.rugged.application.hestia;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.http.client.methods.HttpGet;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class ClientInteractionController {
@@ -34,10 +24,7 @@ public class ClientInteractionController {
     }
 
     public ArrayList<Device> getDevices(){
-//        assert(devices != null);
-        if (devices == null) {
-            Log.i(TAG, "I am null");
-        }
+        assert(devices != null);
         return devices;
     }
 /*

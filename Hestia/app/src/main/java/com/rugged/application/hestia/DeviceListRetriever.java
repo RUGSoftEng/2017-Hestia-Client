@@ -46,7 +46,7 @@ class DeviceListRetriever extends AsyncTask<Void,Void,ArrayList<Device>> {
             devices = readStream(in);
             StringBuilder sb = new StringBuilder();
             for (Device d : devices) {
-                sb.append(d.getName() + ", ");
+                sb.append(d.toString());
             }
             Log.i(TAG, sb.toString());
             urlConnection.disconnect();
