@@ -38,11 +38,15 @@ public class LoginActivity extends Activity  {
         setContentView(R.layout.activity_login);
 
         /* Before going on, check if the user is remembered, if so, directly redirect. */
+        Intent i = getIntent();
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin) {
-            gotoMainActivity();
+            // Check if the user is redirected (from login)
+            if(i==null) {
+                gotoMainActivity();
+            }
         }
 
         /* Get all the buttons and fields from the layout */
