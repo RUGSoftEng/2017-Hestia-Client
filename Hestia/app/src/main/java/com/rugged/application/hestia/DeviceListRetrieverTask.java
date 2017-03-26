@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
@@ -20,10 +21,10 @@ import java.util.ArrayList;
  * This performs the task of getting the devices. It runs in the background as an AsyncTask
  * @see android.os.AsyncTask
  */
-class DeviceListRetriever extends AsyncTask<Void,Void,ArrayList<Device>> {
-    String TAG = "DeviceListRetriever";
+class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
+    String TAG = "DeviceListRetrieverTask";
     String path;
-    public DeviceListRetriever(String path) {
+    public DeviceListRetrieverTask(String path) {
         this.path = path;
     }
 
@@ -52,41 +53,16 @@ class DeviceListRetriever extends AsyncTask<Void,Void,ArrayList<Device>> {
             urlConnection.disconnect();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-        } finally {
-
         }
-/*
-        //mock data
-        ArrayList<Activator> activators = new ArrayList<>();
-        activators.add(new Activator<>(0, false, "light_OnOROff", "TOGGLE"));
-        ArrayList<Activator> a2 = new ArrayList<>();
-        a2.add(new Activator<>(0, 0, "Lock_OnOROff", "SLIDER"));
-        Device d1 = new Device(0, "Light 1", "Light", activators);
-        Device d2 = new Device(0, "Light 2", "Light", activators);
-        Device d3 = new Device(0, "lock 1", "Lock", a2);
-        ArrayList<Device> devices = new ArrayList<>();
-        devices.add(d1);
-        devices.add(d2);
-        devices.add(d3);
 
-        // add header data
-        /*
-        for (Device d : devices) {
-            if (!listDataHeader.contains(d.getType())) {
-                listDataHeader.add(d.getType());
-                listDataChild.put(d.getType(), new ArrayList<Device>());
-            }
-            //find corresponding header for the child
-            listDataChild.get(d.getType()).add(d);
-        }
-//            listAdapter.notifyDataSetChanged();
-        return devices;
-    }*/
         return devices;
     }
 
     private ArrayList<Device> readStream(InputStream is) throws IOException {
-        Gson gson= new Gson();
+        GsonBuilder gsonB = new GsonBuilder();
+        gsonB.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
+        Gson gson = gsonB.create();
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         Type deviceListType= new TypeToken<ArrayList<Device>>() {}.getType();
         ArrayList<Device> responseDev = gson.fromJson(gson.newJsonReader(reader), deviceListType);

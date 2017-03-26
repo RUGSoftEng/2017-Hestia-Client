@@ -12,17 +12,15 @@ package com.rugged.application.hestia;
  */
 public class Activator<T> {
     private int activatorId;
-    private T state;
+    private ActivatorState<T> state;
     private String name;
-    private String stateType;
 
     private String requiredInfo;
 
-    public Activator(int id, T state, String name, String type) {
+    public Activator(int id, ActivatorState<T> state, String name) {
         this.activatorId = id;
         this.state = state;
         this.name = name;
-        this.stateType = type;
     }
 
     public int getId() {
@@ -33,7 +31,7 @@ public class Activator<T> {
         this.activatorId = id;
     }
 
-    public T getState() {
+    public ActivatorState<T> getState() {
         return state;
     }
 

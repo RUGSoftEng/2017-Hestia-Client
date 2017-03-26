@@ -2,6 +2,8 @@ package com.rugged.application.hestia;
 
 import android.util.Log;
 
+import org.apache.http.client.methods.HttpPost;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -14,7 +16,7 @@ public class ClientInteractionController {
         this.path = path;
 
         try {
-            devices = new DeviceListRetriever(path).execute().get();
+            devices = new DeviceListRetrieverTask(path).execute().get();
         } catch (InterruptedException e) {
             Log.e(TAG,e.toString());
         } catch (ExecutionException e) {
@@ -27,7 +29,11 @@ public class ClientInteractionController {
         assert(devices != null);
         return devices;
     }
-/*
-    setActivatorState(int devId, int actId, T newState){
-    }*/
+
+    public int setActivatorState(Device d, int actId, activatorState newState){
+        int response;
+        Activator a = d.getActivators().get(actId);
+        new StateModificationTask(a, newState).execute().get(response);
+        return response;
+    }
 }
