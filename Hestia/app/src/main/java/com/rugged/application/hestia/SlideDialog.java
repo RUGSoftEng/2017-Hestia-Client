@@ -82,15 +82,11 @@ public class SlideDialog extends Dialog {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-//                    Toast.makeText(getContext(), Integer.toString(switchButton.getActivatorId()),
-//                            Toast.LENGTH_SHORT).show();
                     if(getChange()) {
                         seekBar.getActivatorSeekBar().setProgress(seekBar.getActivatorSeekBar().
                                 getMax());
                         setChange(true);
                     }
-
-
                 } else {
                     seekBar.getActivatorSeekBar().setProgress(0);
                 }
