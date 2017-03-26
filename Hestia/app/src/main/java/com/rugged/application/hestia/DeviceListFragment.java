@@ -54,13 +54,13 @@ public class DeviceListFragment extends Fragment {
         expListView.setAdapter(listAdapter);
 
         //request the list
-        new RetrievePeripheralList().execute();
+        new DeviceListRetriever().execute();
 
         // setting list adapter
         return view;
     }
 
-    private class RetrievePeripheralList extends AsyncTask<Void, Void, Void>  {
+    private class DeviceListRetriever extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids)  {
             //mock data
@@ -77,6 +77,7 @@ public class DeviceListFragment extends Fragment {
             devices.add(d3);
 
             // add header data
+
             for (Device d : devices) {
                 if (!listDataHeader.contains(d.getType())) {
                     listDataHeader.add(d.getType());

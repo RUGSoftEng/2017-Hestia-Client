@@ -2,6 +2,7 @@ package com.rugged.application.hestia;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -10,17 +11,21 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
-class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<Device>> listDataChild;
     private Context context;
+    private int activatorId;
 
-    ExpandableListAdapter(List<String> listDataHeader,
+    public ExpandableListAdapter(List<String> listDataHeader,
                           HashMap<String, List<Device>> listChildData,
                           Context context) {
         this.listDataHeader = listDataHeader;
@@ -58,6 +63,15 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(childText);
+
+        ActivatorSwitch activatorSwitch = new ActivatorSwitch(new Random().nextInt(4), convertView,
+                R.id.light_switch);
+        activatorSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //send state change to the server
+            }
+        });
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
@@ -154,5 +168,6 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
 }
 

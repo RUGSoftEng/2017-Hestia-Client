@@ -4,11 +4,8 @@ import android.os.AsyncTask;
 
 import java.util.ArrayList;
 
-/**
- * Created by root on 24-3-17.
- */
 
-class DeviceListRetriever extends AsyncTask<Void,Void,Void> {
+public class DeviceListRetriever extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... voids)  {
         //mock data
