@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import com.google.gson.JsonObject;
 

@@ -1,16 +1,8 @@
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.apache.http.client.methods.HttpPost;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+import hestia.backend.Activator;
 
 
 class StateModificationTask extends AsyncTask<Void,Void,Integer> {

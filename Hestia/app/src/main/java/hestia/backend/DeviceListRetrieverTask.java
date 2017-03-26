@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import android.os.AsyncTask;
 import android.util.Log;

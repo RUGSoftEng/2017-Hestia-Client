@@ -2,13 +2,10 @@
 This class handles the dialog which is opened if a Device has the 'slide' option
  */
 
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -16,7 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.rugged.application.hestia.R;
+
 import java.util.Random;
+
+import hestia.UIWidgets.HestiaSeekbar;
+import hestia.UIWidgets.HestiaSwitch;
+import hestia.backend.Device;
 
 public class SlideDialog extends Dialog {
     private final static String TAG = "SlideDialog";
@@ -39,7 +42,7 @@ public class SlideDialog extends Dialog {
             }
         }
 
-        final ActivatorSwitch switchButton = new ActivatorSwitch(new Random().nextInt(4),
+        final HestiaSwitch switchButton = new HestiaSwitch(new Random().nextInt(4),
                 this.findViewById(R.id.slide_dialog), R.id.switch_dialog);
 
 
@@ -50,7 +53,7 @@ public class SlideDialog extends Dialog {
         }
 
 
-        final ActivatorSeekbar seekBar = new ActivatorSeekbar(id,
+        final HestiaSeekbar seekBar = new HestiaSeekbar(id,
                 findViewById(R.id.slide_dialog), R.id.slide_seek_bar);
         seekBar.getActivatorSeekBar().setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {

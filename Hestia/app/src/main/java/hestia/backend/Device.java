@@ -3,9 +3,11 @@
  * server.
  */
 
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import java.util.ArrayList;
+
+import hestia.backend.Activator;
 
 /**
  * Represents the internal representation of the device class on the client. The device contains an

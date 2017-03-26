@@ -3,7 +3,7 @@
  * Furthermore it first checks the shared preferences of the phone if the user is remembered.
  */
 
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rugged.application.hestia.R;
+
 import java.util.Locale;
 
 /**

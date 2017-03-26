@@ -1,15 +1,14 @@
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
 
 import java.lang.reflect.Type;
+
+import hestia.backend.Activator;
 
 class ActivatorDeserializer implements JsonDeserializer<Activator> {
 

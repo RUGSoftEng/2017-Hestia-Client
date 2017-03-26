@@ -1,19 +1,16 @@
-package com.rugged.application.hestia;
-import android.content.Context;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
+package hestia.UI;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import hestia.backend.ClientInteractionController;
+import hestia.backend.Device;
+import com.rugged.application.hestia.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

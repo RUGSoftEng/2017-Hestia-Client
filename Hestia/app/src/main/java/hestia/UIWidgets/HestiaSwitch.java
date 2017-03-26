@@ -1,15 +1,14 @@
-package com.rugged.application.hestia;
+package hestia.UIWidgets;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 
-public class ActivatorSwitch implements UIWidget{
-    private final static String TAG = "ActivatorSwitch";
+public class HestiaSwitch implements UIWidget {
+    private final static String TAG = "HestiaSwitch";
     private int activatorId;
     private Switch activatorSwitch;
 
-    public ActivatorSwitch(int id, View v, int layoutId) {
+    public HestiaSwitch(int id, View v, int layoutId) {
         activatorId = id;
         activatorSwitch = (Switch) v.findViewById(layoutId);
     }

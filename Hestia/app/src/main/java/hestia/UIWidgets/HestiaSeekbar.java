@@ -1,13 +1,12 @@
-package com.rugged.application.hestia;
+package hestia.UIWidgets;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.SeekBar;
 
-public class ActivatorSeekbar implements UIWidget{
+public class HestiaSeekbar implements UIWidget {
     int activatorId;
     SeekBar activatorSeekBar;
-    public ActivatorSeekbar(int id, View v, int layoutId) {
+    public HestiaSeekbar(int id, View v, int layoutId) {
         activatorId = id;
         activatorSeekBar = (SeekBar) v.findViewById(layoutId);
     }

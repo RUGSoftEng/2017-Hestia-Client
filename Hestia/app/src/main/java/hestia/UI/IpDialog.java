@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,6 +8,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.rugged.application.hestia.R;
 
 public class IpDialog extends Dialog implements android.view.View.OnClickListener{
     private EditText ipField,portField;

@@ -2,7 +2,7 @@
  * This class smoothens the transition from an activity to a fragment.
  */
 
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.rugged.application.hestia.R;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity{
     protected abstract Fragment createFragment();
