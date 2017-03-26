@@ -63,7 +63,7 @@ public class DeviceListFragment extends Fragment {
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
-        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity());
+        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity(), c);
 
         expListView.setAdapter(listAdapter);
 
