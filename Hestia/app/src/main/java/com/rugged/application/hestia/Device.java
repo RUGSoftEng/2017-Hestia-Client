@@ -22,13 +22,13 @@ import java.util.ArrayList;
 public class Device {
     int deviceId;
     String name;
-    String type;
+    String pluginType;
     ArrayList<Activator> activators;
 
     public Device(int id, String name, String type, ArrayList<Activator> a) {
         this.deviceId = id;
         this.name = name;
-        this.type = type;
+        this.pluginType = type;
         this.activators = a;
     }
 
@@ -49,11 +49,11 @@ public class Device {
     }
 
     public String getType() {
-        return type;
+        return pluginType;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.pluginType = type;
     }
 
     public ArrayList<Activator> getActivators() {
