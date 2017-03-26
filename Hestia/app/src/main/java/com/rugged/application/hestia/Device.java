@@ -64,6 +64,6 @@ public class Device {
         this.activators = activators;
     }
     public String toString(){
-        return name +" "+ deviceId + " "+activators;
+        return name +" "+ deviceId + " " + activators + "\n";
     }
 }

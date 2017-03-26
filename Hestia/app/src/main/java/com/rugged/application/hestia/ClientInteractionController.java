@@ -39,6 +39,5 @@ public class ClientInteractionController {
     }
 /*
     setActivatorState(int devId, int actId, T newState){
-
     }*/
 }
