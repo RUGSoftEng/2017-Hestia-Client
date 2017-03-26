@@ -4,13 +4,9 @@ import android.os.AsyncTask;
 
 import java.util.ArrayList;
 
-/**
- * Created by root on 24-3-17.
- */
-
-class DeviceListRetriever extends AsyncTask<Void,Void,Void> {
+class DeviceListRetriever extends AsyncTask<Void,Void,ArrayList<Device>> {
     @Override
-    protected Void doInBackground(Void... voids)  {
+    protected ArrayList<Device> doInBackground(Void... voids)  {
         //mock data
         ArrayList<Activator> activators = new ArrayList<>();
         activators.add(new Activator<>(0, false, "light_OnOROff", "TOGGLE"));
@@ -35,6 +31,6 @@ class DeviceListRetriever extends AsyncTask<Void,Void,Void> {
             listDataChild.get(d.getType()).add(d);
         }*/
 //            listAdapter.notifyDataSetChanged();
-        return null;
+        return devices;
     }
 }
