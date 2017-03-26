@@ -45,7 +45,7 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
-        c = new ClientInteractionController("192.168.178.26:5000/");
+        c = new ClientInteractionController("http://192.168.178.30:5000/");
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 

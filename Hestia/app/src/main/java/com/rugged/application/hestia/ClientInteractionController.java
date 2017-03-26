@@ -34,7 +34,10 @@ public class ClientInteractionController {
     }
 
     public ArrayList<Device> getDevices(){
-        assert(devices != null);
+//        assert(devices != null);
+        if (devices == null) {
+            Log.i(TAG, "I am null");
+        }
         return devices;
     }
 /*
