@@ -7,8 +7,6 @@ package hestia.backend;
  * string name and a string state type, which is currently used for casting the generic state
  * variable to an actual type.
  * @see Device
- * @param <T> Type of the state of the activator. This can be a boolean (for a switch) or a float
- *           (for a slider)
  */
 public class Activator {
     private int activatorId;
@@ -53,5 +51,9 @@ public class Activator {
 
     public String toString() {
         return name + " " + state;
+    }
+
+    public void setState(ActivatorState state) {
+        this.state = state;
     }
 }

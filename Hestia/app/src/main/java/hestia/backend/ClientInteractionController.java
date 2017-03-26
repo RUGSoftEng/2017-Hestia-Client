@@ -46,11 +46,19 @@ public class ClientInteractionController {
         return devices;
     }
 
+    /**
+     * TODO Check whether POST was successful
+     * @param d
+     * @param actId
+     * @param newState
+     * @return
+     */
     public int setActivatorState(Device d, int actId, ActivatorState newState){
-        int response=0;
+        int response = 0;
         Activator a = d.getActivators().get(actId);
+        a.setState(newState);
         try {
-            new StateModificationTask(a, newState).execute().get();
+            new StateModificationTask(d.getDeviceId(),actId,newState,this.path).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

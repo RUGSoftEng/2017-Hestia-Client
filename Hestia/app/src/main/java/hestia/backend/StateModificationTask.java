@@ -1,58 +1,65 @@
 package hestia.backend;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
-import hestia.backend.Activator;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 class StateModificationTask extends AsyncTask<Void,Void,Integer> {
     private String TAG = "StateModificationTask";
-    Activator a;
+    int deviceId;
+    int activatorId;
     ActivatorState newState;
+    String path;
 
-    public StateModificationTask(Activator a, ActivatorState newState) {
-        this.a = a;
+    public StateModificationTask(int devId, int actId, ActivatorState newState, String path) {
+        this.deviceId = devId;
+        this.activatorId = actId;
         this.newState = newState;
+        this.path = path;
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
-        /*
-        String devicesPath = path + "devices/";
+        Integer response = null;
+        String activatorPath = path + "devices/" + deviceId + "/activator/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
         try {
-            url = new URL(devicesPath);
+            url = new URL(activatorPath);
             urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            Log.i(TAG, in.toString());
-
-            devices = readStream(in);
-            StringBuilder sb = new StringBuilder();
-            for (Device d : devices) {
-                sb.append(d.toString());
-            }
-            Log.i(TAG, sb.toString());
-            urlConnection.disconnect();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            urlConnection.setDoOutput(true);
+            OutputStream dos = urlConnection.getOutputStream();
+            writeStream(dos);
+            response = urlConnection.getResponseCode();
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG,e.toString());
         }
+        return response;
+    }
 
-        CloseableHttpClient	httpclient = HttpClients.createDefault();
-        String path=("http://127.0.0.1:5000/devices/"+deviceId+"/"+"activator/"+activatorId);
-        HttpPost httpPost = new HttpPost(path);
-        JsonObject json=new JsonObject();
-        json.addProperty("state",state);
-        System.out.println(json);
-        StringEntity se = new StringEntity(json.toString());
-        se.setContentType("application/json");
-        httpPost.setEntity(se);
-        System.out.println(httpPost.getEntity());
-        ResponseHandler responseHandler = new BasicResponseHandler();
-        HttpResponse response=  httpclient.execute(httpPost);
-        // HttpResponse response=  httpclient.execute(httpPost, responseHandler);
-        httpclient.close();
-        return null;*/
-        return 0;
+    /**
+     * Write the new state to the output stream, which is sent over the urlConnection
+     * @param os
+     */
+    private void writeStream(OutputStream os) throws IOException {
+        JsonObject json = new JsonObject();
+        JsonPrimitive jp = new JsonPrimitive(String.valueOf(newState));
+        json.add("state", jp);
+        Log.i(TAG,json.toString());
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        osw.write(json.toString());
+        osw.flush();
+        osw.close();
     }
 }
