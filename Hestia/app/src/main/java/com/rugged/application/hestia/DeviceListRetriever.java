@@ -38,15 +38,22 @@ class DeviceListRetriever extends AsyncTask<Void,Void,ArrayList<Device>> {
         HttpURLConnection urlConnection = null;
         ArrayList<Device> devices = null;
         try {
-            url = new URL(path);
+            url = new URL(devicesPath);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             Log.i(TAG, in.toString());
+
             devices = readStream(in);
+            StringBuilder sb = new StringBuilder();
+            for (Device d : devices) {
+                sb.append(d.getName() + ", ");
+            }
+            Log.i(TAG, sb.toString());
+            urlConnection.disconnect();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         } finally {
-            urlConnection.disconnect();
+
         }
 /*
         //mock data

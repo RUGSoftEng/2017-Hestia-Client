@@ -7,4 +7,9 @@
     <string name="userHint">Username</string>
     <string name="rememberMeText">Remember me:</string>
     <string name="attemptsLeftText">Attempts Left:</string>
+    <string name="ipDialogText">Edit Server IP/port</string>
+    <string name="ipHint">IP address (E.G.: 192.168.1.0)</string>
+    <string name="portHint">Port (E.G.: 5000)</string>
+    <string name="back">Back</string>
+    <string name="confirm">Confirm</string>
 </resources>

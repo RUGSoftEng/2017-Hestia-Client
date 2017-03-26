@@ -2,7 +2,6 @@ package com.rugged.application.hestia;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,9 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -105,7 +101,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                                 break;
                             case R.id.slide:
                                 //show notification
-                                final SlideDialog dialog = new SlideDialog(context);
+                                final SlideDialog dialog = new SlideDialog(context,
+                                        getChildDevice(groupPosition, childPosition));
                                 dialog.show();
                                 break;
                             default:

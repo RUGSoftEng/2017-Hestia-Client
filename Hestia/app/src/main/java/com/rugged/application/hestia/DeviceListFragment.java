@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ public class DeviceListFragment extends Fragment {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<Device>> listDataChild;
+    ClientInteractionController c;
 
     /**
      *
@@ -43,51 +45,30 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
-
-        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
-
+        c = new ClientInteractionController("http://192.168.178.30:5000/");
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
+
+        ArrayList<Device> devices = c.getDevices();
+        Log.i(TAG, devices.size() + "");
+
+        for (Device d : devices) {
+            if (!listDataHeader.contains(d.getType())) {
+                listDataHeader.add(d.getType());
+                listDataChild.put(d.getType(), new ArrayList<Device>());
+            }
+            //find corresponding header for the child
+            listDataChild.get(d.getType()).add(d);
+        }
+
+        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity());
 
         expListView.setAdapter(listAdapter);
 
-        //request the list
-        new DeviceListRetriever().execute();
-
-        // setting list adapter
         return view;
     }
 
-    private class DeviceListRetriever extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... voids)  {
-            //mock data
-            ArrayList<Activator> activators = new ArrayList<>();
-            activators.add(new Activator<>(0, false, "light_OnOROff", "TOGGLE"));
-            ArrayList<Activator> a2 = new ArrayList<>();
-            a2.add(new Activator<>(0, 0, "Lock_OnOROff", "SLIDER"));
-            Device d1 = new Device(0, "Light 1", "Light", activators);
-            Device d2 = new Device(0, "Light 2", "Light", activators);
-            Device d3 = new Device(0, "lock 1", "Lock", a2);
-            ArrayList<Device> devices = new ArrayList<>();
-            devices.add(d1);
-            devices.add(d2);
-            devices.add(d3);
 
-            // add header data
-
-            for (Device d : devices) {
-                if (!listDataHeader.contains(d.getType())) {
-                    listDataHeader.add(d.getType());
-                    listDataChild.put(d.getType(), new ArrayList<Device>());
-                }
-                //find corresponding header for the child
-                listDataChild.get(d.getType()).add(d);
-            }
-//            listAdapter.notifyDataSetChanged();
-            return null;
-        }
-    }
 }

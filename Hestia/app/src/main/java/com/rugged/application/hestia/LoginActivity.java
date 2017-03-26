@@ -39,12 +39,13 @@ public class LoginActivity extends Activity  {
 
         /* Before going on, check if the user is remembered, if so, directly redirect. */
         Intent i = getIntent();
+        Bundle b = i.getExtras();
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin) {
             // Check if the user is redirected (from login)
-            if(i==null) {
+            if(b==null) {
                 gotoMainActivity();
             }
         }
