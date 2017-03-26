@@ -3,6 +3,7 @@ package com.rugged.application.hestia;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,9 +11,13 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import static java.security.AccessController.getContext;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> listDataHeader; // header titles
@@ -20,13 +25,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<Device>> listDataChild;
     private Context context;
     private int activatorId;
+    private ClientInteractionController c;
+    private final static String TAG = "ExpandableList1";
 
     public ExpandableListAdapter(List<String> listDataHeader,
                           HashMap<String, List<Device>> listChildData,
-                          Context context) {
+                          Context context, ClientInteractionController cic) {
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
         this.context = context;
+        this.c = cic;
     }
 
     @Override
@@ -60,12 +68,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(childText);
 
-        ActivatorSwitch activatorSwitch = new ActivatorSwitch(new Random().nextInt(4), convertView,
+        final ActivatorSwitch activatorSwitch = new ActivatorSwitch(new Random().nextInt(4), convertView,
                 R.id.light_switch);
         activatorSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //send state change to the server
+                int activatorId = activatorSwitch.getActivatorId();
+                if(activatorSwitch.getActivatorSwitch().isChecked()){
+                    // True
+                    c.setActivatorState(getChild(groupPosition, childPosition),activatorId,true);
+                }else{
+                    // False
+                    c.setActivatorState(getChild(groupPosition, childPosition),activatorId,false);
+                }
             }
         });
 
