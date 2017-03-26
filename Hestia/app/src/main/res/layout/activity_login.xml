@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@mipmap/hestia_logo_big" />
+        android:src="@mipmap/hestia_logo_big" />
 
     <TextView
         android:text = "@string/loginText"
