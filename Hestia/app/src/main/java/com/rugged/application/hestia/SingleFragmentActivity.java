@@ -4,7 +4,6 @@
 
 package com.rugged.application.hestia;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,10 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity{
-
     protected abstract Fragment createFragment();
 
     @Override

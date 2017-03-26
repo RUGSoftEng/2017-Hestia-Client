@@ -20,12 +20,12 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
         JsonObject jobject = (JsonObject) json;
 
         String stateType = jobject.get("stateType").getAsString();
-        JsonObject rawState = jobject.get("state");
+        JsonObject rawState = jobject.get("state").getAsJsonObject();
         ActivatorState state = null;
         switch (stateType){
-            case "bool"         : state = new ActivatorState<Boolean>(rawState.getAsBoolean());
+            case "bool"         : state = new ActivatorState<Boolean>(rawState.getAsBoolean(),"boolean");
                 break;
-            case "int"          : state = new ActivatorState<Integer>(rawState.getAsInt());
+            case "int"          : state = new ActivatorState<Integer>(rawState.getAsInt(),"int");
                 break;
         }
 

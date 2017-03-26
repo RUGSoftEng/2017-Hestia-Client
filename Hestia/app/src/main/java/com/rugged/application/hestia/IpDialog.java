@@ -40,9 +40,7 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                // TODO: Change ip and port backend.
-                Toast.makeText(getContext(),"IP Address: " + ip.toString(),Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(getContext(),"IP Address: " + ip,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button:
                 dismiss();

@@ -76,10 +76,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 int activatorId = activatorSwitch.getActivatorId();
                 if(activatorSwitch.getActivatorSwitch().isChecked()){
                     // True
-                    c.setActivatorState(getChild(groupPosition, childPosition),activatorId,true);
+                   // c.setActivatorState(getChild(groupPosition, childPosition),activatorId,true);
                 }else{
                     // False
-                    c.setActivatorState(getChild(groupPosition, childPosition),activatorId,false);
+                    //c.setActivatorState(getChild(groupPosition, childPosition),activatorId,false);
                 }
             }
         });

@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-class StateModificationTask extends AsyncTask<Void,Void,Void> {
+class StateModificationTask extends AsyncTask<Void,Void,Integer> {
     private String TAG = "StateModificationTask";
     Activator a;
     ActivatorState newState;
@@ -24,7 +24,7 @@ class StateModificationTask extends AsyncTask<Void,Void,Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Integer doInBackground(Void... params) {
         /*
         String devicesPath = path + "devices/";
         URL url = null;
@@ -61,5 +61,6 @@ class StateModificationTask extends AsyncTask<Void,Void,Void> {
         // HttpResponse response=  httpclient.execute(httpPost, responseHandler);
         httpclient.close();
         return null;*/
+        return 0;
     }
 }

@@ -44,11 +44,11 @@ public class Activator<T> {
     }
 
     public String getType() {
-        return stateType;
+        return state.getType();
     }
 
     public void setType(String type) {
-        this.stateType = type;
+        state.setType(type);
     }
 
     public String toString() {
