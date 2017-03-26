@@ -4,23 +4,17 @@
 
 package com.rugged.application.hestia;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity{
@@ -56,11 +50,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setIp:
-                Toast.makeText(getApplicationContext(),"setIP",Toast.LENGTH_SHORT).show();
+                showIpDialog();
                 return true;
 
             case R.id.action_logout:
-                Toast.makeText(getApplicationContext(),"logged out..",Toast.LENGTH_SHORT).show();
                 gotoLoginActivity();
                 return true;
 
@@ -74,7 +67,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
 
     private void gotoLoginActivity(){
         Intent i = new Intent(SingleFragmentActivity.this, LoginActivity.class);
+        String s = null;
+        i.putExtra("login", s);
         startActivity(i);
         finish();
+    }
+
+    private void showIpDialog() {
+        IpDialog ipDialog = new IpDialog(SingleFragmentActivity.this);
+        ipDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        ipDialog.show();
     }
 }
