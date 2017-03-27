@@ -54,7 +54,6 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-
         return devices;
     }
 
