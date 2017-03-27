@@ -20,11 +20,11 @@ public class Device {
     String pluginType;
     ArrayList<Activator> activators;
 
-    public Device(int id, String name, String type, ArrayList<Activator> a) {
-        this.deviceId = id;
+    public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
+        this.deviceId = deviceId;
         this.name = name;
         this.pluginType = type;
-        this.activators = a;
+        this.activators = activator;
     }
 
     public int getDeviceId() {

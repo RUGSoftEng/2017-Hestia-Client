@@ -32,6 +32,7 @@ public class ClientInteractionController {
         this.path = path;
 
         try {
+        	//path = "http://" + ip + ":" + port + "/";
             devices = new DeviceListRetrieverTask(this.path).execute().get();
         } catch (InterruptedException e) {
             Log.e(TAG,e.toString());
@@ -48,17 +49,17 @@ public class ClientInteractionController {
 
     /**
      * TODO Check whether POST was successful
-     * @param d
-     * @param actId
+     * @param device
+     * @param activatorId
      * @param newState
      * @return
      */
-    public int setActivatorState(Device d, int actId, ActivatorState newState){
+    public int setActivatorState(Device device, int activatorId, ActivatorState newState){
         int response = 0;
-        Activator a = d.getActivators().get(actId);
-        a.setState(newState);
+        Activator activator = device.getActivators().get(activatorId);
+        activator.setState(newState);
         try {
-            new StateModificationTask(d.getDeviceId(),actId,newState,this.path).execute().get();
+            new StateModificationTask(device.getDeviceId(),activatorId,newState,this.path).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

@@ -1,4 +1,4 @@
-package hestia.backend;
+	package hestia.backend;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -20,9 +20,9 @@ class StateModificationTask extends AsyncTask<Void,Void,Integer> {
     ActivatorState newState;
     String path;
 
-    public StateModificationTask(int devId, int actId, ActivatorState newState, String path) {
-        this.deviceId = devId;
-        this.activatorId = actId;
+    public StateModificationTask(int deviceId, int activatorId, ActivatorState newState, String path) {
+        this.deviceId = deviceId;
+        this.activatorId = activatorId;
         this.newState = newState;
         this.path = path;
     }
@@ -39,8 +39,8 @@ class StateModificationTask extends AsyncTask<Void,Void,Integer> {
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             urlConnection.setDoOutput(true);
-            OutputStream dos = urlConnection.getOutputStream();
-            writeStream(dos);
+            OutputStream deviceOutputStream = urlConnection.getOutputStream();
+            writeStream(deviceOutputStream);
             response = urlConnection.getResponseCode();
         } catch (IOException e) {
             Log.e(TAG,e.toString());
@@ -54,12 +54,12 @@ class StateModificationTask extends AsyncTask<Void,Void,Integer> {
      */
     private void writeStream(OutputStream os) throws IOException {
         JsonObject json = new JsonObject();
-        JsonPrimitive jp = new JsonPrimitive(String.valueOf(newState));
-        json.add("state", jp);
+        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newState));
+        json.add("state", jPrimitive);
         Log.i(TAG,json.toString());
-        OutputStreamWriter osw = new OutputStreamWriter(os);
-        osw.write(json.toString());
-        osw.flush();
-        osw.close();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(os);
+        outputStreamWriter.write(json.toString());
+        outputStreamWriter.flush();
+        outputStreamWriter.close();
     }
 }

@@ -41,15 +41,15 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
         try {
             url = new URL(devicesPath);
             urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            Log.i(TAG, in.toString());
+            InputStream input = new BufferedInputStream(urlConnection.getInputStream());
+            Log.i(TAG, input.toString());
 
-            devices = readStream(in);
-            StringBuilder sb = new StringBuilder();
-            for (Device d : devices) {
-                sb.append(d.toString());
+            devices = readStream(input);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Device device : devices) {
+                stringBuilder.append(device.toString());
             }
-            Log.i(TAG, sb.toString());
+            Log.i(TAG, stringBuilder.toString());
             urlConnection.disconnect();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
@@ -58,9 +58,9 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     }
 
     private ArrayList<Device> readStream(InputStream is) throws IOException {
-        GsonBuilder gsonB = new GsonBuilder();
-        gsonB.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
-        Gson gson = gsonB.create();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
+        Gson gson = gsonBuilder.create();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         Type deviceListType= new TypeToken<ArrayList<Device>>() {}.getType();
