@@ -1,9 +1,11 @@
-package com.rugged.application.hestia;
-
-import com.google.gson.JsonObject;
+package hestia.backend;
 
 /**
- * Wrapper class for the different state fields which are
+ * Wrapper class for the different state fields. The activator state has a type T, which is
+ * inferred using a custom JSON deserializer.
+ * @see ActivatorDeserializer
+ * @param <T> Type of the state of the activator. This can be a boolean (for a switch) or a float
+ *           (for a slider)
  */
 
 public class ActivatorState<T> {

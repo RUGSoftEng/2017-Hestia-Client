@@ -1,9 +1,4 @@
-/**
- * This class contains the clients internal representation of the peripheral connected to the
- * server.
- */
-
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import java.util.ArrayList;
 

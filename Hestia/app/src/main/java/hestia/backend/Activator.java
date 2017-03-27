@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package hestia.backend;
 
 
 /**
@@ -7,17 +7,15 @@ package com.rugged.application.hestia;
  * string name and a string state type, which is currently used for casting the generic state
  * variable to an actual type.
  * @see Device
- * @param <T> Type of the state of the activator. This can be a boolean (for a switch) or a float
- *           (for a slider)
  */
-public class Activator<T> {
+public class Activator {
     private int activatorId;
-    private ActivatorState<T> state;
+    private ActivatorState state;
     private String name;
 
     private String requiredInfo;
 
-    public Activator(int id, ActivatorState<T> state, String name) {
+    public Activator(int id, ActivatorState state, String name) {
         this.activatorId = id;
         this.state = state;
         this.name = name;
@@ -31,7 +29,7 @@ public class Activator<T> {
         this.activatorId = id;
     }
 
-    public ActivatorState<T> getState() {
+    public ActivatorState getState() {
         return state;
     }
 
@@ -53,5 +51,9 @@ public class Activator<T> {
 
     public String toString() {
         return name + " " + state;
+    }
+
+    public void setState(ActivatorState state) {
+        this.state = state;
     }
 }

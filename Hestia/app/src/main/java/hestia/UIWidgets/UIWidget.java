@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package hestia.UIWidgets;
 
 public interface UIWidget {
     void setActivatorId(int id);

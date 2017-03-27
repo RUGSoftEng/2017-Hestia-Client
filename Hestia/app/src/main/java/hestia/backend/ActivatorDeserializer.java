@@ -1,15 +1,14 @@
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
 
 import java.lang.reflect.Type;
+
+import hestia.backend.Activator;
 
 class ActivatorDeserializer implements JsonDeserializer<Activator> {
 
@@ -23,9 +22,10 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
         JsonObject rawState = jobject.get("state").getAsJsonObject();
         ActivatorState state = null;
         switch (stateType){
-            case "bool"         : state = new ActivatorState<Boolean>(rawState.getAsBoolean(),"boolean");
+            case "bool"         : state = new ActivatorState<Boolean>(rawState.getAsBoolean(),
+                                                                      "TOGGLE");
                 break;
-            case "int"          : state = new ActivatorState<Integer>(rawState.getAsInt(),"int");
+            case "int"          : state = new ActivatorState<Integer>(rawState.getAsInt(),"SLIDER");
                 break;
         }
 

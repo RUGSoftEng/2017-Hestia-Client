@@ -1,9 +1,8 @@
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,13 +10,16 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import hestia.UIWidgets.HestiaSwitch;
+import hestia.backend.ClientInteractionController;
+import com.rugged.application.hestia.R;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import static java.security.AccessController.getContext;
+import hestia.backend.Device;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> listDataHeader; // header titles
@@ -68,13 +70,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(childText);
 
-        final ActivatorSwitch activatorSwitch = new ActivatorSwitch(new Random().nextInt(4), convertView,
+        final HestiaSwitch hestiaSwitch = new HestiaSwitch(new Random().nextInt(4), convertView,
                 R.id.light_switch);
-        activatorSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
+        hestiaSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int activatorId = activatorSwitch.getActivatorId();
-                if(activatorSwitch.getActivatorSwitch().isChecked()){
+                int activatorId = hestiaSwitch.getActivatorId();
+                if(hestiaSwitch.getActivatorSwitch().isChecked()){
                     // True
                    // c.setActivatorState(getChild(groupPosition, childPosition),activatorId,true);
                 }else{
