@@ -1,11 +1,13 @@
 package hestia.UI;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
@@ -30,6 +32,7 @@ public class DeviceListFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<Device>> listDataChild;
     ClientInteractionController c;
+    FloatingActionButton fab;
 
     /**
      *
@@ -42,28 +45,41 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
-        c = new ClientInteractionController("http://192.168.178.30:5000/");
+        Log.i(TAG, "Create the fragment view");
+        fab = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Implement opening dialog to add device",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
-        ArrayList<Device> devices = c.getDevices();
-        //Log.i(TAG, devices.size() + "");
-        if(devices!=null) {
-            for (Device d : devices) {
-                if (!listDataHeader.contains(d.getType())) {
-                    listDataHeader.add(d.getType());
-                    listDataChild.put(d.getType(), new ArrayList<Device>());
-                }
-                //find corresponding header for the child
-                listDataChild.get(d.getType()).add(d);
-            }
-        }
+
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity(), c);
 
         expListView.setAdapter(listAdapter);
+
+//        c = new ClientInteractionController("http://192.168.178.30:5000/");
+//
+//        ArrayList<Device> devices = c.getDevices();
+//        //Log.i(TAG, devices.size() + "");
+//        if(devices!=null) {
+//            for (Device d : devices) {
+//                if (!listDataHeader.contains(d.getType())) {
+//                    listDataHeader.add(d.getType());
+//                    listDataChild.put(d.getType(), new ArrayList<Device>());
+//                }
+//                //find corresponding header for the child
+//                listDataChild.get(d.getType()).add(d);
+//            }
+//        }
+
 
         return view;
     }

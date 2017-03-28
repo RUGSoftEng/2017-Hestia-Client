@@ -1,5 +1,25 @@
-<ExpandableListView android:id="@+id/lvExp"
-    android:layout_height="match_parent"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:layout_height="match_parent">
+
+
+    <ExpandableListView android:id="@+id/lvExp"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+         />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:layout_anchor="@id/lvExp"
+        app:layout_anchorGravity="bottom|right"
+        android:src="@drawable/ic_add_black_24dp"
+        />
+</android.support.design.widget.CoordinatorLayout>
 
