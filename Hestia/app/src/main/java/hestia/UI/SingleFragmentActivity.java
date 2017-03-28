@@ -10,24 +10,45 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
+import hestia.backend.ClientInteractionController;
+
 public abstract class SingleFragmentActivity extends AppCompatActivity{
     protected abstract Fragment createFragment();
+    private static String TAG = "SingleFragmentActivity";
+    SwipeRefreshLayout layout;
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
+        layout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Log.i(TAG, "Creating toolbar");
+
+        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getApplicationContext(), "Refreshing", Toast.LENGTH_SHORT).show();
+                //retrieve the newest list of devices
+                layout.setRefreshing(false);
+            }
+        });
+
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
@@ -55,6 +76,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
             case R.id.action_logout:
                 gotoLoginActivity();
                 return true;
+            case R.id.menu_refresh:
+                layout.setRefreshing(true);
 
             default:
                 // If we got here, the user's action was not recognized.
