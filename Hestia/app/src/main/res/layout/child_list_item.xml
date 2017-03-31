@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_light" />
+        android:src="@drawable/ic_action" />
 
 
 </RelativeLayout>

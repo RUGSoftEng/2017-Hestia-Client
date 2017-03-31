@@ -22,11 +22,10 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
         ActivatorState state = null;
         switch (stateType) {
             case "bool":
-                state = new ActivatorState<Boolean>(rawState.getAsBoolean(),
-                        "TOGGLE");
+                state = new ActivatorState<Boolean>(rawState.getAsBoolean(),"TOGGLE");
                 break;
             case "int":
-                state = new ActivatorState<Integer>(rawState.getAsInt(), "SLIDER");
+                state = new ActivatorState<Integer>(rawState.getAsInt(),"SLIDER");
                 break;
         }
 
