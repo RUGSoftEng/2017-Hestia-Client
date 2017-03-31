@@ -25,8 +25,8 @@ import hestia.backend.ClientInteractionController;
 public abstract class SingleFragmentActivity extends AppCompatActivity{
     protected abstract Fragment createFragment();
     private static String TAG = "SingleFragmentActivity";
-    SwipeRefreshLayout layout;
-    Toolbar toolbar;
+    private SwipeRefreshLayout layout;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

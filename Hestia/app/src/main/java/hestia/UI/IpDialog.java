@@ -15,7 +15,7 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     private EditText ipField,portField;
     private Button confirm,cancel;
     private String ip,port;
-    public Activity c;
+    private Activity c;
     public IpDialog(Activity a) {
         super(a);
         this.c = a;
