@@ -34,7 +34,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
         setContentView(R.layout.activity_fragment);
         layout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
 
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -76,8 +75,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
             case R.id.action_logout:
                 gotoLoginActivity();
                 return true;
-            case R.id.menu_refresh:
-                layout.setRefreshing(true);
 
             default:
                 // If we got here, the user's action was not recognized.
