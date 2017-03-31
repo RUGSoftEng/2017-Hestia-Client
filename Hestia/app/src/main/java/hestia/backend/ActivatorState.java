@@ -17,6 +17,9 @@ public class ActivatorState<T> {
         this.type = type;
     }
 
+    public void setState(T rawState){
+        state = rawState;
+    }
     public void setType(String type){
         this.type = type;
     }

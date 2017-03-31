@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import hestia.UIWidgets.HestiaSwitch;
+import hestia.backend.Activator;
+import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import com.rugged.application.hestia.R;
 
@@ -28,7 +30,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private int activatorId;
     private ClientInteractionController c;
-    private final static String TAG = "ExpandableList1";
+    private final static String TAG = "ExpandableList";
 
     public ExpandableListAdapter(List<String> listDataHeader,
                           HashMap<String, List<Device>> listChildData,
@@ -75,13 +77,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         hestiaSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int activatorId = hestiaSwitch.getActivatorId();
+                activatorId = hestiaSwitch.getActivatorId();
+                Device device = getChildDevice(groupPosition, childPosition);
+                Activator activator = device.getActivator(activatorId);
+                ActivatorState state = activator.getState();
                 if(hestiaSwitch.getActivatorSwitch().isChecked()){
                     // True
-                   // c.setActivatorState(getChild(groupPosition, childPosition),activatorId,true);
+                    state.setState(true);
+                   c.setActivatorState(device,activatorId,state);
                 }else{
                     // False
-                    //c.setActivatorState(getChild(groupPosition, childPosition),activatorId,false);
+                    state.setState(false);
+                    c.setActivatorState(device,activatorId,state);
                 }
             }
         });

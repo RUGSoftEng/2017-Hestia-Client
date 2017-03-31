@@ -51,6 +51,10 @@ public class Device {
         this.pluginType = type;
     }
 
+    public Activator getActivator(int activatorId){
+        return activators.get(activatorId);
+    }
+
     public ArrayList<Activator> getActivators() {
         return activators;
     }

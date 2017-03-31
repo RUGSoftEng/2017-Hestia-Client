@@ -17,17 +17,19 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
             throws JsonParseException {
 
         JsonObject jobject = (JsonObject) json;
-
         String stateType = jobject.get("stateType").getAsString();
         JsonObject rawState = jobject.get("state").getAsJsonObject();
         ActivatorState state = null;
-        switch (stateType){
-            case "bool"         : state = new ActivatorState<Boolean>(rawState.getAsBoolean(),
-                                                                      "TOGGLE");
+        switch (stateType) {
+            case "bool":
+                state = new ActivatorState<Boolean>(rawState.getAsBoolean(),
+                        "TOGGLE");
                 break;
-            case "int"          : state = new ActivatorState<Integer>(rawState.getAsInt(),"SLIDER");
+            case "int":
+                state = new ActivatorState<Integer>(rawState.getAsInt(), "SLIDER");
                 break;
         }
+
 
         return new Activator(
                 jobject.get("id").getAsInt(),
