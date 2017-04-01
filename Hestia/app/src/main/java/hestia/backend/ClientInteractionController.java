@@ -38,6 +38,10 @@ public class ClientInteractionController {
     }
 
     public ClientInteractionController(){
+        updateDevices();
+    }
+
+    public void updateDevices(){
         try {
         	path = "http://" + ip + ":" + port + "/";
             devices = new DeviceListRetrieverTask(this.path, instance).execute().get();

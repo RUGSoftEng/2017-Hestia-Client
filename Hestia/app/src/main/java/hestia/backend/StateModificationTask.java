@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-class StateModificationTask extends AsyncTask<Void,Void,Integer> {
+class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     private String TAG = "StateModificationTask";
     int deviceId;
     int activatorId;
@@ -48,9 +48,12 @@ class StateModificationTask extends AsyncTask<Void,Void,Integer> {
         return response;
     }
 
+    @Override
+    protected void onPostExecute(Integer result) {
+    }
+
     /**
      * Write the new state to the output stream, which is sent over the urlConnection
-     * @param os
      */
     private void writeStream(OutputStream os) throws IOException {
         JsonObject json = new JsonObject();
