@@ -33,7 +33,7 @@ public class DeviceListFragment extends Fragment {
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<Device>> listDataChild;
-    private ClientInteractionController c;
+    private ClientInteractionController cic;
     private FloatingActionButton fab;
 
     /**
@@ -62,13 +62,13 @@ public class DeviceListFragment extends Fragment {
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
-        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity(), c);
+        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity(), cic);
 
         expListView.setAdapter(listAdapter);
 
-        c =  ((HestiaApplication)getActivity().getApplication()).getCic();
+        cic = ClientInteractionController.getInstance();
 
-        ArrayList<Device> devices = c.getDevices();
+        ArrayList<Device> devices = cic.getDevices();
         //Log.i(TAG, devices.size() + "");
         if(devices!=null) {
             for (Device d : devices) {

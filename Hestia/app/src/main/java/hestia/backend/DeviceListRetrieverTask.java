@@ -26,9 +26,9 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private String path;
     private ClientInteractionController cic;
 
-    public DeviceListRetrieverTask(String path, ClientInteractionController cic) {
+    public DeviceListRetrieverTask(String path) {
         this.path = path;
-        this.cic = cic;
+        this.cic = ClientInteractionController.getInstance();
     }
 
     /**
@@ -62,6 +62,7 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
 
     @Override
     protected void onPostExecute(ArrayList<Device> d) {
+
         cic.setDevices(d);
     }
 

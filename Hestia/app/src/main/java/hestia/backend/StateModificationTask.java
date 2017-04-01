@@ -28,7 +28,8 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
         this.deviceId = deviceId;
         this.activatorId = activatorId;
         this.newState = newState;
-        this.path = cic.getPath();
+        //this.path = cic.getPath();
+        this.path = "http://" + cic.getIp() + ":" + cic.getPort() + "/";
         this.cic = cic;
     }
 

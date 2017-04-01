@@ -37,13 +37,13 @@ public class ClientInteractionController extends Application{
         return port;
     }
 
-    public ClientInteractionController(){
+    private ClientInteractionController(){
         updateDevices();
     }
 
     public void updateDevices(){
         String path = "http://" + ip + ":" + port + "/";
-        new DeviceListRetrieverTask(path, instance).execute();
+        new DeviceListRetrieverTask(path).execute();
     }
 
     public ArrayList<Device> getDevices(){

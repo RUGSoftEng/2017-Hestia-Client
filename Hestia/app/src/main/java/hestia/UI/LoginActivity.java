@@ -60,7 +60,7 @@ public class LoginActivity extends Activity  {
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin) {
             // Check if the user is redirected (from login)
-            if(!extra.equals("logout")) {
+            if(!"logout".equals(extra)) {
                 gotoMainActivity();
             }
         }
@@ -109,7 +109,6 @@ public class LoginActivity extends Activity  {
         Intent i = new Intent(LoginActivity.this, DeviceListActivity.class);
         startActivity(i);
         finish();
-
     }
 
     private void setSaveLogin(String username, String password){
