@@ -1,5 +1,6 @@
 package hestia.backend;
 
+import android.app.Application;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,13 +14,13 @@ import java.util.concurrent.ExecutionException;
  * throughout the entire app through the HestiaApplication class.
  * @see hestia.UI.HestiaApplication
  */
-public class ClientInteractionController {
+public class ClientInteractionController extends Application{
     private static final ClientInteractionController instance = new ClientInteractionController();
     private ArrayList<Device> devices;
     private final static String TAG = "ClntInterController";
     private String path;
-    private String ip = "10.0.0.2";
-    private int port = 5000;
+    private String ip = null;
+    private int port = 7644;
 
     public void setIp(String ip){
         this.ip = ip;
