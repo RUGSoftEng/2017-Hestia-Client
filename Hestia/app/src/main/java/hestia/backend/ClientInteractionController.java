@@ -5,8 +5,16 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+
+/**
+ * A singleton class which handles interaction between front and back-end. The facade pattern is
+ * used to achieve this. During execution, there is a single ClientInteractionController accessible
+ * throughout the entire app through the HestiaApplication class.
+ * @see hestia.UI.HestiaApplication
+ */
 public class ClientInteractionController {
-    ArrayList<Device> devices;
+    private static final ClientInteractionController instance = new ClientInteractionController();
+    private ArrayList<Device> devices;
     private final static String TAG = "ClntInterController";
     private String path;
     private String ip = "10.0.0.2";
@@ -64,4 +72,9 @@ public class ClientInteractionController {
         }
         return response;
     }
+
+    public static ClientInteractionController getInstance(){
+        return instance;
+    }
+
 }
