@@ -62,7 +62,6 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
 
     @Override
     protected void onPostExecute(ArrayList<Device> d) {
-
         cic.setDevices(d);
     }
 

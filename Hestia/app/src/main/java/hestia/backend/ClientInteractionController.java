@@ -84,6 +84,7 @@ public class ClientInteractionController extends Application{
 
     public void setDevices(ArrayList<Device> devices) {
         this.devices = devices;
+        fireChangeEvent();
     }
 
     public static ClientInteractionController getInstance(){
@@ -96,7 +97,6 @@ public class ClientInteractionController extends Application{
     public void addDevicesChangeListener(DevicesChangeListener l) {
         this.listeners.add(l);
     }
-
 
     public void removeDevicesChangeListener(DevicesChangeListener l) {
         this.listeners.remove(l);
