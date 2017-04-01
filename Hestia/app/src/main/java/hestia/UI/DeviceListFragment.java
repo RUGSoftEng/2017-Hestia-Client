@@ -1,15 +1,11 @@
 package hestia.UI;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
@@ -52,7 +48,7 @@ public class DeviceListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // add device dialog
-                new AddDeviceDialog(getActivity(),cic).show();
+                new AddDeviceDialog(getActivity()).show();
             }
         });
         listDataHeader = new ArrayList<>();

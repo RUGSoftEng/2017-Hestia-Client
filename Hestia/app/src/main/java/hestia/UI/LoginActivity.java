@@ -8,10 +8,7 @@ package hestia.UI;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,8 +19,6 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
 import java.util.Locale;
-
-import hestia.backend.ClientInteractionController;
 
 /**
  * This class represents a login screen, complete with remember me function.
