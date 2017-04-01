@@ -20,6 +20,8 @@ import com.rugged.application.hestia.R;
 
 import java.util.Locale;
 
+import hestia.backend.ClientInteractionController;
+
 /**
  * This class represents a login screen, complete with remember me function.
  */

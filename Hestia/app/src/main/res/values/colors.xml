@@ -6,4 +6,5 @@
     <color name="black">#000000</color>
     <color name="loginHighlight">#37ff37</color>
     <color name="white">#FFFFFF</color>
+    <color name="hint">#a7a7a7</color>
 </resources>

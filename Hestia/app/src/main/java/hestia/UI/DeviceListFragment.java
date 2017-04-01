@@ -1,4 +1,6 @@
 package hestia.UI;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -50,6 +52,7 @@ public class DeviceListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // add device dialog
                 Toast.makeText(getContext(), "Implement opening dialog to add device",
                         Toast.LENGTH_SHORT).show();
             }
@@ -65,7 +68,7 @@ public class DeviceListFragment extends Fragment {
 
         expListView.setAdapter(listAdapter);
 
-        c = new ClientInteractionController("http://10.0.0.2:5000/");
+        c = new ClientInteractionController();
 
         ArrayList<Device> devices = c.getDevices();
         //Log.i(TAG, devices.size() + "");

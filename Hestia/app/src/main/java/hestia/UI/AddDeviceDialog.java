@@ -11,14 +11,12 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import hestia.backend.ClientInteractionController;
-
-public class IpDialog extends Dialog implements android.view.View.OnClickListener{
-    private EditText ipField,portField;
+public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener{
+    private EditText organizationField,pluginField;
     private Button confirm,cancel;
-    private String ip,port;
+    private String organization,pluginName;
     public Activity c;
-    public IpDialog(Activity a) {
+    public AddDeviceDialog(Activity a) {
         super(a);
         this.c = a;
     }
@@ -28,8 +26,8 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ip_dialog);
-        ipField = (EditText) findViewById(R.id.ip);
-        portField = (EditText) findViewById(R.id.port);
+        organizationField = (EditText) findViewById(R.id.ip);
+        pluginField = (EditText) findViewById(R.id.port);
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);
@@ -39,12 +37,12 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        ip = ipField.getText().toString();
-        port = portField.getText().toString();
+        organization = organizationField.getText().toString();
+        pluginName = pluginField.getText().toString();
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                Toast.makeText(getContext(),"IP Address: " + ip,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"PluginName " + pluginName,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button:
                 dismiss();

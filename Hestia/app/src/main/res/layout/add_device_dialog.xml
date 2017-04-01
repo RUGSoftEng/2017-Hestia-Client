@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/ip_dialog">
+    android:id="@+id/add_device_dialog">
 
     <TextView
-        android:text = "@string/ipDialogText"
+        android:text = "@string/addDeviceText"
         android:layout_width="wrap_content"
         android:layout_marginTop ="25dp"
         android:layout_height = "wrap_content"
@@ -18,8 +18,8 @@
     <EditText
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:id = "@+id/ip"
-        android:hint = "@string/ipHint"
+        android:id = "@+id/organization"
+        android:hint = "@string/organizationHint"
         android:focusable = "true"
         android:textColorHint = "@color/hint"
         android:layout_marginTop = "226dp"
@@ -32,14 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/port"
-        android:layout_below="@+id/ip"
+        android:id="@+id/pluginName"
+        android:layout_below="@+id/organization"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/ip"
-        android:layout_alignEnd="@+id/ip"
+        android:layout_alignRight="@+id/organization"
+        android:layout_alignEnd="@+id/organization"
         android:textColorHint="@color/hint"
-        android:hint="@string/portHint" />
+        android:hint="@string/pluginHint" />
 
     <Button
         android:layout_width="wrap_content"

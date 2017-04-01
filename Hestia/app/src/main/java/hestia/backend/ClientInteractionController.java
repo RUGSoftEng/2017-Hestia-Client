@@ -9,8 +9,8 @@ public class ClientInteractionController {
     ArrayList<Device> devices;
     private final static String TAG = "ClntInterController";
     private String path;
-    private String ip;
-    private int port;
+    private String ip = "10.0.0.2";
+    private int port = 5000;
 
     public void setIp(String ip){
         this.ip = ip;
@@ -28,18 +28,15 @@ public class ClientInteractionController {
         return port;
     }
 
-    public ClientInteractionController(String path){
-        this.path = path;
-
+    public ClientInteractionController(){
         try {
-        	//path = "http://" + ip + ":" + port + "/";
+        	path = "http://" + ip + ":" + port + "/";
             devices = new DeviceListRetrieverTask(this.path).execute().get();
         } catch (InterruptedException e) {
             Log.e(TAG,e.toString());
         } catch (ExecutionException e) {
             Log.e(TAG,e.toString());
         }
-
     }
 
     public ArrayList<Device> getDevices(){
