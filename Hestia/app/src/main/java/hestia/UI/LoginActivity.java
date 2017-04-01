@@ -8,6 +8,8 @@ package hestia.UI;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +49,7 @@ public class LoginActivity extends Activity  {
         if(corrpass==null){
             corrpass = "password";
         }
+        
 
         /* Before going on, check if the user is remembered, if so, directly redirect. */
         Intent i = getIntent();
@@ -106,6 +109,7 @@ public class LoginActivity extends Activity  {
         Intent i = new Intent(LoginActivity.this, DeviceListActivity.class);
         startActivity(i);
         finish();
+
     }
 
     private void setSaveLogin(String username, String password){

@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +27,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import hestia.backend.ClientInteractionController;
+
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
     protected abstract Fragment createFragment();
@@ -38,6 +39,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fm;
     private List<MenuObject> menuObjects;
+    private ClientInteractionController c;
 
     private final int IP = 1;
     private final int LOGOUT = 2;
@@ -46,6 +48,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
+
+        c =  ((HestiaApplication)this.getApplication()).getCic();
+        if(c.getIp()==null){
+            showIpDialog();
+        }
+
         layout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -143,7 +151,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     }
 
     private void showIpDialog() {
-        IpDialog ipDialog = new IpDialog(SingleFragmentActivity.this);
+        IpDialog ipDialog = new IpDialog(SingleFragmentActivity.this, c);
         ipDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         ipDialog.show();
     }
