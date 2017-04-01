@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -59,24 +58,17 @@ public class ClientInteractionController extends Application{
     }
 
     /**
-     * TODO Check whether POST was successful
-     * @param device
-     * @param activatorId
-     * @param newState
-     * @return
+     * This method implements the HTTP POST method for changing the state of an activator on a
+     * device as an AsyncTask. It will continue trying to post until the response is not an error.
+     * @param device The target device for the post
+     * @param activatorId The target activator for the post
+     * @param newState The new state object to be used by the post
+     * @see StateModificationTask
      */
-    public int setActivatorState(Device device, int activatorId, ActivatorState newState){
-        int response = 0;
+    public void setActivatorState(Device device, int activatorId, ActivatorState newState){
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
-        try {
-            new StateModificationTask(device.getDeviceId(),activatorId,newState,this.path).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return response;
+        new StateModificationTask(device.getDeviceId(),activatorId,newState,this).execute();
     }
 
     public void setDevices(ArrayList<Device> devices) {
@@ -88,5 +80,7 @@ public class ClientInteractionController extends Application{
     }
 
 
-
+    public String getPath() {
+        return path;
+    }
 }

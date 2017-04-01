@@ -24,11 +24,11 @@ import java.util.ArrayList;
 class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private static final String TAG = "DeviceListRetrieverTask";
     private String path;
-    private ClientInteractionController c;
+    private ClientInteractionController cic;
 
-    public DeviceListRetrieverTask(String path, ClientInteractionController c) {
+    public DeviceListRetrieverTask(String path, ClientInteractionController cic) {
         this.path = path;
-        this.c = c;
+        this.cic = cic;
     }
 
     /**
@@ -62,8 +62,7 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
 
     @Override
     protected void onPostExecute(ArrayList<Device> d) {
-
-        c.setDevices(d);
+        cic.setDevices(d);
     }
 
     private ArrayList<Device> readStream(InputStream is) throws IOException {
