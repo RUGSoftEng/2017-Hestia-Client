@@ -11,14 +11,18 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
+import hestia.backend.ClientInteractionController;
+
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener{
     private EditText organizationField,pluginField;
     private Button confirm,cancel;
     private String organization,pluginName;
+    private ClientInteractionController cic;
     public Activity c;
-    public AddDeviceDialog(Activity a) {
+    public AddDeviceDialog(Activity a, ClientInteractionController ci) {
         super(a);
         this.c = a;
+        this.cic = ci;
     }
 
     @Override
@@ -42,7 +46,9 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                Toast.makeText(getContext(),"PluginName " + pluginName,Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getContext(),"PluginName: " + pluginName + " Organization: " +
+                        organization ,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button:
                 dismiss();

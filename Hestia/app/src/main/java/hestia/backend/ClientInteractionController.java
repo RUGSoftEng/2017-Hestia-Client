@@ -37,6 +37,10 @@ public class ClientInteractionController extends Application{
         return port;
     }
 
+    public String getPath(){
+        return "http://" + ip + ":" + port + "/";
+    }
+
     private ClientInteractionController(){
         updateDevices();
     }
