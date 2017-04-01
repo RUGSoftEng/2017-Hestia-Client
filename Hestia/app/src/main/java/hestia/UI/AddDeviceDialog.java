@@ -25,9 +25,9 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.ip_dialog);
-        organizationField = (EditText) findViewById(R.id.ip);
-        pluginField = (EditText) findViewById(R.id.port);
+        setContentView(R.layout.add_device_dialog);
+        organizationField = (EditText) findViewById(R.id.organization);
+        pluginField = (EditText) findViewById(R.id.pluginName);
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);

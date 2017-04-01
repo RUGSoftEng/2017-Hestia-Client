@@ -47,14 +47,12 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
-        Log.i(TAG, "Create the fragment view");
         fab = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // add device dialog
-                Toast.makeText(getContext(), "Implement opening dialog to add device",
-                        Toast.LENGTH_SHORT).show();
+                new AddDeviceDialog(getActivity()).show();
             }
         });
         listDataHeader = new ArrayList<>();
@@ -68,20 +66,20 @@ public class DeviceListFragment extends Fragment {
 
         expListView.setAdapter(listAdapter);
 
-        c = new ClientInteractionController();
-
-        ArrayList<Device> devices = c.getDevices();
-        //Log.i(TAG, devices.size() + "");
-        if(devices!=null) {
-            for (Device d : devices) {
-                if (!listDataHeader.contains(d.getType())) {
-                    listDataHeader.add(d.getType());
-                    listDataChild.put(d.getType(), new ArrayList<Device>());
-                }
-                //find corresponding header for the child
-                listDataChild.get(d.getType()).add(d);
-            }
-        }
+//        c = new ClientInteractionController();
+//
+//        ArrayList<Device> devices = c.getDevices();
+//        //Log.i(TAG, devices.size() + "");
+//        if(devices!=null) {
+//            for (Device d : devices) {
+//                if (!listDataHeader.contains(d.getType())) {
+//                    listDataHeader.add(d.getType());
+//                    listDataChild.put(d.getType(), new ArrayList<Device>());
+//                }
+//                //find corresponding header for the child
+//                listDataChild.get(d.getType()).add(d);
+//            }
+//        }
 
 
         return view;
