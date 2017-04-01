@@ -49,14 +49,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .get(childPosititon).getName();
+                .get(childPosition).getName();
     }
 
-    public Device getChildDevice(int groupPostition, int childPostion) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPostition))
-                .get(childPostion);
+    public Device getChildDevice(int groupPosition, int childPosition) {
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
+                .get(childPosition);
     }
 
     @Override

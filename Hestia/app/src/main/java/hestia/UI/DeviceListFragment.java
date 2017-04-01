@@ -83,18 +83,16 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
         ArrayList<Device> devices = cic.getDevices();
         Log.i(TAG, devices.toString());
-        if (devices != null) {
-            for (Device d : devices) {
-                if (!listDataHeader.contains(d.getType())) {
-                    listDataHeader.add(d.getType());
-                    listDataChild.put(d.getType(), new ArrayList<Device>());
-                }
-                //find corresponding header for the child
-                listDataChild.get(d.getType()).add(d);
+        for (Device d : devices) {
+            if (!listDataHeader.contains(d.getType())) {
+                listDataHeader.add(d.getType());
+                listDataChild.put(d.getType(), new ArrayList<Device>());
             }
+            //find corresponding header for the child
+            listDataChild.get(d.getType()).add(d);
         }
-//        listAdapter.setListData(listDataHeader,listDataChild);
-//        expListView.setAdapter(listAdapter);
+        listAdapter.setListData(listDataHeader,listDataChild);
+        expListView.setAdapter(listAdapter);
     }
     @Override
     public void changeEventReceived(DevicesEvent evt) {

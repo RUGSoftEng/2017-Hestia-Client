@@ -17,13 +17,13 @@ import java.util.ArrayList;
 public class Device {
     int deviceId;
     String name;
-    String pluginType;
+    String type;
     ArrayList<Activator> activators;
 
     public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
         this.deviceId = deviceId;
         this.name = name;
-        this.pluginType = type;
+        this.type = type;
         this.activators = activator;
     }
 
@@ -44,11 +44,11 @@ public class Device {
     }
 
     public String getType() {
-        return pluginType;
+        return type;
     }
 
     public void setType(String type) {
-        this.pluginType = type;
+        this.type = type;
     }
 
     public Activator getActivator(int activatorId){
