@@ -19,7 +19,7 @@ public class ClientInteractionControllerTest {
 
     @Test
     public void getDevices() throws Exception {
-        ClientInteractionController cic = new ClientInteractionController("127.0.0.1:5000/");
+        ClientInteractionController cic = new ClientInteractionController();
         StringBuilder sb = new StringBuilder();
         for(Device d : cic.getDevices()){
             sb.append(d.toString());

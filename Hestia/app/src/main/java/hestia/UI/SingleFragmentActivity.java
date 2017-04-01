@@ -4,6 +4,7 @@
 
 package hestia.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,11 +12,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
@@ -24,7 +28,7 @@ import hestia.backend.ClientInteractionController;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity{
     protected abstract Fragment createFragment();
-    private static String TAG = "SingleFragmentActivity";
+    private static final String TAG = "SingleFragmentActivity";
     private SwipeRefreshLayout layout;
     private Toolbar toolbar;
 
@@ -73,7 +77,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
                 return true;
 
             case R.id.action_logout:
-                gotoLoginActivity();
+                gotoLoginActivity("login","logout");
+                return true;
+
+            case R.id.action_changepass:
+                changePassword();
                 return true;
 
             default:
@@ -84,10 +92,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
         }
     }
 
-    private void gotoLoginActivity(){
+    private void gotoLoginActivity(String type, String extraIntent){
         Intent i = new Intent(SingleFragmentActivity.this, LoginActivity.class);
-        String s = null;
-        i.putExtra("login", s);
+        i.putExtra(type, extraIntent);
         startActivity(i);
         finish();
     }
@@ -96,5 +103,31 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
         IpDialog ipDialog = new IpDialog(SingleFragmentActivity.this);
         ipDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         ipDialog.show();
+    }
+
+    private void changePassword(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Change Password");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newPassword = input.getText().toString();
+                gotoLoginActivity("changePassword",newPassword);
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

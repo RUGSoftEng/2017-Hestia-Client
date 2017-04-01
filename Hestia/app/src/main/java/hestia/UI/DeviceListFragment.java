@@ -68,20 +68,20 @@ public class DeviceListFragment extends Fragment {
 
         expListView.setAdapter(listAdapter);
 
-        c = new ClientInteractionController();
-
-        ArrayList<Device> devices = c.getDevices();
-        //Log.i(TAG, devices.size() + "");
-        if(devices!=null) {
-            for (Device d : devices) {
-                if (!listDataHeader.contains(d.getType())) {
-                    listDataHeader.add(d.getType());
-                    listDataChild.put(d.getType(), new ArrayList<Device>());
-                }
-                //find corresponding header for the child
-                listDataChild.get(d.getType()).add(d);
-            }
-        }
+//        c = new ClientInteractionController();
+//
+//        ArrayList<Device> devices = c.getDevices();
+//        //Log.i(TAG, devices.size() + "");
+//        if(devices!=null) {
+//            for (Device d : devices) {
+//                if (!listDataHeader.contains(d.getType())) {
+//                    listDataHeader.add(d.getType());
+//                    listDataChild.put(d.getType(), new ArrayList<Device>());
+//                }
+//                //find corresponding header for the child
+//                listDataChild.get(d.getType()).add(d);
+//            }
+//        }
 
 
         return view;
