@@ -52,7 +52,7 @@ public class DeviceListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // add device dialog
-                new AddDeviceDialog(getActivity()).show();
+                new AddDeviceDialog(getActivity(),cic).show();
             }
         });
         listDataHeader = new ArrayList<>();

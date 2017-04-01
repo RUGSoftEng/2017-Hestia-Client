@@ -17,8 +17,7 @@ import hestia.backend.ClientInteractionController;
 public class IpDialog extends Dialog implements android.view.View.OnClickListener{
     private EditText ipField,portField;
     private Button confirm,cancel;
-    private String ip;
-    private int port;
+    private String ip,port;
     private Activity c;
     private ClientInteractionController cic;
 
@@ -46,13 +45,18 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
 
     @Override
     public void onClick(View v) {
+
         ip = ipField.getText().toString();
-        port = Integer.parseInt(portField.getText().toString());
+        port = portField.getText().toString();
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                cic.setIp(ip);
-                cic.setPort(port);
+                if(ip!=null) {
+                    cic.setIp(ip);
+                }
+                if(port!=null){
+                    cic.setPort(Integer.parseInt(port));
+                }
                 Toast.makeText(getContext(),"IP Address: " + cic.getIp() + ":" + cic.getPort()
                         ,Toast.LENGTH_SHORT).show();
                 break;
