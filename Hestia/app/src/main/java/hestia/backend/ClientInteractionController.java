@@ -13,10 +13,16 @@ import java.util.ArrayList;
  */
 public class ClientInteractionController extends Application{
     private static ClientInteractionController instance;
-    private ArrayList<Device> devices;
+    private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
     private String ip = null;
     private int port = 7644;
+
+    /**
+     * The empty constructor, which can not be accessed from the outside, because we want a
+     * singleton behavior. 
+     */
+    private ClientInteractionController(){}
 
     public void setIp(String ip){
         this.ip = ip;
@@ -38,17 +44,20 @@ public class ClientInteractionController extends Application{
         return "http://" + ip + ":" + port + "/";
     }
 
-    private ClientInteractionController(){
-        updateDevices();
-    }
-
     public void updateDevices(){
         String path = "http://" + ip + ":" + port + "/";
         new DeviceListRetrieverTask(path).execute();
     }
 
+    /**
+     * This method will return a list of devices, which is possibly empty. If this is the case, then
+     * an AsyncTask is started to fill the devices so that the devices will eventually be filled.
+     * @return a list of devices known to the server.
+     */
     public ArrayList<Device> getDevices(){
-        assert(devices != null);
+        if(devices.isEmpty()){
+            updateDevices();
+        }
         return devices;
     }
 
