@@ -3,6 +3,7 @@ package hestia.backend;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -12,6 +13,12 @@ import java.util.ArrayList;
  * @see hestia.UI.HestiaApplication
  */
 public class ClientInteractionController extends Application{
+
+    // Use CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if a
+    // listener attempts to remove itself during event notification.
+    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =
+            new CopyOnWriteArrayList<DevicesChangeListener>();
+
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
@@ -84,6 +91,22 @@ public class ClientInteractionController extends Application{
             instance = new ClientInteractionController();
         }
         return instance;
+    }
+
+    public void addDevicesChangeListener(DevicesChangeListener l) {
+        this.listeners.add(l);
+    }
+
+
+    public void removeDevicesChangeListener(DevicesChangeListener l) {
+        this.listeners.remove(l);
+    }
+
+    protected void fireChangeEvent() {
+        DevicesEvent evt = new DevicesEvent(this);
+        for (DevicesChangeListener l : listeners) {
+            l.changeEventReceived(evt);
+        }
     }
 
 }
