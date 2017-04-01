@@ -68,8 +68,7 @@ public class DeviceListFragment extends Fragment {
 
         cic = ClientInteractionController.getInstance();
 
-        ArrayList<Device> devices = cic.getDevices();
-        //Log.i(TAG, devices.size() + "");
+        ArrayList<Device> devices = c.getDevices();
         if(devices!=null) {
             for (Device d : devices) {
                 if (!listDataHeader.contains(d.getType())) {
