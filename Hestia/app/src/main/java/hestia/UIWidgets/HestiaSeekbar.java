@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.SeekBar;
 
 public class HestiaSeekbar implements UIWidget {
-    int activatorId;
-    SeekBar activatorSeekBar;
+    private int activatorId;
+    private SeekBar activatorSeekBar;
     public HestiaSeekbar(int id, View v, int layoutId) {
         activatorId = id;
         activatorSeekBar = (SeekBar) v.findViewById(layoutId);

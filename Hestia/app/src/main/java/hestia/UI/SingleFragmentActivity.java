@@ -25,15 +25,14 @@ import hestia.backend.ClientInteractionController;
 public abstract class SingleFragmentActivity extends AppCompatActivity{
     protected abstract Fragment createFragment();
     private static String TAG = "SingleFragmentActivity";
-    SwipeRefreshLayout layout;
-    Toolbar toolbar;
+    private SwipeRefreshLayout layout;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         layout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
-
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,8 +75,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
             case R.id.action_logout:
                 gotoLoginActivity();
                 return true;
-            case R.id.menu_refresh:
-                layout.setRefreshing(true);
 
             default:
                 // If we got here, the user's action was not recognized.

@@ -13,9 +13,5 @@
     <item android:id="@+id/action_logout"
         android:title="Logout"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_refresh"
-        app:showAsAction="never"
-        android:title="refresh"/>
 
 </menu>

@@ -29,12 +29,12 @@ public class DeviceListFragment extends Fragment {
 
     private final static String TAG = "DeviceListFragment";
 
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<Device>> listDataChild;
-    ClientInteractionController c;
-    FloatingActionButton fab;
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader;
+    private HashMap<String, List<Device>> listDataChild;
+    private ClientInteractionController c;
+    private FloatingActionButton fab;
 
     /**
      *
