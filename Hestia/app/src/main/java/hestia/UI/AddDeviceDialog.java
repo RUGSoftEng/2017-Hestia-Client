@@ -19,10 +19,10 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
     private String organization,pluginName;
     private ClientInteractionController cic;
     public Activity c;
-    public AddDeviceDialog(Activity a, ClientInteractionController ci) {
+    public AddDeviceDialog(Activity a) {
         super(a);
         this.c = a;
-        this.cic = ci;
+        this.cic = ClientInteractionController.getInstance();;
     }
 
     @Override
