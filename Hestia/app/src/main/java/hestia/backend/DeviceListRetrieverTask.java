@@ -22,10 +22,13 @@ import java.util.ArrayList;
  * @see android.os.AsyncTask
  */
 class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
-    String TAG = "DeviceListRetrieverTask";
-    String path;
-    public DeviceListRetrieverTask(String path) {
+    private static final String TAG = "DeviceListRetrieverTask";
+    private String path;
+    private ClientInteractionController c;
+
+    public DeviceListRetrieverTask(String path, ClientInteractionController c) {
         this.path = path;
+        this.c = c;
     }
 
     /**
@@ -55,6 +58,12 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
             Log.e(TAG, e.toString());
         }
         return devices;
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Device> d) {
+
+        c.setDevices(d);
     }
 
     private ArrayList<Device> readStream(InputStream is) throws IOException {

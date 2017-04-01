@@ -3,6 +3,7 @@ package hestia.backend;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -39,7 +40,7 @@ public class ClientInteractionController {
     public ClientInteractionController(){
         try {
         	path = "http://" + ip + ":" + port + "/";
-            devices = new DeviceListRetrieverTask(this.path).execute().get();
+            devices = new DeviceListRetrieverTask(this.path, instance).execute().get();
         } catch (InterruptedException e) {
             Log.e(TAG,e.toString());
         } catch (ExecutionException e) {
@@ -73,8 +74,14 @@ public class ClientInteractionController {
         return response;
     }
 
+    public void setDevices(ArrayList<Device> devices) {
+        this.devices = devices;
+    }
+
     public static ClientInteractionController getInstance(){
         return instance;
     }
+
+
 
 }
