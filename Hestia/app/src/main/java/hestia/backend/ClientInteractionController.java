@@ -1,10 +1,10 @@
 package hestia.backend;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -15,10 +15,9 @@ import java.util.concurrent.ExecutionException;
  * @see hestia.UI.HestiaApplication
  */
 public class ClientInteractionController extends Application{
-    private static final ClientInteractionController instance = new ClientInteractionController();
+    private static ClientInteractionController instance;
     private ArrayList<Device> devices;
     private final static String TAG = "ClntInterController";
-    private String path;
     private String ip = null;
     private int port = 7644;
 
@@ -39,14 +38,12 @@ public class ClientInteractionController extends Application{
     }
 
     public ClientInteractionController(){
-        try {
-        	path = "http://" + ip + ":" + port + "/";
-            devices = new DeviceListRetrieverTask(this.path, instance).execute().get();
-        } catch (InterruptedException e) {
-            Log.e(TAG,e.toString());
-        } catch (ExecutionException e) {
-            Log.e(TAG,e.toString());
-        }
+        updateDevices();
+    }
+
+    public void updateDevices(){
+        String path = "http://" + ip + ":" + port + "/";
+        new DeviceListRetrieverTask(path, instance).execute();
     }
 
     public ArrayList<Device> getDevices(){
@@ -55,24 +52,17 @@ public class ClientInteractionController extends Application{
     }
 
     /**
-     * TODO Check whether POST was successful
-     * @param device
-     * @param activatorId
-     * @param newState
-     * @return
+     * This method implements the HTTP POST method for changing the state of an activator on a
+     * device as an AsyncTask. It will continue trying to post until the response is not an error.
+     * @param device The target device for the post
+     * @param activatorId The target activator for the post
+     * @param newState The new state object to be used by the post
+     * @see StateModificationTask
      */
-    public int setActivatorState(Device device, int activatorId, ActivatorState newState){
-        int response = 0;
+    public void setActivatorState(Device device, int activatorId, ActivatorState newState){
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
-        try {
-            new StateModificationTask(device.getDeviceId(),activatorId,newState,this.path).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return response;
+        new StateModificationTask(device.getDeviceId(),activatorId,newState,this).execute();
     }
 
     public void setDevices(ArrayList<Device> devices) {
@@ -80,9 +70,10 @@ public class ClientInteractionController extends Application{
     }
 
     public static ClientInteractionController getInstance(){
+        if(instance == null){
+            instance = new ClientInteractionController();
+        }
         return instance;
     }
-
-
 
 }
