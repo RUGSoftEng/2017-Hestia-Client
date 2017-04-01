@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import hestia.backend.Activator;
+import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
 import com.rugged.application.hestia.R;
@@ -54,8 +56,6 @@ public class DeviceListFragment extends Fragment {
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
-
-
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity(), cic);
@@ -64,7 +64,16 @@ public class DeviceListFragment extends Fragment {
 
         cic = ClientInteractionController.getInstance();
 
-        ArrayList<Device> devices = c.getDevices();
+//        ArrayList<Device> devices = cic.getDevices();
+        ArrayList<Device> devices = new ArrayList<>();
+        ActivatorState<Boolean> as1 = new ActivatorState<>(true, "Light");
+        Activator a1 = new Activator(1, as1, "Light 1");
+        ArrayList<Activator> activators = new ArrayList<>();
+        activators.add(a1);
+        Device d1 = new Device(1, "Light 1?", "Light", activators);
+        devices.add(d1);
+
+
         if(devices!=null) {
             for (Device d : devices) {
                 if (!listDataHeader.contains(d.getType())) {
@@ -75,10 +84,10 @@ public class DeviceListFragment extends Fragment {
                 listDataChild.get(d.getType()).add(d);
             }
         }
-
-
         return view;
     }
+
+//    private void updateUI() {}
 
 
 }
