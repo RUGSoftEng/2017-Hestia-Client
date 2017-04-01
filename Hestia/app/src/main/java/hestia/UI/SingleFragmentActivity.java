@@ -39,6 +39,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private FragmentManager fm;
     private List<MenuObject> menuObjects;
 
+    private final int IP = 1;
+    private final int LOGOUT = 2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,10 +125,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     @Override
     public void onMenuItemClick(View clickedView, int position) {
         switch (position) {
-            case 1:
+            case IP:
                 showIpDialog();
                 break;
-            case 2:
+            case LOGOUT:
                 gotoLoginActivity();
                 break;
         }
