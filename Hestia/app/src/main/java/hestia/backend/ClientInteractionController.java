@@ -1,6 +1,7 @@
 package hestia.backend;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -14,10 +15,9 @@ import java.util.concurrent.ExecutionException;
  * @see hestia.UI.HestiaApplication
  */
 public class ClientInteractionController extends Application{
-    private static final ClientInteractionController instance = new ClientInteractionController();
+    private static ClientInteractionController instance;
     private ArrayList<Device> devices;
     private final static String TAG = "ClntInterController";
-    private String path;
     private String ip = null;
     private int port = 7644;
 
@@ -42,14 +42,8 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        try {
-        	path = "http://" + ip + ":" + port + "/";
-            devices = new DeviceListRetrieverTask(this.path, instance).execute().get();
-        } catch (InterruptedException e) {
-            Log.e(TAG,e.toString());
-        } catch (ExecutionException e) {
-            Log.e(TAG,e.toString());
-        }
+        String path = "http://" + ip + ":" + port + "/";
+        new DeviceListRetrieverTask(path, instance).execute();
     }
 
     public ArrayList<Device> getDevices(){
@@ -76,11 +70,10 @@ public class ClientInteractionController extends Application{
     }
 
     public static ClientInteractionController getInstance(){
+        if(instance == null){
+            instance = new ClientInteractionController();
+        }
         return instance;
     }
 
-
-    public String getPath() {
-        return path;
-    }
 }
