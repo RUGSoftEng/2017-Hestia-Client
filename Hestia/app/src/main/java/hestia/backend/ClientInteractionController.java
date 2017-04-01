@@ -23,7 +23,7 @@ public class ClientInteractionController extends Application{
 
     /**
      * The empty constructor, which can not be accessed from the outside, because we want a
-     * singleton behavior. 
+     * singleton behavior.
      */
     private ClientInteractionController(){}
 
