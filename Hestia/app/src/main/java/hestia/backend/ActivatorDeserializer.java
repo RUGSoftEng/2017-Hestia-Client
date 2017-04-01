@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 
 import hestia.backend.Activator;
 
+
 class ActivatorDeserializer implements JsonDeserializer<Activator> {
 
     @Override
@@ -28,7 +29,6 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
                 state = new ActivatorState<Integer>(rawState.getAsInt(),"SLIDER");
                 break;
         }
-
 
         return new Activator(
                 jobject.get("id").getAsInt(),
