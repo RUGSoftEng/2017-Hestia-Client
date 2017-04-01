@@ -14,9 +14,9 @@ import com.rugged.application.hestia.R;
 import hestia.backend.ClientInteractionController;
 
 public class IpDialog extends Dialog implements android.view.View.OnClickListener{
-    private EditText ipField,portField;
+    private EditText ipField;
     private Button confirm,cancel;
-    private String ip,port;
+    private String ip;
     private Activity c;
     private ClientInteractionController cic;
 
@@ -32,7 +32,6 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ip_dialog);
         ipField = (EditText) findViewById(R.id.ip);
-        portField = (EditText) findViewById(R.id.port);
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);
@@ -46,15 +45,10 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     public void onClick(View v) {
 
         ip = ipField.getText().toString();
-        port = portField.getText().toString();
-
         switch (v.getId()) {
             case R.id.confirm_button:
                 if(ip!=null) {
                     cic.setIp(ip);
-                }
-                if(port!=null){
-                    cic.setPort(Integer.parseInt(port));
                 }
                 Toast.makeText(getContext(),"IP Address: " + cic.getIp() + ":" + cic.getPort()
                         ,Toast.LENGTH_SHORT).show();

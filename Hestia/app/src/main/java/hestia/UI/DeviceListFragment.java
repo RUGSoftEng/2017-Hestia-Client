@@ -2,6 +2,7 @@ package hestia.UI;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
+import hestia.backend.DevicesChangeListener;
+import hestia.backend.DevicesEvent;
+
 import com.rugged.application.hestia.R;
 
 import java.util.ArrayList;
@@ -23,7 +27,7 @@ import java.util.List;
  *
  * @see DeviceListActivity
  */
-public class DeviceListFragment extends Fragment {
+public class DeviceListFragment extends Fragment implements DevicesChangeListener{
 
     private final static String TAG = "DeviceListFragment";
 
@@ -46,11 +50,17 @@ public class DeviceListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
         fab = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
+        Log.i(TAG, "First");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                HashMap<String,String> h = new HashMap<String,String>();
+                h.put("IP address:", "string");
+                h.put("Port: ", "string");
                 // add device dialog
-                new AddDeviceDialog(getActivity()).show();
+                //new AddDeviceDialog(getActivity()).show();
+                //new AddDeviceInfo(getActivity(),h).show();
+                populateUI();
             }
         });
         listDataHeader = new ArrayList<>();
@@ -58,23 +68,22 @@ public class DeviceListFragment extends Fragment {
 
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
-        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity(), cic);
+        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity());
 
         expListView.setAdapter(listAdapter);
 
+        populateUI();
+
+        return view;
+    }
+
+    public void populateUI() {
+
         cic = ClientInteractionController.getInstance();
 
-        ArrayList<Device> devices = cic.getDevices();/*
-        ArrayList<Device> devices = new ArrayList<>();
-        ActivatorState<Boolean> as1 = new ActivatorState<>(true, "Light");
-        Activator a1 = new Activator(1, as1, "Light 1");
-        ArrayList<Activator> activators = new ArrayList<>();
-        activators.add(a1);
-        Device d1 = new Device(1, "Light 1?", "Light", activators);
-        devices.add(d1);*/
-
-
-        if(devices!=null) {
+        ArrayList<Device> devices = cic.getDevices();
+        Log.i(TAG, devices.toString());
+        if (devices != null) {
             for (Device d : devices) {
                 if (!listDataHeader.contains(d.getType())) {
                     listDataHeader.add(d.getType());
@@ -84,10 +93,14 @@ public class DeviceListFragment extends Fragment {
                 listDataChild.get(d.getType()).add(d);
             }
         }
-        return view;
+//        listAdapter.setListData(listDataHeader,listDataChild);
+//        expListView.setAdapter(listAdapter);
+    }
+    @Override
+    public void changeEventReceived(DevicesEvent evt) {
+        populateUI();
     }
 
-//    private void updateUI() {}
 
 
 }

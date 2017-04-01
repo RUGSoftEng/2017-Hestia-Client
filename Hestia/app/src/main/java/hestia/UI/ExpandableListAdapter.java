@@ -3,6 +3,7 @@ package hestia.UI;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +24,12 @@ import java.util.List;
 import java.util.Random;
 
 import hestia.backend.Device;
+import hestia.backend.DevicesChangeListener;
+import hestia.backend.DevicesEvent;
 
 import static com.rugged.application.hestia.R.id.imageView;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<Device>> listDataChild;
@@ -37,11 +40,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public ExpandableListAdapter(List<String> listDataHeader,
                           HashMap<String, List<Device>> listChildData,
-                          Context context, ClientInteractionController cic) {
+                          Context context) {
+        Log.i(TAG, "Constructor");
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
         this.context = context;
-        this.c = cic;
+        this.c = ClientInteractionController.getInstance();
     }
 
     @Override
@@ -186,6 +190,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean hasStableIds() {
         return false;
+    }
+
+    public void setListData(List<String> listDataHeader, HashMap<String, List<Device>> listDataChild){
+        this.listDataChild = listDataChild;
+        this.listDataHeader = listDataHeader;
     }
 
     @Override

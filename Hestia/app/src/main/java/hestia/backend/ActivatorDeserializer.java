@@ -1,5 +1,7 @@
 package hestia.backend;
 
+import android.util.Log;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -18,22 +20,23 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
             throws JsonParseException {
 
         JsonObject jobject = (JsonObject) json;
+        Log.i("JSOBONJECT",jobject.toString());
         String stateType = jobject.get("stateType").getAsString();
-        JsonObject rawState = jobject.get("state").getAsJsonObject();
+        String rawState = jobject.get("state").getAsString();
         ActivatorState state = null;
         switch (stateType) {
             case "bool":
-                state = new ActivatorState<Boolean>(rawState.getAsBoolean(),"TOGGLE");
+                state = new ActivatorState<Boolean>(Boolean.parseBoolean(rawState),"TOGGLE");
                 break;
             case "int":
-                state = new ActivatorState<Integer>(rawState.getAsInt(),"SLIDER");
+                state = new ActivatorState<Integer>(Integer.parseInt(rawState),"SLIDER");
                 break;
         }
 
         return new Activator(
-                jobject.get("id").getAsInt(),
+                jobject.get("activatorId").getAsInt(),
                 state,
-                jobject.get("pluginType").getAsString());
+                jobject.get("name").getAsString());
 
     }
 }

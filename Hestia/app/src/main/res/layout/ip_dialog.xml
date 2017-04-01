@@ -28,19 +28,6 @@
         android:layout_alignParentRight = "true"
         android:layout_alignParentEnd = "true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/port"
-        android:layout_below="@+id/ip"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/ip"
-        android:layout_alignEnd="@+id/ip"
-        android:textColorHint="@color/hint"
-        android:hint="@string/portHint" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
