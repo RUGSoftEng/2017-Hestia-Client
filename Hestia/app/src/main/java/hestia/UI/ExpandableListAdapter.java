@@ -82,6 +82,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         final HestiaSwitch hestiaSwitch = new HestiaSwitch(new Random().nextInt(4), convertView,
                 R.id.light_switch);
         hestiaSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 activatorId = hestiaSwitch.getActivatorId();

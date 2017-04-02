@@ -23,7 +23,7 @@ public class ClientInteractionController extends Application{
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
     private String ip = "192.168.178.30";
-    private int port = 7644;
+    private int port = 8000;
 
     /**
      * The empty constructor, which can not be accessed from the outside, because we want a
