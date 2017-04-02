@@ -30,8 +30,18 @@ public class DeviceBar {
         this.hestiaSwitch = hestiaSwitch;
     }
 
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean equal = false;
 
-
-
+        if (object != null && object instanceof DeviceBar)
+        {
+            if(this.d.getDeviceId() == ((DeviceBar) object).getDevice().getDeviceId()){
+                equal = true;
+            }
+        }
+        return equal;
+    }
 
 }

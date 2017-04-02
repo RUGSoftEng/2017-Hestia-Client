@@ -71,12 +71,15 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
             Activator a = d.getActivator(0);
             HestiaSwitch hestiaSwitch = new HestiaSwitch(d, a, getActivity());
             DeviceBar bar = new DeviceBar(d, hestiaSwitch);
-            if (!typeExists(d)) {
-                listDataChild.add(new ArrayList<DeviceBar>());
-                listDataChild.get(listDataChild.size() - 1).add(bar);
-            } else {
-                listDataChild.get(getDeviceType(d)).add(bar);
+            if(!listDataChild.contains(bar)) {
+                if (!typeExists(d)) {
+                    listDataChild.add(new ArrayList<DeviceBar>());
+                    listDataChild.get(listDataChild.size() - 1).add(bar);
+                } else {
+                    listDataChild.get(getDeviceType(d)).add(bar);
+                }
             }
+
         }
         listAdapter.setListData(listDataChild);
         expListView.setAdapter(listAdapter);
