@@ -44,8 +44,14 @@ public class HestiaSwitch implements UIWidget {
         return activatorSwitch;
     }
 
+    public void setActivatorSwitch(Switch s) {
+        this.activatorSwitch = s;
+        Log.i(TAG, "Changed switch");
+    }
+
     private Switch createActivatorSwitch(Context c) {
         Switch s = new Switch(c);
+        Log.i(TAG, "the switch is being created");
 
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

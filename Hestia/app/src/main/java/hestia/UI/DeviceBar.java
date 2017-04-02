@@ -1,6 +1,9 @@
 package hestia.UI;
 
 
+import android.view.View;
+import android.widget.Switch;
+
 import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Device;
 
@@ -28,6 +31,10 @@ public class DeviceBar {
 
     public void setHestiaSwitch(HestiaSwitch hestiaSwitch) {
         this.hestiaSwitch = hestiaSwitch;
+    }
+
+    public void setLayout(View v, int layoutId) {
+        hestiaSwitch.setActivatorSwitch((Switch)v.findViewById(layoutId));
     }
 
 

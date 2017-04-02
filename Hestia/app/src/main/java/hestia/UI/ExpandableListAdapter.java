@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         txtListChild.setText(dBar.getDevice().getName());
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
+
+        Switch s = dBar.getHestiaSwitch().getActivatorSwitch();
+        dBar.setLayout(convertView, R.id.light_switch);
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
