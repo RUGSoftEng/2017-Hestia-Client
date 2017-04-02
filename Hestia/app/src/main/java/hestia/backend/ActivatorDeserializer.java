@@ -21,7 +21,7 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
 
         JsonObject jobject = (JsonObject) json;
         Log.i("JSONOBJECT",jobject.toString());
-        String stateType = jobject.get("stateType").getAsString();
+        String stateType = jobject.get("type").getAsString();
         String rawState = jobject.get("state").getAsString();
         ActivatorState state = null;
         switch (stateType.toLowerCase()) {
