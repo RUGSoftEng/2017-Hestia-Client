@@ -27,4 +27,8 @@ public class ActivatorState<T> {
     public String getType(){
         return this.type;
     }
+
+    public String toString(){
+        return state.toString();
+    }
 }

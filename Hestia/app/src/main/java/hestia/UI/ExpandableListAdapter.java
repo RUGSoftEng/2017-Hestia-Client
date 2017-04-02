@@ -49,11 +49,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .get(childPosition).getName();
-    }
-
-    public Device getChildDevice(int groupPosition, int childPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
                 .get(childPosition);
     }
 
@@ -77,49 +72,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(childText);
-
-        Device d0 = getChildDevice(groupPosition, childPosition);
-
-        Activator a0 = null;
-        for (Activator activator : d0.getActivators()) {
-            a0 = activator;
-            Log.i(TAG, "ID of the current activators: " + activator.getId());
-            if (activator.getState().getType().equals("TOGGLE")) {
-                a0 = activator;
-                break;
-            }
-        }
-
-        if (a0 != null) {
-            final HestiaSwitch hestiaSwitch = new HestiaSwitch(d0, a0, convertView,
-                    R.id.light_switch);
-            hestiaSwitch.getActivatorSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    Log.i(TAG, "I am being clicked");
-                    Activator a = hestiaSwitch.getActivatorId();
-                    Device d = hestiaSwitch.getDevice();
-                    int activatorId = a.getId() - 1;
-                    Log.i(TAG, "ID: " + activatorId);
-                    Log.i(TAG, "activator size: " + d.getActivators().size());
-                    Log.i(TAG, "type: " + a.getState().getType());
-
-                    ActivatorState state = a.getState();
-                    if(b){
-                        // True
-                        state.setState(true);
-                        c.setActivatorState(d,activatorId,state);
-                        Log.i(TAG, "I Am being set to true");
-                    }else{
-                        // False
-                        state.setState(false);
-                        c.setActivatorState(d,activatorId,state);
-                        Log.i(TAG, "I Am being set to false");
-                    }
-                }
-            });
-        }
-
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
@@ -266,4 +218,47 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 //    }
 
 }
-
+//
+//    Device d0 = getChildDevice(groupPosition, childPosition);
+//
+//    Activator a0 = null;
+//        for (Activator activator : d0.getActivators()) {
+//                a0 = activator;
+//                Log.i(TAG, "ID of the current activators: " + activator.getId());
+//                if (activator.getState().getType().equals("TOGGLE")) {
+//                a0 = activator;
+//                break;
+//                }
+//                }
+//
+//                if (a0 != null) {
+//final HestiaSwitch hestiaSwitch = new HestiaSwitch(d0, a0, convertView,
+//        R.id.light_switch);
+//        hestiaSwitch.getActivatorSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//@Override
+//public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//        Log.i(TAG, "I am being clicked");
+//        Activator a = hestiaSwitch.getActivatorId();
+//        Device d = hestiaSwitch.getDevice();
+//        int activatorId = a.getId() - 1;
+//        Log.i(TAG, "ID: " + activatorId);
+//        Log.i(TAG, "activator size: " + d.getActivators().size());
+//        Log.i(TAG, "type: " + a.getState().getType());
+//
+//        ActivatorState state = a.getState();
+//        if(b){
+//        // True
+//        state.setState(true);
+//        c.setActivatorState(d,activatorId,state);
+//        Log.i(TAG, "I Am being set to true");
+//        }else{
+//        // False
+//        state.setState(false);
+//        c.setActivatorState(d,activatorId,state);
+//        Log.i(TAG, "I Am being set to false");
+//        }
+//        }
+//        });
+//        }
+//
+//
