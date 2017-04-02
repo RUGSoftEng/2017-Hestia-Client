@@ -11,7 +11,7 @@ import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
 
-public class HestiaSwitch implements UIWidget {
+public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeListener {
     private final static String TAG = "HestiaSwitch";
     private Device d;
     private Activator a;
@@ -20,7 +20,7 @@ public class HestiaSwitch implements UIWidget {
 
     public HestiaSwitch(Device d, Activator a, Context c) {
         this.a = a;
-        activatorSwitch = createActivatorSwitch(c);
+//        activatorSwitch = createActivatorSwitch(c);
         this.d = d;
         this.cic = ClientInteractionController.getInstance();
     }
@@ -45,34 +45,37 @@ public class HestiaSwitch implements UIWidget {
     }
 
     public void setActivatorSwitch(Switch s) {
+        s.setOnCheckedChangeListener(this);
         this.activatorSwitch = s;
         Log.i(TAG, "Changed switch");
     }
 
-    private Switch createActivatorSwitch(Context c) {
-        Switch s = new Switch(c);
-        Log.i(TAG, "the switch is being created");
+//    private Switch createActivatorSwitch(Context c) {
+//        Switch s = new Switch(c);
+//        Log.i(TAG, "the switch is being created");
+//
+//        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//        return s;
+//    }
 
-        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Log.i(TAG, "I am being clicked");
-                int activatorId = a.getId();
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        Log.i(TAG, "I am being clicked");
+        int activatorId = a.getId();
 
-                ActivatorState state = a.getState();
-                if (b) {
-                    // True
-                    state.setState(true);
-                    cic.setActivatorState(d, activatorId, state);
-                    Log.i(TAG, "I Am being set to true");
-                } else {
-                    // False
-                    state.setState(false);
-                    cic.setActivatorState(d, activatorId, state);
-                    Log.i(TAG, "I Am being set to false");
-                }
-            }
-        });
-        return s;
+        ActivatorState state = a.getState();
+        if (b) {
+            // True
+            state.setState(true);
+            cic.setActivatorState(d, activatorId, state);
+            Log.i(TAG, "I Am being set to true");
+        } else {
+            // False
+            state.setState(false);
+            cic.setActivatorState(d, activatorId, state);
+            Log.i(TAG, "I Am being set to false");
+        }
     }
+
 }
