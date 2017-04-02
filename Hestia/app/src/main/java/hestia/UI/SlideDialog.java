@@ -60,7 +60,7 @@
 //            @Override
 //            public void onProgressChanged(SeekBar s, int i, boolean b) {
 //                layout.setBackgroundColor(0xffffffff - s.getProgress());
-//                Toast.makeText(getContext(), Integer.toString(seekBar.getActivatorId()),
+//                Toast.makeText(getContext(), Integer.toString(seekBar.getActivator()),
 //                        Toast.LENGTH_SHORT).show();
 //                if (s.getProgress() > 0) {
 //                    setChange(false);

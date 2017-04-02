@@ -5,8 +5,8 @@ import hestia.backend.Device;
 
 public interface UIWidget {
     Device getDevice();
-    void setActivatorId(Activator id);
+    void setActivator(Activator id);
 
-    Activator getActivatorId();
+    Activator getActivator();
 
 }

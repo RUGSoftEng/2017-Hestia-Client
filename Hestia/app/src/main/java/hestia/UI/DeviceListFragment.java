@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
@@ -33,8 +34,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
-    private List<String> listDataHeader;
-    private HashMap<String, List<Device>> listDataChild;
+    private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private ClientInteractionController cic;
     private FloatingActionButton fab;
 
@@ -49,8 +49,67 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
-        fab = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
-        Log.i(TAG, "First");
+        createFloatingButton(view);
+
+        listDataChild = new ArrayList<>();
+        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
+        listAdapter = new ExpandableListAdapter(listDataChild, getActivity());
+
+        populateUI();
+
+        expListView.setAdapter(listAdapter);
+
+        return view;
+    }
+
+    private void populateUI() {
+
+        cic = ClientInteractionController.getInstance();
+
+        ArrayList<Device> devices = cic.getDevices();
+        for (Device d : devices) {
+            Activator a = d.getActivator(0);
+            HestiaSwitch hestiaSwitch = new HestiaSwitch(d, a, getActivity());
+            DeviceBar bar = new DeviceBar(d, hestiaSwitch);
+            if (!typeExists(d)) {
+                listDataChild.add(new ArrayList<DeviceBar>());
+                listDataChild.get(listDataChild.size() - 1).add(bar);
+            } else {
+                listDataChild.get(getDeviceType(d)).add(bar);
+            }
+        }
+        listAdapter.setListData(listDataChild);
+        expListView.setAdapter(listAdapter);
+    }
+    @Override
+    public void changeEventReceived(DevicesEvent evt) {
+        populateUI();
+    }
+
+    private boolean typeExists(Device d) {
+        String deviceType = d.getType();
+        for (int i = 0; i < listDataChild.size(); i++) {
+            Device checkDevice = listDataChild.get(i).get(0).getDevice();
+            if (checkDevice.getType().equals(deviceType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int getDeviceType(Device d) {
+        String deviceType = d.getType();
+        for (int i = 0; i < listDataChild.size(); i++) {
+            Device checkDevice = listDataChild.get(i).get(0).getDevice();
+            if (checkDevice.getType().equals(deviceType)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void createFloatingButton(View v) {
+        fab = (FloatingActionButton)v.findViewById(R.id.floating_action_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,40 +122,6 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
                 populateUI();
             }
         });
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
-
-        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
-
-        listAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, getActivity());
-
-        expListView.setAdapter(listAdapter);
-
-        populateUI();
-
-        return view;
-    }
-
-    private void populateUI() {
-
-        cic = ClientInteractionController.getInstance();
-
-        ArrayList<Device> devices = cic.getDevices();
-        Log.i(TAG, devices.toString());
-        for (Device d : devices) {
-            if (!listDataHeader.contains(d.getType())) {
-                listDataHeader.add(d.getType());
-                listDataChild.put(d.getType(), new ArrayList<Device>());
-            }
-            //find corresponding header for the child
-            listDataChild.get(d.getType()).add(d);
-        }
-        listAdapter.setListData(listDataHeader,listDataChild);
-        expListView.setAdapter(listAdapter);
-    }
-    @Override
-    public void changeEventReceived(DevicesEvent evt) {
-        populateUI();
     }
 
 

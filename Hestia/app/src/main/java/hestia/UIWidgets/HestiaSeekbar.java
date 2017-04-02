@@ -21,16 +21,15 @@ public class HestiaSeekbar implements UIWidget {
     @Override
     public Device getDevice() {
         return d;
-
     }
 
     @Override
-    public void setActivatorId(Activator a) {
+    public void setActivator(Activator a) {
         this.a = a;
     }
 
     @Override
-    public Activator getActivatorId() {
+    public Activator getActivator() {
         return a;
     }
 

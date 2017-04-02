@@ -36,7 +36,6 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
-
     }
 
     @Override
