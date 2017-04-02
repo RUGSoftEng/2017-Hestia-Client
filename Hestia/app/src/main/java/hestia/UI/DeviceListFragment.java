@@ -77,7 +77,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         return view;
     }
 
-    public void populateUI() {
+    private void populateUI() {
 
         cic = ClientInteractionController.getInstance();
 
