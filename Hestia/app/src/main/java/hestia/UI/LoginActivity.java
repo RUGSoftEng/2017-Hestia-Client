@@ -21,7 +21,8 @@ import com.rugged.application.hestia.R;
 import java.util.Locale;
 
 /**
- * This class represents a login screen, complete with remember me function.
+ * This class represents a login screen, complete with Remember Me function.
+ * It is the first thing the user is presented with after starting the app.
  */
 public class LoginActivity extends Activity  {
     private Button loginButton;

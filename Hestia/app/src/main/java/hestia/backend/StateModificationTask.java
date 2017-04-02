@@ -34,7 +34,7 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
 
     @Override
     protected Integer doInBackground(Void... params) {
-        Log.i(TAG, "asynctask is called");
+        Log.i(TAG, "AsyncTask is called");
         Integer response = null;
         String activatorPath = path + "devices/" + deviceId + "/activator/" + activatorId;
         URL url = null;

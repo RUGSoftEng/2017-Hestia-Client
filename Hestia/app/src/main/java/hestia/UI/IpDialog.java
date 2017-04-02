@@ -13,6 +13,10 @@ import com.rugged.application.hestia.R;
 
 import hestia.backend.ClientInteractionController;
 
+/**
+ * This class represents the dialog screen with which the IP-address of the server is asked from the
+ * user.
+ */
 public class IpDialog extends Dialog implements android.view.View.OnClickListener{
     private EditText ipField;
     private Button confirm,cancel;

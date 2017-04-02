@@ -1,6 +1,3 @@
-/**
- * This class smoothens the transition from an activity to a fragment.
- */
 
 package hestia.UI;
 
@@ -29,6 +26,10 @@ import java.util.List;
 
 import hestia.backend.ClientInteractionController;
 
+/**
+ * This abstract class is used as an abstract wrapper around the device list activity class.
+ * @see DeviceListActivity
+ */
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
     protected abstract Fragment createFragment();
@@ -86,7 +87,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
         menuParams.setMenuObjects(menuObjects);
         menuParams.setClosableOutside(true);
-        // set other settings to meet your needs
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
     }
 
