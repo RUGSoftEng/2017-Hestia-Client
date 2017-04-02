@@ -14,9 +14,9 @@ import com.rugged.application.hestia.R;
 import hestia.backend.ClientInteractionController;
 
 public class AddBridgeDialog extends Dialog implements android.view.View.OnClickListener{
-    private EditText organizationField,pluginField;
+    private EditText bridgeField;
     private Button confirm,cancel;
-    private String organization,pluginName;
+    private String bridge;
     private ClientInteractionController cic;
     public Activity c;
     public AddBridgeDialog(Activity a) {
@@ -29,9 +29,9 @@ public class AddBridgeDialog extends Dialog implements android.view.View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.add_device_dialog);
-        organizationField = (EditText) findViewById(R.id.organization);
-        pluginField = (EditText) findViewById(R.id.pluginName);
+        setContentView(R.layout.add_bridge_ip);
+        bridgeField = (EditText) findViewById(R.id.bridge_ip);
+
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);
@@ -40,14 +40,10 @@ public class AddBridgeDialog extends Dialog implements android.view.View.OnClick
 
     @Override
     public void onClick(View v) {
-        organization = organizationField.getText().toString();
-        pluginName = pluginField.getText().toString();
-
+        bridge = bridgeField.getText().toString();
         switch (v.getId()) {
             case R.id.confirm_button:
-
-                Toast.makeText(getContext(),"PluginName: " + pluginName + " Organization: " +
-                        organization ,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),"Bridge: " + bridge ,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button:
                 dismiss();

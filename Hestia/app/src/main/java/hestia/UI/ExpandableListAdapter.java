@@ -96,17 +96,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.settings:
+                                SlideDialog dialog = new SlideDialog(context,
+                                        (Device)((DeviceBar) getChild(groupPosition, childPosition))
+                                                .getDevice());
+                                dialog.show();
                                 //Settings
                                 break;
-                            case R.id.delete:
-                                //Remove list item
-                                break;
-                            case R.id.slide:
-                                //show notification
-//                                final SlideDialog dialog = new SlideDialog(context,
-//                                        getChildDevice(groupPosition, childPosition));
-//                                dialog.show();
-                                break;
+//                            case R.id.delete:
+//                                //Remove list item
+//                                break;
+//                            case R.id.slide:
+//                                //show notification
+////                                final SlideDialog dialog = new SlideDialog(context,
+////                                        getChildDevice(groupPosition, childPosition));
+////                                dialog.show();
+//                                break;
                             default:
                                 break;
                         }

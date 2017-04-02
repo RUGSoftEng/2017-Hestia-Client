@@ -1,34 +1,36 @@
-///*
-//This class handles the dialog which is opened if a Device has the 'slide' option
-// */
-//
-//package hestia.UI;
-//
-//import android.app.Dialog;
-//import android.content.Context;
-//import android.view.View;
-//import android.widget.Button;
-//import android.widget.CompoundButton;
-//import android.widget.RelativeLayout;
-//import android.widget.SeekBar;
-//import android.widget.Toast;
-//
-//import com.rugged.application.hestia.R;
-//
-//import java.util.Random;
-//
-//import hestia.UIWidgets.HestiaSeekbar;
-//import hestia.UIWidgets.HestiaSwitch;
-//import hestia.backend.Device;
-//
-//public class SlideDialog extends Dialog {
-//    private final static String TAG = "SlideDialog";
-//    private Device d;
-//    private boolean changer;
-//
-//    public SlideDialog(Context context, Device d) {
-//        super(context);
-//        setContentView(R.layout.slide_dialog);
+/*
+This class handles the dialog which is opened if a Device has the 'slide' option
+ */
+
+package hestia.UI;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.Toast;
+
+import com.rugged.application.hestia.R;
+
+import java.util.Random;
+
+import hestia.UIWidgets.HestiaSeekbar;
+import hestia.UIWidgets.HestiaSwitch;
+import hestia.backend.Device;
+
+public class SlideDialog extends Dialog {
+    private final static String TAG = "SlideDialog";
+    private Device d;
+    private boolean changer;
+
+    public SlideDialog(Context context, Device d) {
+        super(context);
+        setContentView(R.layout.slide_dialog_m);
+        SeekBar s = (SeekBar)findViewById(R.id.seekbar_m);
+        s.setProgress(s.getMax() / 2);
 //        setTitle("Change your slide");
 //        this.d = d;
 //        changer = true;
@@ -112,7 +114,7 @@
 //                dismiss();
 //            }
 //        });
-//    }
+    }
 //
 //    private void setChange(boolean change) {
 //        this.changer = change;
@@ -121,4 +123,4 @@
 //    private boolean getChange() {
 //        return changer;
 //    }
-//}
+}
