@@ -34,6 +34,7 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
 
     @Override
     protected Integer doInBackground(Void... params) {
+        Log.i(TAG, "asynctask is called");
         Integer response = null;
         String activatorPath = path + "devices/" + deviceId + "/activator/" + activatorId;
         URL url = null;
@@ -52,8 +53,10 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
                 OutputStream deviceOutputStream = urlConnection.getOutputStream();
                 writeStream(deviceOutputStream);
                 response = urlConnection.getResponseCode();
+                Log.i(TAG, "Response is: " + response);
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
+                Log.i(TAG, "Got an exception");
             }
         }while(response > HTML_ERROR_CODE);
         // Currently, we are not externally handling the HTML response code.

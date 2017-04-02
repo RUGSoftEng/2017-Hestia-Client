@@ -9,32 +9,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import hestia.UIWidgets.HestiaSeekbar;
 import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import com.rugged.application.hestia.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import hestia.backend.Device;
-import hestia.backend.DevicesChangeListener;
-import hestia.backend.DevicesEvent;
-
-import static com.rugged.application.hestia.R.id.imageView;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<Device>> listDataChild;
     private Context context;
-    private int activatorId;
+
     private ClientInteractionController c;
     private final static String TAG = "ExpandableList";
 
@@ -68,6 +66,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final String childText = (String) getChild(groupPosition, childPosition);
+        Log.i(TAG, "I am being called");
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
@@ -79,27 +78,48 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(childText);
 
-        final HestiaSwitch hestiaSwitch = new HestiaSwitch(new Random().nextInt(4), convertView,
-                R.id.light_switch);
-        hestiaSwitch.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
+        Device d0 = getChildDevice(groupPosition, childPosition);
 
-            @Override
-            public void onClick(View view) {
-                activatorId = hestiaSwitch.getActivatorId();
-                Device device = getChildDevice(groupPosition, childPosition);
-                Activator activator = device.getActivator(activatorId);
-                ActivatorState state = activator.getState();
-                if(hestiaSwitch.getActivatorSwitch().isChecked()){
-                    // True
-                    state.setState(true);
-                   c.setActivatorState(device,activatorId,state);
-                }else{
-                    // False
-                    state.setState(false);
-                    c.setActivatorState(device,activatorId,state);
-                }
+        Activator a0 = null;
+        for (Activator activator : d0.getActivators()) {
+            a0 = activator;
+            Log.i(TAG, "ID of the current activators: " + activator.getId());
+            if (activator.getState().getType().equals("TOGGLE")) {
+                a0 = activator;
+                break;
             }
-        });
+        }
+
+        if (a0 != null) {
+            final HestiaSwitch hestiaSwitch = new HestiaSwitch(d0, a0, convertView,
+                    R.id.light_switch);
+            hestiaSwitch.getActivatorSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    Log.i(TAG, "I am being clicked");
+                    Activator a = hestiaSwitch.getActivatorId();
+                    Device d = hestiaSwitch.getDevice();
+                    int activatorId = a.getId() - 1;
+                    Log.i(TAG, "ID: " + activatorId);
+                    Log.i(TAG, "activator size: " + d.getActivators().size());
+                    Log.i(TAG, "type: " + a.getState().getType());
+
+                    ActivatorState state = a.getState();
+                    if(b){
+                        // True
+                        state.setState(true);
+                        c.setActivatorState(d,activatorId,state);
+                        Log.i(TAG, "I Am being set to true");
+                    }else{
+                        // False
+                        state.setState(false);
+                        c.setActivatorState(d,activatorId,state);
+                        Log.i(TAG, "I Am being set to false");
+                    }
+                }
+            });
+        }
+
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
@@ -133,9 +153,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                 break;
                             case R.id.slide:
                                 //show notification
-                                final SlideDialog dialog = new SlideDialog(context,
-                                        getChildDevice(groupPosition, childPosition));
-                                dialog.show();
+//                                final SlideDialog dialog = new SlideDialog(context,
+//                                        getChildDevice(groupPosition, childPosition));
+//                                dialog.show();
                                 break;
                             default:
                                 break;
@@ -202,6 +222,48 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+//    private ArrayList<HestiaSwitch> retrieveSwitches(HashMap<String, List<Device>> data, View v) {
+//        ArrayList<HestiaSwitch> switches = new ArrayList<>();
+//        for (String key : data.keySet()) {
+//            for (Device d : data.get(key)) {
+//                //create the switch buttons here for each device
+//                for (Activator a : d.getActivators())
+//                if (a.getType().equals("LOCK")) {
+//                    HestiaSwitch s = new HestiaSwitch(d, a.getId(), v, R.id.light_switch);
+//                    s.getActivatorSwitch().setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//
+//                        }
+//                    });
+//                    switches.add(s);
+//                }
+//            }
+//        }
+//        return switches;
+//    }
+//
+//    private ArrayList<HestiaSeekbar> retrieveSeekbars(HashMap<String, List<Device>> data, View v) {
+//        ArrayList<HestiaSeekbar> seekbars = new ArrayList<>();
+//        for (String key : data.keySet()) {
+//            for (Device d : data.get(key)) {
+//                //create the switch buttons here for each device
+//                for (Activator a : d.getActivators())
+//                    if (a.getType().equals("TOGGLE")) {
+//                        HestiaSeekbar s = new HestiaSeekbar(d, a.getId(), v, R.id.light_switch);
+//                        s.getActivatorSeekBar().setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//
+//                            }
+//                        });
+//                        seekbars.add(s);
+//                    }
+//            }
+//        }
+//        return seekbars;
+//    }
 
 }
 
