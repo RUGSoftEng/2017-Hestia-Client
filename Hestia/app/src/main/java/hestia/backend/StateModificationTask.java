@@ -39,26 +39,20 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
         String activatorPath = path + "devices/" + deviceId + "/activator/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
-        /*
-         * We try posting to the server until we get a response code which does not signify an
-         * error.
-         */
-        do {
-            try {
-                url = new URL(activatorPath);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                urlConnection.setDoOutput(true);
-                OutputStream deviceOutputStream = urlConnection.getOutputStream();
-                writeStream(deviceOutputStream);
-                response = urlConnection.getResponseCode();
-                Log.i(TAG, "Response is: " + response);
-            } catch (IOException e) {
-                Log.e(TAG, e.toString());
-                Log.i(TAG, "Got an exception");
-            }
-        }while(response > HTML_ERROR_CODE);
+        try {
+            url = new URL(activatorPath);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            urlConnection.setDoOutput(true);
+            OutputStream deviceOutputStream = urlConnection.getOutputStream();
+            writeStream(deviceOutputStream);
+            response = urlConnection.getResponseCode();
+            Log.i(TAG, "Response is: " + response);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+            Log.i(TAG, "Got an exception");
+        }
         // Currently, we are not externally handling the HTML response code.
         return response;
     }

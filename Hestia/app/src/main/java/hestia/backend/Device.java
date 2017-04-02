@@ -15,10 +15,10 @@ import java.util.ArrayList;
  * @see Activator
  */
 public class Device {
-    int deviceId;
-    String name;
-    String type;
-    ArrayList<Activator> activators;
+    private int deviceId;
+    private String name;
+    private String type;
+    private ArrayList<Activator> activators;
 
     public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
         this.deviceId = deviceId;
