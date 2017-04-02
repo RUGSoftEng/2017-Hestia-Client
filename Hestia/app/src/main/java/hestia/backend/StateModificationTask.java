@@ -36,7 +36,7 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     protected Integer doInBackground(Void... params) {
         Log.i(TAG, "AsyncTask is called");
         Integer response = null;
-        String activatorPath = path + "devices/" + deviceId + "/activator/" + activatorId;
+        String activatorPath = path + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
         try {
