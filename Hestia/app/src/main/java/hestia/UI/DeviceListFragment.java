@@ -123,7 +123,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
                 h.put("IP address:", "string");
                 h.put("Port: ", "string");
                 // add device dialog
-                //new AddDeviceDialog(getActivity()).show();
+                new AddDeviceDialog(getActivity()).show();
                 //new AddDeviceInfo(getActivity(),h).show();
                 populateUI();
             }
