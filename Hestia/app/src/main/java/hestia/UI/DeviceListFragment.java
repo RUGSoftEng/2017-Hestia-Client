@@ -57,9 +57,11 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(listDataChild, getActivity());
 
-        populateUI();
-
         expListView.setAdapter(listAdapter);
+
+        ClientInteractionController.getInstance().addDevicesChangeListener(this);
+
+        populateUI();
 
         return view;
     }
