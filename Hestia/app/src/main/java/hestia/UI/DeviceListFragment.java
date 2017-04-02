@@ -63,6 +63,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     }
 
     private void populateUI() {
+        listDataChild = new ArrayList<>();
 
         cic = ClientInteractionController.getInstance();
 

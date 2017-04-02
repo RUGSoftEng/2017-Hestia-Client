@@ -21,6 +21,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     public HestiaSwitch(Device d, Activator a, Context c) {
         this.a = a;
 //        activatorSwitch = createActivatorSwitch(c);
+        activatorSwitch = new Switch(c);
         this.d = d;
         this.cic = ClientInteractionController.getInstance();
     }
@@ -46,6 +47,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
 
     public void setActivatorSwitch(Switch s) {
         s.setOnCheckedChangeListener(this);
+        s.setChecked(activatorSwitch.isChecked());
         this.activatorSwitch = s;
         Log.i(TAG, "Changed switch");
     }
@@ -65,6 +67,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
         int activatorId = a.getId();
 
         ActivatorState state = a.getState();
+        activatorSwitch.setChecked(b);
         if (b) {
             // True
             state.setState(true);

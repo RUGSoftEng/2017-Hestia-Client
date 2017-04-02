@@ -22,7 +22,7 @@ public class ClientInteractionController extends Application{
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
-    private String ip = "192.168.178.30";
+    private String ip = "192.168.178.42";
     private int port = 8000;
 
     /**
