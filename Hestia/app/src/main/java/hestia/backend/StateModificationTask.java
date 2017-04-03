@@ -34,7 +34,7 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
 
     @Override
     protected Integer doInBackground(Void... params) {
-//        Log.i(TAG, "AsyncTask is called");
+        Log.i(TAG, "AsyncTask is called");
         Integer response = null;
         String activatorPath = path + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;
@@ -64,7 +64,7 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
         JsonObject json = new JsonObject();
         JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newState));
         json.add("state", jPrimitive);
-//        Log.i(TAG,json.toString());
+        Log.i(TAG,json.toString());
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(os);
         outputStreamWriter.write(json.toString());
         outputStreamWriter.flush();
