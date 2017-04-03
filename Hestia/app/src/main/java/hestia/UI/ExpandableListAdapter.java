@@ -104,9 +104,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                 dialog.show();
                                 //Settings
                                 break;
-//                            case R.id.delete:
-//                                //Remove list item
-//                                break;
+                            case R.id.delete:
+                                //c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice())
+                                break;
 //                            case R.id.slide:
 //                                //show notification
 //                                final SlideDialog dialog = new SlideDialog(context,
