@@ -3,6 +3,7 @@ package hestia.backend;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -107,6 +108,16 @@ public class ClientInteractionController extends Application{
         for (DevicesChangeListener l : listeners) {
             l.changeEventReceived(evt);
         }
+    }
+
+    // For testing purposes.
+    public HashMap<String,String> getRequiredInfo(String org, String pluginname){
+        HashMap<String,String> h = new HashMap<String,String>();
+        h.put("PluginName:", pluginname);
+        h.put("Organization:", org);
+        h.put("IPaddress:", null);
+        h.put("Port:", null);
+        return h;
     }
 
 }

@@ -107,9 +107,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 //                                break;
 //                            case R.id.slide:
 //                                //show notification
-////                                final SlideDialog dialog = new SlideDialog(context,
-////                                        getChildDevice(groupPosition, childPosition));
-////                                dialog.show();
+//                                final SlideDialog dialog = new SlideDialog(context,
+//                                        getChildDevice(groupPosition, childPosition));
+//                                dialog.show();
 //                                break;
                             default:
                                 break;

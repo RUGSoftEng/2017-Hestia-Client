@@ -121,13 +121,9 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String,String> h = new HashMap<String,String>();
-                h.put("IP address:", "string");
-                h.put("Port: ", "string");
                 // add device dialog
                 //new AddBridgeDialog(getActivity()).show();
                 new AddDeviceDialog(getActivity()).show();
-                //new AddDeviceInfo(getActivity(),h).show();
                 populateUI();
             }
         });

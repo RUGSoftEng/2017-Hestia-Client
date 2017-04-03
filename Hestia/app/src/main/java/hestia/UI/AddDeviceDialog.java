@@ -45,7 +45,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                new AddBridgeDialog(c).show();
+                new AddDeviceInfo(c,cic.getRequiredInfo(organization,pluginName)).show();
 
 //                Toast.makeText(getContext(),"PluginName: " + pluginName + " Organization: " +
 //                        organization ,Toast.LENGTH_SHORT).show();
