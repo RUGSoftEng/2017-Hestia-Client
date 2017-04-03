@@ -3,7 +3,7 @@
  * Furthermore it first checks the shared preferences of the phone if the user is remembered.
  */
 
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,10 +15,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rugged.application.hestia.R;
+
 import java.util.Locale;
 
 /**
- * This class represents a login screen, complete with remember me function.
+ * This class represents a login screen, complete with Remember Me function.
+ * It is the first thing the user is presented with after starting the app.
  */
 public class LoginActivity extends Activity  {
     private Button loginButton;
@@ -30,20 +34,38 @@ public class LoginActivity extends Activity  {
     private TextView attemptsText;
     private int counter = 10;
     private String username,password;
+    private String corrpass;
     public static final String LOGIN_PREFERENCES = "LoginPreferences";
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if(corrpass==null){
+            corrpass = "password";
+        }
+        
 
         /* Before going on, check if the user is remembered, if so, directly redirect. */
+        Intent i = getIntent();
+        String extra = i.getStringExtra("login");
+
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin) {
-            gotoMainActivity();
+            // Check if the user is redirected (from login)
+            if(!"logout".equals(extra)) {
+                gotoMainActivity();
+            }
         }
+
+//        extra = i.getStringExtra("changePassword");
+//        if (extra!=null){
+//            Log.i("LOGIN",extra);
+//            corrpass = extra;
+//        }
 
         /* Get all the buttons and fields from the layout */
         loginButton = (Button)findViewById(R.id.loginButton);
@@ -76,8 +98,7 @@ public class LoginActivity extends Activity  {
     }
 
     private boolean checkCredentials(String username,String password){
-        // TODO: Check credentials with server database
-        return(username.equals("admin")&&password.equals("password"));
+        return(username.equals("admin")&&password.equals(corrpass));
     }
 
     private void gotoMainActivity(){

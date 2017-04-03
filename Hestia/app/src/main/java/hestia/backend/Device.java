@@ -1,9 +1,4 @@
-/**
- * This class contains the clients internal representation of the peripheral connected to the
- * server.
- */
-
-package com.rugged.application.hestia;
+package hestia.backend;
 
 import java.util.ArrayList;
 
@@ -20,16 +15,16 @@ import java.util.ArrayList;
  * @see Activator
  */
 public class Device {
-    int deviceId;
-    String name;
-    String type;
-    ArrayList<Activator> activators;
+    private int deviceId;
+    private String name;
+    private String type;
+    private ArrayList<Activator> activators;
 
-    public Device(int id, String name, String type, ArrayList<Activator> a) {
-        this.deviceId = id;
+    public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
+        this.deviceId = deviceId;
         this.name = name;
         this.type = type;
-        this.activators = a;
+        this.activators = activator;
     }
 
     public int getDeviceId() {
@@ -56,6 +51,10 @@ public class Device {
         this.type = type;
     }
 
+    public Activator getActivator(int activatorId){
+        return activators.get(activatorId);
+    }
+
     public ArrayList<Activator> getActivators() {
         return activators;
     }
@@ -64,6 +63,6 @@ public class Device {
         this.activators = activators;
     }
     public String toString(){
-        return name +" "+ deviceId + " "+activators;
+        return name +" "+ deviceId + " " + activators + "\n";
     }
 }
