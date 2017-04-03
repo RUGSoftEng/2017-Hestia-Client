@@ -3,15 +3,10 @@
     <!--<item-->
         <!--android:id="@+id/settings"-->
         <!--android:title="settings" />-->
-    <!--<item-->
-        <!--android:id="@+id/delete"-->
-        <!--android:title="delete"-->
-        <!--/>-->
-    <!--<item android:id="@+id/slide"-->
-        <!--android:title="Slide"-->
-        <!--android:enabled="false"-->
-        <!--android:visible="false"/>-->
-
+    <item
+        android:id="@+id/delete"
+        android:title="Delete"
+        />
     <item
         android:id="@+id/settings"
         android:title="Slider" />
