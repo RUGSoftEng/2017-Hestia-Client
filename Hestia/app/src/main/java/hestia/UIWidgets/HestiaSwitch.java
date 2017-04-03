@@ -17,13 +17,16 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     private Activator a;
     private Switch activatorSwitch;
     private ClientInteractionController cic;
+    private boolean check;
 
     public HestiaSwitch(Device d, Activator a, Context c) {
         this.a = a;
 //        activatorSwitch = createActivatorSwitch(c);
+        Log.i(TAG, "HestiaSwitch created");
         activatorSwitch = new Switch(c);
         this.d = d;
         this.cic = ClientInteractionController.getInstance();
+        check = false;
     }
 
     @Override
@@ -46,10 +49,10 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     }
 
     public void setActivatorSwitch(Switch s) {
+//        s.setOnCheckedChangeListener(null);
+//        s.setChecked(activatorSwitch.isChecked());
         s.setOnCheckedChangeListener(this);
-        s.setChecked(activatorSwitch.isChecked());
         this.activatorSwitch = s;
-        Log.i(TAG, "Changed switch");
     }
 
 //    private Switch createActivatorSwitch(Context c) {
@@ -63,22 +66,35 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        Log.i(TAG, "I am being clicked");
         int activatorId = a.getId();
 
         ActivatorState state = a.getState();
-        activatorSwitch.setChecked(b);
+//        activatorSwitch.setChecked(b);
         if (b) {
             // True
             state.setState(true);
             cic.setActivatorState(d, activatorId, state);
-            Log.i(TAG, "I Am being set to true");
+            setCheck(true);
+            Log.i(TAG, d.getName() + " set to true");
         } else {
             // False
             state.setState(false);
+            setCheck(false);
             cic.setActivatorState(d, activatorId, state);
-            Log.i(TAG, "I Am being set to false");
+            Log.i(TAG, d.getName() + " set to false");
         }
     }
+
+    public void addLayout(View v, int layoutId) {
+        activatorSwitch = (Switch)v.findViewById(layoutId);
+        activatorSwitch.setOnCheckedChangeListener(null);
+        activatorSwitch.setChecked(check);
+        activatorSwitch.setOnCheckedChangeListener(this);
+    }
+
+    private void setCheck(boolean b) {
+        check = b;
+    }
+
 
 }

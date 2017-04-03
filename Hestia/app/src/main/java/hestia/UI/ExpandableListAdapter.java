@@ -58,6 +58,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final DeviceBar dBar = (DeviceBar) getChild(groupPosition, childPosition);
 
+        Log.i(TAG, "Looking at device: " + dBar.getDevice().getName());
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,7 +72,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
-        Switch s = dBar.getHestiaSwitch().getActivatorSwitch();
+//        Switch s = dBar.getHestiaSwitch().getActivatorSwitch();
         dBar.setLayout(convertView, R.id.light_switch);
 
         imageview.setOnClickListener(new View.OnClickListener() {

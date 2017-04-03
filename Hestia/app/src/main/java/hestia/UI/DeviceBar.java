@@ -1,6 +1,7 @@
 package hestia.UI;
 
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 
@@ -11,6 +12,8 @@ public class DeviceBar {
     //TODO Add ImageView
     private Device d;
     private HestiaSwitch hestiaSwitch;
+
+    private final static String TAG = "DeviceBar";
 
     public DeviceBar(Device d, HestiaSwitch hestiaSwitch) {
         this.d = d;
@@ -34,7 +37,10 @@ public class DeviceBar {
     }
 
     public void setLayout(View v, int layoutId) {
-        hestiaSwitch.setActivatorSwitch((Switch)v.findViewById(layoutId));
+        Log.i(TAG, "Layout changed for: " + d.getName() + " And switch truth is: " +
+                hestiaSwitch.getActivatorSwitch().isChecked());
+        hestiaSwitch.addLayout(v, layoutId);
+
     }
 
     @Override
