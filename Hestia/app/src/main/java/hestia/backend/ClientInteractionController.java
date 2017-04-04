@@ -53,7 +53,7 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        String path = "http://" + ip + ":" + port + "/";
+        String path = this.getPath();
         new DeviceListRetrieverTask(path).execute();
     }
 
@@ -120,4 +120,12 @@ public class ClientInteractionController extends Application{
         return h;
     }
 
+    /**
+     * Send a DELETE request to the server.
+     * @param device the device to be deleted.
+     */
+    public void deleteDevice(Device device) {
+        String path = this.getPath();
+        new RemoveDevice(path, device).sendDeleteRequest();
+    }
 }

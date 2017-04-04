@@ -105,7 +105,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                 //Settings
                                 break;
                             case R.id.delete:
-                                //c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice())
+                                /**
+                                 * NOTE: This feature is not fully implemented now. Can comment this line as well, although
+                                 * it shouldn't cause any problems if left uncommented.
+                                 * Also, it would be nice to have a Dialog such as "Are you sure you want to delete this...?"
+                                 */
+                                c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice());
                                 break;
 //                            case R.id.slide:
 //                                //show notification
