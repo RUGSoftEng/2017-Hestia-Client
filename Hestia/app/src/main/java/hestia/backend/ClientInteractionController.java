@@ -126,6 +126,6 @@ public class ClientInteractionController extends Application{
      */
     public void deleteDevice(Device device) {
         String path = this.getPath();
-        new RemoveDevice(path, device).sendDeleteRequest();
+        new RemoveDeviceTask(path, device).execute();
     }
 }

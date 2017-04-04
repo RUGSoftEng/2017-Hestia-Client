@@ -1,5 +1,6 @@
 package hestia.backend;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,17 +11,17 @@ import java.net.URL;
  * the Device "device".
  */
 
-public class RemoveDevice {
-    final String TAG = "RemoveDevice";
+public class RemoveDeviceTask extends AsyncTask<Void, Void, Void> {
+    final String TAG = "RemoveDeviceTask";
     private String path;
     private Device device;
 
     /**
-     * Creates an instance of the RemoveDevice class storing the path and the device passed as arguments.
+     * Creates an instance of the RemoveDeviceTask class storing the path and the device passed as arguments.
      * @param path the path to the server. It contains the IP address and Port number.
      * @param device the device to be removed.
      */
-    public RemoveDevice(String path, Device device) {
+    public RemoveDeviceTask(String path, Device device) {
         this.path = path;
         this.device = device;
     }
@@ -28,7 +29,8 @@ public class RemoveDevice {
     /**
      * Send the DELETE request to the server
      */
-    public void sendDeleteRequest() {
+    @Override
+    protected Void doInBackground(Void... params) {
         this.updatePath();
         // UPDATE PATH TO MATCH THE CORRECT DELETE ONE
         URL url = null;
@@ -44,6 +46,7 @@ public class RemoveDevice {
         } finally {
             httpCon.disconnect();
         }
+        return null;
     }
 
     /**
