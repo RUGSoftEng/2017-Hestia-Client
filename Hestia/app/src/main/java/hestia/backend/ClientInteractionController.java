@@ -5,6 +5,7 @@ import android.app.Application;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -55,6 +56,11 @@ public class ClientInteractionController extends Application{
     public void updateDevices(){
         String path = "http://" + ip + ":" + port + "/";
         new DeviceListRetrieverTask(path).execute();
+    }
+    public HashMap<String,String> getPlugins(String organisation,String pluginName) throws ExecutionException, InterruptedException {
+        String path = "http://" + ip + ":" + port + "/"+organisation+"/plugins/"+pluginName;
+
+        return new PluginInformationRetrieverTask(path).execute().get();
     }
 
     /**
