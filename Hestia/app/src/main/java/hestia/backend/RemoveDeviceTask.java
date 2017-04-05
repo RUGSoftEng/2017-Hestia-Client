@@ -13,12 +13,10 @@ import java.net.URL;
  * the Device "device".
  */
 
-public class RemoveDeviceTask extends AsyncTask<Void, Void, Void> {
+public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
     final String TAG = "RemoveDeviceTask";
     private String path;
     private Device device;
-    private URL url;
-    private HttpURLConnection httpCon;
 
     /**
      * Creates an instance of the RemoveDeviceTask class storing the path and the device passed as arguments.
@@ -34,45 +32,28 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Void> {
      * Send the DELETE request to the server
      */
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Integer doInBackground(Void... params) {
         // Update the general path to match the one for the device to be deleted.
         int id = this.device.getDeviceId();
         this.path = this.path + "devices/" + id;
 
+        Integer responseCode = null;
+        HttpURLConnection httpCon = null;
         try {
-            this.url = new URL(this.path);
-            this.httpCon = (HttpURLConnection) url.openConnection();
-            this.httpCon.setRequestMethod("DELETE");
-            this.httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            this.httpCon.setRequestProperty("charset", "utf-8");
-            this.httpCon.connect();
+            URL url = new URL(this.path);
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setRequestMethod("DELETE");
+            httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            httpCon.setRequestProperty("charset", "utf-8");
+            httpCon.connect();
+            responseCode = httpCon.getResponseCode();
         } catch (IOException e) {
             Log.e(TAG, "Connection failed: could not realize the DELETE request");
         } finally {
-            if(this.httpCon != null) {
-                // FOR DEBUGGING ONLY -> PRINTING THE RESPONSE CODE
-                this.logResponse();
-                this.httpCon.disconnect();
+            if (httpCon != null) {
+                httpCon.disconnect();
             }
         }
-        return null;
-    }
-
-    /**
-     *  Logs the response received from the server after sending the DELETE request.
-     */
-    private void logResponse() {
-        BufferedReader br;
-        try {
-            Log.i(TAG, "Response code: " + this.httpCon.getResponseCode());
-            br = new BufferedReader(new InputStreamReader(this.httpCon.getInputStream()));
-            String line;
-            while ((line = br.readLine()) != null) {
-                Log.i(TAG, "LINE: "+line);
-            }
-            br.close();
-        } catch (IOException e) {
-            Log.e(TAG, "RESPONSE CANNOT BE REACHED");
-        }
+        return responseCode;
     }
 }
