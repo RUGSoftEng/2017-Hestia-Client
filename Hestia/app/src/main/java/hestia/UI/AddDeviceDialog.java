@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
 import hestia.backend.ClientInteractionController;
 
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener{
@@ -45,7 +48,15 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                new AddDeviceInfo(c,cic.getRequiredInfo(organization,pluginName)).show();
+                try {
+                    cic.updatePlugins(organization,pluginName);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("yolo");
+                new AddDeviceInfo(c,cic.getPlugins()).show();
 
 //                Toast.makeText(getContext(),"PluginName: " + pluginName + " Organization: " +
 //                        organization ,Toast.LENGTH_SHORT).show();

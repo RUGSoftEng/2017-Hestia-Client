@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<String,String>> {
-    private static final String TAG = "PluginInformationRetrieverTask";
+    private static final String TAG = "PluginRetrieverTask";
     private String path;
     private ClientInteractionController cic;
 
@@ -30,6 +30,8 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
         this.path = path;
         this.cic = ClientInteractionController.getInstance();
     }
+
+
     @Override
     protected HashMap<String, String> doInBackground(Void... params) {
         String pluginsPath = path;
@@ -40,20 +42,26 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
             url = new URL(pluginsPath);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
-            //Log.i(TAG, input.toString());
-
+            Log.i(TAG, input.toString());
             plugins = readStream(input);
             StringBuilder stringBuilder = new StringBuilder();
             /*for (Device device : devices) {
                 stringBuilder.append(device.toString());
             }*/
-     //       Log.i(TAG, stringBuilder.toString());
+          Log.i(TAG, stringBuilder.toString());
             urlConnection.disconnect();
         } catch (IOException e) {
-       //     Log.e(TAG, e.toString());
+            Log.e(TAG, e.toString());
         }
+
+        Log.i(TAG, plugins.get(3));
         return plugins;
     }
+    @Override
+    protected void onPostExecute(HashMap<String,String> plugins) {
+        cic.returnMap(plugins);
+    }
+
     private HashMap<String,String> readStream(InputStream is) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
@@ -65,4 +73,6 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
         reader.close();
         return responseDev;
     }
+
+
 }
