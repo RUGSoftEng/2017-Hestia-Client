@@ -2,7 +2,6 @@ package hestia.backend;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,6 +17,8 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Void> {
     final String TAG = "RemoveDeviceTask";
     private String path;
     private Device device;
+    private URL url;
+    private HttpURLConnection httpCon;
 
     /**
      * Creates an instance of the RemoveDeviceTask class storing the path and the device passed as arguments.
@@ -34,49 +35,44 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        this.updatePath();
-        // UPDATE PATH TO MATCH THE CORRECT DELETE ONE
-        URL url = null;
-        HttpURLConnection httpCon = null;
+        // Update the general path to match the one for the device to be deleted.
+        int id = this.device.getDeviceId();
+        this.path = this.path + "devices/" + id;
+
         try {
-            url = new URL(path);
-            httpCon = (HttpURLConnection) url.openConnection();
-            httpCon.setRequestMethod("DELETE");
-            httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            httpCon.setRequestProperty("charset", "utf-8");
-            httpCon.connect();
+            this.url = new URL(this.path);
+            this.httpCon = (HttpURLConnection) url.openConnection();
+            this.httpCon.setRequestMethod("DELETE");
+            this.httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            this.httpCon.setRequestProperty("charset", "utf-8");
+            this.httpCon.connect();
         } catch (IOException e) {
             Log.e(TAG, "Connection failed: could not realize the DELETE request");
         } finally {
-            if(httpCon != null) {
+            if(this.httpCon != null) {
                 // FOR DEBUGGING ONLY -> PRINTING THE RESPONSE CODE
-
-
-                BufferedReader br = null;
-                try {
-                    System.out.println("Response code: " + httpCon.getResponseCode());
-                    br = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
-                    String line, responseText = "";
-                    while ((line = br.readLine()) != null) {
-                        System.out.println("LINE: "+line);
-                        responseText += line;
-                    }
-                    br.close();
-                } catch (IOException e) {
-                    Log.e(TAG, "INSIDE FIRST FINALLY CLAUSE: ERROR WITH IOEXCEPTION");
-                }
-                httpCon.disconnect();
+                this.logResponse();
+                this.httpCon.disconnect();
             }
         }
         return null;
     }
 
     /**
-     * Updates the current path (which consists only of the IP address and port number of the server)
-     * with the device's ID.
+     *  Logs the response received from the server after sending the DELETE request.
      */
-    private void updatePath() {
-        int id = this.device.getDeviceId();
-        this.path = this.path + "devices/" + id;
+    private void logResponse() {
+        BufferedReader br;
+        try {
+            Log.i(TAG, "Response code: " + this.httpCon.getResponseCode());
+            br = new BufferedReader(new InputStreamReader(this.httpCon.getInputStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                Log.i(TAG, "LINE: "+line);
+            }
+            br.close();
+        } catch (IOException e) {
+            Log.e(TAG, "RESPONSE CANNOT BE REACHED");
+        }
     }
 }
