@@ -56,7 +56,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
                     e.printStackTrace();
                 }
                 System.out.println("yolo");
-                new AddDeviceInfo(c,cic.getPlugins()).show();
+//                new AddDeviceInfo(c,cic.getPlugins()).show();
 
 //                Toast.makeText(getContext(),"PluginName: " + pluginName + " Organization: " +
 //                        organization ,Toast.LENGTH_SHORT).show();

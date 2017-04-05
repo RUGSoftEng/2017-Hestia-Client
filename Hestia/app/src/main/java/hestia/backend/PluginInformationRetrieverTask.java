@@ -53,8 +53,8 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-
-        Log.i(TAG, plugins.get(3));
+        System.out.println("now");
+        Log.i(TAG, String.valueOf(plugins));
         return plugins;
     }
     @Override
