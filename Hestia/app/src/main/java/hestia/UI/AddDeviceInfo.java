@@ -1,5 +1,11 @@
 package hestia.UI;
 
+/**
+ * This class dynamically creates the fields for the required information.
+ * It receives as arguments an activity and a HashMap<String,String> and then adds
+ * the text and the fields from the HashMap keys, with the values as values.
+ */
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -20,11 +26,13 @@ import hestia.backend.ClientInteractionController;
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
     private ClientInteractionController cic;
     private HashMap<String, String> fields;
-    public Activity c;
+    public Activity content;
+    private final int Confirm = 11;
+    private final int Cancel = 12;
 
     public AddDeviceInfo(Activity a, HashMap<String, String> fields) {
         super(a);
-        this.c = a;
+        this.content = a;
         this.cic = ClientInteractionController.getInstance();
         this.fields = fields;
     }
@@ -42,22 +50,15 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         int count = 0;
 
         for (String key : fields.keySet()) {
-            LinearLayout ll = new LinearLayout(getContext());
+            LinearLayout ll = new LinearLayout(content);
 
             // Add text
-            TextView name = new TextView(getContext());
+            TextView name = new TextView(content);
             name.setText(key);
             ll.addView(name);
 
             //Add field
-            EditText field = createEditText();
-            field.setText(fields.get(key));
-            field.setId(count);
-            if (fields.get(key) != null) {
-                field.setFocusable(false);
-                field.setClickable(false);
-            }
-            field.setLayoutParams(params);
+            EditText field = createEditText(key, params , count);
             ll.addView(field);
 
             lm.addView(ll);
@@ -68,39 +69,42 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
     }
 
-    private EditText createEditText() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(800, 150);
-        final EditText edittext = new EditText(getContext());
-        edittext.setLayoutParams(lparams);
-        edittext.setWidth(800);
-        return edittext;
+    private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
+        final EditText field = new EditText(content);
+        field.setText(fields.get(key));
+        field.setId(count);
+        if (fields.get(key) != null) {
+            field.setFocusable(false);
+            field.setClickable(false);
+        }
+        field.setLayoutParams(params);
+        field.setWidth(800);
+        return field;
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case 11:
+            case Confirm:
                 // Fill hashmap, send to backend
                 HashMap<String, String> h = getFieldValues();
                 if(h==null) {
                     Toast.makeText(getContext(), "One or more incorrect values were entered."
                             , Toast.LENGTH_SHORT).show();
-                    dismiss();
                     break;
                 }
                 //cic.postRequiredInfo(h);
-                Toast.makeText(getContext(), "Added device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(content, h.toString(), Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
-            case 12:
-                Toast.makeText(getContext(), "Cancel", Toast.LENGTH_SHORT).show();
+            case Cancel:
+                Toast.makeText(content, "Cancel", Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
             default:
                 break;
         }
-        dismiss();
     }
 
     public HashMap<String, String> getFieldValues() {
@@ -119,17 +123,16 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
     public LinearLayout generateButtons(LinearLayout.LayoutParams params){
         // Add buttons.
-        LinearLayout ll = new LinearLayout(getContext());
+        LinearLayout ll = new LinearLayout(content);
         int i = 10;
-        final Button confirm = new Button(getContext());
-        final Button cancel = new Button(getContext());
+        final Button confirm = new Button(content);
+        final Button cancel = new Button(content);
         confirm.setId(i + 1);
         cancel.setId(i + 2);
         confirm.setText("Confirm");
         cancel.setText("Cancel");
         // set the layoutParams on the button
-        confirm.setLayoutParams(params);
-        cancel.setLayoutParams(params);
+        ll.setLayoutParams(params);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
         ll.addView(confirm);
