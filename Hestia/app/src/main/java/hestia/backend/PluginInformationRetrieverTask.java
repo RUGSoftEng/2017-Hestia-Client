@@ -28,7 +28,6 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
         this.cic = ClientInteractionController.getInstance();
     }
 
-
     @Override
     protected HashMap<String, String> doInBackground(Void... params) {
         String pluginsPath = path;
@@ -45,7 +44,7 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-        Log.i(TAG, String.valueOf(plugins));
+        Log.i(TAG, "PLUGINS: " + plugins.toString());
         return plugins;
     }
     @Override

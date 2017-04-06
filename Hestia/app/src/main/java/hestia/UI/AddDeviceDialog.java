@@ -8,13 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
-
 import hestia.backend.ClientInteractionController;
 
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
@@ -56,6 +51,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
                 } catch (ExecutionException | InterruptedException e) {
                     Log.e(TAG, e.toString());
                 }
+
                 new AddDeviceInfo(c,cic.getPlugins()).show();
                 break;
             case R.id.back_button:
