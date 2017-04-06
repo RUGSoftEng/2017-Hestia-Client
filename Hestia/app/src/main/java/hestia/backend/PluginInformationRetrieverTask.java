@@ -1,8 +1,11 @@
 package hestia.backend;
 
 import java.util.HashMap;
+
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,38 +21,48 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import hestia.UI.AddDeviceInfo;
+
 public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<String,String>> {
     private static final String TAG = "PluginRetrieverTask";
     private String path;
-    private ClientInteractionController cic;
+    private Activity a;
 
-    public PluginInformationRetrieverTask(String path) {
+    public PluginInformationRetrieverTask(String path, Activity a) {
         this.path = path;
-        this.cic = ClientInteractionController.getInstance();
+        this.a = a;
     }
 
     @Override
     protected HashMap<String, String> doInBackground(Void... params) {
-        String pluginsPath = path;
         URL url = null;
         HttpURLConnection urlConnection = null;
         HashMap<String,String> plugins = null;
         try {
-            url = new URL(pluginsPath);
+            url = new URL(path);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
             Log.i(TAG, input.toString());
             plugins = readStream(input);
-            urlConnection.disconnect();
+
         } catch (IOException e) {
             Log.e(TAG, e.toString());
+        } finally {
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
-        Log.i(TAG, "PLUGINS: " + plugins.toString());
+        Log.i(TAG, "PLUGINS: " + (plugins != null ? plugins.toString() : "NULL"));
         return plugins;
     }
+
     @Override
     protected void onPostExecute(HashMap<String,String> plugins) {
-        cic.setPlugins(plugins);
+        if(plugins != null) {
+            new AddDeviceInfo(a, plugins).show();
+        } else {
+            Toast.makeText(a, "Wrong Input", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private HashMap<String,String> readStream(InputStream is) throws IOException {
@@ -59,10 +72,8 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         Type pluginType= new TypeToken<HashMap<String,String>>() {}.getType();
         HashMap<String,String> responseDev = gson.fromJson(gson.newJsonReader(reader), pluginType);
-        System.out.println(responseDev);
+        Log.i(TAG, responseDev.toString());
         reader.close();
         return responseDev;
     }
-
-
 }

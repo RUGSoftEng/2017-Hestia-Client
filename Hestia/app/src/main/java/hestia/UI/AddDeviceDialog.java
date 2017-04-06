@@ -14,9 +14,8 @@ import hestia.backend.ClientInteractionController;
 
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
     private final String TAG = "AddDeviceDialog";
-    private EditText organizationField,pluginField;
-    private Button confirm,cancel;
-    private String organization,pluginName;
+    private EditText organizationField, pluginField;
+    private Button confirm, cancel;
     private ClientInteractionController cic;
     private Activity c;
 
@@ -41,18 +40,12 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
     @Override
     public void onClick(View v) {
-        organization = organizationField.getText().toString();
-        pluginName = pluginField.getText().toString();
+        String organization = organizationField.getText().toString();
+        String pluginName = pluginField.getText().toString();
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                try {
-                    cic.updatePlugins(organization, pluginName);
-                } catch (ExecutionException | InterruptedException e) {
-                    Log.e(TAG, e.toString());
-                }
-
-                new AddDeviceInfo(c,cic.getPlugins()).show();
+                cic.addDevice(organization, pluginName, c);
                 break;
             case R.id.back_button:
                 dismiss();

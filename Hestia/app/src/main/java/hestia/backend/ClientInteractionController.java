@@ -1,5 +1,6 @@
 package hestia.backend;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
 
@@ -24,7 +25,6 @@ public class ClientInteractionController extends Application{
 
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
-    private HashMap<String,String> plugins =new HashMap<>();
     private final static String TAG = "ClntInterController";
     private String ip = "82.73.173.179";
     private int port = 8000;
@@ -59,11 +59,6 @@ public class ClientInteractionController extends Application{
         String path = this.getPath();
         new DeviceListRetrieverTask(path).execute();
     }
-    public void updatePlugins(String organisation,String pluginName) throws ExecutionException, InterruptedException {
-        String path = "http://" + ip + ":" + port + "/plugins/"+organisation+"/plugins/"+pluginName;
-        new PluginInformationRetrieverTask(path).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-    }
 
     /**
      * This method will return a list of devices, which is possibly empty. If this is the case, then
@@ -75,10 +70,6 @@ public class ClientInteractionController extends Application{
             updateDevices();
         }
         return devices;
-    }
-
-    public HashMap<String,String> getPlugins(){
-        return plugins;
     }
 
     /**
@@ -98,9 +89,6 @@ public class ClientInteractionController extends Application{
     public void setDevices(ArrayList<Device> devices) {
         this.devices = devices;
         fireChangeEvent();
-    }
-    public void setPlugins(HashMap<String,String> plugins){
-        this.plugins=plugins;
     }
 
     public static ClientInteractionController getInstance(){
@@ -125,17 +113,6 @@ public class ClientInteractionController extends Application{
         }
     }
 
-    /* For testing purposes.
-    public HashMap<String,String> getRequiredInfo(String org, String pluginname){
-        HashMap<String,String> h = new HashMap<String,String>();
-        h.put("PluginName:", pluginname);
-        h.put("Organization:", org);
-        h.put("IPaddress:", null);
-        h.put("Port:", null);
-        return h;
-    }
-    */
-
     /**
      * Send a DELETE request to the server.
      * @param device the device to be deleted.
@@ -143,5 +120,13 @@ public class ClientInteractionController extends Application{
     public void deleteDevice(Device device) {
         String path = this.getPath();
         new RemoveDeviceTask(path, device).execute();
+    }
+
+    /**
+     * Send a GET and a POST request to the server
+     */
+    public void addDevice(String organisation, String pluginName, Activity a) {
+        String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
+        new PluginInformationRetrieverTask(path, a).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

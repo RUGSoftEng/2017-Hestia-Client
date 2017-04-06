@@ -15,15 +15,16 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "PostDeviceTask";
     private String path;
     private HashMap<String, String> deviceHashMap;
+    private ClientInteractionController cic;
 
-    public PostDeviceTask(String path, HashMap<String, String> deviceHashMap) {
-        this.path = path;
+    public PostDeviceTask(HashMap<String, String> deviceHashMap) {
         this.deviceHashMap = deviceHashMap;
+        this.cic = ClientInteractionController.getInstance();
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
-        String postPath = this.path + "devices/";
+        String postPath = this.cic.getPath() + "devices/";
         Integer response = null;
         URL url = null;
         HttpURLConnection urlConnection = null;

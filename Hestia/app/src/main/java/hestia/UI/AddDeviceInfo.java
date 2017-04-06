@@ -16,11 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.util.HashMap;
-
 import hestia.backend.ClientInteractionController;
 import hestia.backend.PostDeviceTask;
 
@@ -84,7 +81,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case CONFIRM:
                 // Fill hashmap, send to backend
@@ -94,7 +90,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }
-                new PostDeviceTask(cic.getPath(), h).execute();
+                new PostDeviceTask(h).execute();
                 Toast.makeText(content, h.toString(), Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
