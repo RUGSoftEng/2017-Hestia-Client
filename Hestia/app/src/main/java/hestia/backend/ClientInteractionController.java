@@ -1,10 +1,12 @@
 package hestia.backend;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -22,6 +24,7 @@ public class ClientInteractionController extends Application{
 
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
+    private HashMap<String,String> plugins =new HashMap<>();
     private final static String TAG = "ClntInterController";
     private String ip = "82.73.173.179";
     private int port = 8000;
@@ -56,6 +59,11 @@ public class ClientInteractionController extends Application{
         String path = this.getPath();
         new DeviceListRetrieverTask(path).execute();
     }
+    public void updatePlugins(String organisation,String pluginName) throws ExecutionException, InterruptedException {
+        String path = "http://" + ip + ":" + port + "/plugins/"+organisation+"/plugins/"+pluginName;
+        new PluginInformationRetrieverTask(path).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+    }
 
     /**
      * This method will return a list of devices, which is possibly empty. If this is the case, then
@@ -67,6 +75,10 @@ public class ClientInteractionController extends Application{
             updateDevices();
         }
         return devices;
+    }
+
+    public HashMap<String,String> getPlugins(){
+        return plugins;
     }
 
     /**
@@ -86,6 +98,9 @@ public class ClientInteractionController extends Application{
     public void setDevices(ArrayList<Device> devices) {
         this.devices = devices;
         fireChangeEvent();
+    }
+    public void returnMap(HashMap<String,String> plugins){
+        this.plugins=plugins;
     }
 
     public static ClientInteractionController getInstance(){

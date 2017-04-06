@@ -1,5 +1,6 @@
 package hestia.backend;
 
+import java.util.HashMap;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,66 +17,62 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
 /**
- * This performs the task of getting the devices. It runs in the background as an AsyncTask
- * @see android.os.AsyncTask
+ * Created by chris on 3-4-2017.
  */
-class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
-    private static final String TAG = "DeviceListRetrieverTask";
+
+public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<String,String>> {
+    private static final String TAG = "PluginRetrieverTask";
     private String path;
     private ClientInteractionController cic;
 
-    public DeviceListRetrieverTask(String path) {
+    public PluginInformationRetrieverTask(String path) {
         this.path = path;
         this.cic = ClientInteractionController.getInstance();
     }
 
-    /**
-     * This method runs in the background of the app looking for the devices.
-     * @return an ArrayList containing the devices known to the server
-     */
-    @Override
-    protected ArrayList<Device> doInBackground(Void... voids) {
 
-        String devicesPath = path + "devices/";
+    @Override
+    protected HashMap<String, String> doInBackground(Void... params) {
+        String pluginsPath = path;
         URL url = null;
         HttpURLConnection urlConnection = null;
-        ArrayList<Device> devices = null;
+        HashMap<String,String> plugins = null;
         try {
-            url = new URL(devicesPath);
+            url = new URL(pluginsPath);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
             Log.i(TAG, input.toString());
-
-            devices = readStream(input);
+            plugins = readStream(input);
             StringBuilder stringBuilder = new StringBuilder();
-            for (Device device : devices) {
+            /*for (Device device : devices) {
                 stringBuilder.append(device.toString());
-            }
-            Log.i(TAG, stringBuilder.toString());
+            }*/
+          Log.i(TAG, stringBuilder.toString());
             urlConnection.disconnect();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-        return devices;
+        System.out.println("now");
+        Log.i(TAG, String.valueOf(plugins));
+        return plugins;
     }
-
     @Override
-    protected void onPostExecute(ArrayList<Device> d) {
-        cic.setDevices(d);
+    protected void onPostExecute(HashMap<String,String> plugins) {
+        cic.returnMap(plugins);
     }
 
-    private ArrayList<Device> readStream(InputStream is) throws IOException {
+    private HashMap<String,String> readStream(InputStream is) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
         Gson gson = gsonBuilder.create();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        Type deviceListType= new TypeToken<ArrayList<Device>>() {}.getType();
-        ArrayList<Device> responseDev = gson.fromJson(gson.newJsonReader(reader), deviceListType);
+        Type pluginType= new TypeToken<HashMap<String,String>>() {}.getType();
+       HashMap<String,String> responseDev = gson.fromJson(gson.newJsonReader(reader), pluginType);
         System.out.println(responseDev);
         reader.close();
         return responseDev;
     }
+
+
 }
