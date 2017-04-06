@@ -18,7 +18,8 @@ public class AddBridgeDialog extends Dialog implements android.view.View.OnClick
     private Button confirm,cancel;
     private String bridge;
     private ClientInteractionController cic;
-    public Activity c;
+    private Activity c;
+
     public AddBridgeDialog(Activity a) {
         super(a);
         this.c = a;

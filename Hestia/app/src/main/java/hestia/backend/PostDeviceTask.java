@@ -12,27 +12,24 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
 
-class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
-    private String TAG = "StateModificationTask";
-    private ClientInteractionController cic;
-    private int deviceId;
-    private int activatorId;
-    private ActivatorState newState;
+    private final String TAG = "PostDeviceTask";
     private String path;
+    private Device device;
+    private Activator activator;
 
-    public StateModificationTask(int deviceId, int activatorId, ActivatorState newState,
-                                 ClientInteractionController cic) {
-        this.deviceId = deviceId;
-        this.activatorId = activatorId;
-        this.newState = newState;
-        this.path = cic.getPath();
-        this.cic = cic;
+    public PostDeviceTask(String path, Device device, Activator activator) {
+        this.path = path;
+        this.device = device;
+        this.activator = activator;
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
         Integer response = null;
+        int deviceId = this.device.getDeviceId();
+        int activatorId = this.activator.getId();
         String activatorPath = path + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
@@ -58,8 +55,8 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
      */
     private void writeStream(OutputStream os) throws IOException {
         JsonObject json = new JsonObject();
-        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newState));
-        json.add("state", jPrimitive);
+        //JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newState));
+        //json.add("state", jPrimitive);
         Log.i(TAG,json.toString());
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(os);
         outputStreamWriter.write(json.toString());

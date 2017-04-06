@@ -3,6 +3,7 @@ package hestia.UI;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -11,14 +12,19 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
 import hestia.backend.ClientInteractionController;
 
-public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener{
+public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
+    private final String TAG = "AddDeviceDialog";
     private EditText organizationField,pluginField;
     private Button confirm,cancel;
     private String organization,pluginName;
     private ClientInteractionController cic;
-    public Activity c;
+    private Activity c;
+
     public AddDeviceDialog(Activity a) {
         super(a);
         this.c = a;
@@ -45,10 +51,12 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                new AddDeviceInfo(c,cic.getRequiredInfo(organization,pluginName)).show();
-
-//                Toast.makeText(getContext(),"PluginName: " + pluginName + " Organization: " +
-//                        organization ,Toast.LENGTH_SHORT).show();
+                try {
+                    cic.updatePlugins(organization, pluginName);
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(TAG, e.toString());
+                }
+                new AddDeviceInfo(c,cic.getPlugins()).show();
                 break;
             case R.id.back_button:
                 dismiss();

@@ -37,6 +37,7 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
      */
     @Override
     protected ArrayList<Device> doInBackground(Void... voids) {
+
         String devicesPath = path + "devices/";
         URL url = null;
         HttpURLConnection urlConnection = null;

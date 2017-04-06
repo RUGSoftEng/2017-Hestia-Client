@@ -105,7 +105,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                 //Settings
                                 break;
                             case R.id.delete:
-                                //c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice())
+                                c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice());
                                 break;
 //                            case R.id.slide:
 //                                //show notification
