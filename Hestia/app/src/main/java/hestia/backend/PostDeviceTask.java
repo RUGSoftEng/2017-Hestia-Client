@@ -2,42 +2,33 @@ package hestia.backend;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
+public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
 
-class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
-    private String TAG = "StateModificationTask";
-    private ClientInteractionController cic;
-    private int deviceId;
-    private int activatorId;
-    private ActivatorState newState;
+    private final String TAG = "PostDeviceTask";
     private String path;
+    private HashMap<String, String> deviceHashMap;
 
-    public StateModificationTask(int deviceId, int activatorId, ActivatorState newState,
-                                 ClientInteractionController cic) {
-        this.deviceId = deviceId;
-        this.activatorId = activatorId;
-        this.newState = newState;
-        this.path = cic.getPath();
-        this.cic = cic;
+    public PostDeviceTask(String path, HashMap<String, String> deviceHashMap) {
+        this.path = path;
+        this.deviceHashMap = deviceHashMap;
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
+        String postPath = this.path + "devices/";
         Integer response = null;
-        String activatorPath = path + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
         try {
-            url = new URL(activatorPath);
+            url = new URL(postPath);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -45,22 +36,30 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
             OutputStream deviceOutputStream = urlConnection.getOutputStream();
             writeStream(deviceOutputStream);
             response = urlConnection.getResponseCode();
+            Log.i(TAG, "Response code: " + response);
         } catch (IOException e) {
+            Log.e(TAG, "Connection failed: could not realize the POST request for adding a new device");
             Log.e(TAG, e.toString());
-            Log.i(TAG, "Got an exception");
+        } finally {
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
-        // Currently, we are not externally handling the HTML response code.
         return response;
     }
 
     /**
-     * Write the new state to the output stream, which is sent over the urlConnection
+     * Write the JSON for the new device to the output stream, which is sent over the urlConnection
      */
     private void writeStream(OutputStream os) throws IOException {
+        JsonObject requiredInfo = new JsonObject();
+        for(String key : this.deviceHashMap.keySet()) {
+            String value = this.deviceHashMap.get(key);
+            requiredInfo.addProperty(key, value);
+        }
         JsonObject json = new JsonObject();
-        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newState));
-        json.add("state", jPrimitive);
-        Log.i(TAG,json.toString());
+        json.addProperty("required_info", requiredInfo.toString());
+        Log.i(TAG, "JSON created" + json.toString());
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(os);
         outputStreamWriter.write(json.toString());
         outputStreamWriter.flush();

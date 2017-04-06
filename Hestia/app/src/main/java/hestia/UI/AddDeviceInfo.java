@@ -22,13 +22,14 @@ import com.rugged.application.hestia.R;
 import java.util.HashMap;
 
 import hestia.backend.ClientInteractionController;
+import hestia.backend.PostDeviceTask;
 
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
     private ClientInteractionController cic;
     private HashMap<String, String> fields;
-    public Activity content;
-    private final int Confirm = 11;
-    private final int Cancel = 12;
+    private Activity content;
+    private final int CONFIRM = 11;
+    private final int CANCEL = 12;
 
     public AddDeviceInfo(Activity a, HashMap<String, String> fields) {
         super(a);
@@ -66,7 +67,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         }
         LinearLayout ll = generateButtons(params);
         lm.addView(ll);
-
     }
 
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
@@ -86,7 +86,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case Confirm:
+            case CONFIRM:
                 // Fill hashmap, send to backend
                 HashMap<String, String> h = getFieldValues();
                 if(h==null) {
@@ -94,11 +94,11 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }
-                //cic.postRequiredInfo(h);
+                new PostDeviceTask(cic.getPath(), h).execute();
                 Toast.makeText(content, h.toString(), Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
-            case Cancel:
+            case CANCEL:
                 Toast.makeText(content, "Cancel", Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
@@ -129,7 +129,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         final Button cancel = new Button(content);
         confirm.setId(i + 1);
         cancel.setId(i + 2);
-        confirm.setText("Confirm");
+        confirm.setText("CONFIRM");
         cancel.setText("Cancel");
         // set the layoutParams on the button
         ll.setLayoutParams(params);
