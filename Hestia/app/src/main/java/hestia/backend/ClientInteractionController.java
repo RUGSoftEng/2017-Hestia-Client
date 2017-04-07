@@ -82,7 +82,7 @@ public class ClientInteractionController extends Application{
     public void setActivatorState(Device device, int activatorId, ActivatorState newState){
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
-        new StateModificationTask(device.getDeviceId(),activatorId,newState,this).execute();
+        new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
     }
 
     public void setDevices(ArrayList<Device> devices) {

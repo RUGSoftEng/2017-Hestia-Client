@@ -19,21 +19,18 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     private int deviceId;
     private int activatorId;
     private ActivatorState newState;
-    private String path;
 
-    public StateModificationTask(int deviceId, int activatorId, ActivatorState newState,
-                                 ClientInteractionController cic) {
+    public StateModificationTask(int deviceId, int activatorId, ActivatorState newState) {
         this.deviceId = deviceId;
         this.activatorId = activatorId;
         this.newState = newState;
-        this.path = cic.getPath();
-        this.cic = cic;
+        this.cic = ClientInteractionController.getInstance();
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
         Integer response = null;
-        String activatorPath = path + "devices/" + deviceId + "/activators/" + activatorId;
+        String activatorPath = cic.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
         try {
@@ -47,9 +44,11 @@ class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
             response = urlConnection.getResponseCode();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-            Log.i(TAG, "Got an exception");
+        } finally {
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
-        // Currently, we are not externally handling the HTML response code.
         return response;
     }
 
