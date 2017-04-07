@@ -121,14 +121,9 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // add device dialog
-                //new AddBridgeDialog(getActivity()).show();
                 new AddDeviceDialog(getActivity()).show();
                 populateUI();
             }
         });
     }
-
-
-
 }
