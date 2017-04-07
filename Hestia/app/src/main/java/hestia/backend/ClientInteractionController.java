@@ -3,6 +3,7 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,8 +87,12 @@ public class ClientInteractionController extends Application{
     }
 
     public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-        fireChangeEvent();
+        if(devices!=null) {
+            this.devices = devices;
+            fireChangeEvent();
+        } else {
+            Log.e(TAG, "DEVICES ARRAY WAS SET TO NULL");
+        }
     }
 
     public static ClientInteractionController getInstance(){
