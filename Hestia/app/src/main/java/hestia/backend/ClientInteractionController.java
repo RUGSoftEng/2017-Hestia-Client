@@ -56,8 +56,7 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        String path = this.getPath();
-        new DeviceListRetrieverTask(path).execute();
+        new DeviceListRetrieverTask().execute();
     }
 
     /**
