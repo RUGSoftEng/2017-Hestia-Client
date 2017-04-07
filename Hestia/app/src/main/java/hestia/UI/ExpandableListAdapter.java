@@ -82,37 +82,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                 popup.getMenuInflater().inflate(R.menu.popup,
                         popup.getMenu());
 
-//                for (int i = 0; i < getChildDevice(groupPosition, childPosition)
-//                        .getActivators().size(); i++) {
-//                    if (getChildDevice(groupPosition, childPosition).getActivators().get(i)
-//                            .getType().equals("SLIDER")) {
-//                        popup.getMenu().findItem(R.id.slide).setEnabled(true);
-//                        popup.getMenu().findItem(R.id.slide).setVisible(true);
-//                        break;
-//                    }
-//                }
+                final Device d = (Device) getChild(groupPosition, childPosition);
+                if (d.getSliders()!=null) {
+                    popup.getMenu().findItem(R.id.sliders).setEnabled(true);
+                    popup.getMenu().findItem(R.id.sliders).setVisible(true);
+                }
+
 
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.settings:
-                                SlideDialog dialog = new SlideDialog(context,
-                                        (Device)((DeviceBar) getChild(groupPosition, childPosition))
-                                                .getDevice());
-                                dialog.show();
+                            case R.id.sliders:
+                                new SlideDialog(context,d.getSliders(),d).show();
                                 //Settings
                                 break;
                             case R.id.delete:
                                 //c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice())
                                 break;
-//                            case R.id.slide:
-//                                //show notification
-//                                final SlideDialog dialog = new SlideDialog(context,
-//                                        getChildDevice(groupPosition, childPosition));
-//                                dialog.show();
-//                                break;
                             default:
                                 break;
                         }

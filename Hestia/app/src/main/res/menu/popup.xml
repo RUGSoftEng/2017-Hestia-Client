@@ -8,6 +8,6 @@
         android:title="Delete"
         />
     <item
-        android:id="@+id/settings"
-        android:title="Slider" />
+        android:id="@+id/sliders"
+        android:title="Sliders" />
 </menu>

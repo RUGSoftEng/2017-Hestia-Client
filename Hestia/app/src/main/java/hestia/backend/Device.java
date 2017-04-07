@@ -59,6 +59,16 @@ public class Device {
         return activators;
     }
 
+    public ArrayList<Activator> getSliders() {
+        ArrayList<Activator> sliders = new ArrayList<Activator>();
+        for(Activator a : activators){
+            if(a.getState().getType().equals("SLIDER")){
+                sliders.add(a);
+            }
+        }
+        return (sliders.isEmpty() ? null : sliders);
+    }
+
     public void setActivators(ArrayList<Activator> activators) {
         this.activators = activators;
     }
