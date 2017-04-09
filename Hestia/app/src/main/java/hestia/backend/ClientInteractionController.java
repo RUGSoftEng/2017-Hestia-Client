@@ -1,10 +1,14 @@
 package hestia.backend;
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -53,8 +57,7 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        String path = this.getPath();
-        new DeviceListRetrieverTask(path).execute();
+        new DeviceListRetrieverTask().execute();
     }
 
     /**
@@ -80,12 +83,16 @@ public class ClientInteractionController extends Application{
     public void setActivatorState(Device device, int activatorId, ActivatorState newState){
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
-        new StateModificationTask(device.getDeviceId(),activatorId,newState,this).execute();
+        new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
     }
 
     public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-        fireChangeEvent();
+        if(devices!=null) {
+            this.devices = devices;
+            fireChangeEvent();
+        } else {
+            Log.e(TAG, "DEVICES ARRAY WAS SET TO NULL");
+        }
     }
 
     public static ClientInteractionController getInstance(){
@@ -110,16 +117,6 @@ public class ClientInteractionController extends Application{
         }
     }
 
-    // For testing purposes.
-    public HashMap<String,String> getRequiredInfo(String org, String pluginname){
-        HashMap<String,String> h = new HashMap<String,String>();
-        h.put("PluginName:", pluginname);
-        h.put("Organization:", org);
-        h.put("IPaddress:", null);
-        h.put("Port:", null);
-        return h;
-    }
-
     /**
      * Send a DELETE request to the server.
      * @param device the device to be deleted.
@@ -127,5 +124,13 @@ public class ClientInteractionController extends Application{
     public void deleteDevice(Device device) {
         String path = this.getPath();
         new RemoveDeviceTask(path, device).execute();
+    }
+
+    /**
+     * Send a GET and a POST request to the server
+     */
+    public void addDevice(String organisation, String pluginName, Activity a) {
+        String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
+        new PluginInformationRetrieverTask(path, a).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

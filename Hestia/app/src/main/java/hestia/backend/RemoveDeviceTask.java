@@ -49,6 +49,7 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
             responseCode = httpCon.getResponseCode();
         } catch (IOException e) {
             Log.e(TAG, "Connection failed: could not realize the DELETE request");
+            Log.e(TAG, e.toString());
         } finally {
             if (httpCon != null) {
                 httpCon.disconnect();
