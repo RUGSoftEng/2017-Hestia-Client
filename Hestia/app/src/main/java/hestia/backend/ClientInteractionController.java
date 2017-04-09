@@ -1,7 +1,9 @@
 package hestia.backend;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +26,6 @@ public class ClientInteractionController extends Application{
 
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
-    private HashMap<String,String> plugins =new HashMap<>();
     private final static String TAG = "ClntInterController";
     private String ip = "82.73.173.179";
     private int port = 8000;
@@ -56,13 +57,7 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        String path = this.getPath();
-        new DeviceListRetrieverTask(path).execute();
-    }
-    public void updatePlugins(String organisation,String pluginName) throws ExecutionException, InterruptedException {
-        String path = "http://" + ip + ":" + port + "/plugins/"+organisation+"/plugins/"+pluginName;
-        new PluginInformationRetrieverTask(path).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        new DeviceListRetrieverTask().execute();
     }
 
     /**
@@ -77,10 +72,6 @@ public class ClientInteractionController extends Application{
         return devices;
     }
 
-    public HashMap<String,String> getPlugins(){
-        return plugins;
-    }
-
     /**
      * This method implements the HTTP POST method for changing the state of an activator on a
      * device as an AsyncTask. It will continue trying to post until the response is not an error.
@@ -92,15 +83,16 @@ public class ClientInteractionController extends Application{
     public void setActivatorState(Device device, int activatorId, ActivatorState newState){
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
-        new StateModificationTask(device.getDeviceId(),activatorId,newState,this).execute();
+        new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
     }
 
     public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-        fireChangeEvent();
-    }
-    public void returnMap(HashMap<String,String> plugins){
-        this.plugins=plugins;
+        if(devices!=null) {
+            this.devices = devices;
+            fireChangeEvent();
+        } else {
+            Log.e(TAG, "DEVICES ARRAY WAS SET TO NULL");
+        }
     }
 
     public static ClientInteractionController getInstance(){
@@ -125,16 +117,6 @@ public class ClientInteractionController extends Application{
         }
     }
 
-    // For testing purposes.
-    public HashMap<String,String> getRequiredInfo(String org, String pluginname){
-        HashMap<String,String> h = new HashMap<String,String>();
-        h.put("PluginName:", pluginname);
-        h.put("Organization:", org);
-        h.put("IPaddress:", null);
-        h.put("Port:", null);
-        return h;
-    }
-
     /**
      * Send a DELETE request to the server.
      * @param device the device to be deleted.
@@ -142,5 +124,13 @@ public class ClientInteractionController extends Application{
     public void deleteDevice(Device device) {
         String path = this.getPath();
         new RemoveDeviceTask(path, device).execute();
+    }
+
+    /**
+     * Send a GET and a POST request to the server
+     */
+    public void addDevice(String organisation, String pluginName, Activity a) {
+        String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
+        new PluginInformationRetrieverTask(path, a).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
