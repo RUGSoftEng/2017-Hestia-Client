@@ -68,7 +68,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
                 DeviceListRetrieverTask retrieverTask = new DeviceListRetrieverTask();
                 retrieverTask.execute();
-                Timer t = new Timer();
                 long startTime = System.currentTimeMillis();
                 while(retrieverTask.getStatus() != AsyncTask.Status.FINISHED) {
                     if(System.currentTimeMillis() - startTime > 2000) {
