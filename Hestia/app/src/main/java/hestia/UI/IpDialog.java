@@ -24,10 +24,10 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     private Activity c;
     private ClientInteractionController cic;
 
-    public IpDialog(Activity a, ClientInteractionController c) {
+    public IpDialog(Activity a) {
         super(a);
         this.c = a;
-        this.cic = c;
+        this.cic = ClientInteractionController.getInstance();
     }
 
     @Override

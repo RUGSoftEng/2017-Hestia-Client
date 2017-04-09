@@ -29,6 +29,11 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
         this.cic = ClientInteractionController.getInstance();
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
     /**
      * This method runs in the background of the app looking for the devices.
      * @return an ArrayList containing the devices known to the server
@@ -44,15 +49,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
             url = new URL(devicesPath);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
-            Log.i(TAG, input.toString());
-
             devices = readStream(input);
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Device device : devices) {
-                stringBuilder.append(device.toString());
-            }
-            Log.i(TAG, stringBuilder.toString());
-
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         } finally {
@@ -65,6 +62,8 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
 
     @Override
     protected void onPostExecute(ArrayList<Device> d) {
+        super.onPostExecute(d);
+        Log.i(TAG, "FINISHED EXECUTING");
         cic.setDevices(d);
     }
 

@@ -3,7 +3,10 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+
+import com.rugged.application.hestia.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
