@@ -44,7 +44,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fm;
     private List<MenuObject> menuObjects;
-    private ClientInteractionController c;
+    private ClientInteractionController cic;
 
     private final int IP = 1;
     private final int LOGOUT = 2;
@@ -54,8 +54,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        c =  ((HestiaApplication)this.getApplication()).getCic();
-        if(c.getIp()==null){
+        cic =  ((HestiaApplication)this.getApplication()).getCic();
+        if(cic.getIp()==null){
             showIpDialog();
         }
 
@@ -65,17 +65,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             public void onRefresh() {
                 swipeRefresh.setRefreshing(true);
                 Log.i(TAG, "Curently refreshing");
-
                 DeviceListRetrieverTask retrieverTask = new DeviceListRetrieverTask();
                 retrieverTask.execute();
-                long startTime = System.currentTimeMillis();
-                while(retrieverTask.getStatus() != AsyncTask.Status.FINISHED) {
-                    if(System.currentTimeMillis() - startTime > 2000) {
-                        Log.i(TAG, "Refresh failed");
-                        Toast.makeText(getApplicationContext(), "Failed to refresh", Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                }
                 Log.i(TAG, "Refresh stopped");
                 swipeRefresh.setRefreshing(false);
             }
@@ -167,7 +158,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     }
 
     private void showIpDialog() {
-        IpDialog ipDialog = new IpDialog(SingleFragmentActivity.this, c);
+        IpDialog ipDialog = new IpDialog(SingleFragmentActivity.this);
         ipDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         ipDialog.show();
     }
