@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -48,15 +50,24 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
         try {
             url = new URL(devicesPath);
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(5000);
+            urlConnection.setConnectTimeout(5000);
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
             devices = readStream(input);
+        } catch(SocketTimeoutException e) {
+            Log.e(TAG, "TimeoutException");
+            Log.e(TAG, e.toString());
+        } catch(ConnectException e) {
+            Log.e(TAG, "ConnectExeption");
+            Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         } finally {
             if(urlConnection != null) {
                 urlConnection.disconnect();
             }
-         }
+        }
+
         return devices;
     }
 
