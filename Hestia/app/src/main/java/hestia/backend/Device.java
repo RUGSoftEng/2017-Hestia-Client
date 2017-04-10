@@ -62,7 +62,8 @@ public class Device {
     public ArrayList<Activator> getSliders() {
         ArrayList<Activator> sliders = new ArrayList<Activator>();
         for(Activator a : activators){
-            if(a.getState().getType().equals("SLIDER")){
+            String type = a.getState().getType();
+            if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")){
                 sliders.add(a);
             }
         }

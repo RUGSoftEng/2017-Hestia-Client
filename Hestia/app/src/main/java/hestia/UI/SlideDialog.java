@@ -66,9 +66,9 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             ll.addView(name);
 
             //Add field
-            HestiaSeekbar bar = createSlider(activator,count);
-            bar.getActivatorSeekBar().setProgress(Integer.parseInt(activator.getState().toString()));
-            ll.addView(bar.getActivatorSeekBar());
+            SeekBar bar = createSeekBar(Integer.parseInt(activator.getState().toString())
+                    ,count,params, activator);
+            ll.addView(bar);
 
             lm.addView(ll);
             count++;
@@ -78,10 +78,35 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     }
 
 
-    public HestiaSeekbar createSlider(Activator activator, int count){
-        HestiaSeekbar slider = new HestiaSeekbar(d,activator,findViewById(android.R.id.content),count);
-        return slider;
+    public SeekBar createSeekBar(int progress, int count, LinearLayout.LayoutParams params
+            , Activator a){
+        final Activator act = a;
+        SeekBar bar = new SeekBar(context);
+        bar.setProgress(progress);
+        bar.setMinimumWidth(800);
+        bar.setLayoutParams(params);
+        bar.setId(count);
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                ActivatorState<Integer> state = act.getState();
+                state.setState(seekBar.getProgress());
+                cic.setActivatorState(d,act.getId(),state);
+            }
+        });
+        return bar;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -89,8 +114,8 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         switch (v.getId()) {
             case 11:
                 // Fill hashmap, send to backend
-                sendActivatorStates();
-                Toast.makeText(getContext(), "Sent states", Toast.LENGTH_SHORT).show();
+                //sendActivatorStates();
+                Toast.makeText(getContext(), "Leaving", Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
             case 12:
@@ -101,18 +126,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 break;
         }
         dismiss();
-    }
-
-    public void sendActivatorStates(){
-        int i = 0;
-        for (Activator a : fields) {
-            SeekBar bar = (SeekBar) findViewById(i);
-            int value = bar.getProgress();
-            ActivatorState<Integer> state = a.getState();
-            state.setState(value);
-            cic.setActivatorState(d,a.getId(),state);
-            i++;
-        }
     }
 
 

@@ -82,8 +82,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                 popup.getMenuInflater().inflate(R.menu.popup,
                         popup.getMenu());
 
-                final Device d = (Device) getChild(groupPosition, childPosition);
-                if (d.getSliders()!=null) {
+                final Device d = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                if (d.getSliders()==null) {
+                    popup.getMenu().findItem(R.id.sliders).setEnabled(false);
+                    popup.getMenu().findItem(R.id.sliders).setVisible(false);
+                }
+                else{
                     popup.getMenu().findItem(R.id.sliders).setEnabled(true);
                     popup.getMenu().findItem(R.id.sliders).setVisible(true);
                 }
@@ -95,6 +99,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.sliders:
+                                Log.i(TAG,d+d.getSliders().toString());
                                 new SlideDialog(context,d.getSliders(),d).show();
                                 //Settings
                                 break;
