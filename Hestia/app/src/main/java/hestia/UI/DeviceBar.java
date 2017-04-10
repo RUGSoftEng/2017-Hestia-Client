@@ -36,7 +36,8 @@ public class DeviceBar {
         this.hestiaSwitch = hestiaSwitch;
     }
 
-    public void setLayout(View v, int layoutId) {
+    public void setLayout(View v, int layoutId, boolean state) {
+        hestiaSwitch.getActivatorSwitch().setChecked(state);
         Log.i(TAG, "Layout changed for: " + d.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
         hestiaSwitch.addLayout(v, layoutId);

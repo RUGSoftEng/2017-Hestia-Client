@@ -73,7 +73,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
 //        Switch s = dBar.getHestiaSwitch().getActivatorSwitch();
-        dBar.setLayout(convertView, R.id.light_switch);
+        Boolean state = Boolean.parseBoolean(dBar.getDevice().getActivator(0).getState().toString());
+        dBar.setLayout(convertView, R.id.light_switch,state);
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override

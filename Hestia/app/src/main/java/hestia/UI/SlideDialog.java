@@ -113,8 +113,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
 
         switch (v.getId()) {
             case 11:
-                // Fill hashmap, send to backend
-                //sendActivatorStates();
                 Toast.makeText(getContext(), "Leaving", Toast.LENGTH_SHORT).show();
                 cic.setDevices(cic.getDevices());
                 dismiss();
