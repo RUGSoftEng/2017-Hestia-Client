@@ -63,7 +63,6 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         listDataChild = new ArrayList<>();
 
         cic = ClientInteractionController.getInstance();
-        Log.i(TAG, "Inside    populateUI   before calling getDevices()");
         ArrayList<Device> devices = cic.getDevices();
         for (Device d : devices) {
             Activator a = d.getActivator(0);

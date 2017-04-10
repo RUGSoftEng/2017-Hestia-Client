@@ -70,13 +70,9 @@ public class ClientInteractionController extends Application{
      * @return a list of devices known to the server.
      */
     public ArrayList<Device> getDevices(){
-        /*
-        Log.i(TAG, "Method:   getDevices    was called");
         if(devices.isEmpty()){
-            Log.i(TAG, "Devices is empty (not NULL), so we have to updateDevices");
             updateDevices();
         }
-        */
         return devices;
     }
 
