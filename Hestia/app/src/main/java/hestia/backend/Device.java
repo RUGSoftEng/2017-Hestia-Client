@@ -65,4 +65,27 @@ public class Device {
     public String toString(){
         return name +" "+ deviceId + " " + activators + "\n";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Device device = (Device) o;
+
+        if (deviceId != device.deviceId) return false;
+        if (!name.equals(device.name)) return false;
+        if (!type.equals(device.type)) return false;
+        return activators.equals(device.activators);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = deviceId;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + activators.hashCode();
+        return result;
+    }
 }

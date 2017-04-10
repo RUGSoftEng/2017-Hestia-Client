@@ -6,7 +6,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -34,10 +36,17 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             urlConnection.setDoOutput(true);
+            urlConnection.connect();
             OutputStream deviceOutputStream = urlConnection.getOutputStream();
             writeStream(deviceOutputStream);
             response = urlConnection.getResponseCode();
             Log.i(TAG, "Response code: " + response);
+        } catch (SocketTimeoutException e) {
+            Log.e(TAG, "SocketTimeoutException");
+            Log.e(TAG, e.toString());
+        } catch (ConnectException e) {
+            Log.e(TAG, "ConnectExeption");
+            Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, "Connection failed: could not realize the POST request for adding a new device");
             Log.e(TAG, e.toString());
@@ -47,6 +56,11 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
             }
         }
         return response;
+    }
+
+    @Override
+    protected void onPostExecute(Integer result) {
+        cic.updateDevices();
     }
 
     /**

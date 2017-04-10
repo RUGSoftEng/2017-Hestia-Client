@@ -61,20 +61,7 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        final DeviceListRetrieverTask retrieverTask = new DeviceListRetrieverTask();
-        retrieverTask.execute();
-        /*
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(retrieverTask.getStatus() != AsyncTask.Status.FINISHED) {
-                    Log.i(TAG, "  1. STATUS = " + retrieverTask.getStatus());
-                    retrieverTask.cancel(true);
-                    Log.i(TAG, "  1. STATUS = " + retrieverTask.getStatus());
-                }
-            }
-        }, 10000 );
-        */
+        new DeviceListRetrieverTask().execute();
     }
 
     /**
@@ -83,9 +70,13 @@ public class ClientInteractionController extends Application{
      * @return a list of devices known to the server.
      */
     public ArrayList<Device> getDevices(){
+        /*
+        Log.i(TAG, "Method:   getDevices    was called");
         if(devices.isEmpty()){
+            Log.i(TAG, "Devices is empty (not NULL), so we have to updateDevices");
             updateDevices();
         }
+        */
         return devices;
     }
 
@@ -104,8 +95,10 @@ public class ClientInteractionController extends Application{
     }
 
     public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-        fireChangeEvent();
+        if(!this.devices.equals(devices)) {
+            this.devices = devices;
+            fireChangeEvent();
+        }
     }
 
     public static ClientInteractionController getInstance(){
@@ -135,8 +128,7 @@ public class ClientInteractionController extends Application{
      * @param device the device to be deleted.
      */
     public void deleteDevice(Device device) {
-        String path = this.getPath();
-        new RemoveDeviceTask(path, device).execute();
+        new RemoveDeviceTask(device).execute();
     }
 
     /**

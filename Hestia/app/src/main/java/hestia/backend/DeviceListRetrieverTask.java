@@ -44,6 +44,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(2000);
             urlConnection.setConnectTimeout(2000);
+            urlConnection.connect();
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
             devices = readStream(input);
         } catch (SocketTimeoutException e) {
