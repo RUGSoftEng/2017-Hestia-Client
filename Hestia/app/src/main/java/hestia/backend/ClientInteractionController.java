@@ -3,6 +3,7 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
@@ -30,7 +31,7 @@ public class ClientInteractionController extends Application{
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
-    private String ip = "82.73.173.179";
+    private String ip = "192.168.0.105";
     private int port = 8000;
 
     /**
@@ -60,7 +61,20 @@ public class ClientInteractionController extends Application{
     }
 
     public void updateDevices(){
-        new DeviceListRetrieverTask().execute();
+        final DeviceListRetrieverTask retrieverTask = new DeviceListRetrieverTask();
+        retrieverTask.execute();
+        /*
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(retrieverTask.getStatus() != AsyncTask.Status.FINISHED) {
+                    Log.i(TAG, "  1. STATUS = " + retrieverTask.getStatus());
+                    retrieverTask.cancel(true);
+                    Log.i(TAG, "  1. STATUS = " + retrieverTask.getStatus());
+                }
+            }
+        }, 10000 );
+        */
     }
 
     /**
@@ -90,12 +104,8 @@ public class ClientInteractionController extends Application{
     }
 
     public void setDevices(ArrayList<Device> devices) {
-        if(devices!=null) {
-            this.devices = devices;
-            fireChangeEvent();
-        } else {
-            Log.e(TAG, "DEVICES ARRAY WAS SET TO NULL");
-        }
+        this.devices = devices;
+        fireChangeEvent();
     }
 
     public static ClientInteractionController getInstance(){

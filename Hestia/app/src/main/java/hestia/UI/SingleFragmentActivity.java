@@ -65,8 +65,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             public void onRefresh() {
                 swipeRefresh.setRefreshing(true);
                 Log.i(TAG, "Curently refreshing");
-                DeviceListRetrieverTask retrieverTask = new DeviceListRetrieverTask();
-                retrieverTask.execute();
+                cic.updateDevices();
                 Log.i(TAG, "Refresh stopped");
                 swipeRefresh.setRefreshing(false);
             }
