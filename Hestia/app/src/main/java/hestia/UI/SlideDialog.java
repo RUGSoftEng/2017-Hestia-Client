@@ -46,9 +46,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.slide_dialog);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
         final LinearLayout lm = (LinearLayout) findViewById(R.id.linearMain);
         int count = 0;
 
@@ -61,26 +58,24 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             ll.addView(name);
 
             //Add field
-            SeekBar bar = createSeekBar(Float.parseFloat(activator.getState().toString())
-                    ,count,params, activator);
+            Float currState = Float.parseFloat(activator.getState().toString());
+            SeekBar bar = createSeekBar(currState ,count, activator);
             ll.addView(bar);
 
             lm.addView(ll);
             count++;
         }
-        LinearLayout ll = generateButtons(params);
+        LinearLayout ll = generateButtons();
         lm.addView(ll);
     }
 
 
-    private SeekBar createSeekBar(float progress, int count, LinearLayout.LayoutParams params
-            , Activator a){
+    private SeekBar createSeekBar(float progress, int count, Activator a){
         final Activator act = a;
         SeekBar bar = new SeekBar(context);
         final int max_int = Integer.MAX_VALUE;
         bar.setMax(max_int);
         bar.setProgress((int)progress* max_int);
-        bar.setMinimumWidth(800);
         bar.setLayoutParams(new LinearLayout.LayoutParams(800,80));
         bar.setId(count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -96,8 +91,9 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                ActivatorState<Integer> state = act.getState();
-                state.setState(seekBar.getProgress()/max_int);
+                float value = (float)seekBar.getProgress()/max_int;
+                ActivatorState<Float> state = act.getState();
+                state.setState(value);
                 cic.setActivatorState(d,act.getId(),state);
             }
         });
@@ -111,7 +107,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         switch (v.getId()) {
             case 11:
                 Toast.makeText(getContext(), "Leaving", Toast.LENGTH_SHORT).show();
-                cic.setDevices(cic.getDevices());
                 dismiss();
                 break;
             case 12:
@@ -125,7 +120,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     }
 
 
-    private LinearLayout generateButtons(LinearLayout.LayoutParams params){
+    private LinearLayout generateButtons(){
         // Add buttons.
         LinearLayout ll = new LinearLayout(context);
         int i = 10;
@@ -135,9 +130,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         cancel.setId(i + 2);
         confirm.setText("Confirm");
         cancel.setText("Cancel");
-        // set the layoutParams on the button
-        confirm.setLayoutParams(params);
-        cancel.setLayoutParams(params);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
         ll.addView(confirm);
