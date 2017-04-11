@@ -75,7 +75,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         SeekBar bar = new SeekBar(context);
         final int max_int = Integer.MAX_VALUE;
         bar.setMax(max_int);
-        bar.setProgress((int)progress* max_int);
+        bar.setProgress((int)(progress* max_int));
         bar.setLayoutParams(new LinearLayout.LayoutParams(800,80));
         bar.setId(count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
