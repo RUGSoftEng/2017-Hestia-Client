@@ -161,7 +161,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     private void gotoLoginActivity() {
         Intent i = new Intent(SingleFragmentActivity.this, LoginActivity.class);
-        String s = null;
+        String s = "logout";
         i.putExtra("login", s);
         startActivity(i);
         finish();
