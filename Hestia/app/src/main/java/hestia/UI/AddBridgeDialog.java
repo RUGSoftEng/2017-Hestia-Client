@@ -45,7 +45,7 @@ public class AddBridgeDialog extends Dialog implements android.view.View.OnClick
         bridge = bridgeField.getText().toString();
         switch (v.getId()) {
             case R.id.confirm_button:
-                Toast.makeText(getContext(),"Bridge: " + bridge ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Bridge: " + bridge, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button:
                 dismiss();

@@ -88,6 +88,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         mMenuDialogFragment.setItemClickListener(this);
     }
 
+    //TODO: Create subclass for Menu
     private void initMenuFragment() {
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));

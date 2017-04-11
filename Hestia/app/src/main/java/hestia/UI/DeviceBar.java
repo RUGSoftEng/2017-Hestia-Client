@@ -28,29 +28,26 @@ public class DeviceBar {
         this.d = d;
     }
 
-    public HestiaSwitch getHestiaSwitch() {
-        return hestiaSwitch;
-    }
-
-    public void setHestiaSwitch(HestiaSwitch hestiaSwitch) {
-        this.hestiaSwitch = hestiaSwitch;
-    }
+//    public HestiaSwitch getHestiaSwitch() {
+//        return hestiaSwitch;
+//    }
+//
+//    public void setHestiaSwitch(HestiaSwitch hestiaSwitch) {
+//        this.hestiaSwitch = hestiaSwitch;
+//    }
 
     public void setLayout(View v, int layoutId, boolean state) {
         hestiaSwitch.getActivatorSwitch().setChecked(state);
         Log.i(TAG, "Layout changed for: " + d.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
         hestiaSwitch.addLayout(v, layoutId);
-
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean equal = false;
 
-        if (object != null && object instanceof DeviceBar)
-        {
+        if (object != null && object instanceof DeviceBar) {
             if(this.d.getDeviceId() == ((DeviceBar) object).getDevice().getDeviceId()){
                 equal = true;
             }

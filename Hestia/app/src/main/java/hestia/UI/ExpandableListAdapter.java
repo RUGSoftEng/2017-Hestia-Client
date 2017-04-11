@@ -79,6 +79,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO: Create subclass
                 PopupMenu popup = new PopupMenu(context, view);
                 popup.getMenuInflater().inflate(R.menu.popup,
                         popup.getMenu());

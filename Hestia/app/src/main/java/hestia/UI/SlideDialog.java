@@ -69,7 +69,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         lm.addView(ll);
     }
 
-
     private SeekBar createSeekBar(float progress, int count, Activator a){
         final Activator act = a;
         SeekBar bar = new SeekBar(context);
@@ -100,7 +99,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         return bar;
     }
 
-
     @Override
     public void onClick(View v) {
 
@@ -118,7 +116,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         }
         dismiss();
     }
-
 
     private LinearLayout generateButtons(){
         // Add buttons.
