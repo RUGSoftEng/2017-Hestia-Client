@@ -1,17 +1,16 @@
 /*
-This class handles the dialog which is opened if a Device has the 'slide' option
+** This class handles the dialog which is opened if a Device has the 'slide' option.
+** It loads all the slider activators, and sends the new state onRelease.
  */
 
 package hestia.UI;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,11 +18,8 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import hestia.UIWidgets.HestiaSeekbar;
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
@@ -32,7 +28,6 @@ import hestia.backend.Device;
 public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
     private final static String TAG = "SlideDialog";
     private Device d;
-    private boolean changer;
     private ArrayList<Activator> fields;
     private Context context;
     private ClientInteractionController cic;
@@ -66,7 +61,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             ll.addView(name);
 
             //Add field
-            SeekBar bar = createSeekBar(Integer.parseInt(activator.getState().toString())
+            SeekBar bar = createSeekBar(Float.parseFloat(activator.getState().toString())
                     ,count,params, activator);
             ll.addView(bar);
 
@@ -78,13 +73,15 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     }
 
 
-    public SeekBar createSeekBar(int progress, int count, LinearLayout.LayoutParams params
+    private SeekBar createSeekBar(float progress, int count, LinearLayout.LayoutParams params
             , Activator a){
         final Activator act = a;
         SeekBar bar = new SeekBar(context);
-        bar.setProgress(progress);
+        final int max_int = Integer.MAX_VALUE;
+        bar.setMax(max_int);
+        bar.setProgress((int)progress* max_int);
         bar.setMinimumWidth(800);
-        bar.setLayoutParams(params);
+        bar.setLayoutParams(new LinearLayout.LayoutParams(800,80));
         bar.setId(count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -100,7 +97,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 ActivatorState<Integer> state = act.getState();
-                state.setState(seekBar.getProgress());
+                state.setState(seekBar.getProgress()/max_int);
                 cic.setActivatorState(d,act.getId(),state);
             }
         });
@@ -128,7 +125,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     }
 
 
-    public LinearLayout generateButtons(LinearLayout.LayoutParams params){
+    private LinearLayout generateButtons(LinearLayout.LayoutParams params){
         // Add buttons.
         LinearLayout ll = new LinearLayout(context);
         int i = 10;

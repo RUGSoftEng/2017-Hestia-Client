@@ -53,7 +53,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             EditText field = createEditText();
             field.setText(fields.get(key));
             field.setId(count);
-            if (fields.get(key) != null) {
+            if (key.equals("organization")||key.equals("plugin")) {
                 field.setFocusable(false);
                 field.setClickable(false);
             }
