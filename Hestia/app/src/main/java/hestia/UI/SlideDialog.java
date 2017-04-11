@@ -1,126 +1,139 @@
 /*
-This class handles the dialog which is opened if a Device has the 'slide' option
+** This class handles the dialog which is opened if a Device has the 'slide' option.
+** It loads all the slider activators, and sends the new state onRelease.
  */
 
 package hestia.UI;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import java.util.Random;
+import java.util.ArrayList;
 
-import hestia.UIWidgets.HestiaSeekbar;
-import hestia.UIWidgets.HestiaSwitch;
+import hestia.backend.Activator;
+import hestia.backend.ActivatorState;
+import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
 
-public class SlideDialog extends Dialog {
+public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
     private final static String TAG = "SlideDialog";
     private Device d;
-    private boolean changer;
+    private ArrayList<Activator> fields;
+    private Context context;
+    private ClientInteractionController cic;
 
-    public SlideDialog(Context context, Device d) {
-        super(context);
-        setContentView(R.layout.slide_dialog_m);
-        SeekBar s = (SeekBar)findViewById(R.id.seekbar_m);
-        s.setProgress(s.getMax() / 2);
-//        setTitle("Change your slide");
-//        this.d = d;
-//        changer = true;
-//
-//        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.slide_dialog);
-//        int id = -1;
-//
-//        for (int i = 0; i < d.getActivators().size(); i++) {
-//            if (d.getActivators().get(i).getType().equals("TOGGLE")) {
-//                id = d.getActivators().get(i).getId();
-//            }
-//        }
-//
-//        final HestiaSwitch switchButton = new HestiaSwitch(d, new Random().nextInt(4),
-//                this.findViewById(R.id.slide_dialog), R.id.switch_dialog);
-//
-//
-//        for (int i = 0; i < d.getActivators().size(); i++) {
-//            if (d.getActivators().get(i).getType().equals("SLIDER")) {
-//                id = d.getActivators().get(i).getId();
-//            }
-//        }
-//
-//
-//        final HestiaSeekbar seekBar = new HestiaSeekbar(d, id,
-//                findViewById(R.id.slide_dialog), R.id.slide_seek_bar);
-//        seekBar.getActivatorSeekBar().setOnSeekBarChangeListener(
-//                new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar s, int i, boolean b) {
-//                layout.setBackgroundColor(0xffffffff - s.getProgress());
-//                Toast.makeText(getContext(), Integer.toString(seekBar.getActivator()),
-//                        Toast.LENGTH_SHORT).show();
-//                if (s.getProgress() > 0) {
-//                    setChange(false);
-//                    switchButton.getActivatorSwitch().setChecked(true);
-//
-//                    //handle coloring here, so do not call
-//                }else {
-//                    switchButton.getActivatorSwitch().setChecked(false);
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//            }
-//        });
-//
-//        switchButton.getActivatorSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if (b) {
-//                    if(getChange()) {
-//                        seekBar.getActivatorSeekBar().setProgress(seekBar.getActivatorSeekBar().
-//                                getMax());
-//                        setChange(true);
-//                    }
-//                } else {
-//                    seekBar.getActivatorSeekBar().setProgress(0);
-//                }
-//            }
-//        });
-//
-//        Button backButton = (Button) findViewById(R.id.back_button);
-//        backButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dismiss();
-//            }
-//        });
-//
-//        Button confirmButton = (Button) findViewById(R.id.confirm_button);
-//        confirmButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //send data to the server
-//                dismiss();
-//            }
-//        });
+    public SlideDialog(Context a, ArrayList<Activator> fields, Device d) {
+        super(a);
+        this.context = a;
+        this.cic = ClientInteractionController.getInstance();
+        this.fields = fields;
+        this.d = d;
     }
-//
-//    private void setChange(boolean change) {
-//        this.changer = change;
-//    }
-//
-//    private boolean getChange() {
-//        return changer;
-//    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.slide_dialog);
+
+        final LinearLayout lm = (LinearLayout) findViewById(R.id.linearMain);
+        int count = 0;
+
+        for (Activator activator : fields) {
+            LinearLayout ll = new LinearLayout(context);
+
+            // Add text
+            TextView name = new TextView(context);
+            name.setText(activator.getName());
+            ll.addView(name);
+
+            //Add field
+            Float currState = Float.parseFloat(activator.getState().toString());
+            SeekBar bar = createSeekBar(currState ,count, activator);
+            ll.addView(bar);
+
+            lm.addView(ll);
+            count++;
+        }
+        LinearLayout ll = generateButtons();
+        lm.addView(ll);
+    }
+
+
+    private SeekBar createSeekBar(float progress, int count, Activator a){
+        final Activator act = a;
+        SeekBar bar = new SeekBar(context);
+        final int max_int = Integer.MAX_VALUE;
+        bar.setMax(max_int);
+        bar.setProgress((int)progress* max_int);
+        bar.setLayoutParams(new LinearLayout.LayoutParams(800,80));
+        bar.setId(count);
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                float value = (float)seekBar.getProgress()/max_int;
+                ActivatorState<Float> state = act.getState();
+                state.setState(value);
+                cic.setActivatorState(d,act.getId(),state);
+            }
+        });
+        return bar;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case 11:
+                Toast.makeText(getContext(), "Leaving", Toast.LENGTH_SHORT).show();
+                dismiss();
+                break;
+            case 12:
+                Toast.makeText(getContext(), "Cancel", Toast.LENGTH_SHORT).show();
+                dismiss();
+                break;
+            default:
+                break;
+        }
+        dismiss();
+    }
+
+
+    private LinearLayout generateButtons(){
+        // Add buttons.
+        LinearLayout ll = new LinearLayout(context);
+        int i = 10;
+        final Button confirm = new Button(context);
+        final Button cancel = new Button(context);
+        confirm.setId(i + 1);
+        cancel.setId(i + 2);
+        confirm.setText("Confirm");
+        cancel.setText("Cancel");
+        confirm.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+        ll.addView(confirm);
+        ll.addView(cancel);
+        return ll;
+    }
 }

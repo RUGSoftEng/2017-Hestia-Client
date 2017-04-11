@@ -10,8 +10,6 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import hestia.backend.Activator;
-
 
 class ActivatorDeserializer implements JsonDeserializer<Activator> {
 
@@ -29,13 +27,13 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
                 state = new ActivatorState<Boolean>(Boolean.parseBoolean(rawState),"TOGGLE");
                 break;
             case "int":
-                state = new ActivatorState<Integer>(Integer.parseInt(rawState),"SLIDER");
+                state = new ActivatorState<Float>(Float.parseFloat(rawState),"SLIDER");
                 break;
             case "unsigned_int8" :
-                state = new ActivatorState<Integer>(Integer.parseInt(rawState),"UNSIGNED_BYTE");
+                state = new ActivatorState<Float>(Float.parseFloat(rawState),"UNSIGNED_BYTE");
                 break;
             case "unsigned_int16" :
-                state = new ActivatorState<Integer>(Integer.parseInt(rawState),"UNSIGNED_INT16");
+                state = new ActivatorState<Float>(Float.parseFloat(rawState),"UNSIGNED_INT16");
                 break;
             default : break;
         }

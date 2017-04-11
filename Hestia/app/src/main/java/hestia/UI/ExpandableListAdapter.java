@@ -73,7 +73,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
 //        Switch s = dBar.getHestiaSwitch().getActivatorSwitch();
-        dBar.setLayout(convertView, R.id.light_switch);
+        Boolean state = Boolean.parseBoolean(dBar.getDevice().getActivator(0).getState().toString());
+        dBar.setLayout(convertView, R.id.light_switch,state);
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,37 +83,30 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                 popup.getMenuInflater().inflate(R.menu.popup,
                         popup.getMenu());
 
-//                for (int i = 0; i < getChildDevice(groupPosition, childPosition)
-//                        .getActivators().size(); i++) {
-//                    if (getChildDevice(groupPosition, childPosition).getActivators().get(i)
-//                            .getType().equals("SLIDER")) {
-//                        popup.getMenu().findItem(R.id.slide).setEnabled(true);
-//                        popup.getMenu().findItem(R.id.slide).setVisible(true);
-//                        break;
-//                    }
-//                }
+                final Device d = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                if (d.getSliders()==null) {
+                    popup.getMenu().findItem(R.id.sliders).setEnabled(false);
+                    popup.getMenu().findItem(R.id.sliders).setVisible(false);
+                }
+                else{
+                    popup.getMenu().findItem(R.id.sliders).setEnabled(true);
+                    popup.getMenu().findItem(R.id.sliders).setVisible(true);
+                }
+
 
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.settings:
-                                SlideDialog dialog = new SlideDialog(context,
-                                        (Device)((DeviceBar) getChild(groupPosition, childPosition))
-                                                .getDevice());
-                                dialog.show();
+                            case R.id.sliders:
+                                Log.i(TAG,d+d.getSliders().toString());
+                                new SlideDialog(context,d.getSliders(),d).show();
                                 //Settings
                                 break;
                             case R.id.delete:
                                 c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice());
                                 break;
-//                            case R.id.slide:
-//                                //show notification
-//                                final SlideDialog dialog = new SlideDialog(context,
-//                                        getChildDevice(groupPosition, childPosition));
-//                                dialog.show();
-//                                break;
                             default:
                                 break;
                         }
