@@ -3,7 +3,11 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+
+import com.rugged.application.hestia.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +31,7 @@ public class ClientInteractionController extends Application{
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
-    private String ip = "82.73.173.179";
+    private String ip = "145.97.183.6";
     private int port = 8000;
 
     /**
@@ -38,6 +42,8 @@ public class ClientInteractionController extends Application{
 
     public void setIp(String ip){
         this.ip = ip;
+        //fireChangeEvent();
+        updateDevices();
     }
 
     public void setPort(int port){
@@ -87,11 +93,9 @@ public class ClientInteractionController extends Application{
     }
 
     public void setDevices(ArrayList<Device> devices) {
-        if(devices!=null) {
+        if(!this.devices.equals(devices)) {
             this.devices = devices;
             fireChangeEvent();
-        } else {
-            Log.e(TAG, "DEVICES ARRAY WAS SET TO NULL");
         }
     }
 
@@ -122,8 +126,7 @@ public class ClientInteractionController extends Application{
      * @param device the device to be deleted.
      */
     public void deleteDevice(Device device) {
-        String path = this.getPath();
-        new RemoveDeviceTask(path, device).execute();
+        new RemoveDeviceTask(device).execute();
     }
 
     /**

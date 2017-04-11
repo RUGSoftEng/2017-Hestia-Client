@@ -1,6 +1,5 @@
 package hestia.UI;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -9,20 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-
 import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Activator;
-import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
 import hestia.backend.DevicesChangeListener;
 import hestia.backend.DevicesEvent;
-
 import com.rugged.application.hestia.R;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
@@ -70,7 +63,6 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         listDataChild = new ArrayList<>();
 
         cic = ClientInteractionController.getInstance();
-
         ArrayList<Device> devices = cic.getDevices();
         for (Device d : devices) {
             Activator a = d.getActivator(0);

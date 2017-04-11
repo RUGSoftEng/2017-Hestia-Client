@@ -2,18 +2,18 @@ package hestia.backend;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -35,37 +35,41 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
      */
     @Override
     protected ArrayList<Device> doInBackground(Void... voids) {
-
         String devicesPath = this.cic.getPath() + "devices/";
         URL url = null;
         HttpURLConnection urlConnection = null;
-        ArrayList<Device> devices = null;
+        ArrayList<Device> devices = new ArrayList<>();
         try {
             url = new URL(devicesPath);
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(2000);
+            urlConnection.setConnectTimeout(2000);
+            urlConnection.connect();
             InputStream input = new BufferedInputStream(urlConnection.getInputStream());
-            Log.i(TAG, input.toString());
-
             devices = readStream(input);
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Device device : devices) {
-                stringBuilder.append(device.toString());
-            }
-            Log.i(TAG, stringBuilder.toString());
-
+        } catch (SocketTimeoutException e) {
+            Log.e(TAG, "SocketTimeoutException");
+            Log.e(TAG, e.toString());
+        } catch (ConnectException e) {
+            Log.e(TAG, "ConnectExeption");
+            Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         } finally {
-            if(urlConnection != null) {
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-         }
+        }
         return devices;
     }
 
     @Override
     protected void onPostExecute(ArrayList<Device> d) {
-        cic.setDevices(d);
+        if(d != null) {
+            cic.setDevices(d);
+        } else {
+            Log.e(TAG, "DEVICES ARRAY WAS ABOUT TO BE SET TO NULL");
+        }
     }
 
     private ArrayList<Device> readStream(InputStream is) throws IOException {

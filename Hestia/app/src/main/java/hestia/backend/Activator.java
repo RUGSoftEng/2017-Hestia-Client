@@ -56,4 +56,27 @@ public class Activator {
     public void setState(ActivatorState state) {
         this.state = state;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Activator activator = (Activator) o;
+
+        if (activatorId != activator.activatorId) return false;
+        if (!state.equals(activator.state)) return false;
+        if (!name.equals(activator.name)) return false;
+        return requiredInfo.equals(activator.requiredInfo);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = activatorId;
+        result = 31 * result + state.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + requiredInfo.hashCode();
+        return result;
+    }
 }
