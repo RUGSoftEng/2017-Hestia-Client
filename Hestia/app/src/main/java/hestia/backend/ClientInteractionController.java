@@ -42,6 +42,8 @@ public class ClientInteractionController extends Application{
 
     public void setIp(String ip){
         this.ip = ip;
+        //fireChangeEvent();
+        updateDevices();
     }
 
     public void setPort(int port){
