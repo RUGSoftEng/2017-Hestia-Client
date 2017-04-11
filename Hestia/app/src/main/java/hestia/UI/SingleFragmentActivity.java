@@ -4,12 +4,15 @@ package hestia.UI;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +26,10 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import hestia.backend.ClientInteractionController;
+import hestia.backend.DeviceListRetrieverTask;
 
 /**
  * This abstract class is used as an abstract wrapper around the device list activity class.
@@ -35,7 +40,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     protected abstract Fragment createFragment();
 
     private static String TAG = "SingleFragmentActivity";
-    private SwipeRefreshLayout layout;
     private Toolbar toolbar;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fm;
@@ -55,13 +59,26 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             showIpDialog();
         }
 
-        layout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        final  SwipeRefreshLayout swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getApplicationContext(), "Refreshing", Toast.LENGTH_SHORT).show();
-                //retrieve the newest list of devices
-                layout.setRefreshing(false);
+                swipeRefresh.setRefreshing(true);
+                Log.i(TAG, "Curently refreshing");
+
+                DeviceListRetrieverTask retrieverTask = new DeviceListRetrieverTask();
+                retrieverTask.execute();
+                Timer t = new Timer();
+                long startTime = System.currentTimeMillis();
+                while(retrieverTask.getStatus() != AsyncTask.Status.FINISHED) {
+                    if(System.currentTimeMillis() - startTime > 2000) {
+                        Log.i(TAG, "Refresh failed");
+                        Toast.makeText(getApplicationContext(), "Failed to refresh", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+                Log.i(TAG, "Refresh stopped");
+                swipeRefresh.setRefreshing(false);
             }
         });
 

@@ -21,13 +21,11 @@ import java.util.ArrayList;
  * This performs the task of getting the devices. It runs in the background as an AsyncTask
  * @see android.os.AsyncTask
  */
-class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
+public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private static final String TAG = "DeviceListRetrieverTask";
-    private String path;
     private ClientInteractionController cic;
 
-    public DeviceListRetrieverTask(String path) {
-        this.path = path;
+    public DeviceListRetrieverTask() {
         this.cic = ClientInteractionController.getInstance();
     }
 
@@ -37,7 +35,8 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
      */
     @Override
     protected ArrayList<Device> doInBackground(Void... voids) {
-        String devicesPath = path + "devices/";
+
+        String devicesPath = this.cic.getPath() + "devices/";
         URL url = null;
         HttpURLConnection urlConnection = null;
         ArrayList<Device> devices = null;
@@ -53,10 +52,14 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
                 stringBuilder.append(device.toString());
             }
             Log.i(TAG, stringBuilder.toString());
-            urlConnection.disconnect();
+
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-        }
+        } finally {
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
+         }
         return devices;
     }
 
@@ -73,7 +76,7 @@ class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         Type deviceListType= new TypeToken<ArrayList<Device>>() {}.getType();
         ArrayList<Device> responseDev = gson.fromJson(gson.newJsonReader(reader), deviceListType);
-        System.out.println(responseDev);
+        Log.i(TAG, "ResponseDev: " + (responseDev != null ? responseDev.toString() : "NULL"));
         reader.close();
         return responseDev;
     }
