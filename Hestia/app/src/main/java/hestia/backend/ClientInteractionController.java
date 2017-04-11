@@ -31,7 +31,7 @@ public class ClientInteractionController extends Application{
     private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "ClntInterController";
-    private String ip = "192.168.0.105";
+    private String ip = "145.97.183.6";
     private int port = 8000;
 
     /**

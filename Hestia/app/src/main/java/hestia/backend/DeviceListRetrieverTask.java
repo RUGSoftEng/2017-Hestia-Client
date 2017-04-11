@@ -38,7 +38,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
         String devicesPath = this.cic.getPath() + "devices/";
         URL url = null;
         HttpURLConnection urlConnection = null;
-        ArrayList<Device> devices = null;
+        ArrayList<Device> devices = new ArrayList<>();
         try {
             url = new URL(devicesPath);
             urlConnection = (HttpURLConnection) url.openConnection();
