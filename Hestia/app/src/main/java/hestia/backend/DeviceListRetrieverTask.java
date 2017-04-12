@@ -18,13 +18,18 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * This performs the task of getting the devices. It runs in the background as an AsyncTask
+ * This performs the task of getting the devices, by sending a GET request to the server.
+ * It runs in the background as an AsyncTask
  * @see android.os.AsyncTask
  */
+
 public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private static final String TAG = "DeviceListRetrieverTask";
     private ClientInteractionController cic;
 
+    /**
+     * Creates a new DeviceListRetrieverTask.
+     */
     public DeviceListRetrieverTask() {
         this.cic = ClientInteractionController.getInstance();
     }
@@ -63,15 +68,27 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
         return devices;
     }
 
+    /**
+     * When the task is done, if the list of devices is not NULL, then the current
+     * list of devices is replaced by the new one.
+     * @param devices the new list of devices
+     */
     @Override
-    protected void onPostExecute(ArrayList<Device> d) {
-        if(d != null) {
-            cic.setDevices(d);
+    protected void onPostExecute(ArrayList<Device> devices) {
+        if(devices != null) {
+            cic.setDevices(devices);
         } else {
             Log.e(TAG, "DEVICES ARRAY WAS ABOUT TO BE SET TO NULL");
         }
     }
 
+    /**
+     * Retrieves the list of devices from the server, once the HTTP connection was established
+     * with the server.
+     * @param is the input stream which will accept the data coming from the server.
+     * @return the list of devices from the server
+     * @throws IOException if the list cannot be retrieved
+     */
     private ArrayList<Device> readStream(InputStream is) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());

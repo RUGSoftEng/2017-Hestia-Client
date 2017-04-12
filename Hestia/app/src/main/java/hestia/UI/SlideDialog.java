@@ -3,7 +3,9 @@ package hestia.UI;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -45,8 +47,8 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.slide_dialog);
 
-        final LinearLayout lm = (LinearLayout) findViewById(R.id.linearMain);
         int count = 0;
+        final LinearLayout lm = (LinearLayout) findViewById(R.id.linearMain);
 
         for (Activator activator : fields) {
             LinearLayout ll = new LinearLayout(context);
@@ -62,8 +64,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             lm.addView(ll);
             count++;
         }
-        LinearLayout ll = generateButtons();
-        lm.addView(ll);
     }
 
     private SeekBar createSeekBar(float progress, int count, Activator a){
@@ -71,8 +71,8 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         SeekBar bar = new SeekBar(context);
         final int max_int = Integer.MAX_VALUE;
         bar.setMax(max_int);
-        bar.setProgress((int)progress* max_int);
-        bar.setLayoutParams(new LinearLayout.LayoutParams(800,80));
+        bar.setProgress((int)(progress* max_int));
+        bar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,80));
         bar.setId(count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -89,7 +89,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
-                state.setState(value);
+                state.setRawState(value);
                 cic.setActivatorState(d,act.getId(),state);
             }
         });
