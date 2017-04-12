@@ -12,13 +12,22 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * Sends a POST request to the server with a JSON object containing
+ * the data of the device to be added. Initially, the data is stored in a HashMap,
+ * which will be converted in a JSON object.
+ */
+
 public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
 
     private final String TAG = "PostDeviceTask";
-    private String path;
     private HashMap<String, String> deviceHashMap;
     private ClientInteractionController cic;
 
+    /**
+     * Creates an instance of the PostDeviceTask class with the HashMap.
+     * @param deviceHashMap the device to be added
+     */
     public PostDeviceTask(HashMap<String, String> deviceHashMap) {
         this.deviceHashMap = deviceHashMap;
         this.cic = ClientInteractionController.getInstance();
@@ -33,6 +42,8 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
         try {
             url = new URL(postPath);
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(2000);
+            urlConnection.setConnectTimeout(2000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             urlConnection.setDoOutput(true);
@@ -58,13 +69,17 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
         return response;
     }
 
+    /**
+     * At the end of the task, updates the list of deviecs.
+     * @param result holds the response code of the POST request
+     */
     @Override
     protected void onPostExecute(Integer result) {
         cic.updateDevices();
     }
 
     /**
-     * Write the JSON for the new device to the output stream, which is sent over the urlConnection
+     * Write the JSON for the new device to the output stream, which is sent over the urlConnection.
      */
     private void writeStream(OutputStream os) throws IOException {
         JsonObject requiredInfo = new JsonObject();

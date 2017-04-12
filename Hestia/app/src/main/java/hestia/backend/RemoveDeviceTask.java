@@ -2,26 +2,24 @@ package hestia.backend;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
- * This class will send a DELETE request to the Server in order to delete
- * the Device "device".
+ * This class will send a DELETE request to the Server in order to delete the Device "device".
  */
 
 public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
-    final String TAG = "RemoveDeviceTask";
+    private final String TAG = "RemoveDeviceTask";
+    private final Integer DELETE_SUCCESSFUL_CODE = 204;
     private Device device;
     private ClientInteractionController cic;
 
     /**
-     * Creates an instance of the RemoveDeviceTask class storing the path and the device passed as arguments.
+     * Creates an instance of the RemoveDeviceTask class with the device to be removed.
      * @param device the device to be removed.
      */
     public RemoveDeviceTask(Device device) {
@@ -31,6 +29,8 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
 
     /**
      * Send the DELETE request to the server
+     * @param params parameters used for the background activity.
+     * @return the response code of the DELETE request
      */
     @Override
     protected Integer doInBackground(Void... params) {
@@ -39,15 +39,17 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
         String path = this.cic.getPath() + "devices/" + id;
 
         Integer responseCode = null;
-        HttpURLConnection httpCon = null;
+        HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(path);
-            httpCon = (HttpURLConnection) url.openConnection();
-            httpCon.setRequestMethod("DELETE");
-            httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            httpCon.setRequestProperty("charset", "utf-8");
-            httpCon.connect();
-            responseCode = httpCon.getResponseCode();
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(2000);
+            urlConnection.setConnectTimeout(2000);
+            urlConnection.setRequestMethod("DELETE");
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            urlConnection.setRequestProperty("charset", "utf-8");
+            urlConnection.connect();
+            responseCode = urlConnection.getResponseCode();
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "SocketTimeoutException");
             Log.e(TAG, e.toString());
@@ -58,13 +60,17 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
             Log.e(TAG, "Connection failed: could not realize the DELETE request");
             Log.e(TAG, e.toString());
         } finally {
-            if (httpCon != null) {
-                httpCon.disconnect();
+            if (urlConnection != null) {
+                urlConnection.disconnect();
             }
         }
         return responseCode;
     }
 
+    /**
+     * Once the task is finished, it updates the list of devices.
+     * @param result the response code
+     */
     @Override
     protected void onPostExecute(Integer result) {
         cic.updateDevices();
