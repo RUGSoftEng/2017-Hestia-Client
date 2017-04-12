@@ -12,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * throughout the entire app through the HestiaApplication class.
  * @see hestia.UI.HestiaApplication
  */
+
 public class ClientInteractionController extends Application{
 
     /**

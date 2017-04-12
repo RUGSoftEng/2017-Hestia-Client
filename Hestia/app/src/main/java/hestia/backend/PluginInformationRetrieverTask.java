@@ -1,11 +1,5 @@
 package hestia.backend;
 
-/**
- * Subclass of the AsyncTask, it is used to start a task that will send a GET request
- * for the specified plugin to the server.
- * NOTE: the path passed as argument in the constructor is already completed: it contains data
- * about the Organization and the Plugin name used in order to identify the right plugin.
- */
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -26,6 +20,14 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import hestia.UI.AddDeviceInfo;
+
+
+/**
+ * Subclass of the AsyncTask, it is used to start a task that will send a GET request
+ * for the specified plugin to the server.
+ * NOTE: the path passed as argument in the constructor is already completed: it contains data
+ * about the Organization and the Plugin name used in order to identify the right plugin.
+ */
 
 public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<String,String>> {
     private static final String TAG = "PluginRetrieverTask";

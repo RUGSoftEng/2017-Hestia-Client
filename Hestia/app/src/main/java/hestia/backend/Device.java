@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * </p>
  * @see Activator
  */
+
 public class Device {
     private int deviceId;
     private String name;

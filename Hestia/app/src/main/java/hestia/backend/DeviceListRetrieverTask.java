@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * It runs in the background as an AsyncTask
  * @see android.os.AsyncTask
  */
+
 public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private static final String TAG = "DeviceListRetrieverTask";
     private ClientInteractionController cic;
