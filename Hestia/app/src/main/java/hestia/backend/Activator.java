@@ -6,6 +6,7 @@ package hestia.backend;
  * Furthermore there is a string name and a string state type,
  * which is currently used for casting the generic state variable to an actual type.
  * @see Device
+ * @see ActivatorState
  */
 public class Activator {
     private int id;
