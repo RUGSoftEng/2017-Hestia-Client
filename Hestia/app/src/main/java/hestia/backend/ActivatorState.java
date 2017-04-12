@@ -9,46 +9,46 @@ package hestia.backend;
  */
 
 public class ActivatorState<T> {
-    T state;
-    String type;
+    private T rawState;
+    private String type;
 
     /**
      * Creates an ActivatorState with the specified rawState and type.
-     * @param state the value of the ActivatorState, based on the type
+     * @param rawState the value of the ActivatorState, based on the type
      * @param type the type of the activator.
      */
-    public ActivatorState(T state, String type) {
-        state = state;
+    public ActivatorState(T rawState, String type) {
+        this.rawState = rawState;
         this.type = type;
     }
 
     /**
-     * Returns the state of the activator.
-     * @return the state of the activator
+     * Returns the rawState, which is the actual value of the activator's state.
+     * @return the rawState of the activator's state
      */
-    public T getState() {
-        return this.state;
+    public T getRawState() {
+        return this.rawState;
     }
 
     /**
-     * Replaces the current state of the ActivatorState with the specified one.
-     * @param state the new state of the ActivatorState
+     * Replaces the current rawState of the activator's state with the specified one.
+     * @param rawState the new rawState of the activator's state
      */
-    public void setState(T state){
-        this.state = state;
+    public void setRawState(T rawState){
+        this.rawState = rawState;
     }
 
     /**
-     * Returns the type of the activator.
-     * @return the type of the activator
+     * Returns the type of the activator's state.
+     * @return the type of the activator's state
      */
     public String getType(){
         return this.type;
     }
 
     /**
-     * Replaces the current type of the ActivatorState with the specified one.
-     * @param type the new type of the activator
+     * Replaces the current type of the activator's state with the specified one.
+     * @param type the new type of the activator's state
      */
     public void setType(String type){
         this.type = type;
@@ -56,6 +56,6 @@ public class ActivatorState<T> {
 
     @Override
     public String toString(){
-        return this.type + " - " + this.state.toString();
+        return this.type + " - " + this.rawState.toString();
     }
 }

@@ -1,27 +1,39 @@
 package hestia.backend;
 
-import android.util.Log;
+/**
+ * A JSON deserializer for an Activator.
+ * It implements the Google's JsonDeserializer interface.
+ * @see Activator
+ */
 
+import android.util.Log;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import java.lang.reflect.Type;
 
+public class ActivatorDeserializer implements JsonDeserializer<Activator> {
 
-class ActivatorDeserializer implements JsonDeserializer<Activator> {
-
+    /**
+     * Deserializes a JSON object, creating an Activator.
+     * @param json the JSON object to be deserialized
+     * @param typeOfT the type of the Object to deserialize to
+     * @param context the current context of application
+     * @return a deserialized object of the specified type Activator
+     * @throws JsonParseException if json is not in the expected format.
+     */
     @Override
     public Activator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
 
-        JsonObject jobject = (JsonObject) json;
-        Log.i("JSONOBJECT",jobject.toString());
-        String stateType = jobject.get("type").getAsString();
-        String rawState = jobject.get("state").getAsString();
+        JsonObject jsonObject = (JsonObject) json;
+        Log.i("JSONOBJECT",jsonObject.toString());
+        String stateType = jsonObject.get("type").getAsString();
+        String rawState = jsonObject.get("state").getAsString();
         ActivatorState state = null;
+
         switch (stateType.toLowerCase()) {
             case "bool":
                 state = new ActivatorState<Boolean>(Boolean.parseBoolean(rawState),"TOGGLE");
@@ -38,10 +50,9 @@ class ActivatorDeserializer implements JsonDeserializer<Activator> {
             default : break;
         }
 
-        return new Activator(
-                jobject.get("activatorId").getAsInt(),
-                state,
-                jobject.get("name").getAsString());
+        int activatorId = jsonObject.get("activatorId").getAsInt();
+        String name = jsonObject.get("name").getAsString();
 
+        return new Activator(activatorId, state, name);
     }
 }

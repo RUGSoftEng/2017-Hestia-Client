@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
+public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     private String TAG = "StateModificationTask";
     private ClientInteractionController cic;
     private int deviceId;
