@@ -17,7 +17,7 @@ public class Activator {
     /**
      * Creates an Activator with the specified id, state and name.
      * @param id the id of the activator
-     * @param state the current state of the activator
+     * @param state the current state of the activator, this is a wrapper around a generic type
      * @param name the name of the activator
      */
     public Activator(int id, ActivatorState state, String name) {
@@ -73,16 +73,6 @@ public class Activator {
     public void setName(String name) {
         this.name = name;
     }
-
-    /*
-    public String getType() {
-        return state.getType();
-    }
-
-    public void setType(String type) {
-        state.setType(type);
-    }
-    */
 
     @Override
     public boolean equals(Object o) {

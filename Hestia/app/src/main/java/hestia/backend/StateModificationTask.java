@@ -40,6 +40,10 @@ public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
         this.cic = ClientInteractionController.getInstance();
     }
 
+    /**
+     * Establishes a connection with the server and invokes the writeStream method.
+     * @return The HTTP response code to the POST method
+     */
     @Override
     protected Integer doInBackground(Void... params) {
         Integer response = null;

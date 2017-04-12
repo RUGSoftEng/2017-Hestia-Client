@@ -25,33 +25,36 @@ import hestia.UI.AddDeviceInfo;
 /**
  * Subclass of the AsyncTask, it is used to start a task that will send a GET request
  * for the specified plugin to the server.
- * NOTE: the path passed as argument in the constructor is already completed: it contains data
- * about the Organization and the Plugin name used in order to identify the right plugin.
  */
 
 public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<String,String>> {
     private static final String TAG = "PluginRetrieverTask";
-    private String path;
+    private String pluginPath;
     private Activity a;
 
     /**
-     * Creates an instance of PluginInformationRetrieverTask, storing the path and
+     * Creates an instance of PluginInformationRetrieverTask, storing the pluginPath and
      * the current activity.
-     * @param path the path to the required plugin
+     * @param pluginPath the pluginPath to the required plugin
      * @param a the current activity
      */
-    public PluginInformationRetrieverTask(String path, Activity a) {
-        this.path = path;
+    public PluginInformationRetrieverTask(String pluginPath, Activity a) {
+        this.pluginPath = pluginPath;
         this.a = a;
     }
 
+    /**
+     * This method runs in a separate background thread. It establishes a connection to the server
+     * and then calls the readStream method to obtain the actual plugin map
+     * @return the hashmap containing the fields which are required for the plugin.
+     */
     @Override
     protected HashMap<String, String> doInBackground(Void... params) {
         URL url = null;
         HttpURLConnection urlConnection = null;
         HashMap<String,String> plugin = null;
         try {
-            url = new URL(this.path);
+            url = new URL(this.pluginPath);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(2000);
             urlConnection.setConnectTimeout(2000);
@@ -62,7 +65,7 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
             Log.e(TAG, "SocketTimeoutException");
             Log.e(TAG, e.toString());
         } catch (ConnectException e) {
-            Log.e(TAG, "ConnectExeption");
+            Log.e(TAG, "ConnectException");
             Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());

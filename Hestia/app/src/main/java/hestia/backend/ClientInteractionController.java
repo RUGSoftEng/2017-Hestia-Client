@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ClientInteractionController extends Application{
 
     /**
-     * Use CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
+     * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
      * a listener attempts to remove itself during event notification.
      */
     private final CopyOnWriteArrayList<DevicesChangeListener> listeners =  new CopyOnWriteArrayList<>();
@@ -34,8 +34,8 @@ public class ClientInteractionController extends Application{
 
     /**
      * Returns the single instance of ClientInteractionController.
-     * If there was no instance of this class creates previously,
-     * then it will create one before returning it.
+     * If there was no instance of this class created previously,
+     * then it will create one and return it.
      * @return the single instance of ClientInteractionController
      */
     public static ClientInteractionController getInstance(){
@@ -91,7 +91,7 @@ public class ClientInteractionController extends Application{
 
     /**
      * Attempts to replace the list of devices with the specified one.
-     * If the new list of devices contains different devices, it repalce the old list of devices
+     * If the new list of devices contains different devices, it replaces the old list of devices
      * with the new one and it will fire a change event. Otherwise, it will not do anything.
      * @param devices the new list of devices
      */
@@ -104,7 +104,7 @@ public class ClientInteractionController extends Application{
 
     /**
      * This method implements the HTTP POST method for changing the state of an activator on a
-     * device as an AsyncTask. It will continue trying to post until the response is not an error.
+     * device as an AsyncTask.
      * @param device The target device for the post
      * @param activatorId The target activator for the post
      * @param newState The new state object to be used by the post
@@ -160,7 +160,8 @@ public class ClientInteractionController extends Application{
     }
 
     /**
-     * Triggers a change event.
+     * Triggers a change event. The change is propagated to all listeners.
+     * @see hestia.UI.DeviceListFragment
      */
     protected void fireChangeEvent() {
         DevicesEvent evt = new DevicesEvent(this);

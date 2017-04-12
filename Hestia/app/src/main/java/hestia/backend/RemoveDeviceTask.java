@@ -9,7 +9,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
- * This class will send a DELETE request to the Server in order to delete the Device "device".
+ * This class will send a DELETE request to the Server in order to delete the target device.
  */
 
 public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {

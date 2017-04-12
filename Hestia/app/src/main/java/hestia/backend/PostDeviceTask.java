@@ -33,6 +33,11 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
         this.cic = ClientInteractionController.getInstance();
     }
 
+    /**
+     * Runs as a thread in the background. Tries to establish a connection with the server and then
+     * invokes the writeStream method to perform the actual POST.
+     * @return the HTTP response code of the POST.
+     */
     @Override
     protected Integer doInBackground(Void... params) {
         String postPath = this.cic.getPath() + "devices/";

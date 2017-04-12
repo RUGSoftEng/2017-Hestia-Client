@@ -9,8 +9,9 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 /**
- * A JSON deserializer for an Activator.
- * It implements the Google's JsonDeserializer interface.
+ * A JSON deserializer for the Activator class.
+ * It implements Google's JsonDeserializer interface, and it is used by GSON to deserialize the
+ * activators in a device.
  * @see Activator
  */
 
@@ -22,7 +23,7 @@ public class ActivatorDeserializer implements JsonDeserializer<Activator> {
      * @param typeOfT the type of the Object to deserialize to
      * @param context the current context of application
      * @return a deserialized object of the specified type Activator
-     * @throws JsonParseException if json is not in the expected format.
+     * @throws JsonParseException if the JSON is not in the expected format.
      */
     @Override
     public Activator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

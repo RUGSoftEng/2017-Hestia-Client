@@ -69,8 +69,8 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
     }
 
     /**
-     * When the task is over, if the list of devices is not NULL, then replaces the current
-     * list of devices with the new one.
+     * When the task is done, if the list of devices is not NULL, then the current
+     * list of devices is replaced by the new one.
      * @param devices the new list of devices
      */
     @Override
@@ -84,7 +84,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
 
     /**
      * Retrieves the list of devices from the server, once the HTTP connection was established
-     * with the server
+     * with the server.
      * @param is the input stream which will accept the data coming from the server.
      * @return the list of devices from the server
      * @throws IOException if the list cannot be retrieved
