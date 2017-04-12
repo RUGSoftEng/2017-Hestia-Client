@@ -3,17 +3,8 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-
-import com.rugged.application.hestia.R;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
@@ -42,7 +33,6 @@ public class ClientInteractionController extends Application{
 
     public void setIp(String ip){
         this.ip = ip;
-        //fireChangeEvent();
         updateDevices();
     }
 
