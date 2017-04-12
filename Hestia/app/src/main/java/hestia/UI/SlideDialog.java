@@ -93,7 +93,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
-                state.setState(value);
+                state.setRawState(value);
                 cic.setActivatorState(d,act.getId(),state);
             }
         });

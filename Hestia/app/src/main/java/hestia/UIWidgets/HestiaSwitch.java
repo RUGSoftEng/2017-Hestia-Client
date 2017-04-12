@@ -72,13 +72,13 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
 //        activatorSwitch.setChecked(b);
         if (b) {
             // True
-            state.setState(true);
+            state.setRawState(true);
             cic.setActivatorState(d, activatorId, state);
             setCheck(true);
             Log.i(TAG, d.getName() + " set to true");
         } else {
             // False
-            state.setState(false);
+            state.setRawState(false);
             setCheck(false);
             cic.setActivatorState(d, activatorId, state);
             Log.i(TAG, d.getName() + " set to false");
