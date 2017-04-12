@@ -10,6 +10,13 @@ import android.widget.EditText;
 import com.rugged.application.hestia.R;
 import hestia.backend.ClientInteractionController;
 
+/**
+* This class opens the dialog to enter the organization name and plugin name.
+* It then sends this to the CIC which tries to get the required info.
+* If this works it consecutively opens a new dialog for the other info.
+* @see hestia.UI.AddDeviceInfo
+ */
+
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
     private EditText organizationField, pluginField;
     private Button confirm, cancel;

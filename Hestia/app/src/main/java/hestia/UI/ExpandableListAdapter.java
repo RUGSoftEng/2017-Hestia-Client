@@ -3,41 +3,33 @@ package hestia.UI;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import hestia.UIWidgets.HestiaSeekbar;
-import hestia.UIWidgets.HestiaSwitch;
-import hestia.backend.Activator;
-import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import com.rugged.application.hestia.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import hestia.backend.Device;
 
+/**
+ * The ExpendableListAdapter creates the expendable list. It gets an arraylist with deviceBars
+ * and adds them to the Expendable List. It also checks which options should be visible, and
+ * adds onClickListeners to these options in the popup menu.
+ */
+
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
-    // child data in format of header title, child title
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
-
     private ClientInteractionController c;
-    private final static String TAG = "ExpandableList";
 
     public ExpandableListAdapter(ArrayList<ArrayList<DeviceBar>> listChildData, Context context) {
-        Log.i(TAG, "Constructor");
         this.listDataChild = listChildData;
         this.context = context;
         this.c = ClientInteractionController.getInstance();
@@ -58,12 +50,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final DeviceBar dBar = (DeviceBar) getChild(groupPosition, childPosition);
 
-        Log.i(TAG, "Looking at device: " + dBar.getDevice().getName());
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //inflate depending on toggle or slider
             convertView = infalInflater.inflate(R.layout.child_list_item, null);
         }
 
@@ -72,28 +61,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
-//        Switch s = dBar.getHestiaSwitch().getActivatorSwitch();
         Boolean state = Boolean.parseBoolean(dBar.getDevice().getActivator(0).getState().toString());
         dBar.setLayout(convertView, R.id.light_switch,state);
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Create subclass
-                PopupMenu popup = new PopupMenu(context, view);
-                popup.getMenuInflater().inflate(R.menu.popup,
-                        popup.getMenu());
-
                 final Device d = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
-                if (d.getSliders()==null) {
-                    popup.getMenu().findItem(R.id.sliders).setEnabled(false);
-                    popup.getMenu().findItem(R.id.sliders).setVisible(false);
-                }
-                else{
-                    popup.getMenu().findItem(R.id.sliders).setEnabled(true);
-                    popup.getMenu().findItem(R.id.sliders).setVisible(true);
-                }
-
+                PopupMenu popup = createPopupMenu(view,d);
 
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -101,12 +76,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.sliders:
-                                Log.i(TAG,d+d.getSliders().toString());
                                 new SlideDialog(context,d.getSliders(),d).show();
-                                //Settings
                                 break;
                             case R.id.delete:
-                                c.deleteDevice((Device)((DeviceBar) getChild(groupPosition, childPosition)).getDevice());
+                                c.deleteDevice(d);
                                 break;
                             default:
                                 break;
@@ -171,5 +144,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    private PopupMenu createPopupMenu(View view, Device d){
+        PopupMenu popup = new PopupMenu(context, view);
+        popup.getMenuInflater().inflate(R.menu.popup,
+                popup.getMenu());
+
+        if (d.getSliders()==null) {
+            popup.getMenu().findItem(R.id.sliders).setEnabled(false);
+            popup.getMenu().findItem(R.id.sliders).setVisible(false);
+        }
+        return popup;
     }
 }

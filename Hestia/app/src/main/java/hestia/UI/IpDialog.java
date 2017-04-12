@@ -47,8 +47,8 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
             case R.id.confirm_button:
                 if(ip!=null) {
                     cic.setIp(ip);
-                    Toast.makeText(getContext(),"IP Address: " + cic.getIp() + ":" + cic.getPort()
-                            ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"IP Address set to: " + cic.getIp() + ":"
+                                    + cic.getPort(),Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.back_button:

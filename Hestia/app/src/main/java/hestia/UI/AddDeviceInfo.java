@@ -1,11 +1,5 @@
 package hestia.UI;
 
-/**
- * This class dynamically creates the fields for the required information.
- * It receives as arguments an activity and a HashMap<String,String> and then adds
- * the text and the fields from the HashMap keys, with the values as values.
- */
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -19,6 +13,13 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.util.HashMap;
 import hestia.backend.PostDeviceTask;
+
+/**
+ * This class dynamically creates the fields for the required information.
+ * It receives as arguments an activity and a HashMap<String,String> and then adds
+ * the text and the fields from the HashMap keys, with the values as values.
+ * Finally it sends back the HashMap to the cic which posts it to the server.
+ */
 
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
     private HashMap<String, String> fields;
@@ -80,7 +81,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             case R.id.confirm_button:
                 HashMap<String, String> h = getFieldValues();
                 if(h==null) {
-                    Toast.makeText(getContext(), "One or more incorrect values were entered."
+                    Toast.makeText(getContext(), "One or more empty values were entered."
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }

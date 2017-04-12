@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class DeviceListFragment extends Fragment implements DevicesChangeListener{
 
-    private final static String TAG = "DeviceListFragment";
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;

@@ -25,7 +25,6 @@ import hestia.backend.Device;
 ** It loads all the slider activators, and sends the new state onRelease.
  */
 
-
 public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
     private Device d;
     private ArrayList<Activator> fields;
@@ -52,12 +51,10 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         for (Activator activator : fields) {
             LinearLayout ll = new LinearLayout(context);
 
-            // Add text
             TextView name = new TextView(context);
             name.setText(activator.getName());
             ll.addView(name);
 
-            //Add field
             Float currState = Float.parseFloat(activator.getState().toString());
             SeekBar bar = createSeekBar(currState ,count, activator);
             ll.addView(bar);
@@ -118,7 +115,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     }
 
     private LinearLayout generateButtons(){
-        // Add buttons.
         LinearLayout ll = new LinearLayout(context);
         final Button confirm = new Button(context);
         final Button cancel = new Button(context);
