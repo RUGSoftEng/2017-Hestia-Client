@@ -1,8 +1,3 @@
-/*
-** This class handles the dialog which is opened if a Device has the 'slide' option.
-** It loads all the slider activators, and sends the new state onRelease.
- */
-
 package hestia.UI;
 
 import android.app.Dialog;
@@ -27,8 +22,12 @@ import hestia.backend.ActivatorState;
 import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
 
+/*
+** This class handles the dialog which is opened if a Device has the 'slide' option.
+** It loads all the slider activators, and sends the new state onRelease.
+ */
+
 public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
-    private final static String TAG = "SlideDialog";
     private Device d;
     private ArrayList<Activator> fields;
     private Context context;
@@ -54,12 +53,10 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         for (Activator activator : fields) {
             LinearLayout ll = new LinearLayout(context);
 
-            // Add text
             TextView name = new TextView(context);
             name.setText(activator.getName());
             ll.addView(name);
 
-            //Add field
             Float currState = Float.parseFloat(activator.getState().toString());
             SeekBar bar = createSeekBar(currState ,count, activator);
             ll.addView(bar);
@@ -68,7 +65,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             count++;
         }
     }
-
 
     private SeekBar createSeekBar(float progress, int count, Activator a){
         final Activator act = a;
@@ -93,23 +89,22 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
-                state.setState(value);
+                state.setRawState(value);
                 cic.setActivatorState(d,act.getId(),state);
             }
         });
         return bar;
     }
 
-
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case 11:
+            case R.id.confirm_button:
                 Toast.makeText(getContext(), "Leaving", Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
-            case 12:
+            case R.id.back_button:
                 Toast.makeText(getContext(), "Cancel", Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
@@ -119,15 +114,12 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         dismiss();
     }
 
-
     private LinearLayout generateButtons(){
-        // Add buttons.
         LinearLayout ll = new LinearLayout(context);
-        int i = 10;
         final Button confirm = new Button(context);
         final Button cancel = new Button(context);
-        confirm.setId(i + 1);
-        cancel.setId(i + 2);
+        confirm.setId(R.id.confirm_button);
+        cancel.setId(R.id.back_button);
         confirm.setText("Confirm");
         cancel.setText("Cancel");
         confirm.setOnClickListener(this);

@@ -21,12 +21,10 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     private EditText ipField;
     private Button confirm,cancel;
     private String ip;
-    private Activity c;
     private ClientInteractionController cic;
 
     public IpDialog(Activity a) {
         super(a);
-        this.c = a;
         this.cic = ClientInteractionController.getInstance();
     }
 
@@ -40,22 +38,18 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        Toast.makeText(getContext(),"IP Address: " + cic.getIp() + ":" + cic.getPort()
-                ,Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onClick(View v) {
-
         ip = ipField.getText().toString();
         switch (v.getId()) {
             case R.id.confirm_button:
                 if(ip!=null) {
                     cic.setIp(ip);
+                    Toast.makeText(getContext(),"IP Address set to: " + cic.getIp() + ":"
+                                    + cic.getPort(),Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(),"IP Address: " + cic.getIp() + ":" + cic.getPort()
-                        ,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button:
                 dismiss();

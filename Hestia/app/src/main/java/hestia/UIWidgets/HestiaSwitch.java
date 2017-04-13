@@ -21,7 +21,6 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
 
     public HestiaSwitch(Device d, Activator a, Context c) {
         this.a = a;
-//        activatorSwitch = createActivatorSwitch(c);
         Log.i(TAG, "HestiaSwitch created");
         activatorSwitch = new Switch(c);
         setCheck(Boolean.parseBoolean(a.getState().toString()));
@@ -48,37 +47,18 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
         return activatorSwitch;
     }
 
-    public void setActivatorSwitch(Switch s) {
-//        s.setOnCheckedChangeListener(null);
-//        s.setChecked(activatorSwitch.isChecked());
-        s.setOnCheckedChangeListener(this);
-        this.activatorSwitch = s;
-    }
-
-//    private Switch createActivatorSwitch(Context c) {
-//        Switch s = new Switch(c);
-//        Log.i(TAG, "the switch is being created");
-//
-//        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//        return s;
-//    }
-
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         int activatorId = a.getId();
 
         ActivatorState state = a.getState();
-//        activatorSwitch.setChecked(b);
         if (b) {
-            // True
-            state.setState(true);
+            state.setRawState(true);
             cic.setActivatorState(d, activatorId, state);
             setCheck(true);
             Log.i(TAG, d.getName() + " set to true");
         } else {
-            // False
-            state.setState(false);
+            state.setRawState(false);
             setCheck(false);
             cic.setActivatorState(d, activatorId, state);
             Log.i(TAG, d.getName() + " set to false");
@@ -95,6 +75,5 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     private void setCheck(boolean b) {
         check = b;
     }
-
 
 }

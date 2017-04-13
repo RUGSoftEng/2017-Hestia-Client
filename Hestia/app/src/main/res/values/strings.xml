@@ -12,6 +12,7 @@
     <string name="portHint">Port (E.G.: 5000, *can be left empty!*</string>
     <string name="back">Back</string>
     <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
     <string name="addDeviceText">Add a new device</string>
     <string name="organizationHint">Organization (e.g. "Hestia")</string>
     <string name="pluginHint">Plugin (e.g. "simpleLock")</string>

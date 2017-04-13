@@ -4,9 +4,7 @@ package hestia.UI;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -26,10 +23,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import hestia.backend.ClientInteractionController;
-import hestia.backend.DeviceListRetrieverTask;
 
 /**
  * This abstract class is used as an abstract wrapper around the device list activity class.
@@ -40,7 +35,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     protected abstract Fragment createFragment();
 
     private static String TAG = "SingleFragmentActivity";
-    private Toolbar toolbar;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fm;
     private List<MenuObject> menuObjects;
@@ -64,14 +58,14 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             @Override
             public void onRefresh() {
                 swipeRefresh.setRefreshing(true);
-                Log.i(TAG, "Curently refreshing");
+                Log.i(TAG, "Currently refreshing");
                 cic.updateDevices();
                 Log.i(TAG, "Refresh stopped");
                 swipeRefresh.setRefreshing(false);
             }
         });
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -115,7 +109,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
@@ -130,8 +123,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
                 return true;
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }

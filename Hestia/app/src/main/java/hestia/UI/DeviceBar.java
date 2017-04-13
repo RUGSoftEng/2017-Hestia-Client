@@ -1,15 +1,18 @@
 package hestia.UI;
 
-
 import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
 
 import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Device;
 
+/**
+ *  This class takes care of the deviceBar.
+ * The devicebar is the 'row' in the expandable list of a single device.
+ * The DeviceBar class also sets the HestiaSwitch for the boolean activator.
+ */
+
 public class DeviceBar {
-    //TODO Add ImageView
     private Device d;
     private HestiaSwitch hestiaSwitch;
 
@@ -28,29 +31,18 @@ public class DeviceBar {
         this.d = d;
     }
 
-    public HestiaSwitch getHestiaSwitch() {
-        return hestiaSwitch;
-    }
-
-    public void setHestiaSwitch(HestiaSwitch hestiaSwitch) {
-        this.hestiaSwitch = hestiaSwitch;
-    }
-
     public void setLayout(View v, int layoutId, boolean state) {
         hestiaSwitch.getActivatorSwitch().setChecked(state);
         Log.i(TAG, "Layout changed for: " + d.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
         hestiaSwitch.addLayout(v, layoutId);
-
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean equal = false;
 
-        if (object != null && object instanceof DeviceBar)
-        {
+        if (object != null && object instanceof DeviceBar) {
             if(this.d.getDeviceId() == ((DeviceBar) object).getDevice().getDeviceId()){
                 equal = true;
             }

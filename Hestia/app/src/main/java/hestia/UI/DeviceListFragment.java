@@ -3,7 +3,6 @@ package hestia.UI;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
  */
 public class DeviceListFragment extends Fragment implements DevicesChangeListener{
 
-    private final static String TAG = "DeviceListFragment";
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
@@ -43,7 +41,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_peripheral_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_list, container, false);
         createFloatingButton(view);
 
         listDataChild = new ArrayList<>();

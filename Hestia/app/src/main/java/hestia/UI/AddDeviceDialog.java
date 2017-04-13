@@ -3,25 +3,29 @@ package hestia.UI;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import com.rugged.application.hestia.R;
-import java.util.concurrent.ExecutionException;
 import hestia.backend.ClientInteractionController;
 
+/**
+* This class opens the dialog to enter the organization name and plugin name.
+* It then sends this to the CIC which tries to get the required info.
+* If this works it consecutively opens a new dialog for the other info.
+* @see hestia.UI.AddDeviceInfo
+ */
+
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
-    private final String TAG = "AddDeviceDialog";
     private EditText organizationField, pluginField;
     private Button confirm, cancel;
     private ClientInteractionController cic;
-    private Activity c;
+    private Activity context;
 
     public AddDeviceDialog(Activity a) {
         super(a);
-        this.c = a;
+        this.context = a;
         this.cic = ClientInteractionController.getInstance();;
     }
 
@@ -45,7 +49,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                cic.addDevice(organization, pluginName, c);
+                cic.addDevice(organization, pluginName, context);
                 break;
             case R.id.back_button:
                 dismiss();

@@ -1,11 +1,5 @@
 package hestia.UI;
 
-/**
- * This class dynamically creates the fields for the required information.
- * It receives as arguments an activity and a HashMap<String,String> and then adds
- * the text and the fields from the HashMap keys, with the values as values.
- */
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,20 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.util.HashMap;
-import hestia.backend.ClientInteractionController;
 import hestia.backend.PostDeviceTask;
 
+/**
+ * This class dynamically creates the fields for the required information.
+ * It receives as arguments an activity and a HashMap<String,String> and then adds
+ * the text and the fields from the HashMap keys, with the values as values.
+ * Finally it sends back the HashMap to the cic which posts it to the server.
+ */
+
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
-    private ClientInteractionController cic;
     private HashMap<String, String> fields;
     private Activity content;
-    private final int CONFIRM = 11;
-    private final int CANCEL = 12;
 
     public AddDeviceInfo(Activity a, HashMap<String, String> fields) {
         super(a);
         this.content = a;
-        this.cic = ClientInteractionController.getInstance();
         this.fields = fields;
     }
 
@@ -82,11 +78,10 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case CONFIRM:
-                // Fill hashmap, send to backend
+            case R.id.confirm_button:
                 HashMap<String, String> h = getFieldValues();
                 if(h==null) {
-                    Toast.makeText(getContext(), "One or more incorrect values were entered."
+                    Toast.makeText(getContext(), "One or more empty values were entered."
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -94,7 +89,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 Toast.makeText(content, h.toString(), Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
-            case CANCEL:
+            case R.id.back_button:
                 Toast.makeText(content, "Cancel", Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
@@ -103,7 +98,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         }
     }
 
-    public HashMap<String, String> getFieldValues() {
+    private HashMap<String, String> getFieldValues() {
         int i = 0;
         for (String key : fields.keySet()) {
             EditText field = (EditText) findViewById(i);
@@ -117,18 +112,15 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         return fields;
     }
 
-    public LinearLayout generateButtons(LinearLayout.LayoutParams params){
-        // Add buttons.
+    private LinearLayout generateButtons(LinearLayout.LayoutParams params){
+        // Create buttons.
         LinearLayout ll = new LinearLayout(content);
-        int i = 10;
         final Button confirm = new Button(content);
         final Button cancel = new Button(content);
-        confirm.setId(i + 1);
-        cancel.setId(i + 2);
-        confirm.setText("CONFIRM");
+        confirm.setId(R.id.confirm_button);
+        cancel.setId(R.id.back_button);
+        confirm.setText("Confirm");
         cancel.setText("Cancel");
-        // set the layoutParams on the button
-        ll.setLayoutParams(params);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
         ll.addView(confirm);

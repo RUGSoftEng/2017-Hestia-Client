@@ -17,10 +17,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        app:layout_anchor="@id/lvExp"
+        app:layout_anchor="@+id/lvExp"
         app:layout_anchorGravity="bottom|right"
-        android:src="@drawable/ic_add_black_24dp"
         app:backgroundTint="#e48912"
+        android:src="@drawable/ic_add_black_24dp"
         />
 </android.support.design.widget.CoordinatorLayout>
 
