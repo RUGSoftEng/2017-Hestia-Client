@@ -2,8 +2,7 @@
 A home automation system.
 
 ## General Description 
-This repository contains the clientside code of the **Hestia** home automation system. 
-**Hestia** is a home automation system. The system consists of a server which has to be set up at home and an app.
+This repository contains the clientside code of the **Hestia** home automation system. The system consists of a server which has to be set up at home and an app.
 The server is used to manage all home automation devices. The app, which is available as an apk for the Android framework,
 connects to the server and provides an interface to control the devices. 
 
