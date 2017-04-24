@@ -1,9 +1,4 @@
-/* This class handles the login activity.
- * It takes the fields from the layout, gets the values the user inputs and validates it.
- * Furthermore it first checks the shared preferences of the phone if the user is remembered.
- */
-
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,18 +10,23 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rugged.application.hestia.R;
+
 import java.util.Locale;
 
 /**
- * This class represents a login screen, complete with remember me function.
+ *  This class handles the login activity.
+ *  It takes the fields from the layout, gets the values the user inputs and validates it.
+ *  Furthermore it first checks the shared preferences of the phone if the user is remembered.
  */
+
 public class LoginActivity extends Activity  {
     private Button loginButton;
     private EditText userField,passField;
     private CheckBox rememberButton;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
-    private Boolean saveLogin;
     private TextView attemptsText;
     private int counter = 10;
     private String username,password;
@@ -37,15 +37,17 @@ public class LoginActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        /* Before going on, check if the user is remembered, if so, directly redirect. */
+        Intent i = getIntent();
+        String extra = i.getStringExtra("login");
+
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
-        loginPrefsEditor = loginPreferences.edit();
-        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        Boolean saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin) {
-            gotoMainActivity();
+            if(extra==null) {
+                gotoMainActivity();
+            }
         }
 
-        /* Get all the buttons and fields from the layout */
         loginButton = (Button)findViewById(R.id.loginButton);
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
@@ -76,7 +78,6 @@ public class LoginActivity extends Activity  {
     }
 
     private boolean checkCredentials(String username,String password){
-        // TODO: Check credentials with server database
         return(username.equals("admin")&&password.equals("password"));
     }
 
@@ -87,6 +88,7 @@ public class LoginActivity extends Activity  {
     }
 
     private void setSaveLogin(String username, String password){
+        loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.putBoolean("saveLogin", true);
         loginPrefsEditor.putString("username", username);
         loginPrefsEditor.putString("password", password);
@@ -94,6 +96,7 @@ public class LoginActivity extends Activity  {
     }
 
     private void clearSaveLogin(){
+        loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.clear();
         loginPrefsEditor.apply();
     }

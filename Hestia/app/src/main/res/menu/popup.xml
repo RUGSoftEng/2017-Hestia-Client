@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item
-        android:id="@+id/settings"
-        android:title="settings" />
+    <!--<item-->
+        <!--android:id="@+id/settings"-->
+        <!--android:title="settings" />-->
     <item
         android:id="@+id/delete"
-        android:title="delete"
+        android:title="Delete"
         />
-    <item android:id="@+id/slide"
-        android:title="Slide"
-        android:enabled="false"
-        android:visible="false"/>
+    <item
+        android:id="@+id/sliders"
+        android:title="Sliders" />
 </menu>

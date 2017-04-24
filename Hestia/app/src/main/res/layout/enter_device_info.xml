@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="400dp"
-    android:layout_height="wrap_content"
+    android:layout_height="800dp"
     android:id="@+id/linearMain">
-
 
 </LinearLayout>

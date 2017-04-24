@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package hestia.UI;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -11,32 +11,33 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.List;
+import hestia.backend.ClientInteractionController;
+import com.rugged.application.hestia.R;
 
-class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private List<String> listDataHeader; // header titles
-    // child data in format of header title, child title
-    private HashMap<String, List<Device>> listDataChild;
+import java.util.ArrayList;
+
+import hestia.backend.Device;
+
+/**
+ * The ExpendableListAdapter creates the expendable list. It gets an arraylist with deviceBars
+ * and adds them to the Expendable List. It also checks which options should be visible, and
+ * adds onClickListeners to these options in the popup menu.
+ */
+
+public class ExpandableListAdapter extends BaseExpandableListAdapter{
+    private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
+    private ClientInteractionController c;
 
-    ExpandableListAdapter(List<String> listDataHeader,
-                          HashMap<String, List<Device>> listChildData,
-                          Context context) {
-        this.listDataHeader = listDataHeader;
+    public ExpandableListAdapter(ArrayList<ArrayList<DeviceBar>> listChildData, Context context) {
         this.listDataChild = listChildData;
         this.context = context;
+        this.c = ClientInteractionController.getInstance();
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .get(childPosititon).getName();
-    }
-
-    public Device getChildDevice(int groupPostition, int childPostion) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPostition))
-                .get(childPostion);
+    public Object getChild(int groupPosition, int childPosition) {
+        return this.listDataChild.get(groupPosition).get(childPosition);
     }
 
     @Override
@@ -47,52 +48,38 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final DeviceBar dBar = (DeviceBar) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //inflate depending on toggle or slider
             convertView = infalInflater.inflate(R.layout.child_list_item, null);
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
-        txtListChild.setText(childText);
+        txtListChild.setText(dBar.getDevice().getName());
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
+
+        Boolean state = Boolean.parseBoolean(dBar.getDevice().getActivator(0).getState().toString());
+        dBar.setLayout(convertView, R.id.light_switch,state);
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(context, view);
-                popup.getMenuInflater().inflate(R.menu.popup,
-                        popup.getMenu());
-
-                for (int i = 0; i < getChildDevice(groupPosition, childPosition)
-                        .getActivators().size(); i++) {
-                    if (getChildDevice(groupPosition, childPosition).getActivators().get(i)
-                            .getType().equals("SLIDER")) {
-                        popup.getMenu().findItem(R.id.slide).setEnabled(true);
-                        popup.getMenu().findItem(R.id.slide).setVisible(true);
-                        break;
-                    }
-                }
+                final Device d = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                PopupMenu popup = createPopupMenu(view,d);
 
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.settings:
-                                //Settings
+                            case R.id.sliders:
+                                new SlideDialog(context,d.getSliders(),d).show();
                                 break;
                             case R.id.delete:
-                                //Remove list item
-                                break;
-                            case R.id.slide:
-                                //show notification
-                                final SlideDialog dialog = new SlideDialog(context);
-                                dialog.show();
+                                c.deleteDevice(d);
                                 break;
                             default:
                                 break;
@@ -107,18 +94,17 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .size();
+        return this.listDataChild.get(groupPosition).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.listDataHeader.get(groupPosition);
+        return this.listDataChild.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this.listDataHeader.size();
+        return this.listDataChild.size();
     }
 
     @Override
@@ -129,7 +115,8 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        DeviceBar dBar = ((ArrayList<DeviceBar>) getGroup(groupPosition)).get(0);
+        String headerTitle = dBar.getDevice().getType();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -150,9 +137,24 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    public void setListData(ArrayList<ArrayList<DeviceBar>> listDataChild){
+        this.listDataChild = listDataChild;
+    }
+
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-}
 
+    private PopupMenu createPopupMenu(View view, Device d){
+        PopupMenu popup = new PopupMenu(context, view);
+        popup.getMenuInflater().inflate(R.menu.popup,
+                popup.getMenu());
+
+        if (d.getSliders()==null) {
+            popup.getMenu().findItem(R.id.sliders).setEnabled(false);
+            popup.getMenu().findItem(R.id.sliders).setVisible(false);
+        }
+        return popup;
+    }
+}
