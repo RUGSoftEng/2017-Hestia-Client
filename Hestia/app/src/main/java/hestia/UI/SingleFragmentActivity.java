@@ -24,7 +24,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import hestia.backend.ClientInteractionController;
+import hestia.backend.BackendInteractor;
 
 /**
  * This abstract class is used as an abstract wrapper around the device list activity class.
@@ -38,7 +38,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fm;
     private List<MenuObject> menuObjects;
-    private ClientInteractionController cic;
+    private BackendInteractor backendInteractor;
 
     private final int IP = 1;
     private final int LOGOUT = 2;
@@ -48,8 +48,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        cic =  ((HestiaApplication)this.getApplication()).getCic();
-        if(cic.getIp()==null){
+        backendInteractor =  ((HestiaApplication)this.getApplication()).getBackendInteractor();
+        if(backendInteractor.getIp()==null){
             showIpDialog();
         }
 
@@ -59,7 +59,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             public void onRefresh() {
                 swipeRefresh.setRefreshing(true);
                 Log.i(TAG, "Currently refreshing");
-                cic.updateDevices();
+                backendInteractor.updateDevices();
                 Log.i(TAG, "Refresh stopped");
                 swipeRefresh.setRefreshing(false);
             }

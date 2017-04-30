@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import hestia.backend.ClientInteractionController;
+import hestia.backend.BackendInteractor;
 
 /**
  * The activity which presents a list containing all peripherals to the user. An activity is a
@@ -16,9 +16,9 @@ public class DeviceListActivity extends SingleFragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ClientInteractionController cic = ClientInteractionController.getInstance();
+        BackendInteractor backendInteractor = BackendInteractor.getInstance();
         SharedPreferences prefs = getSharedPreferences("HESTIA.IP", 0);
-        cic.setIp(prefs.getString("IP_OF_SERVER", cic.getIp()));
+        backendInteractor.setIp(prefs.getString("IP_OF_SERVER", backendInteractor.getIp()));
         super.onCreate(savedInstanceState);
     }
 
@@ -40,8 +40,8 @@ public class DeviceListActivity extends SingleFragmentActivity {
     }
 
     private void storeIP(){
-        ClientInteractionController cic = ClientInteractionController.getInstance();
+        BackendInteractor backendInteractor = BackendInteractor.getInstance();
         SharedPreferences.Editor prefs = getSharedPreferences("HESTIA.IP", 0).edit();
-        prefs.putString("IP_OF_SERVER", cic.getIp()).apply();
+        prefs.putString("IP_OF_SERVER", backendInteractor.getIp()).apply();
     }
 }

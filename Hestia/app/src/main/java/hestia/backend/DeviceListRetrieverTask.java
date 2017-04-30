@@ -25,13 +25,13 @@ import java.util.ArrayList;
 
 public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private static final String TAG = "DeviceListRetrieverTask";
-    private ClientInteractionController cic;
+    private BackendInteractor backendInteractor;
 
     /**
      * Creates a new DeviceListRetrieverTask.
      */
     public DeviceListRetrieverTask() {
-        this.cic = ClientInteractionController.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     /**
@@ -40,7 +40,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
      */
     @Override
     protected ArrayList<Device> doInBackground(Void... voids) {
-        String devicesPath = this.cic.getPath() + "devices/";
+        String devicesPath = this.backendInteractor.getPath() + "devices/";
         URL url = null;
         HttpURLConnection urlConnection = null;
         ArrayList<Device> devices = new ArrayList<>();
@@ -76,7 +76,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
     @Override
     protected void onPostExecute(ArrayList<Device> devices) {
         if(devices != null) {
-            cic.setDevices(devices);
+            backendInteractor.setDevices(devices);
         } else {
             Log.e(TAG, "DEVICES ARRAY WAS ABOUT TO BE SET TO NULL");
         }
