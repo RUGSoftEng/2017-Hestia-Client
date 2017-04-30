@@ -8,18 +8,18 @@ import android.util.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import hestia.backend.ClientInteractionController;
+import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
-public class ClientInteractionControllerTest {
+public class BackendInteractorTest {
     private String TAG = "ClientInteractionTest";
 
     @Test
     public void getDevices() throws Exception {
-        ClientInteractionController cic = ClientInteractionController.getInstance();
+        BackendInteractor cic = BackendInteractor.getInstance();
         StringBuilder sb = new StringBuilder();
         for(Device d : cic.getDevices()){
             sb.append(d.toString());

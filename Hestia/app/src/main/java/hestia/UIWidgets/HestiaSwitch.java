@@ -8,7 +8,7 @@ import android.widget.Switch;
 
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
-import hestia.backend.ClientInteractionController;
+import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 
 public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeListener {
@@ -16,7 +16,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     private Device d;
     private Activator a;
     private Switch activatorSwitch;
-    private ClientInteractionController cic;
+    private BackendInteractor cic;
     private boolean check;
 
     public HestiaSwitch(Device d, Activator a, Context c) {
@@ -25,7 +25,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
         activatorSwitch = new Switch(c);
         setCheck(Boolean.parseBoolean(a.getState().toString()));
         this.d = d;
-        this.cic = ClientInteractionController.getInstance();
+        this.cic = BackendInteractor.getInstance();
     }
 
     @Override

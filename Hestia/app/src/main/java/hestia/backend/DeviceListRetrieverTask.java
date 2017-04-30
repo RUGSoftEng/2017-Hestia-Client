@@ -25,13 +25,13 @@ import java.util.ArrayList;
 
 public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Device>> {
     private static final String TAG = "DeviceListRetrieverTask";
-    private ClientInteractionController cic;
+    private BackendInteractor cic;
 
     /**
      * Creates a new DeviceListRetrieverTask.
      */
     public DeviceListRetrieverTask() {
-        this.cic = ClientInteractionController.getInstance();
+        this.cic = BackendInteractor.getInstance();
     }
 
     /**

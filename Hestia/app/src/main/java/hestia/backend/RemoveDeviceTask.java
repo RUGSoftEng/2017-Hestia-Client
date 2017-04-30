@@ -16,7 +16,7 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "RemoveDeviceTask";
     private final Integer DELETE_SUCCESSFUL_CODE = 204;
     private Device device;
-    private ClientInteractionController cic;
+    private BackendInteractor cic;
 
     /**
      * Creates an instance of the RemoveDeviceTask class with the device to be removed.
@@ -24,7 +24,7 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
      */
     public RemoveDeviceTask(Device device) {
         this.device = device;
-        this.cic = ClientInteractionController.getInstance();
+        this.cic = BackendInteractor.getInstance();
     }
 
     /**

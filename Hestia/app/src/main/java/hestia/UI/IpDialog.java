@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import hestia.backend.ClientInteractionController;
+import hestia.backend.BackendInteractor;
 
 /**
  * This class represents the dialog screen with which the IP-address of the server is asked from the
@@ -21,11 +21,11 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     private EditText ipField;
     private Button confirm,cancel;
     private String ip;
-    private ClientInteractionController cic;
+    private BackendInteractor cic;
 
     public IpDialog(Activity a) {
         super(a);
-        this.cic = ClientInteractionController.getInstance();
+        this.cic = BackendInteractor.getInstance();
     }
 
     @Override

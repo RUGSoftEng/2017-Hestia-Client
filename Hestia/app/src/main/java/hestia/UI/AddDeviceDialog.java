@@ -8,7 +8,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import com.rugged.application.hestia.R;
-import hestia.backend.ClientInteractionController;
+
+import hestia.backend.BackendInteractor;
 
 /**
 * This class opens the dialog to enter the organization name and plugin name.
@@ -20,13 +21,13 @@ import hestia.backend.ClientInteractionController;
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
     private EditText organizationField, pluginField;
     private Button confirm, cancel;
-    private ClientInteractionController cic;
+    private BackendInteractor cic;
     private Activity context;
 
-    public AddDeviceDialog(Activity a) {
-        super(a);
-        this.context = a;
-        this.cic = ClientInteractionController.getInstance();;
+    public AddDeviceDialog(Activity activity) {
+        super(activity);
+        this.context = activity;
+        this.cic = BackendInteractor.getInstance();;
     }
 
     @Override
