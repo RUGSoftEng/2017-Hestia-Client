@@ -13,27 +13,27 @@ import hestia.backend.Device;
  */
 
 public class DeviceBar {
-    private Device d;
+    private Device device;
     private HestiaSwitch hestiaSwitch;
 
     private final static String TAG = "DeviceBar";
 
-    public DeviceBar(Device d, HestiaSwitch hestiaSwitch) {
-        this.d = d;
+    public DeviceBar(Device device, HestiaSwitch hestiaSwitch) {
+        this.device = device;
         this.hestiaSwitch = hestiaSwitch;
     }
 
     public Device getDevice() {
-        return d;
+        return device;
     }
 
     public void setDevice(Device d) {
-        this.d = d;
+        this.device = d;
     }
 
     public void setLayout(View v, int layoutId, boolean state) {
         hestiaSwitch.getActivatorSwitch().setChecked(state);
-        Log.i(TAG, "Layout changed for: " + d.getName() + " And switch truth is: " +
+        Log.i(TAG, "Layout changed for: " + device.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
         hestiaSwitch.addLayout(v, layoutId);
     }
@@ -43,7 +43,7 @@ public class DeviceBar {
         boolean equal = false;
 
         if (object != null && object instanceof DeviceBar) {
-            if(this.d.getDeviceId() == ((DeviceBar) object).getDevice().getDeviceId()){
+            if(this.device.getDeviceId() == ((DeviceBar) object).getDevice().getDeviceId()){
                 equal = true;
             }
         }
