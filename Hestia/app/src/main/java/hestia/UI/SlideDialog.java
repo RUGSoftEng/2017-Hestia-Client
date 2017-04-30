@@ -29,12 +29,12 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     private Device d;
     private ArrayList<Activator> fields;
     private Context context;
-    private BackendInteractor cic;
+    private BackendInteractor backendInteractor;
 
     public SlideDialog(Context a, ArrayList<Activator> fields, Device d) {
         super(a);
         this.context = a;
-        this.cic = BackendInteractor.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
         this.fields = fields;
         this.d = d;
     }
@@ -88,7 +88,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                cic.setActivatorState(d,act.getId(),state);
+                backendInteractor.setActivatorState(d,act.getId(),state);
             }
         });
         return bar;

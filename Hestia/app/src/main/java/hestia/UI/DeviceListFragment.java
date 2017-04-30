@@ -28,7 +28,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
-    private BackendInteractor cic;
+    private BackendInteractor backendInteractor;
     private FloatingActionButton fab;
 
     /**
@@ -50,7 +50,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
         expListView.setAdapter(listAdapter);
 
-        cic.addDevicesChangeListener(this);
+        backendInteractor.addDevicesChangeListener(this);
 
         populateUI();
 
@@ -60,8 +60,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private void populateUI() {
         listDataChild = new ArrayList<>();
 
-        cic = BackendInteractor.getInstance();
-        ArrayList<Device> devices = cic.getDevices();
+        backendInteractor = BackendInteractor.getInstance();
+        ArrayList<Device> devices = backendInteractor.getDevices();
         for (Device device : devices) {
             Activator a = device.getActivator(0);
             HestiaSwitch hestiaSwitch = new HestiaSwitch(device, a, getActivity());

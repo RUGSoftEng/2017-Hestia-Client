@@ -13,7 +13,7 @@ import hestia.backend.BackendInteractor;
 
 /**
 * This class opens the dialog to enter the organization name and plugin name.
-* It then sends this to the CIC which tries to get the required info.
+* It then sends this to the backendInteractor which tries to get the required info.
 * If this works it consecutively opens a new dialog for the other info.
 * @see hestia.UI.AddDeviceInfo
  */
@@ -21,13 +21,13 @@ import hestia.backend.BackendInteractor;
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
     private EditText organizationField, pluginField;
     private Button confirm, cancel;
-    private BackendInteractor cic;
+    private BackendInteractor backendInteractor;
     private Activity context;
 
     public AddDeviceDialog(Activity activity) {
         super(activity);
         this.context = activity;
-        this.cic = BackendInteractor.getInstance();;
+        this.backendInteractor = BackendInteractor.getInstance();;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (v.getId()) {
             case R.id.confirm_button:
-                cic.addDevice(organization, pluginName, context);
+                backendInteractor.addDevice(organization, pluginName, context);
                 break;
             case R.id.back_button:
                 dismiss();

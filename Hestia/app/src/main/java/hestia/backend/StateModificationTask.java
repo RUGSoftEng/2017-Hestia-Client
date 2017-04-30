@@ -21,7 +21,7 @@ import java.net.URL;
 
 public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     private String TAG = "StateModificationTask";
-    private BackendInteractor cic;
+    private BackendInteractor backendInteractor;
     private int deviceId;
     private int activatorId;
     private ActivatorState newState;
@@ -37,7 +37,7 @@ public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
         this.deviceId = deviceId;
         this.activatorId = activatorId;
         this.newState = newState;
-        this.cic = BackendInteractor.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     /**
@@ -47,7 +47,7 @@ public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     @Override
     protected Integer doInBackground(Void... params) {
         Integer response = null;
-        String activatorPath = cic.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
+        String activatorPath = backendInteractor.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;
         HttpURLConnection urlConnection = null;
         try {

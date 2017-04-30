@@ -11,10 +11,10 @@ import hestia.backend.BackendInteractor;
  */
 
 public class HestiaApplication extends Application {
-    private static final BackendInteractor cic = BackendInteractor.getInstance();
+    private static final BackendInteractor backendInteractor = BackendInteractor.getInstance();
 
-    public BackendInteractor getCic() {
-        return cic;
+    public BackendInteractor getBackendInteractor() {
+        return backendInteractor;
     }
 
 }

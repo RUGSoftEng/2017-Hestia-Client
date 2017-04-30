@@ -19,9 +19,9 @@ public class BackendInteractorTest {
 
     @Test
     public void getDevices() throws Exception {
-        BackendInteractor cic = BackendInteractor.getInstance();
+        BackendInteractor backendInteractor = BackendInteractor.getInstance();
         StringBuilder sb = new StringBuilder();
-        for(Device d : cic.getDevices()){
+        for(Device d : backendInteractor.getDevices()){
             sb.append(d.toString());
         }
         Context appContext = InstrumentationRegistry.getTargetContext();

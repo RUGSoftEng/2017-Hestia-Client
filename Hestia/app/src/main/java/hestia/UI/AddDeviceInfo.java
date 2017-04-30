@@ -18,7 +18,7 @@ import hestia.backend.PostDeviceTask;
  * This class dynamically creates the fields for the required information.
  * It receives as arguments an activity and a HashMap<String,String> and then adds
  * the text and the fields from the HashMap keys, with the values as values.
- * Finally it sends back the HashMap to the cic which posts it to the server.
+ * Finally it sends back the HashMap to the backendInteractor which posts it to the server.
  */
 
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
