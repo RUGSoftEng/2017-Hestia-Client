@@ -8,21 +8,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
- * used to achieve this. During execution, there is a single BackendInteractor accessible
+ * used to achieve this. During execution, there is a single ClientInteractionController accessible
  * throughout the entire app through the HestiaApplication class.
  * @see hestia.UI.HestiaApplication
  */
 
-public class BackendInteractor extends Application{
+public class ClientInteractionController extends Application{
 
     /**
      * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
      * a listener attempts to remove itself during event notification.
      */
     private final CopyOnWriteArrayList<DevicesChangeListener> listeners =  new CopyOnWriteArrayList<>();
-    private static BackendInteractor instance;
+    private static ClientInteractionController instance;
     private ArrayList<Device> devices = new ArrayList<>();
-    private final static String TAG = "BackendInteractor";
+    private final static String TAG = "ClntInterController";
     private String ip = "145.97.183.6";
     private int port = 8000;
 
@@ -30,17 +30,17 @@ public class BackendInteractor extends Application{
      * The empty constructor, which can not be accessed from the outside,
      * because we want a singleton behavior.
      */
-    private BackendInteractor(){}
+    private ClientInteractionController(){}
 
     /**
-     * Returns the single instance of BackendInteractor.
+     * Returns the single instance of ClientInteractionController.
      * If there was no instance of this class created previously,
      * then it will create one and return it.
-     * @return the single instance of BackendInteractor
+     * @return the single instance of ClientInteractionController
      */
-    public static BackendInteractor getInstance(){
+    public static ClientInteractionController getInstance(){
         if(instance == null){
-            instance = new BackendInteractor();
+            instance = new ClientInteractionController();
         }
         return instance;
     }

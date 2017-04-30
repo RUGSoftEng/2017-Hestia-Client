@@ -2,18 +2,18 @@ package hestia.UI;
 
 import android.app.Application;
 
-import hestia.backend.BackendInteractor;
+import hestia.backend.ClientInteractionController;
 
 /**
  * An extension of the Application class provided by Android, which additionally contains the
- * BackendInteractor singleton.
- * @see BackendInteractor
+ * ClientInteractionController singleton.
+ * @see hestia.backend.ClientInteractionController
  */
 
 public class HestiaApplication extends Application {
-    private static final BackendInteractor cic = BackendInteractor.getInstance();
+    private static final ClientInteractionController cic = ClientInteractionController.getInstance();
 
-    public BackendInteractor getCic() {
+    public ClientInteractionController getCic() {
         return cic;
     }
 

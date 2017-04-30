@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Activator;
-import hestia.backend.BackendInteractor;
+import hestia.backend.ClientInteractionController;
 import hestia.backend.Device;
 import hestia.backend.DevicesChangeListener;
 import hestia.backend.DevicesEvent;
@@ -28,7 +28,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
-    private BackendInteractor cic;
+    private ClientInteractionController cic;
     private FloatingActionButton fab;
 
     /**
@@ -41,37 +41,37 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
-        createFloatingButton(deviceListView);
+        View view = inflater.inflate(R.layout.fragment_device_list, container, false);
+        createFloatingButton(view);
 
         listDataChild = new ArrayList<>();
-        expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
+        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(listDataChild, getActivity());
 
         expListView.setAdapter(listAdapter);
 
-        cic.addDevicesChangeListener(this);
+        ClientInteractionController.getInstance().addDevicesChangeListener(this);
 
         populateUI();
 
-        return deviceListView;
+        return view;
     }
 
     private void populateUI() {
         listDataChild = new ArrayList<>();
 
-        cic = BackendInteractor.getInstance();
+        cic = ClientInteractionController.getInstance();
         ArrayList<Device> devices = cic.getDevices();
-        for (Device device : devices) {
-            Activator a = device.getActivator(0);
-            HestiaSwitch hestiaSwitch = new HestiaSwitch(device, a, getActivity());
-            DeviceBar bar = new DeviceBar(device, hestiaSwitch);
+        for (Device d : devices) {
+            Activator a = d.getActivator(0);
+            HestiaSwitch hestiaSwitch = new HestiaSwitch(d, a, getActivity());
+            DeviceBar bar = new DeviceBar(d, hestiaSwitch);
             if(!listDataChild.contains(bar)) {
-                if (!typeExists(device)) {
+                if (!typeExists(d)) {
                     listDataChild.add(new ArrayList<DeviceBar>());
                     listDataChild.get(listDataChild.size() - 1).add(bar);
                 } else {
-                    listDataChild.get(getDeviceType(device)).add(bar);
+                    listDataChild.get(getDeviceType(d)).add(bar);
                 }
             }
 
@@ -79,14 +79,13 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         listAdapter.setListData(listDataChild);
         expListView.setAdapter(listAdapter);
     }
-
     @Override
     public void changeEventReceived(DevicesEvent evt) {
         populateUI();
     }
 
-    private boolean typeExists(Device device) {
-        String deviceType = device.getType();
+    private boolean typeExists(Device d) {
+        String deviceType = d.getType();
         for (int i = 0; i < listDataChild.size(); i++) {
             Device checkDevice = listDataChild.get(i).get(0).getDevice();
             if (checkDevice.getType().equals(deviceType)) {
@@ -96,8 +95,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         return false;
     }
 
-    private int getDeviceType(Device device) {
-        String deviceType = device.getType();
+    private int getDeviceType(Device d) {
+        String deviceType = d.getType();
         for (int i = 0; i < listDataChild.size(); i++) {
             Device checkDevice = listDataChild.get(i).get(0).getDevice();
             if (checkDevice.getType().equals(deviceType)) {
@@ -107,8 +106,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         return -1;
     }
 
-    private void createFloatingButton(View view) {
-        fab = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
+    private void createFloatingButton(View v) {
+        fab = (FloatingActionButton)v.findViewById(R.id.floating_action_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

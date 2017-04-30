@@ -22,7 +22,7 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
 
     private final String TAG = "PostDeviceTask";
     private HashMap<String, String> deviceHashMap;
-    private BackendInteractor cic;
+    private ClientInteractionController cic;
 
     /**
      * Creates an instance of the PostDeviceTask class with the HashMap.
@@ -30,7 +30,7 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
      */
     public PostDeviceTask(HashMap<String, String> deviceHashMap) {
         this.deviceHashMap = deviceHashMap;
-        this.cic = BackendInteractor.getInstance();
+        this.cic = ClientInteractionController.getInstance();
     }
 
     /**

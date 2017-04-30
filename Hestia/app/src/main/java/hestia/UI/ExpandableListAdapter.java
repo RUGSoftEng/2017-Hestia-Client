@@ -11,8 +11,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import hestia.backend.BackendInteractor;
-
+import hestia.backend.ClientInteractionController;
 import com.rugged.application.hestia.R;
 
 import java.util.ArrayList;
@@ -20,20 +19,20 @@ import java.util.ArrayList;
 import hestia.backend.Device;
 
 /**
- * The ExpandableListAdapter creates the expendable list. It receives an Arraylist with deviceBars
- * and adds them to the Expandable List. It also checks which options should be visible, and
- * adds listeners to these options in the popup menu.
+ * The ExpendableListAdapter creates the expendable list. It gets an arraylist with deviceBars
+ * and adds them to the Expendable List. It also checks which options should be visible, and
+ * adds onClickListeners to these options in the popup menu.
  */
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
-    private BackendInteractor c;
+    private ClientInteractionController c;
 
     public ExpandableListAdapter(ArrayList<ArrayList<DeviceBar>> listChildData, Context context) {
         this.listDataChild = listChildData;
         this.context = context;
-        this.c = BackendInteractor.getInstance();
+        this.c = ClientInteractionController.getInstance();
     }
 
     @Override

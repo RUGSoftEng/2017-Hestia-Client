@@ -21,7 +21,7 @@ import java.net.URL;
 
 public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
     private String TAG = "StateModificationTask";
-    private BackendInteractor cic;
+    private ClientInteractionController cic;
     private int deviceId;
     private int activatorId;
     private ActivatorState newState;
@@ -37,7 +37,7 @@ public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
         this.deviceId = deviceId;
         this.activatorId = activatorId;
         this.newState = newState;
-        this.cic = BackendInteractor.getInstance();
+        this.cic = ClientInteractionController.getInstance();
     }
 
     /**

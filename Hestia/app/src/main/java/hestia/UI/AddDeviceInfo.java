@@ -25,9 +25,9 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     private HashMap<String, String> fields;
     private Activity content;
 
-    public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
-        super(activity);
-        this.content = activity;
+    public AddDeviceInfo(Activity a, HashMap<String, String> fields) {
+        super(a);
+        this.content = a;
         this.fields = fields;
     }
 
@@ -76,8 +76,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.confirm_button:
                 HashMap<String, String> h = getFieldValues();
                 if(h==null) {
@@ -114,7 +114,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
     private LinearLayout generateButtons(LinearLayout.LayoutParams params){
         // Create buttons.
-        LinearLayout layout = new LinearLayout(content);
+        LinearLayout ll = new LinearLayout(content);
         final Button confirm = new Button(content);
         final Button cancel = new Button(content);
         confirm.setId(R.id.confirm_button);
@@ -123,8 +123,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         cancel.setText("Cancel");
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        layout.addView(confirm);
-        layout.addView(cancel);
-        return layout;
+        ll.addView(confirm);
+        ll.addView(cancel);
+        return ll;
     }
 }

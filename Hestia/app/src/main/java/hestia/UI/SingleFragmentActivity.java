@@ -24,7 +24,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import hestia.backend.BackendInteractor;
+import hestia.backend.ClientInteractionController;
 
 /**
  * This abstract class is used as an abstract wrapper around the device list activity class.
@@ -38,7 +38,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fm;
     private List<MenuObject> menuObjects;
-    private BackendInteractor cic;
+    private ClientInteractionController cic;
 
     private final int IP = 1;
     private final int LOGOUT = 2;
