@@ -70,6 +70,13 @@ public class BackendInteractor extends Application{
     }
 
     /**
+     * This overloaded version of addDevice is used exclusively for testing purposes.
+     */
+    public void addDevice(Device device){
+        devices.add(device);
+    }
+
+    /**
      * Updates the current list of devices by running the DeviceListRetrieverTask, which
      * will execute a GET request for the list of devices from the server.
      */
