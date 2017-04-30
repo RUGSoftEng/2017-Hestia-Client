@@ -1,5 +1,6 @@
 package com.rugged.application.hestia;
 
+import android.os.AsyncTask;
 import android.test.UiThreadTest;
 
 import junit.framework.TestCase;
@@ -27,11 +28,11 @@ public class RemoveDeviceTaskTest extends TestCase {
         signal = new CountDownLatch(1);
     }
 
-    public void testAsyncTask() throws InterruptedException
-    {
-        new RemoveDeviceTask(new Device(1, null, null, null));
+    public void testAsyncTask() throws InterruptedException {
+        RemoveDeviceTask task = new RemoveDeviceTask(new Device(1, null, null, null));
+        task.execute();
         signal.await(5, TimeUnit.SECONDS);
-        assertTrue( "assert something meaningful here", true );
+        assertTrue(task.getStatus() == AsyncTask.Status.FINISHED);
     }
 
     @Override
