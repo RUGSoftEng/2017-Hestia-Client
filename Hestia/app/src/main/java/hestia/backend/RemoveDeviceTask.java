@@ -33,7 +33,7 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @return the response code of the DELETE request
      */
     @Override
-    protected Integer doInBackground(Void... params) {
+    public Integer doInBackground(Void... params) {
         // Update the general path to match the one for the device to be deleted.
         int id = this.device.getDeviceId();
         String path = this.cic.getPath() + "devices/" + id;
