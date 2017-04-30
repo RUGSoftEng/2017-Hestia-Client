@@ -8,7 +8,6 @@ package hestia.backend;
  * @see Device
  * @see ActivatorState
  */
-
 public class Activator {
     private int id;
     private ActivatorState state;
