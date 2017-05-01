@@ -45,7 +45,7 @@ public class StateModificationTask extends AsyncTask<Void,Integer,Integer> {
      * @return The HTTP response code to the POST method
      */
     @Override
-    protected Integer doInBackground(Void... params) {
+    public Integer doInBackground(Void... params) {
         Integer response = null;
         String activatorPath = cic.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         URL url = null;

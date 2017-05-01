@@ -39,7 +39,7 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @return the HTTP response code of the POST.
      */
     @Override
-    protected Integer doInBackground(Void... params) {
+    public Integer doInBackground(Void... params) {
         String postPath = this.cic.getPath() + "devices/";
         Integer response = null;
         URL url = null;
@@ -79,7 +79,7 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @param result holds the response code of the POST request
      */
     @Override
-    protected void onPostExecute(Integer result) {
+    public void onPostExecute(Integer result) {
         cic.updateDevices();
     }
 

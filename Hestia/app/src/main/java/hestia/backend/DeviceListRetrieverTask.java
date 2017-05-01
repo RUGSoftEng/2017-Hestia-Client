@@ -39,7 +39,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
      * @return an ArrayList containing the devices known to the server
      */
     @Override
-    protected ArrayList<Device> doInBackground(Void... voids) {
+    public ArrayList<Device> doInBackground(Void... voids) {
         String devicesPath = this.cic.getPath() + "devices/";
         URL url = null;
         HttpURLConnection urlConnection = null;
@@ -74,7 +74,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
      * @param devices the new list of devices
      */
     @Override
-    protected void onPostExecute(ArrayList<Device> devices) {
+    public void onPostExecute(ArrayList<Device> devices) {
         if(devices != null) {
             cic.setDevices(devices);
         } else {

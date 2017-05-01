@@ -13,13 +13,14 @@ import static org.mockito.Mockito.*;
 @RunWith(JUnit4.class)
 public class RemoveDeviceTaskTest {
     final RemoveDeviceTask mockRemoveDevice = mock(RemoveDeviceTask.class);
+    final Integer MOCK_RESULT = 204;
 
     @Test
     public void executeTest() throws Exception {
         when(mockRemoveDevice.execute()).then(new Answer<AsyncTask>() {
             @Override
             public AsyncTask answer(InvocationOnMock invocation) throws Throwable {
-                when(mockRemoveDevice.get()).thenReturn(204);
+                when(mockRemoveDevice.get()).thenReturn(MOCK_RESULT);
                 return mockRemoveDevice;
             }
         });
@@ -27,12 +28,12 @@ public class RemoveDeviceTaskTest {
         verify(mockRemoveDevice).execute();
         int result = mockRemoveDevice.get();
         verify(mockRemoveDevice).get();
-        assertTrue(result==204);
+        assertTrue(result==MOCK_RESULT);
     }
 
     @Test
     public void doInBackgroundTest() {
-        when(mockRemoveDevice.doInBackground()).thenReturn(204);
+        when(mockRemoveDevice.doInBackground()).thenReturn(anyInt());
         mockRemoveDevice.doInBackground();
         verify(mockRemoveDevice).doInBackground();
     }
