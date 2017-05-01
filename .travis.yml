@@ -16,3 +16,6 @@ android:
     #System images
     - sys-img-armeabi-v7a-android-22
     - sys-img-armeabi-v7a-android-17
+
+script:
+    - ./Hestia/gradlew tasks --all
