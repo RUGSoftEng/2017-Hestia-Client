@@ -74,7 +74,7 @@ public class DeviceListRetrieverTask extends AsyncTask<Void,Void,ArrayList<Devic
      * @param devices the new list of devices
      */
     @Override
-    protected void onPostExecute(ArrayList<Device> devices) {
+    public void onPostExecute(ArrayList<Device> devices) {
         if(devices != null) {
             backendInteractor.setDevices(devices);
         } else {
