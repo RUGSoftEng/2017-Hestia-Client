@@ -22,7 +22,7 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
 
     private final String TAG = "PostDeviceTask";
     private HashMap<String, String> deviceHashMap;
-    private ClientInteractionController cic;
+    private BackendInteractor backendInteractor;
 
     /**
      * Creates an instance of the PostDeviceTask class with the HashMap.
@@ -30,7 +30,7 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
      */
     public PostDeviceTask(HashMap<String, String> deviceHashMap) {
         this.deviceHashMap = deviceHashMap;
-        this.cic = ClientInteractionController.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     /**
@@ -39,8 +39,8 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @return the HTTP response code of the POST.
      */
     @Override
-    public Integer doInBackground(Void... params) {
-        String postPath = this.cic.getPath() + "devices/";
+    protected Integer doInBackground(Void... params) {
+        String postPath = this.backendInteractor.getPath() + "devices/";
         Integer response = null;
         URL url = null;
         HttpURLConnection urlConnection = null;
@@ -79,8 +79,8 @@ public class PostDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @param result holds the response code of the POST request
      */
     @Override
-    public void onPostExecute(Integer result) {
-        cic.updateDevices();
+    protected void onPostExecute(Integer result) {
+        backendInteractor.updateDevices();
     }
 
     /**

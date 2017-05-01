@@ -1,0 +1,21 @@
+language: android
+android:
+  components:
+    # The BuildTools version used
+    - build-tools-19.1.0
+
+    # The SDK version used to compile the project
+    - android-22
+
+    # Additional components
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+
+    #System images
+    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-17
+
+script:
+    - bash Hestia/gradlew tasks --all
