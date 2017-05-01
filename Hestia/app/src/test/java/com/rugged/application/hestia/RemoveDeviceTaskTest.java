@@ -2,29 +2,27 @@ package com.rugged.application.hestia;
 
 import junit.framework.TestCase;
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import java.util.concurrent.ExecutionException;
+import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import hestia.backend.RemoveDeviceTask;
 import static org.mockito.Mockito.*;
 
 public class RemoveDeviceTaskTest extends TestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        MockitoAnnotations.initMocks(this);
-    }
-
-    public void testWithMock() throws InterruptedException, ExecutionException{
-        RemoveDeviceTask mockRemoveDevice = mock(RemoveDeviceTask.class);
+    @Test
+    public void testWithMock() throws Exception {
+        final RemoveDeviceTask mockRemoveDevice = mock(RemoveDeviceTask.class);
         when(mockRemoveDevice.doInBackground()).thenReturn(204);
+        when(mockRemoveDevice.execute()).then(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                when(mockRemoveDevice.get()).thenReturn(204);
+                verify(mockRemoveDevice).get();
+                return true;
+            }
+        });
         mockRemoveDevice.doInBackground();
         verify(mockRemoveDevice).doInBackground();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 }

@@ -14,7 +14,6 @@ import java.net.URL;
 
 public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "RemoveDeviceTask";
-    private final Integer DELETE_SUCCESSFUL_CODE = 204;
     private Device device;
     private ClientInteractionController cic;
 
@@ -72,7 +71,7 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @param result the response code
      */
     @Override
-    protected void onPostExecute(Integer result) {
+    public void onPostExecute(Integer result) {
         cic.updateDevices();
     }
 }
