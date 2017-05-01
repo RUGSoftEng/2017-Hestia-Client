@@ -50,7 +50,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
         expListView.setAdapter(listAdapter);
 
-        backendInteractor.addDevicesChangeListener(this);
+        backendInteractor.getInstance().addDevicesChangeListener(this);
 
         populateUI();
 
