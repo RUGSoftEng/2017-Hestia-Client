@@ -70,6 +70,20 @@ public class BackendInteractor extends Application{
     }
 
     /**
+     * This overloaded version of addDevice is used exclusively for testing purposes.
+     */
+    public void addDevice(Device device){
+        devices.add(device);
+    }
+
+    /**
+     * The deleteTestDevice method uses the same
+     */
+    public void deleteTestDevice(int deviceId){
+        devices.remove(deviceId);
+    }
+
+    /**
      * Updates the current list of devices by running the DeviceListRetrieverTask, which
      * will execute a GET request for the list of devices from the server.
      */
@@ -114,6 +128,12 @@ public class BackendInteractor extends Application{
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
         new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
+    }
+
+    public void setActivatorState(int deviceId, int activatorId, ActivatorState newState){
+        Activator activator = devices.get(deviceId).getActivators().get(activatorId);
+        activator.setState(newState);
+        new StateModificationTask(deviceId,activatorId,newState).execute();
     }
 
     /**
