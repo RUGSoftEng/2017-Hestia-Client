@@ -46,6 +46,9 @@ public class LoginActivity extends Activity  {
             if(extra==null) {
                 gotoMainActivity();
             }
+            else{
+                clearSaveLogin();
+            }
         }
 
         loginButton = (Button)findViewById(R.id.loginButton);
