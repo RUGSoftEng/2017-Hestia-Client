@@ -18,4 +18,4 @@ android:
     - sys-img-armeabi-v7a-android-17
 
 script:
-    - ./Hestia/gradlew tasks --all
+    - bash Hestia/gradlew tasks --all
