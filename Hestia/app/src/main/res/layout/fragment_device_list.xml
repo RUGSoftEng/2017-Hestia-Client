@@ -19,7 +19,7 @@
         android:layout_margin="24dp"
         app:layout_anchor="@+id/lvExp"
         app:layout_anchorGravity="bottom|right"
-        app:backgroundTint="#e48912"
+        app:backgroundTint="@color/listBackground"
         android:src="@drawable/ic_add_black_24dp"
         />
 </android.support.design.widget.CoordinatorLayout>

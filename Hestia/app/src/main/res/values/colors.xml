@@ -7,4 +7,7 @@
     <color name="loginHighlight">#37ff37</color>
     <color name="white">#FFFFFF</color>
     <color name="hint">#a7a7a7</color>
+    <color name="listGroup">#00BF9A</color>
+    <color name="listBackground">#00AA8D</color>
+
 </resources>
