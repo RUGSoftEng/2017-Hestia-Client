@@ -1,4 +1,4 @@
-package hestia.backend;
+package hestia.backend.refactoring;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,12 +8,14 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
+import hestia.backend.BackendInteractor;
+
 
 /**
  * This super class will send a RESTful request to the Server.
  */
 
-public class Request extends AsyncTask<Void, Void, Integer>{
+public abstract class Request<T> extends AsyncTask<Void, Void, T>{
     private final String TAG = "Request";
     private String requestType;
     private String path;
@@ -30,14 +32,16 @@ public class Request extends AsyncTask<Void, Void, Integer>{
         this.backendInteractor = BackendInteractor.getInstance();
     }
 
+    @Override
+    protected abstract void onPreExecute();
+
     /**
-     * Send the DELETE request to the server
-     * @param params parameters used for the background activity.
-     * @return the response code of the DELETE request
+     * Send the request to the server.
+     * @return the result of the task. If the type T is Void, it will return a null.
      */
     @Override
-    protected Integer doInBackground(Void... params) {
-        Integer responseCode = null;
+    protected T doInBackground(Void... params) {
+        T result = null;
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(this.path);
@@ -48,7 +52,7 @@ public class Request extends AsyncTask<Void, Void, Integer>{
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setRequestProperty("charset", "utf-8");
             urlConnection.connect();
-            responseCode = urlConnection.getResponseCode();
+            Log.d(TAG, String.valueOf(urlConnection.getResponseCode()));
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "SocketTimeoutException");
             Log.e(TAG, e.toString());
@@ -63,15 +67,13 @@ public class Request extends AsyncTask<Void, Void, Integer>{
                 urlConnection.disconnect();
             }
         }
-        return responseCode;
+        return result;
     }
 
     /**
      * Once the task is finished, it updates the list of devices.
-     * @param result the response code
+     * @param result the result of the task.
      */
     @Override
-    protected void onPostExecute(Integer result) {
-        backendInteractor.updateDevices();
-    }
+    protected abstract void onPostExecute(T result);
 }
