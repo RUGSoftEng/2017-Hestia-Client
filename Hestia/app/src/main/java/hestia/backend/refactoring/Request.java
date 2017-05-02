@@ -8,14 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
-import hestia.backend.BackendInteractor;
-
-
 /**
  * This super class will send a RESTful request to the Server.
  */
 
-public abstract class Request<T> extends AsyncTask<Void, Void, T>{
+public abstract class Request extends AsyncTask<Void, Void, HttpURLConnection>{
     private final String TAG = "Request";
     private String requestType;
     private String path;
@@ -35,8 +32,7 @@ public abstract class Request<T> extends AsyncTask<Void, Void, T>{
      * @return the result of the task. If the type T is Void, it will return a null.
      */
     @Override
-    protected T doInBackground(Void... params) {
-        T result = null;
+    protected HttpURLConnection doInBackground(Void... params) {
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(this.path);
@@ -46,8 +42,11 @@ public abstract class Request<T> extends AsyncTask<Void, Void, T>{
             urlConnection.setRequestMethod(this.requestType);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setRequestProperty("charset", "utf-8");
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
             urlConnection.connect();
-            Log.d(TAG, String.valueOf(urlConnection.getResponseCode()));
+            this.perform(urlConnection);
+            Log.d(TAG, "Response Code: " + String.valueOf(urlConnection.getResponseCode()));
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "SocketTimeoutException");
             Log.e(TAG, e.toString());
@@ -55,20 +54,23 @@ public abstract class Request<T> extends AsyncTask<Void, Void, T>{
             Log.e(TAG, "ConnectExeption");
             Log.e(TAG, e.toString());
         } catch (IOException e) {
-            Log.e(TAG, "Connection failed: could not realize the DELETE request");
+            Log.e(TAG, "IOException: could not realize the request");
             Log.e(TAG, e.toString());
+            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
-        return result;
+        return urlConnection;
     }
+
+    protected abstract void perform(HttpURLConnection urlConnection) throws IOException;
 
     /**
      * Once the task is finished, it updates the list of devices.
      * @param result the result of the task.
      */
     @Override
-    protected abstract void onPostExecute(T result);
+    protected abstract void onPostExecute(HttpURLConnection result);
 }

@@ -1,20 +1,20 @@
 package hestia.backend.refactoring;
 
-public class GetRequest<T> extends Request<T> {
+import java.net.HttpURLConnection;
+
+public class GetRequest extends Request {
 
     public GetRequest(String requestType, String path) {
         super(requestType, path);
     }
 
     @Override
-    protected T doInBackground(Void... params) {
-        T result = super.doInBackground(params);
+    protected void perform(HttpURLConnection urlConnection) {
 
-        return result;
     }
 
     @Override
-    protected void onPostExecute(T result) {
+    protected void onPostExecute(HttpURLConnection urlConnection) {
 
     }
 }

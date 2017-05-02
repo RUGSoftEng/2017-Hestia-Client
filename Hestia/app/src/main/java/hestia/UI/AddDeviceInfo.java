@@ -3,6 +3,7 @@ package hestia.UI;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -10,9 +11,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.JsonObject;
 import com.rugged.application.hestia.R;
 import java.util.HashMap;
+
+import hestia.backend.BackendInteractor;
 import hestia.backend.PostDeviceTask;
+import hestia.backend.refactoring.PostRequest;
 
 /**
  * This class dynamically creates the fields for the required information.
@@ -79,14 +85,23 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirm_button:
-                HashMap<String, String> h = getFieldValues();
+                /* HashMap<String, String> h = getFieldValues();
                 if(h==null) {
                     Toast.makeText(getContext(), "One or more empty values were entered."
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }
-                new PostDeviceTask(h).execute();
-                Toast.makeText(content, h.toString(), Toast.LENGTH_SHORT).show();
+                new PostDeviceTask(h).execute(); */
+
+                JsonObject requiredInfo = this.getRequiredInfo();
+                if(requiredInfo==null) {
+                    Toast.makeText(getContext(), "One or more empty values were entered."
+                            , Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                String path = BackendInteractor.getInstance().getPath() + "devices/";
+                new PostRequest(path, requiredInfo.toString()).execute();
+                Toast.makeText(content, requiredInfo.toString(), Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
             case R.id.back_button:
@@ -110,6 +125,29 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             i++;
         }
         return fields;
+    }
+
+
+    /**
+     * THIS METHOD WAS CREATED TO ACCOMODATE THE REFACTORED POST_REQUEST CLASS.
+     */
+    private JsonObject getRequiredInfo() {
+        int i = 0;
+        JsonObject requiredInfo = new JsonObject();
+        for(String key : this.fields.keySet()) {
+            EditText field = (EditText) findViewById(i);
+            String valueField = field.getText().toString();
+            if("".equals(valueField)) {
+                return null;
+            }
+            this.fields.put(key, valueField);
+            String value = this.fields.get(key);
+            requiredInfo.addProperty(key, value);
+            i++;
+        }
+        JsonObject json = new JsonObject();
+        json.addProperty("required_info", requiredInfo.toString());
+        return json;
     }
 
     private LinearLayout generateButtons(LinearLayout.LayoutParams params){
