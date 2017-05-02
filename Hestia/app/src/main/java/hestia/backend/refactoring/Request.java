@@ -19,7 +19,6 @@ public abstract class Request<T> extends AsyncTask<Void, Void, T>{
     private final String TAG = "Request";
     private String requestType;
     private String path;
-    private BackendInteractor backendInteractor;
 
     /**
      * Creates an instance of the Request class of the given type.
@@ -29,11 +28,7 @@ public abstract class Request<T> extends AsyncTask<Void, Void, T>{
     public Request(String requestType, String path) {
         this.requestType = requestType;
         this.path = path;
-        this.backendInteractor = BackendInteractor.getInstance();
     }
-
-    @Override
-    protected abstract void onPreExecute();
 
     /**
      * Send the request to the server.

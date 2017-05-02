@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import hestia.backend.refactoring.DeleteRequest;
+
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
  * used to achieve this. During execution, there is a single BackendInteractor accessible
@@ -51,8 +53,16 @@ public class BackendInteractor extends Application{
      * @param device the device to be deleted.
      * @see RemoveDeviceTask
      */
-    public void deleteDevice(Device device) {
+    public void deleteDevice2(Device device) {
         new RemoveDeviceTask(device).execute();
+    }
+    public void deleteDevice(Device device) {
+        /**
+         * NOTE: This is the refectored method. The original method is deleteDevice2(...)
+         */
+        int id = device.getDeviceId();
+        String path = this.getPath() + "devices/" + id;
+        new DeleteRequest(path).execute();
     }
 
     /**
