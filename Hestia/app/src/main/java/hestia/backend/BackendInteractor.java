@@ -23,8 +23,12 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
+    //PI:
+//    private String ip = "82.73.173.179";
+//    private int port = 8022;
+
     private String ip = "82.73.173.179";
-    private int port = 8022;
+    private int port = 8000;
 
     /**
      * The empty constructor, which can not be accessed from the outside,
