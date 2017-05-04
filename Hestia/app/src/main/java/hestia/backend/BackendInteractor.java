@@ -8,21 +8,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
- * used to achieve this. During execution, there is a single ClientInteractionController accessible
+ * used to achieve this. During execution, there is a single BackendInteractor accessible
  * throughout the entire app through the HestiaApplication class.
  * @see hestia.UI.HestiaApplication
  */
 
-public class ClientInteractionController extends Application{
+public class BackendInteractor extends Application{
 
     /**
      * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
      * a listener attempts to remove itself during event notification.
      */
     private final CopyOnWriteArrayList<DevicesChangeListener> listeners =  new CopyOnWriteArrayList<>();
-    private static ClientInteractionController instance;
+    private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
-    private final static String TAG = "ClntInterController";
+    private final static String TAG = "BackendInteractor";
     private String ip = "145.97.183.6";
     private int port = 8000;
 
@@ -30,17 +30,17 @@ public class ClientInteractionController extends Application{
      * The empty constructor, which can not be accessed from the outside,
      * because we want a singleton behavior.
      */
-    private ClientInteractionController(){}
+    private BackendInteractor(){}
 
     /**
-     * Returns the single instance of ClientInteractionController.
+     * Returns the single instance of BackendInteractor.
      * If there was no instance of this class created previously,
      * then it will create one and return it.
-     * @return the single instance of ClientInteractionController
+     * @return the single instance of BackendInteractor
      */
-    public static ClientInteractionController getInstance(){
+    public static BackendInteractor getInstance(){
         if(instance == null){
-            instance = new ClientInteractionController();
+            instance = new BackendInteractor();
         }
         return instance;
     }
@@ -67,6 +67,20 @@ public class ClientInteractionController extends Application{
     public void addDevice(String organisation, String pluginName, Activity activity) {
         String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
         new PluginInformationRetrieverTask(path, activity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    /**
+     * This overloaded version of addDevice is used exclusively for testing purposes.
+     */
+    public void addDevice(Device device){
+        devices.add(device);
+    }
+
+    /**
+     * The deleteTestDevice method uses the same
+     */
+    public void deleteTestDevice(int deviceId){
+        devices.remove(deviceId);
     }
 
     /**
@@ -114,6 +128,12 @@ public class ClientInteractionController extends Application{
         Activator activator = device.getActivators().get(activatorId);
         activator.setState(newState);
         new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
+    }
+
+    public void setActivatorState(int deviceId, int activatorId, ActivatorState newState){
+        Activator activator = devices.get(deviceId).getActivators().get(activatorId);
+        activator.setState(newState);
+        new StateModificationTask(deviceId,activatorId,newState).execute();
     }
 
     /**

@@ -49,7 +49,7 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
      * @return the hashmap containing the fields which are required for the plugin.
      */
     @Override
-    protected HashMap<String, String> doInBackground(Void... params) {
+    public HashMap<String, String> doInBackground(Void... params) {
         URL url = null;
         HttpURLConnection urlConnection = null;
         HashMap<String,String> plugin = null;
@@ -83,7 +83,7 @@ public class PluginInformationRetrieverTask extends AsyncTask<Void,Void,HashMap<
      * @see AddDeviceInfo
      */
     @Override
-    protected void onPostExecute(HashMap<String,String> plugin) {
+    public void onPostExecute(HashMap<String,String> plugin) {
         if(plugin != null) {
             new AddDeviceInfo(a, plugin).show();
         } else {

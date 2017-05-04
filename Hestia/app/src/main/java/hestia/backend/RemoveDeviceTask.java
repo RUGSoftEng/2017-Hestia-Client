@@ -14,9 +14,8 @@ import java.net.URL;
 
 public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "RemoveDeviceTask";
-    private final Integer DELETE_SUCCESSFUL_CODE = 204;
     private Device device;
-    private ClientInteractionController cic;
+    private BackendInteractor backendInteractor;
 
     /**
      * Creates an instance of the RemoveDeviceTask class with the device to be removed.
@@ -24,7 +23,7 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
      */
     public RemoveDeviceTask(Device device) {
         this.device = device;
-        this.cic = ClientInteractionController.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     /**
@@ -33,10 +32,10 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
      * @return the response code of the DELETE request
      */
     @Override
-    protected Integer doInBackground(Void... params) {
+    public Integer doInBackground(Void... params) {
         // Update the general path to match the one for the device to be deleted.
         int id = this.device.getDeviceId();
-        String path = this.cic.getPath() + "devices/" + id;
+        String path = this.backendInteractor.getPath() + "devices/" + id;
 
         Integer responseCode = null;
         HttpURLConnection urlConnection = null;
@@ -73,6 +72,6 @@ public class RemoveDeviceTask extends AsyncTask<Void, Void, Integer> {
      */
     @Override
     protected void onPostExecute(Integer result) {
-        cic.updateDevices();
+        backendInteractor.updateDevices();
     }
 }

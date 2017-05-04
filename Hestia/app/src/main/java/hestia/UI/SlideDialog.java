@@ -3,9 +3,7 @@ package hestia.UI;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
-import hestia.backend.ClientInteractionController;
+import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 
 /*
@@ -31,12 +29,12 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     private Device d;
     private ArrayList<Activator> fields;
     private Context context;
-    private ClientInteractionController cic;
+    private BackendInteractor backendInteractor;
 
     public SlideDialog(Context a, ArrayList<Activator> fields, Device d) {
         super(a);
         this.context = a;
-        this.cic = ClientInteractionController.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
         this.fields = fields;
         this.d = d;
     }
@@ -90,7 +88,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                cic.setActivatorState(d,act.getId(),state);
+                backendInteractor.setActivatorState(d,act.getId(),state);
             }
         });
         return bar;

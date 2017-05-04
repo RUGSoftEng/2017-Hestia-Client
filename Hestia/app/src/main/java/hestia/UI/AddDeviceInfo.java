@@ -18,16 +18,16 @@ import hestia.backend.PostDeviceTask;
  * This class dynamically creates the fields for the required information.
  * It receives as arguments an activity and a HashMap<String,String> and then adds
  * the text and the fields from the HashMap keys, with the values as values.
- * Finally it sends back the HashMap to the cic which posts it to the server.
+ * Finally it sends back the HashMap to the backendInteractor which posts it to the server.
  */
 
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
     private HashMap<String, String> fields;
     private Activity content;
 
-    public AddDeviceInfo(Activity a, HashMap<String, String> fields) {
-        super(a);
-        this.content = a;
+    public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
+        super(activity);
+        this.content = activity;
         this.fields = fields;
     }
 
@@ -76,8 +76,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.confirm_button:
                 HashMap<String, String> h = getFieldValues();
                 if(h==null) {
@@ -114,7 +114,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
     private LinearLayout generateButtons(LinearLayout.LayoutParams params){
         // Create buttons.
-        LinearLayout ll = new LinearLayout(content);
+        LinearLayout layout = new LinearLayout(content);
         final Button confirm = new Button(content);
         final Button cancel = new Button(content);
         confirm.setId(R.id.confirm_button);
@@ -123,8 +123,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         cancel.setText("Cancel");
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        ll.addView(confirm);
-        ll.addView(cancel);
-        return ll;
+        layout.addView(confirm);
+        layout.addView(cancel);
+        return layout;
     }
 }
