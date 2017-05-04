@@ -56,6 +56,11 @@ public class BackendInteractorTest {
 
 
     @Test
+    public void fail(){
+        assertEquals(1,2);
+    }
+
+    @Test
     public void testPackageName(){
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.rugged.application.hestia", appContext.getPackageName());
