@@ -3,9 +3,12 @@ package hestia.UI;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Activator;
@@ -24,12 +27,14 @@ import java.util.ArrayList;
  */
 public class DeviceListFragment extends Fragment implements DevicesChangeListener{
 
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private BackendInteractor backendInteractor =  BackendInteractor.getInstance();
     private FloatingActionButton fab;
+    private final static String TAG = "DeviceListFragment";
+
 
     /**
      *
@@ -44,11 +49,38 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
         createFloatingButton(deviceListView);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                Log.i(TAG, "Currently refreshing");
+                backendInteractor.updateDevices();
+                Log.i(TAG, "Refresh stopped");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         listDataChild = new ArrayList<>();
         expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(listDataChild, getActivity());
 
         expListView.setAdapter(listAdapter);
+        expListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                int topRowVerticalPosition = (absListView == null ||
+                        absListView.getChildCount() == 0) ? 0 :
+                        absListView.getFirstVisiblePosition() == 0 ?
+                                absListView.getChildAt(0).getTop() : - 1;
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
 
         backendInteractor.addDevicesChangeListener(this);
 

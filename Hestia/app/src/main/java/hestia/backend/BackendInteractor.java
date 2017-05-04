@@ -23,7 +23,7 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    private String ip = "145.97.183.6";
+    private String ip = "82.73.173.179";
     private int port = 8000;
 
     /**
