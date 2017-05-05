@@ -30,6 +30,7 @@ import hestia.backend.refactoring.PostRequest;
 public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
     private HashMap<String, String> fields;
     private Activity content;
+    private final String TAG = "AddDeviceInfo";
 
     public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
         super(activity);
@@ -85,13 +86,14 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirm_button:
-                /* HashMap<String, String> h = getFieldValues();
+                /*HashMap<String, String> h = getFieldValues();
                 if(h==null) {
                     Toast.makeText(getContext(), "One or more empty values were entered."
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }
-                new PostDeviceTask(h).execute(); */
+                new PostDeviceTask(h).execute();*/
+
 
                 JsonObject requiredInfo = this.getRequiredInfo();
                 if(requiredInfo==null) {
@@ -102,6 +104,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 String path = BackendInteractor.getInstance().getPath() + "devices/";
                 new PostRequest(path, requiredInfo.toString()).execute();
                 Toast.makeText(content, requiredInfo.toString(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, requiredInfo.toString());
+
                 dismiss();
                 break;
             case R.id.back_button:

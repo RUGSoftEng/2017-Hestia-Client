@@ -8,22 +8,24 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
+import hestia.backend.BackendInteractor;
+
 /**
  * This super class will send a RESTful request to the Server.
  */
 
 public abstract class Request extends AsyncTask<Void, Void, HttpURLConnection>{
     private final String TAG = "Request";
-    private String requestType;
+    private String requestMethod;
     private String path;
 
     /**
      * Creates an instance of the Request class of the given type.
-     * @param requestType the type of the RESTful request.
+     * @param requestMethod the type of the RESTful request.
      * @param path the path of to send the request
      */
-    public Request(String requestType, String path) {
-        this.requestType = requestType;
+    public Request(String requestMethod, String path) {
+        this.requestMethod = requestMethod;
         this.path = path;
     }
 
@@ -39,13 +41,11 @@ public abstract class Request extends AsyncTask<Void, Void, HttpURLConnection>{
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(2000);
             urlConnection.setConnectTimeout(2000);
-            urlConnection.setRequestMethod(this.requestType);
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("charset", "utf-8");
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod(this.requestMethod);
+            urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            this.setDoIO(urlConnection);
             urlConnection.connect();
-            this.perform(urlConnection);
+            this.performIOAction(urlConnection);
             Log.d(TAG, "Response Code: " + String.valueOf(urlConnection.getResponseCode()));
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "SocketTimeoutException");
@@ -65,12 +65,16 @@ public abstract class Request extends AsyncTask<Void, Void, HttpURLConnection>{
         return urlConnection;
     }
 
-    protected abstract void perform(HttpURLConnection urlConnection) throws IOException;
+    protected abstract void setDoIO(HttpURLConnection urlConnection);
+
+    protected abstract void performIOAction(HttpURLConnection urlConnection) throws IOException;
 
     /**
      * Once the task is finished, it updates the list of devices.
-     * @param result the result of the task.
+     * @param urlConnection the result of the task.
      */
     @Override
-    protected abstract void onPostExecute(HttpURLConnection result);
+    protected void onPostExecute(HttpURLConnection urlConnection) {
+        BackendInteractor.getInstance().updateDevices();
+    }
 }

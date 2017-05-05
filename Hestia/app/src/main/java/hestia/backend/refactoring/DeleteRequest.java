@@ -1,8 +1,7 @@
 package hestia.backend.refactoring;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
-
-import hestia.backend.BackendInteractor;
 
 public class DeleteRequest extends Request {
 
@@ -11,12 +10,12 @@ public class DeleteRequest extends Request {
     }
 
     @Override
-    protected void perform(HttpURLConnection urlConnection) {
+    protected void setDoIO(HttpURLConnection urlConnection) {
 
     }
 
     @Override
-    protected void onPostExecute(HttpURLConnection urlConnection) {
-        BackendInteractor.getInstance().updateDevices();
+    protected void performIOAction(HttpURLConnection urlConnection) throws IOException {
+
     }
 }

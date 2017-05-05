@@ -9,12 +9,12 @@ public class GetRequest extends Request {
     }
 
     @Override
-    protected void perform(HttpURLConnection urlConnection) {
-
+    protected void setDoIO(HttpURLConnection urlConnection) {
+        urlConnection.setDoInput(true);
     }
 
     @Override
-    protected void onPostExecute(HttpURLConnection urlConnection) {
+    protected void performIOAction(HttpURLConnection urlConnection) {
 
     }
 }
