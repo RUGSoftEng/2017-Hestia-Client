@@ -102,7 +102,6 @@ public class BackendInteractor extends Application{
      * will execute a GET request for the list of devices from the server.
      */
     public void updateDevices(){
-        //new DeviceListRetrieverTask().execute();
         String devicesPath = this.getPath() + "devices/";
         new GetRequest(devicesPath).execute();
     }
