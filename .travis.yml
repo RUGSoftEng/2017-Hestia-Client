@@ -24,6 +24,7 @@ install:
 before_script:
     #- mkdir -p "$ANDROID_HOME/licenses"
     #- cp ./licenses/ "$ANDROID_HOME/licenses/"
+    - chmod +x Hestia/gradlew
     - android update sdk --no-ui --filter build-tools-22.0.3,android-22,extra-android-m2repository
     - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
     - emulator -avd test -no-audio -no-window &
@@ -31,4 +32,4 @@ before_script:
     - adb shell input keyevent 82 &
 
 script:
-    - bash Hestia/gradlew build -p Hestia/app connectedCheck --stacktrace
+    - sudo bash Hestia/gradlew build -p Hestia/app connectedCheck --stacktrace
