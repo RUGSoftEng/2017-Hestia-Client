@@ -9,14 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import hestia.backend.Activator;
-import hestia.backend.ActivatorDeserializer;
-import hestia.backend.BackendInteractor;
-import hestia.backend.Device;
 
-public class GetRequest extends Request {
-    private ArrayList<Device> devices;
+public abstract class GetRequest<T> extends Request {
+    private T returnValue;
     private final String TAG = "GetRequest";
 
     public GetRequest(String path) {
@@ -31,21 +26,22 @@ public class GetRequest extends Request {
     @Override
     protected void performIOAction(HttpURLConnection urlConnection) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
+        this.registerTypeAdapter(gsonBuilder);
         Gson gson = gsonBuilder.create();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        Type deviceListType= new TypeToken<ArrayList<Device>>() {}.getType();
-        this.devices = gson.fromJson(gson.newJsonReader(reader), deviceListType);
+        Type returnType= new TypeToken<T>() {}.getType();
+        this.returnValue = gson.fromJson(gson.newJsonReader(reader), returnType);
+        Log.d(TAG, returnValue.toString());
         reader.close();
     }
 
+    protected abstract void registerTypeAdapter(GsonBuilder gsonBuilder);
+
     @Override
-    protected void onPostExecute(HttpURLConnection urlConnection) {
-        if(devices != null) {
-            BackendInteractor.getInstance().setDevices(devices);
-        } else {
-            Log.e(TAG, "DEVICES ARRAY WAS ABOUT TO BE SET TO NULL");
-        }
+    protected abstract void onPostExecute(HttpURLConnection urlConnection);
+
+    protected T getReturnValue() {
+        return this.returnValue;
     }
 }
