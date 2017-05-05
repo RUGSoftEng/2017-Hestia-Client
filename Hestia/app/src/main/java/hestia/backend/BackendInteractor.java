@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import hestia.backend.refactoring.DeleteRequest;
+import hestia.backend.refactoring.GetRequest;
 import hestia.backend.refactoring.PostRequest;
 
 /**
@@ -101,7 +102,9 @@ public class BackendInteractor extends Application{
      * will execute a GET request for the list of devices from the server.
      */
     public void updateDevices(){
-        new DeviceListRetrieverTask().execute();
+        //new DeviceListRetrieverTask().execute();
+        String devicesPath = this.getPath() + "devices/";
+        new GetRequest(devicesPath).execute();
     }
 
     /**
