@@ -88,7 +88,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                backendInteractor.setActivatorState(d,act.getId(),state);
+                backendInteractor.setActivatorState(d,act,state);
             }
         });
         return bar;
