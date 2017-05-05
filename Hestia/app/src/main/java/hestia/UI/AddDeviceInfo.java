@@ -86,15 +86,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirm_button:
-                /*HashMap<String, String> h = getFieldValues();
-                if(h==null) {
-                    Toast.makeText(getContext(), "One or more empty values were entered."
-                            , Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                new PostDeviceTask(h).execute();*/
-
-
                 JsonObject requiredInfo = this.getRequiredInfo();
                 if(requiredInfo==null) {
                     Toast.makeText(getContext(), "One or more empty values were entered."
@@ -105,7 +96,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 new PostRequest(path, requiredInfo.toString()).execute();
                 Toast.makeText(content, requiredInfo.toString(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, requiredInfo.toString());
-
                 dismiss();
                 break;
             case R.id.back_button:
@@ -117,23 +107,10 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         }
     }
 
-    private HashMap<String, String> getFieldValues() {
-        int i = 0;
-        for (String key : fields.keySet()) {
-            EditText field = (EditText) findViewById(i);
-            String value = field.getText().toString();
-            if(value.equals("")){
-                return null;
-            }
-            fields.put(key, value);
-            i++;
-        }
-        return fields;
-    }
-
-
     /**
-     * THIS METHOD WAS CREATED TO ACCOMODATE THE REFACTORED POST_REQUEST CLASS.
+     * Creates a JSON object containing the relevant information in
+     * the "required_information" key. If any field is left empty, it will return a null.
+     * @return addDeviceJSON json object containing the information needed for adding a new device.
      */
     private JsonObject getRequiredInfo() {
         int i = 0;
@@ -149,9 +126,9 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             requiredInfo.addProperty(key, value);
             i++;
         }
-        JsonObject json = new JsonObject();
-        json.addProperty("required_info", requiredInfo.toString());
-        return json;
+        JsonObject addDeviceJSON = new JsonObject();
+        addDeviceJSON.addProperty("required_info", requiredInfo.toString());
+        return addDeviceJSON;
     }
 
     private LinearLayout generateButtons(LinearLayout.LayoutParams params){

@@ -54,14 +54,11 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * Deletes a device from the server by starting a RemoveDeviceTask,
+     * Deletes a device from the server by starting a PostRequest,
      * which will send a DELETE request to the server.
      * @param device the device to be deleted.
-     * @see RemoveDeviceTask
+     * @see DeleteRequest
      */
-    public void deleteDevice2(Device device) {
-        new RemoveDeviceTask(device).execute();
-    }
     public void deleteDevice(Device device) {
         /**
          * NOTE: This is the refectored method. The original method is deleteDevice2(...)
