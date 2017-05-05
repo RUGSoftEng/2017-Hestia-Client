@@ -22,8 +22,8 @@ install:
     - bash Hestia/gradlew tasks --all
 
 before_script:
-    - mkdir -p "$ANDROID_HOME/licenses"
-    - cp ./licenses/ "$ANDROID_HOME/licenses/"
+    #- mkdir -p "$ANDROID_HOME/licenses"
+    #- cp ./licenses/ "$ANDROID_HOME/licenses/"
     - android update sdk --no-ui --filter build-tools-22.0.3,android-22,extra-android-m2repository
     - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
     - emulator -avd test -no-audio -no-window &
