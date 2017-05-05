@@ -3,10 +3,16 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import hestia.backend.refactoring.DeleteRequest;
+import hestia.backend.refactoring.PostRequest;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
@@ -130,20 +136,20 @@ public class BackendInteractor extends Application{
      * This method implements the HTTP POST method for changing the state of an activator on a
      * device as an AsyncTask.
      * @param device The target device for the post
-     * @param activatorId The target activator for the post
-     * @param newState The new state object to be used by the post
-     * @see StateModificationTask
+     * @param activator The target activator for the post
+     * @param newActivatorState The new state object to be used by the post
+     * @see PostRequest
      */
-    public void setActivatorState(Device device, int activatorId, ActivatorState newState){
-        Activator activator = device.getActivators().get(activatorId);
-        activator.setState(newState);
-        new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
-    }
-
-    public void setActivatorState(int deviceId, int activatorId, ActivatorState newState){
-        Activator activator = devices.get(deviceId).getActivators().get(activatorId);
-        activator.setState(newState);
-        new StateModificationTask(deviceId,activatorId,newState).execute();
+    public void setActivatorState(Device device, Activator activator, ActivatorState newActivatorState){
+        activator.setState(newActivatorState);
+        int deviceId = device.getDeviceId();
+        int activatorId = activator.getId();
+        String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
+        JsonObject newState = new JsonObject();
+        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState));
+        newState.add("state", jPrimitive);
+        Log.d(TAG,newState.toString());
+        new PostRequest(activatorPath, newState.toString()).execute();
     }
 
     /**

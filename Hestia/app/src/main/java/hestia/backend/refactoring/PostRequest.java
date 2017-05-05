@@ -6,11 +6,11 @@ import java.net.HttpURLConnection;
 
 public class PostRequest extends Request {
     private final String TAG = "PostRequest";
-    private String requiredInfo;
+    private String object;
 
-    public PostRequest(String path, String requiredInfo) {
+    public PostRequest(String path, String object) {
         super("POST", path);
-        this.requiredInfo = requiredInfo;
+        this.object = object;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class PostRequest extends Request {
     @Override
     protected void performIOAction(HttpURLConnection urlConnection) throws IOException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(urlConnection.getOutputStream());
-        outputStreamWriter.write(this.requiredInfo);
+        outputStreamWriter.write(this.object);
         outputStreamWriter.flush();
         outputStreamWriter.close();
     }

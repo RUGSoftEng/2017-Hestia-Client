@@ -13,34 +13,34 @@ import hestia.backend.Device;
 
 public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeListener {
     private final static String TAG = "HestiaSwitch";
-    private Device d;
-    private Activator a;
+    private Device device;
+    private Activator activator;
     private Switch activatorSwitch;
     private BackendInteractor backendInteractor;
     private boolean check;
 
-    public HestiaSwitch(Device d, Activator a, Context c) {
-        this.a = a;
+    public HestiaSwitch(Device device, Activator activator, Context c) {
+        this.activator = activator;
         Log.i(TAG, "HestiaSwitch created");
         activatorSwitch = new Switch(c);
-        setCheck(Boolean.parseBoolean(a.getState().toString()));
-        this.d = d;
+        setCheck(Boolean.parseBoolean(activator.getState().toString()));
+        this.device = device;
         this.backendInteractor = BackendInteractor.getInstance();
     }
 
     @Override
     public Device getDevice() {
-        return d;
+        return device;
     }
 
     @Override
-    public void setActivator(Activator a) {
-        this.a = a;
+    public void setActivator(Activator activator) {
+        this.activator = activator;
     }
 
     @Override
     public Activator getActivator() {
-        return a;
+        return activator;
     }
 
     public Switch getActivatorSwitch() {
@@ -48,20 +48,20 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        int activatorId = a.getId();
+    public void onCheckedChanged(CompoundButton compoundButton, boolean bool) {
+        //int activatorId = a.getId();
 
-        ActivatorState state = a.getState();
-        if (b) {
+        ActivatorState state = activator.getState();
+        if (bool) {
             state.setRawState(true);
-            backendInteractor.setActivatorState(d, activatorId, state);
+            backendInteractor.setActivatorState(device, activator, state);
             setCheck(true);
-            Log.i(TAG, d.getName() + " set to true");
+            Log.i(TAG, device.getName() + " set to true");
         } else {
             state.setRawState(false);
             setCheck(false);
-            backendInteractor.setActivatorState(d, activatorId, state);
-            Log.i(TAG, d.getName() + " set to false");
+            backendInteractor.setActivatorState(device, activator, state);
+            Log.i(TAG, device.getName() + " set to false");
         }
     }
 
