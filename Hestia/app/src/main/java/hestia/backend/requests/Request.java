@@ -1,4 +1,4 @@
-package hestia.backend.refactoring;
+package hestia.backend.requests;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -67,13 +67,4 @@ public abstract class Request extends AsyncTask<Void, Void, HttpURLConnection>{
     protected abstract void setDoIO(HttpURLConnection urlConnection);
 
     protected abstract void performIOAction(HttpURLConnection urlConnection) throws IOException;
-
-    /**
-     * Once the task is finished, it updates the list of devices.
-     * @param urlConnection the result of the task.
-     */
-    @Override
-    protected void onPostExecute(HttpURLConnection urlConnection) {
-        BackendInteractor.getInstance().updateDevices();
-    }
 }

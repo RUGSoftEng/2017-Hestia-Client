@@ -1,4 +1,4 @@
-package hestia.backend.refactoring;
+package hestia.backend.requests;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -25,5 +25,4 @@ public class PostRequest extends Request {
         outputStreamWriter.flush();
         outputStreamWriter.close();
     }
-
 }

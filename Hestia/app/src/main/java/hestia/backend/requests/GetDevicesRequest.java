@@ -1,7 +1,10 @@
-package hestia.backend.refactoring;
+package hestia.backend.requests;
 
 import android.util.Log;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import hestia.backend.Activator;
@@ -20,6 +23,11 @@ public class GetDevicesRequest extends GetRequest<ArrayList<Device>> {
     @Override
     protected void registerTypeAdapter(GsonBuilder gsonBuilder) {
         gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
+    }
+
+    @Override
+    protected Type getReturnType() {
+        return new TypeToken<ArrayList<Device>>(){}.getType();
     }
 
     @Override

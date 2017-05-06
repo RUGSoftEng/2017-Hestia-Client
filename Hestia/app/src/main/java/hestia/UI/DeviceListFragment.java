@@ -59,7 +59,6 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
     private void populateUI() {
         listDataChild = new ArrayList<>();
-
         backendInteractor = BackendInteractor.getInstance();
         ArrayList<Device> devices = backendInteractor.getDevices();
         for (Device device : devices) {
@@ -113,7 +112,6 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
             @Override
             public void onClick(View view) {
                 new AddDeviceDialog(getActivity()).show();
-                populateUI();
             }
         });
     }

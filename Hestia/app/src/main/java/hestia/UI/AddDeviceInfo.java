@@ -17,8 +17,7 @@ import com.rugged.application.hestia.R;
 import java.util.HashMap;
 
 import hestia.backend.BackendInteractor;
-import hestia.backend.PostDeviceTask;
-import hestia.backend.refactoring.PostRequest;
+import hestia.backend.requests.PostRequest;
 
 /**
  * This class dynamically creates the fields for the required information.
@@ -94,7 +93,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 }
                 String path = BackendInteractor.getInstance().getPath() + "devices/";
                 new PostRequest(path, requiredInfo.toString()).execute();
-                Toast.makeText(content, requiredInfo.toString(), Toast.LENGTH_SHORT).show();
+                BackendInteractor.getInstance().updateDevices();
+                Toast.makeText(content, "Device added successfully", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, requiredInfo.toString());
                 dismiss();
                 break;

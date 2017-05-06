@@ -1,4 +1,4 @@
-package hestia.backend.refactoring;
+package hestia.backend.requests;
 
 import android.util.Log;
 import com.google.gson.Gson;
@@ -30,13 +30,15 @@ public abstract class GetRequest<T> extends Request {
         Gson gson = gsonBuilder.create();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        Type returnType= new TypeToken<T>() {}.getType();
+        Type returnType = this.getReturnType();
         this.returnValue = gson.fromJson(gson.newJsonReader(reader), returnType);
-        Log.d(TAG, returnValue.toString());
+        Log.d(TAG, "RETURN VALUE IS: " + returnValue.toString());
         reader.close();
     }
 
     protected abstract void registerTypeAdapter(GsonBuilder gsonBuilder);
+
+    protected abstract Type getReturnType();
 
     @Override
     protected abstract void onPostExecute(HttpURLConnection urlConnection);

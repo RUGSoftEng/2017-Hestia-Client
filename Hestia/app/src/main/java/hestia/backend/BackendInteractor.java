@@ -11,10 +11,10 @@ import com.google.gson.JsonPrimitive;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import hestia.backend.refactoring.DeleteRequest;
-import hestia.backend.refactoring.GetDevicesRequest;
-import hestia.backend.refactoring.GetRequest;
-import hestia.backend.refactoring.PostRequest;
+import hestia.backend.requests.DeleteRequest;
+import hestia.backend.requests.GetDevicesRequest;
+import hestia.backend.requests.GetPluginsRequest;
+import hestia.backend.requests.PostRequest;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
@@ -33,7 +33,7 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    private String ip = "145.97.183.6";
+    private String ip = "82.73.173.179";
     private int port = 8000;
 
     /**
@@ -62,26 +62,24 @@ public class BackendInteractor extends Application{
      * @see DeleteRequest
      */
     public void deleteDevice(Device device) {
-        /**
-         * NOTE: This is the refectored method. The original method is deleteDevice2(...)
-         */
         int id = device.getDeviceId();
         String path = this.getPath() + "devices/" + id;
         new DeleteRequest(path).execute();
+        this.updateDevices();
     }
 
     /**
-     * Adds a device to the server, by starting a PluginInformationRetrieverTask,
+     * Adds a device to the server, by starting a GetPluginsRequest,
      * which will send a GET request to the server and, based on the data returned from
      * the GET request, will create a POST request which will contain additional fields.
      * @param organisation the organization that has/manufactured the device. (e.g. Philips)
      * @param pluginName the name of the plugin the contains data of the device to be added
      * @param activity the current activity
-     * @see PluginInformationRetrieverTask
+     * @see GetPluginsRequest
      */
     public void addDevice(String organisation, String pluginName, Activity activity) {
         String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
-        new PluginInformationRetrieverTask(path, activity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new GetPluginsRequest(path, activity).execute();
     }
 
     /**
