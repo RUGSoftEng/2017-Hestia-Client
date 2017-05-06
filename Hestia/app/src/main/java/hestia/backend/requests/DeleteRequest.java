@@ -3,7 +3,11 @@ package hestia.backend.requests;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import hestia.backend.BackendInteractor;
+/**
+ * This class does a DELETE request. It extends Request class, but does not do
+ * additional IO actions, therefore the methods will be left empty.
+ * @see Request
+ */
 
 public class DeleteRequest extends Request {
 
@@ -12,8 +16,8 @@ public class DeleteRequest extends Request {
     }
 
     @Override
-    protected void setDoIO(HttpURLConnection urlConnection) {}
+    protected void setDoIO(HttpURLConnection connector) {}
 
     @Override
-    protected void performIOAction(HttpURLConnection urlConnection) throws IOException {}
+    protected void performIOAction(HttpURLConnection connector) throws IOException {}
 }

@@ -2,7 +2,6 @@ package hestia.backend;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.JsonObject;
@@ -13,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import hestia.backend.requests.DeleteRequest;
 import hestia.backend.requests.GetDevicesRequest;
-import hestia.backend.requests.GetPluginsRequest;
+import hestia.backend.requests.GetPluginInformationRequest;
 import hestia.backend.requests.PostRequest;
 
 /**
@@ -56,7 +55,7 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * Deletes a device from the server by starting a PostRequest,
+     * Deletes a device from the server by starting a DeleteRequest,
      * which will send a DELETE request to the server.
      * @param device the device to be deleted.
      * @see DeleteRequest
@@ -69,17 +68,17 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * Adds a device to the server, by starting a GetPluginsRequest,
+     * Adds a device to the server, by starting a GetPluginInformationRequest,
      * which will send a GET request to the server and, based on the data returned from
-     * the GET request, will create a POST request which will contain additional fields.
+     * the GET request, will do a POST request with additional information.
      * @param organisation the organization that has/manufactured the device. (e.g. Philips)
      * @param pluginName the name of the plugin the contains data of the device to be added
      * @param activity the current activity
-     * @see GetPluginsRequest
+     * @see GetPluginInformationRequest
      */
     public void addDevice(String organisation, String pluginName, Activity activity) {
         String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
-        new GetPluginsRequest(path, activity).execute();
+        new GetPluginInformationRequest(path, activity).execute();
     }
 
     /**
@@ -97,7 +96,7 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * Updates the current list of devices by running the DeviceListRetrieverTask, which
+     * Updates the current list of devices by running the GetDevicesRequest, which
      * will execute a GET request for the list of devices from the server.
      */
     public void updateDevices(){
@@ -150,36 +149,18 @@ public class BackendInteractor extends Application{
         new PostRequest(activatorPath, newState.toString()).execute();
     }
 
-    /**
-     * Returns the IP of the server.
-     * @return the IP of the server
-     */
     public String getIp(){
         return this.ip;
     }
 
-    /**
-     * Replaces the IP of the server with the specified one.
-     * This is will also cause the list of devices to be updated.
-     * @param ip the IP of the server
-     */
     public void setIp(String ip){
         this.ip = ip;
-        updateDevices();
     }
 
-    /**
-     * Returns the port number of the server.
-     * @return the port number of the server
-     */
     public int getPort(){
         return port;
     }
 
-    /**
-     * Replaces the port number of the server with the specified one.
-     * @param port the port number of the server
-     */
     public void setPort(int port){
         this.port = port;
     }

@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
+/**
+ * This class does a POST request. It contains the Path to the Server and the Object to be send.
+ * @see Request
+ */
+
 public class PostRequest extends Request {
-    private final String TAG = "PostRequest";
     private String object;
 
     public PostRequest(String path, String object) {
@@ -14,13 +18,13 @@ public class PostRequest extends Request {
     }
 
     @Override
-    protected void setDoIO(HttpURLConnection urlConnection) {
-        urlConnection.setDoOutput(true);
+    protected void setDoIO(HttpURLConnection connector) {
+        connector.setDoOutput(true);
     }
 
     @Override
-    protected void performIOAction(HttpURLConnection urlConnection) throws IOException {
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(urlConnection.getOutputStream());
+    protected void performIOAction(HttpURLConnection connector) throws IOException {
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
         outputStreamWriter.write(this.object);
         outputStreamWriter.flush();
         outputStreamWriter.close();
