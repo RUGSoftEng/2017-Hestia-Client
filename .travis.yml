@@ -24,6 +24,9 @@ android:
     - sys-img-armeabi-v7a-android-22
     #- sys-img-armeabi-v7a-android-17
 
+  licenses:
+    - '.+' #This should accept all licenses
+
 install:
     - bash Hestia/gradlew tasks --all
 
