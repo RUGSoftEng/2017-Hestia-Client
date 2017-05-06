@@ -36,18 +36,14 @@ public class LoginTest {
     @Test
     public void verifyMessageSentToMessageActivity() {
 
-        // Types a message into a EditText element.
         onView(withId(R.id.username))
                 .perform(typeText(USERNAME), closeSoftKeyboard());
 
         onView(withId(R.id.password))
                 .perform(typeText(PASSWORD), closeSoftKeyboard());
 
-        // Clicks a button to send the message to another activity through an explicit intent.
         onView(withId(R.id.loginButton)).perform(click());
 
-        // Verifies that the DisplayMessageActivity received an intent
-        // with the correct package name and message.
         intended(allOf(
                 hasComponent(hasShortClassName("hestia.UI.DeviceListActivity")),
                 toPackage(PACKAGE_NAME)));
