@@ -35,6 +35,7 @@ public class BackendInteractor extends Application{
     private String ip = "82.73.173.179";
     private int port = 8000;
 
+
     /**
      * The empty constructor, which can not be accessed from the outside,
      * because we want a singleton behavior.
@@ -44,7 +45,7 @@ public class BackendInteractor extends Application{
     /**
      * Returns the single instance of BackendInteractor.
      * If there was no instance of this class created previously,
-     * then it will create one and return it.
+     * then it will create one and return it
      * @return the single instance of BackendInteractor
      */
     public static BackendInteractor getInstance(){
