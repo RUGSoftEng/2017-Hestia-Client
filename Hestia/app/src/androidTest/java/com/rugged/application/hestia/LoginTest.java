@@ -2,7 +2,6 @@ package com.rugged.application.hestia;
 
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Rule;
@@ -47,14 +46,13 @@ public class LoginTest {
         onView(withId(R.id.password))
                 .perform(typeText(PASSWORD), closeSoftKeyboard());
 
-        // Clicks a button to send the message to another
-        // activity through an explicit intent.
+        // Clicks a button to send the message to another activity through an explicit intent.
         onView(withId(R.id.loginButton)).perform(click());
 
         // Verifies that the DisplayMessageActivity received an intent
         // with the correct package name and message.
         intended(allOf(
-                hasComponent(hasShortClassName(".DeviceListActivity")),
+                hasComponent(hasShortClassName("hestia.UI.DeviceListActivity")),
                 toPackage(PACKAGE_NAME)));
     }
 
