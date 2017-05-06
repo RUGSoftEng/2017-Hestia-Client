@@ -88,7 +88,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             case R.id.confirm_button:
                 JsonObject requiredInfo = this.getRequiredInfo();
                 if(requiredInfo==null) {
-                    Toast.makeText(getContext(), "One or more empty values were entered."
+                    Toast.makeText(getContext(), R.string.emptyValuesEntered
                             , Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -99,7 +99,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 dismiss();
                 break;
             case R.id.back_button:
-                Toast.makeText(content, "Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(content, R.string.cancel, Toast.LENGTH_SHORT).show();
                 dismiss();
                 break;
             default:
@@ -138,8 +138,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         final Button cancel = new Button(content);
         confirm.setId(R.id.confirm_button);
         cancel.setId(R.id.back_button);
-        confirm.setText("Confirm");
-        cancel.setText("Cancel");
+        confirm.setText(R.string.confirm);
+        cancel.setText(R.string.cancel);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
         layout.addView(confirm);
