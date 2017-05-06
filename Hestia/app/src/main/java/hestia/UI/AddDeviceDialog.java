@@ -44,11 +44,11 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         String organization = organizationField.getText().toString();
         String pluginName = pluginField.getText().toString();
 
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.confirm_button:
                 backendInteractor.addDevice(organization, pluginName, context);
                 break;

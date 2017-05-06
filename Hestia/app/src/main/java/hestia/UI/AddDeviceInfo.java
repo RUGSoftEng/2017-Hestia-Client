@@ -47,26 +47,26 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        final LinearLayout lm = (LinearLayout) findViewById(R.id.linearMain);
+        final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
         int count = 0;
 
         for (String key : fields.keySet()) {
-            LinearLayout ll = new LinearLayout(content);
+            LinearLayout subLayout = new LinearLayout(content);
 
             // Add text
             TextView name = new TextView(content);
             name.setText(key);
-            ll.addView(name);
+            subLayout.addView(name);
 
             //Add field
             EditText field = createEditText(key, params , count);
-            ll.addView(field);
+            subLayout.addView(field);
 
-            lm.addView(ll);
+            mainLayout.addView(subLayout);
             count++;
         }
         LinearLayout ll = generateButtons(params);
-        lm.addView(ll);
+        mainLayout.addView(ll);
     }
 
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
@@ -113,18 +113,18 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
      * @return addDeviceJSON json object containing the information needed for adding a new device.
      */
     private JsonObject getRequiredInfo() {
-        int i = 0;
+        int count = 0;
         JsonObject requiredInfo = new JsonObject();
         for(String key : this.fields.keySet()) {
-            EditText field = (EditText) findViewById(i);
+            EditText field = (EditText) findViewById(count);
             String valueField = field.getText().toString();
-            if("".equals(valueField)) {
+            if(valueField.equals("")) {
                 return null;
             }
             this.fields.put(key, valueField);
             String value = this.fields.get(key);
             requiredInfo.addProperty(key, value);
-            i++;
+            count++;
         }
         JsonObject addDeviceJSON = new JsonObject();
         addDeviceJSON.addProperty("required_info", requiredInfo.toString());

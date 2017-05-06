@@ -5,11 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
@@ -26,17 +24,17 @@ import hestia.backend.Device;
  */
 
 public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
-    private Device d;
+    private Device device;
     private ArrayList<Activator> fields;
     private Context context;
     private BackendInteractor backendInteractor;
 
-    public SlideDialog(Context a, ArrayList<Activator> fields, Device d) {
-        super(a);
-        this.context = a;
+    public SlideDialog(Context context, ArrayList<Activator> fields, Device device) {
+        super(context);
+        this.context = context;
         this.backendInteractor = BackendInteractor.getInstance();
         this.fields = fields;
-        this.d = d;
+        this.device = device;
     }
 
     @Override
@@ -46,26 +44,26 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         setContentView(R.layout.slide_dialog);
 
         int count = 0;
-        final LinearLayout lm = (LinearLayout) findViewById(R.id.linearMain);
+        final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
 
         for (Activator activator : fields) {
-            LinearLayout ll = new LinearLayout(context);
+            LinearLayout subLayout = new LinearLayout(context);
 
             TextView name = new TextView(context);
             name.setText(activator.getName());
-            ll.addView(name);
+            subLayout.addView(name);
 
             Float currState = Float.parseFloat(activator.getState().toString());
             SeekBar bar = createSeekBar(currState ,count, activator);
-            ll.addView(bar);
+            subLayout.addView(bar);
 
-            lm.addView(ll);
+            mainLayout.addView(subLayout);
             count++;
         }
     }
 
-    private SeekBar createSeekBar(float progress, int count, Activator a){
-        final Activator act = a;
+    private SeekBar createSeekBar(float progress, int count, Activator activator){
+        final Activator act = activator;
         SeekBar bar = new SeekBar(context);
         final int max_int = Integer.MAX_VALUE;
         bar.setMax(max_int);
@@ -88,42 +86,14 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/max_int;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                backendInteractor.setActivatorState(d,act,state);
+                backendInteractor.setActivatorState(device,act,state);
             }
         });
         return bar;
     }
 
     @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.confirm_button:
-                Toast.makeText(getContext(), "Leaving", Toast.LENGTH_SHORT).show();
-                dismiss();
-                break;
-            case R.id.back_button:
-                Toast.makeText(getContext(), "Cancel", Toast.LENGTH_SHORT).show();
-                dismiss();
-                break;
-            default:
-                break;
-        }
+    public void onClick(View view) {
         dismiss();
-    }
-
-    private LinearLayout generateButtons(){
-        LinearLayout ll = new LinearLayout(context);
-        final Button confirm = new Button(context);
-        final Button cancel = new Button(context);
-        confirm.setId(R.id.confirm_button);
-        cancel.setId(R.id.back_button);
-        confirm.setText("Confirm");
-        cancel.setText("Cancel");
-        confirm.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-        ll.addView(confirm);
-        ll.addView(cancel);
-        return ll;
     }
 }

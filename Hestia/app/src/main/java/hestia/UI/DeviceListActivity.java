@@ -12,7 +12,6 @@ import hestia.backend.BackendInteractor;
  */
 
 public class DeviceListActivity extends SingleFragmentActivity {
-    private final static String TAG = "DeviceListActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

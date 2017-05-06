@@ -37,8 +37,8 @@ public class LoginActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Intent i = getIntent();
-        String extra = i.getStringExtra("login");
+        Intent fromIntent = getIntent();
+        String extra = fromIntent.getStringExtra("login");
 
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         Boolean saveLogin = loginPreferences.getBoolean("saveLogin", false);
@@ -85,8 +85,8 @@ public class LoginActivity extends Activity  {
     }
 
     private void gotoMainActivity(){
-        Intent i = new Intent(LoginActivity.this, DeviceListActivity.class);
-        startActivity(i);
+        Intent toIntent = new Intent(LoginActivity.this, DeviceListActivity.class);
+        startActivity(toIntent);
         finish();
     }
 
