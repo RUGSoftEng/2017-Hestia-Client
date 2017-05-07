@@ -29,7 +29,7 @@ android:
 
 before_install:
     - cd Hestia
-    - touch projectse/travis/.android/repositories.cfg
+    - touch /projectse/travis/.android/repositories.cfg
 
 install:
     - bash gradlew tasks --all --stacktrace --info
