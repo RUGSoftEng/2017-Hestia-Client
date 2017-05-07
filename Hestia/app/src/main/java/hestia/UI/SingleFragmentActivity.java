@@ -39,7 +39,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
     private BackendInteractor backendInteractor;
-
+    private final String changeIpText = "Set IP ";
+    private final String logoutText = "Logout ";
+    private final String extraName = "login";
+    private final String logoutExtraValue = "logout";
     private final int IP = 1;
     private final int LOGOUT = 2;
 
@@ -96,11 +99,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         close.setResource(R.drawable.ic_action);
         objects.add(close);
 
-        MenuObject ip = new MenuObject("Set Ip");
+        MenuObject ip = new MenuObject(changeIpText);
         ip.setResource(R.drawable.ic_router_black_24dp);
         objects.add(ip);
 
-        MenuObject logout = new MenuObject("Logout");
+        MenuObject logout = new MenuObject(logoutText);
         logout.setResource(R.drawable.ic_exit_to_app_black_24dp);
         objects.add(logout);
 
@@ -138,8 +141,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     private void gotoLoginActivity() {
         Intent toIntent = new Intent(SingleFragmentActivity.this, LoginActivity.class);
-        String extra = "logout";
-        toIntent.putExtra("login", extra);
+        toIntent.putExtra(extraName, logoutExtraValue);
         startActivity(toIntent);
         finish();
     }

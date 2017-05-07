@@ -31,6 +31,9 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     private HashMap<String, String> fields;
     private Activity content;
     private final String TAG = "AddDeviceInfo";
+    private final String fixedFieldOrg = "organization";
+    private final String fixedFieldPlugin = "plugin";
+    private final String propReqInfo = "required_info";
 
     public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
         super(activity);
@@ -73,7 +76,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         final EditText field = new EditText(content);
         field.setText(fields.get(key));
         field.setId(count);
-        if (key.equals("organization")||key.equals("plugin")) {
+        if (key.equals(fixedFieldOrg)||key.equals(fixedFieldPlugin)) {
             field.setFocusable(false);
             field.setClickable(false);
         }
@@ -127,7 +130,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             count++;
         }
         JsonObject addDeviceJSON = new JsonObject();
-        addDeviceJSON.addProperty("required_info", requiredInfo.toString());
+        addDeviceJSON.addProperty(propReqInfo, requiredInfo.toString());
         return addDeviceJSON;
     }
 

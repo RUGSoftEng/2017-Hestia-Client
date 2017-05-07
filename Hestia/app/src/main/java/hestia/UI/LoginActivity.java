@@ -30,7 +30,13 @@ public class LoginActivity extends Activity  {
     private TextView attemptsText;
     private int counter = 10;
     private String username,password;
-    public static final String LOGIN_PREFERENCES = "LoginPreferences";
+    private final String LOGIN_PREFERENCES = "LoginPreferences";
+    private final String intentExtra = "login";
+    private final String correctLoginToast = "Correct, redirecting.";
+    private final String incorrectLoginToast = "Invalid credentials.";
+    private final String saveLoginString = "saveLogin";
+    private final String prefsUser = "username";
+    private final String prefsPass = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +44,10 @@ public class LoginActivity extends Activity  {
         setContentView(R.layout.activity_login);
 
         Intent fromIntent = getIntent();
-        String extra = fromIntent.getStringExtra("login");
+        String extra = fromIntent.getStringExtra(intentExtra);
 
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
-        Boolean saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
         if (saveLogin) {
             if(extra==null) {
                 gotoMainActivity();
@@ -70,10 +76,10 @@ public class LoginActivity extends Activity  {
                     } else {
                         clearSaveLogin();
                     }
-                    showLoginToast("Correct, redirecting...");
+                    showLoginToast(correctLoginToast);
                     gotoMainActivity();
                 }else{
-                    showLoginToast("Wrong credentials.");
+                    showLoginToast(incorrectLoginToast);
                     editLoginAttempts();
                 }
             }
@@ -92,9 +98,9 @@ public class LoginActivity extends Activity  {
 
     private void setSaveLogin(String username, String password){
         loginPrefsEditor = loginPreferences.edit();
-        loginPrefsEditor.putBoolean("saveLogin", true);
-        loginPrefsEditor.putString("username", username);
-        loginPrefsEditor.putString("password", password);
+        loginPrefsEditor.putBoolean(saveLoginString, true);
+        loginPrefsEditor.putString(prefsUser, username);
+        loginPrefsEditor.putString(prefsPass, password);
         loginPrefsEditor.apply();
     }
 
