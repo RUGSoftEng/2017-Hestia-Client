@@ -28,7 +28,7 @@ android:
     - '.+' #This should accept all licenses
 
 install:
-    - bash ./gradlew tasks --all
+    - bash Hestia/gradlew tasks --all
 
 before_script:
     - android update sdk --no-ui --filter build-tools-25.0.3,android-25,extra-android-m2repository
