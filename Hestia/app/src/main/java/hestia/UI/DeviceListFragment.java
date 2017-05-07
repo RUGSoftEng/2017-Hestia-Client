@@ -28,8 +28,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
-    private BackendInteractor backendInteractor =  BackendInteractor.getInstance();
-    private FloatingActionButton fab;
+    private BackendInteractor backendInteractor;
+    private FloatingActionButton floatingActionButton;
 
     /**
      *
@@ -62,8 +62,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         backendInteractor = BackendInteractor.getInstance();
         ArrayList<Device> devices = backendInteractor.getDevices();
         for (Device device : devices) {
-            Activator a = device.getActivator(0);
-            HestiaSwitch hestiaSwitch = new HestiaSwitch(device, a, getActivity());
+            Activator activator = device.getActivator(0);
+            HestiaSwitch hestiaSwitch = new HestiaSwitch(device, activator, getActivity());
             DeviceBar bar = new DeviceBar(device, hestiaSwitch);
             if(!listDataChild.contains(bar)) {
                 if (!typeExists(device)) {
@@ -107,8 +107,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     }
 
     private void createFloatingButton(View view) {
-        fab = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new AddDeviceDialog(getActivity()).show();

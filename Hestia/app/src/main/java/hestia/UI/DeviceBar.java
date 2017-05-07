@@ -27,15 +27,15 @@ public class DeviceBar {
         return device;
     }
 
-    public void setDevice(Device d) {
-        this.device = d;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
-    public void setLayout(View v, int layoutId, boolean state) {
+    public void setLayout(View view, int layoutId, boolean state) {
         hestiaSwitch.getActivatorSwitch().setChecked(state);
         Log.i(TAG, "Layout changed for: " + device.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
-        hestiaSwitch.addLayout(v, layoutId);
+        hestiaSwitch.addLayout(view, layoutId);
     }
 
     @Override

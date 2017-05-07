@@ -28,12 +28,12 @@ import hestia.backend.Device;
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
-    private BackendInteractor c;
+    private BackendInteractor backendInteractor;
 
     public ExpandableListAdapter(ArrayList<ArrayList<DeviceBar>> listChildData, Context context) {
         this.listDataChild = listChildData;
         this.context = context;
-        this.c = BackendInteractor.getInstance();
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     @Override
@@ -52,9 +52,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         final DeviceBar dBar = (DeviceBar) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) context
+            LayoutInflater layoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.child_list_item, null);
+            convertView = layoutInflater.inflate(R.layout.child_list_item, null);
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
@@ -80,7 +80,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                 new SlideDialog(context, device).show();
                                 break;
                             case R.id.delete:
-                                c.deleteDevice(device);
+                                backendInteractor.deleteDevice(device);
                                 break;
                             default:
                                 break;
@@ -119,10 +119,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         DeviceBar dBar = ((ArrayList<DeviceBar>) getGroup(groupPosition)).get(0);
         String headerTitle = dBar.getDevice().getType();
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) context
+            LayoutInflater layoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
 
         TextView lblListHeader = (TextView) convertView
@@ -147,12 +147,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         return true;
     }
 
-    private PopupMenu createPopupMenu(View view, Device d){
+    private PopupMenu createPopupMenu(View view, Device device){
         PopupMenu popup = new PopupMenu(context, view);
         popup.getMenuInflater().inflate(R.menu.popup,
                 popup.getMenu());
 
-        if (d.getSliders()==null) {
+        if (device.getSliders()==null) {
             popup.getMenu().findItem(R.id.sliders).setEnabled(false);
             popup.getMenu().findItem(R.id.sliders).setVisible(false);
         }
