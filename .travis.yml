@@ -27,8 +27,11 @@ android:
   licenses:
     - '.+' #This should accept all licenses
 
+before_install:
+    - cd Hestia
+
 install:
-    - bash Hestia/gradlew tasks --all
+    - bash gradlew tasks --all
 
 before_script:
     - android update sdk --no-ui --filter build-tools-25.0.3,android-25,extra-android-m2repository
@@ -38,4 +41,4 @@ before_script:
     - adb shell input keyevent 82 &
 
 script:
-    - bash Hestia/gradlew :app:connectedCheck --stacktrace
+    - bash gradlew app:connectedCheck --stacktrace
