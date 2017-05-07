@@ -17,8 +17,7 @@ import com.rugged.application.hestia.R;
 import java.util.HashMap;
 
 import hestia.backend.BackendInteractor;
-import hestia.backend.PostDeviceTask;
-import hestia.backend.refactoring.PostRequest;
+import hestia.backend.requests.PostRequest;
 
 /**
  * This class dynamically creates the fields for the required information.
@@ -34,6 +33,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     private final String fixedFieldOrg = "organization";
     private final String fixedFieldPlugin = "plugin";
     private final String propReqInfo = "required_info";
+    private static final String EMPTY_STRING="";
 
     public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
         super(activity);
@@ -97,7 +97,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 }
                 String path = BackendInteractor.getInstance().getPath() + "devices/";
                 new PostRequest(path, requiredInfo.toString()).execute();
-                Toast.makeText(content, requiredInfo.toString(), Toast.LENGTH_SHORT).show();
+                BackendInteractor.getInstance().updateDevices();
+                Toast.makeText(content, "Device added successfully", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, requiredInfo.toString());
                 dismiss();
                 break;
@@ -121,7 +122,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         for(String key : this.fields.keySet()) {
             EditText field = (EditText) findViewById(count);
             String valueField = field.getText().toString();
-            if(valueField.equals("")) {
+          
+            if(EMPTY_STRING.equals(valueField)) {
                 return null;
             }
             this.fields.put(key, valueField);
@@ -135,7 +137,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     }
 
     private LinearLayout generateButtons(LinearLayout.LayoutParams params){
-        // Create buttons.
         LinearLayout layout = new LinearLayout(content);
         final Button confirm = new Button(content);
         final Button cancel = new Button(content);

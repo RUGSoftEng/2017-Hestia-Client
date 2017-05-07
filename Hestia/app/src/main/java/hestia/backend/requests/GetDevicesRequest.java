@@ -1,7 +1,9 @@
-package hestia.backend.refactoring;
+package hestia.backend.requests;
 
 import android.util.Log;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import hestia.backend.Activator;
@@ -9,17 +11,25 @@ import hestia.backend.ActivatorDeserializer;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 
-public class GetDevicesRequest extends GetRequest<ArrayList<Device>> {
+/**
+ * This class will do a GET request, expecting an ArrayList containing the list of devices.
+ * @see GetRequest
+ */
 
-    private final String TAG = "GetDevicesRequest";
+public class GetDevicesRequest extends GetRequest<ArrayList<Device>> {
 
     public GetDevicesRequest(String path) {
         super(path);
     }
 
     @Override
-    protected void registerTypeAdapter(GsonBuilder gsonBuilder) {
+    protected void setRegisterTypeAdapter(GsonBuilder gsonBuilder) {
         gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
+    }
+
+    @Override
+    protected Type getReturnType() {
+        return new TypeToken<ArrayList<Device>>(){}.getType();
     }
 
     @Override
@@ -28,7 +38,7 @@ public class GetDevicesRequest extends GetRequest<ArrayList<Device>> {
         if(devices != null) {
             BackendInteractor.getInstance().setDevices(devices);
         } else {
-            Log.e(TAG, "DEVICES ARRAY IS NULL");
+            Log.e("GetDevicesRequest", "DEVICES ARRAY IS NULL");
         }
     }
 }

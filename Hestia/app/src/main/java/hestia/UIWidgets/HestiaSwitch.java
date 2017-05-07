@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
@@ -17,15 +16,14 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     private Activator activator;
     private Switch activatorSwitch;
     private BackendInteractor backendInteractor;
-    private boolean check;
 
-    public HestiaSwitch(Device device, Activator activator, Context c) {
+    public HestiaSwitch(Device device, Activator activator, Context context) {
         this.activator = activator;
-        Log.i(TAG, "HestiaSwitch created");
-        activatorSwitch = new Switch(c);
-        setCheck(Boolean.parseBoolean(activator.getState().toString()));
+        activatorSwitch = new Switch(context);
+        activatorSwitch.setChecked(Boolean.valueOf(activator.getState().getRawState().toString()));
         this.device = device;
         this.backendInteractor = BackendInteractor.getInstance();
+        Log.i(TAG, "HestiaSwitch created");
     }
 
     @Override
@@ -48,32 +46,15 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean bool) {
-        //int activatorId = a.getId();
-
+    public void onCheckedChanged(CompoundButton compoundButton, boolean currentState) {
         ActivatorState state = activator.getState();
-        if (bool) {
-            state.setRawState(true);
-            backendInteractor.setActivatorState(device, activator, state);
-            setCheck(true);
-            Log.i(TAG, device.getName() + " set to true");
-        } else {
-            state.setRawState(false);
-            setCheck(false);
-            backendInteractor.setActivatorState(device, activator, state);
-            Log.i(TAG, device.getName() + " set to false");
-        }
+        state.setRawState(currentState);
+        backendInteractor.setActivatorState(device, activator, state);
     }
 
     public void addLayout(View v, int layoutId) {
         activatorSwitch = (Switch)v.findViewById(layoutId);
         activatorSwitch.setOnCheckedChangeListener(null);
-        activatorSwitch.setChecked(check);
         activatorSwitch.setOnCheckedChangeListener(this);
     }
-
-    private void setCheck(boolean b) {
-        check = b;
-    }
-
 }
