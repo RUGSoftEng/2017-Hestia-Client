@@ -25,7 +25,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
         this.backendInteractor = BackendInteractor.getInstance();
         Log.i(TAG, "HestiaSwitch created");
     }
-
+/*
     @Override
     public Device getDevice() {
         return device;
@@ -40,7 +40,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     public Activator getActivator() {
         return activator;
     }
-
+*/
     public Switch getActivatorSwitch() {
         return activatorSwitch;
     }
