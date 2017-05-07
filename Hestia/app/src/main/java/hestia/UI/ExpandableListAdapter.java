@@ -68,8 +68,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Device d = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
-                PopupMenu popup = createPopupMenu(view,d);
+                final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                PopupMenu popup = createPopupMenu(view,device);
 
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -77,10 +77,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.sliders:
-                                new SlideDialog(context,d.getSliders(),d).show();
+                                new SlideDialog(context, device).show();
                                 break;
                             case R.id.delete:
-                                c.deleteDevice(d);
+                                c.deleteDevice(device);
                                 break;
                             default:
                                 break;

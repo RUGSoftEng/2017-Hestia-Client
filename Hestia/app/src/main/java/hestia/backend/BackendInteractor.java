@@ -144,7 +144,7 @@ public class BackendInteractor extends Application{
         int activatorId = activator.getId();
         String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         JsonObject newState = new JsonObject();
-        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState));
+        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
         newState.add("state", jPrimitive);
         Log.d(TAG,newState.toString());
         new PostRequest(activatorPath, newState.toString()).execute();

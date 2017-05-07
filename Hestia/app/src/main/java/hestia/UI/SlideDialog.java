@@ -3,6 +3,7 @@ package hestia.UI;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -10,33 +11,30 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.util.ArrayList;
-
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 
-/*
-** This class handles the dialog which is opened if a Device has the 'slide' option.
-** It loads all the slider activators, and sends the new state onRelease.
+/**
+ * This class handles the dialog which is opened if a Device has the 'slide' option.
+ * It loads all the slider activators, and sends the new state onRelease.
  */
 
 public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
-    private Device d;
+    private Device device;
     private ArrayList<Activator> fields;
     private Context context;
     private BackendInteractor backendInteractor;
 
-    public SlideDialog(Context a, ArrayList<Activator> fields, Device d) {
-        super(a);
-        this.context = a;
+    public SlideDialog(Context context, Device device) {
+        super(context);
+        this.context = context;
         this.backendInteractor = BackendInteractor.getInstance();
-        this.fields = fields;
-        this.d = d;
+        this.device = device;
+        this.fields = device.getSliders();
     }
 
     @Override
@@ -55,7 +53,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
             name.setText(activator.getName());
             ll.addView(name);
 
-            Float currState = Float.parseFloat(activator.getState().toString());
+            Float currState = Float.parseFloat(activator.getState().getRawState().toString());
             SeekBar bar = createSeekBar(currState ,count, activator);
             ll.addView(bar);
 
@@ -64,13 +62,20 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         }
     }
 
-    private SeekBar createSeekBar(float progress, int count, Activator a){
-        final Activator act = a;
+    private SeekBar createSeekBar(float progress, int count, Activator activator){
+        final Activator act = activator;
         SeekBar bar = new SeekBar(context);
-        final int max_int = Integer.MAX_VALUE;
-        bar.setMax(max_int);
-        bar.setProgress((int)(progress* max_int));
-        bar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,80));
+        //final int maxInt = Integer.MAX_VALUE;
+        final int maxInt = 100;
+        bar.setMax(maxInt);
+        bar.setProgress((int)(progress * maxInt));
+        final String TAG = "SlideDialog";
+        Log.d(TAG, "------------- Before changing progress ---------" );
+        Log.d(TAG, "MAX_INT="+maxInt);
+        Log.d(TAG, "Initial progress="+progress);
+        Log.d(TAG, "progress set (progress*maxInt)="+progress*maxInt);
+        Log.d(TAG, "---------------------------------------------" );
+        bar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 80));
         bar.setId(count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -85,10 +90,13 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                float value = (float)seekBar.getProgress()/max_int;
+                float value = (float)seekBar.getProgress()/maxInt;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                backendInteractor.setActivatorState(d,act,state);
+                Log.d(TAG, "------------- After changing progress ---------" );
+                Log.d(TAG, "new value="+value);
+                Log.d(TAG, "---------------------------------------------" );
+                backendInteractor.setActivatorState(device,act,state);
             }
         });
         return bar;

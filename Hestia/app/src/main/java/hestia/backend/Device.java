@@ -99,7 +99,7 @@ public class Device {
      * @return the activators if the array is not empty, null otherwise
      */
     public ArrayList<Activator> getSliders() {
-        ArrayList<Activator> sliders = new ArrayList<Activator>();
+        ArrayList<Activator> sliders = new ArrayList<>();
         for(Activator a : activators){
             String type = a.getState().getType();
             if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")){
