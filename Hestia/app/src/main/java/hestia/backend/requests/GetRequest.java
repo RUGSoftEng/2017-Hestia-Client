@@ -42,7 +42,7 @@ abstract class GetRequest<T> extends Request {
         BufferedReader reader = new BufferedReader(new InputStreamReader(connector.getInputStream()));
         Type returnType = this.getReturnType();
         this.returnValue = gson.fromJson(gson.newJsonReader(reader), returnType);
-        Log.d("GetRequest", "RETURN VALUE IS: " + returnValue.toString());
+        Log.d("GetRequest", "RETURN VALUE IS: \n" + returnValue.toString());
         reader.close();
     }
 

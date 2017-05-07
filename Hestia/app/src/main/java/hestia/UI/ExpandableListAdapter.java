@@ -62,7 +62,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
-        Boolean state = Boolean.parseBoolean(dBar.getDevice().getActivator(0).getState().getRawState().toString());
+        Boolean state = Boolean.parseBoolean(dBar.getDevice().getToggle().getState().getRawState().toString());
         dBar.setLayout(convertView, R.id.light_switch,state);
 
         imageview.setOnClickListener(new View.OnClickListener() {

@@ -61,7 +61,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         backendInteractor = BackendInteractor.getInstance();
         ArrayList<Device> devices = backendInteractor.getDevices();
         for (Device device : devices) {
-            Activator activator = device.getActivator(0);
+            Activator activator = device.getToggle();
             HestiaSwitch hestiaSwitch = new HestiaSwitch(device, activator, getActivity());
             DeviceBar bar = new DeviceBar(device, hestiaSwitch);
             if(!listDataChild.contains(bar)) {
