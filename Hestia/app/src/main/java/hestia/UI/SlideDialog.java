@@ -63,37 +63,23 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
     private SeekBar createSeekBar(float progress, int count, Activator activator){
         final Activator act = activator;
         SeekBar bar = new SeekBar(context);
-        //final int maxInt = Integer.MAX_VALUE;
         final int maxInt = 100;
         bar.setMax(maxInt);
         bar.setProgress((int)(progress * maxInt));
-        final String TAG = "SlideDialog";
-        Log.d(TAG, "------------- Before changing progress ---------" );
-        Log.d(TAG, "MAX_INT="+maxInt);
-        Log.d(TAG, "Initial progress="+progress);
-        Log.d(TAG, "progress set (progress*maxInt)="+progress*maxInt);
-        Log.d(TAG, "---------------------------------------------" );
         bar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 80));
         bar.setId(count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float value = (float)seekBar.getProgress()/maxInt;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                Log.d(TAG, "------------- After changing progress ---------" );
-                Log.d(TAG, "new value="+value);
-                Log.d(TAG, "---------------------------------------------" );
                 backendInteractor.setActivatorState(device,act,state);
             }
         });

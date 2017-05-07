@@ -1,4 +1,4 @@
-package hestia.UIWidgets;
+package hestia.UI;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,37 +10,21 @@ import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 
-public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeListener {
+public class HestiaSwitch implements CompoundButton.OnCheckedChangeListener {
     private final static String TAG = "HestiaSwitch";
     private Device device;
     private Activator activator;
     private Switch activatorSwitch;
-    private BackendInteractor backendInteractor;
+    private BackendInteractor backendInteractor = BackendInteractor.getInstance();;
 
     public HestiaSwitch(Device device, Activator activator, Context context) {
+        this.device = device;
         this.activator = activator;
         activatorSwitch = new Switch(context);
         activatorSwitch.setChecked(Boolean.valueOf(activator.getState().getRawState().toString()));
-        this.device = device;
-        this.backendInteractor = BackendInteractor.getInstance();
-        Log.i(TAG, "HestiaSwitch created");
-    }
-/*
-    @Override
-    public Device getDevice() {
-        return device;
+        Log.i(TAG, "HestiaSwitch created, TOGGLE=" + activatorSwitch.isChecked());
     }
 
-    @Override
-    public void setActivator(Activator activator) {
-        this.activator = activator;
-    }
-
-    @Override
-    public Activator getActivator() {
-        return activator;
-    }
-*/
     public Switch getActivatorSwitch() {
         return activatorSwitch;
     }
@@ -54,7 +38,6 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
 
     public void addLayout(View v, int layoutId) {
         activatorSwitch = (Switch)v.findViewById(layoutId);
-        activatorSwitch.setOnCheckedChangeListener(null);
         activatorSwitch.setOnCheckedChangeListener(this);
     }
 }

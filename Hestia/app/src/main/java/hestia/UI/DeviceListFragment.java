@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Activator;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
