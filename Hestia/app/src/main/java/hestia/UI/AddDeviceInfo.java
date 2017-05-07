@@ -30,7 +30,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     private HashMap<String, String> fields;
     private Activity content;
     private final String TAG = "AddDeviceInfo";
-    private final String EMPTY_STRING="";
+    private static final String EMPTY_STRING="";
 
     public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
         super(activity);
@@ -119,7 +119,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         for(String key : this.fields.keySet()) {
             EditText field = (EditText) findViewById(i);
             String valueField = field.getText().toString();
-            if(this.EMPTY_STRING.equals(valueField)) {
+            if(EMPTY_STRING.equals(valueField)) {
                 return null;
             }
             this.fields.put(key, valueField);
@@ -133,7 +133,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     }
 
     private LinearLayout generateButtons(LinearLayout.LayoutParams params){
-        // Create buttons.
         LinearLayout layout = new LinearLayout(content);
         final Button confirm = new Button(content);
         final Button cancel = new Button(content);

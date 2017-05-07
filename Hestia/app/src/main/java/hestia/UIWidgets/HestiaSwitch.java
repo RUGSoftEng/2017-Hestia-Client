@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
@@ -21,6 +20,7 @@ public class HestiaSwitch implements UIWidget, CompoundButton.OnCheckedChangeLis
     public HestiaSwitch(Device device, Activator activator, Context context) {
         this.activator = activator;
         activatorSwitch = new Switch(context);
+        activatorSwitch.setChecked(Boolean.valueOf(activator.getState().getRawState().toString()));
         this.device = device;
         this.backendInteractor = BackendInteractor.getInstance();
         Log.i(TAG, "HestiaSwitch created");
