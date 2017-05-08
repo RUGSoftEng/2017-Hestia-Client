@@ -3,6 +3,7 @@ package hestia.UI;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutCompat;
 
 import hestia.backend.BackendInteractor;
 
@@ -20,6 +21,15 @@ public class DeviceListActivity extends SingleFragmentActivity {
         SharedPreferences prefs = getSharedPreferences("HESTIA.IP", 0);
         backendInteractor.setIp(prefs.getString("IP_OF_SERVER", backendInteractor.getIp()));
         super.onCreate(savedInstanceState);
+    }
+
+    /**
+     * When the app resumes, the list of devices is refreshed automatically using onResume.
+     */
+    @Override
+    public void onResume(){
+        BackendInteractor.getInstance().updateDevices();
+        super.onResume();
     }
 
     @Override

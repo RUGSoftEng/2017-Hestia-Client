@@ -28,7 +28,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
-    private BackendInteractor backendInteractor =  BackendInteractor.getInstance();
+    private BackendInteractor backendInteractor = BackendInteractor.getInstance();
     private FloatingActionButton fab;
 
     /**
@@ -60,7 +60,6 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private void populateUI() {
         listDataChild = new ArrayList<>();
 
-        backendInteractor = BackendInteractor.getInstance();
         ArrayList<Device> devices = backendInteractor.getDevices();
         for (Device device : devices) {
             Activator a = device.getActivator(0);
