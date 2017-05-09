@@ -2,8 +2,8 @@ package hestia.UI;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
 
-import hestia.UIWidgets.HestiaSwitch;
 import hestia.backend.Device;
 
 /**
@@ -27,15 +27,15 @@ public class DeviceBar {
         return device;
     }
 
-    public void setDevice(Device d) {
-        this.device = d;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
-    public void setLayout(View v, int layoutId, boolean state) {
+    public void setLayout(View view, int layoutId, boolean state) {
+        hestiaSwitch.addLayout(view, layoutId);
         hestiaSwitch.getActivatorSwitch().setChecked(state);
         Log.i(TAG, "Layout changed for: " + device.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
-        hestiaSwitch.addLayout(v, layoutId);
     }
 
     @Override

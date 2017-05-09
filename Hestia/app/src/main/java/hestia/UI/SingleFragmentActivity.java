@@ -36,10 +36,13 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     private static String TAG = "SingleFragmentActivity";
     private ContextMenuDialogFragment mMenuDialogFragment;
-    private FragmentManager fm;
+    private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
     private BackendInteractor backendInteractor;
-
+    private final String changeIpText = "Set IP ";
+    private final String logoutText = "Logout ";
+    private final String extraName = "login";
+    private final String logoutExtraValue = "logout";
     private final int IP = 1;
     private final int LOGOUT = 2;
 
@@ -69,12 +72,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+        fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
             fragment = createFragment();
-            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
         menuObjects = getMenuObjects();
         initMenuFragment();
@@ -96,11 +99,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         close.setResource(R.drawable.ic_action);
         objects.add(close);
 
-        MenuObject ip = new MenuObject("Set Ip");
+        MenuObject ip = new MenuObject(changeIpText);
         ip.setResource(R.drawable.ic_router_black_24dp);
         objects.add(ip);
 
-        MenuObject logout = new MenuObject("Logout");
+        MenuObject logout = new MenuObject(logoutText);
         logout.setResource(R.drawable.ic_exit_to_app_black_24dp);
         objects.add(logout);
 
@@ -117,8 +120,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.context_menu:
-                if (fm.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
-                    mMenuDialogFragment.show(fm, "ContextMenuDialogFragment");
+                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, "ContextMenuDialogFragment");
                 }
                 return true;
 
@@ -129,21 +132,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        switch (position) {
-            case IP:
-                showIpDialog();
-                break;
-            case LOGOUT:
-                gotoLoginActivity();
-                break;
+        if (position == IP){
+            showIpDialog();
+        } else if(position == LOGOUT) {
+            gotoLoginActivity();
         }
     }
 
     private void gotoLoginActivity() {
-        Intent i = new Intent(SingleFragmentActivity.this, LoginActivity.class);
-        String s = "logout";
-        i.putExtra("login", s);
-        startActivity(i);
+        Intent toIntent = new Intent(SingleFragmentActivity.this, LoginActivity.class);
+        toIntent.putExtra(extraName, logoutExtraValue);
+        startActivity(toIntent);
         finish();
     }
 
