@@ -28,6 +28,8 @@ android:
     - '.+' #This should accept all licenses
 
 before_install:
+  # copy the licenses to the correct file on the Travis system
+    - cp -r licenses/ /usr/local/android-sdk/licenses/
     - cd Hestia
 
 install:
@@ -43,3 +45,7 @@ before_script:
 
 script:
     - bash gradlew app:connectedCheck --stacktrace --info
+
+after_failure:
+  # Prints any linting errors after failing
+  - cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml
