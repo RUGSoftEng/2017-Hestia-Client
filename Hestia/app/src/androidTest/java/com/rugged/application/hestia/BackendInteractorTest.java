@@ -54,12 +54,6 @@ public class BackendInteractorTest {
         backendInteractor.deleteTestDevice(TEST_DEVICE_ID);
     }
 
-
-    @Test
-    public void fail(){
-        assertEquals(1,2);
-    }
-
     @Test
     public void testPackageName(){
         Context appContext = InstrumentationRegistry.getTargetContext();
