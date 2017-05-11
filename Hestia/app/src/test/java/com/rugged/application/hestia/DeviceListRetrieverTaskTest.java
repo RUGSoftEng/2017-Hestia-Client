@@ -33,12 +33,14 @@ public class DeviceListRetrieverTaskTest {
         assertTrue(result==MOCK_RESULT);
     }
 
+    /*
     @Test
     public void doInBackgroundTest() {
         when(mockDeviceListRetriever.doInBackground()).thenReturn(MOCK_RESULT);
         mockDeviceListRetriever.doInBackground();
         verify(mockDeviceListRetriever).doInBackground();
     }
+*/
 
     @Test
     public void onPostExecuteTest() {
