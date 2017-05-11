@@ -1,3 +1,5 @@
+sudo: false
+
 language: android
 jdk: oraclejdk8
 android:
@@ -26,6 +28,7 @@ android:
 
 before_install:
   # copy the licenses to the correct file on the Travis system
+    - pip install --user codecov    #Install codecov
     - cp -r licenses/ /usr/local/android-sdk/licenses/
     - cd Hestia
 
@@ -46,3 +49,14 @@ script:
 after_failure:
   # Prints any linting errors after failing
   - cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml
+
+after_success:
+  - codecov
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
