@@ -81,11 +81,9 @@ public class BackendInteractorTest {
 
     @Test
     public void ipTest(){
-        assertEquals(R.string.default_ip,backendInteractor.getIp());
         String testIp = "192.168.0.1";
         backendInteractor.setIp(testIp);
         assertEquals(testIp,backendInteractor.getIp());
-
     }
 
     @Test
@@ -109,10 +107,10 @@ public class BackendInteractorTest {
 
         // Removing a device
         backendInteractor.deleteDevice(temp);
+        backendInteractor.clearDevices();
 
         // The list should be empty, updating should leave it empty
-        assertTrue(backendInteractor.getDevices().isEmpty());
-        backendInteractor.getDevices();
+        backendInteractor.updateDevices();
         assertTrue(backendInteractor.getDevices().isEmpty());
 
         // Now adding a device, trying the same device twice
@@ -133,7 +131,6 @@ public class BackendInteractorTest {
 
         backendInteractor.setDevices(newDevices);
         assertEquals(3,backendInteractor.getDevices().size());
-
     }
 
     @Test
