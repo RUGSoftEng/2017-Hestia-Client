@@ -1,7 +1,6 @@
 package com.rugged.application.hestia;
 
 import android.content.Context;
-import android.provider.Settings;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -14,10 +13,12 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
+import hestia.UI.DeviceListFragment;
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
+import hestia.backend.DevicesChangeListener;
 
 import static org.junit.Assert.*;
 
@@ -55,13 +56,13 @@ public class BackendInteractorTest {
     }
 
     @Test
-    public void testPackageName(){
+    public void packageNameTest(){
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test
-    public void testGetDevices(){
+    public void getDevicesTest(){
         StringBuilder sb = new StringBuilder();
         for(Device d : backendInteractor.getDevices()){
             sb.append(d.toString());
@@ -73,23 +74,79 @@ public class BackendInteractorTest {
      * Test of the singleton reference, two different references should refer to the same object.
      */
     @Test
-    public void testSingleton(){
+    public void singletonTest(){
         BackendInteractor copyOfInteractor = BackendInteractor.getInstance();
         assertEquals(backendInteractor,copyOfInteractor);
     }
 
     @Test
-    public void testSetActivatorState(){
+    public void ipTest(){
+        assertEquals(R.string.default_ip,backendInteractor.getIp());
+        String testIp = "192.168.0.1";
+        backendInteractor.setIp(testIp);
+        assertEquals(testIp,backendInteractor.getIp());
+
+    }
+
+    @Test
+    public void setActivatorStateTest(){
         ArrayList<Device> testDeviceList = backendInteractor.getDevices();
         Device testDevice = testDeviceList.get(TEST_DEVICE_ID);
         ActivatorState state = testDevice.getActivators().get(TEST_ACTIVATOR_ID).getState();
         boolean testState = (boolean)state.getRawState();
         assertEquals(testState,false);
-        ActivatorState newState = new ActivatorState(true,"TOGGLE");
-        testDeviceList = backendInteractor.getDevices();
-        testDevice = testDeviceList.get(TEST_DEVICE_ID);
+        state.setRawState(true);
+
+        backendInteractor.setActivatorState(testDevice,testDevice.getActivators().get(TEST_ACTIVATOR_ID),state);
+
+        Activator activator = backendInteractor.getDevices().get(TEST_DEVICE_ID).getActivators().get(TEST_ACTIVATOR_ID);
+        assertEquals(true,activator.getState().getRawState());
     }
 
+    @Test
+    public void deleteDeviceTest(){
+        Device temp = backendInteractor.getDevices().get(TEST_DEVICE_ID);
 
+        // Removing a device
+        backendInteractor.deleteDevice(temp);
+
+        // The list should be empty, updating should leave it empty
+        assertTrue(backendInteractor.getDevices().isEmpty());
+        backendInteractor.getDevices();
+        assertTrue(backendInteractor.getDevices().isEmpty());
+
+        // Now adding a device, trying the same device twice
+        backendInteractor.addDevice(temp);
+        backendInteractor.addDevice(temp);
+        assertEquals(2,backendInteractor.getDevices().size());
+
+    }
+
+    @Test
+    public void setDevicesTest(){
+        Device temp = backendInteractor.getDevices().get(TEST_DEVICE_ID);
+        ArrayList<Device> newDevices = new ArrayList<>();
+        // Adding the same device three times
+        newDevices.add(temp);
+        newDevices.add(temp);
+        newDevices.add(temp);
+
+        backendInteractor.setDevices(newDevices);
+        assertEquals(3,backendInteractor.getDevices().size());
+
+    }
+
+    @Test
+    public void listenerTest(){
+        DevicesChangeListener l = new DeviceListFragment();
+
+        // Testing adding a listener
+        backendInteractor.addDevicesChangeListener(l);
+        assertEquals(l,backendInteractor.getListeners().get(0));
+
+        // Testing removing a listener
+        backendInteractor.removeDevicesChangeListener(l);
+        assertEquals(0,backendInteractor.getListeners().size());
+    }
 
 }

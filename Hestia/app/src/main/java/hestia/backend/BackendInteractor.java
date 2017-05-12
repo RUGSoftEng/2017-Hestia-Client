@@ -202,4 +202,8 @@ public class BackendInteractor extends Application{
     public void removeDevicesChangeListener(DevicesChangeListener l) {
         this.listeners.remove(l);
     }
+
+    public CopyOnWriteArrayList<DevicesChangeListener> getListeners(){
+        return this.listeners;
+    }
 }
