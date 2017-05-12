@@ -6,7 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- The main content view -->
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -16,7 +15,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:background="@color/white"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <!--app:layout_scrollFlags="scroll|enterAlways"-->
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="200dp"
@@ -34,10 +32,4 @@
             android:id="@+id/fragment_container"
             >
         </FrameLayout>
-
-
-
-
-
     </RelativeLayout>
-

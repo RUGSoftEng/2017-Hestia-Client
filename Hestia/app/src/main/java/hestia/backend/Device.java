@@ -9,8 +9,8 @@ import java.util.ArrayList;
  * type of the device so a GUI can be generated with the right icons at the correct location.
  * <p>
  *     Finally, there is a list of activators. These activators represent all the actions which can
- *     be performed remotely on the device. An activator can be for instance an On/Off switch, or
- *     an intensity slider.
+ *     be performed remotely on the device. An activator can be, for instance,
+ *     an On/Off switch (Toggle), or an intensity slider.
  * </p>
  * @see Activator
  */
@@ -28,69 +28,36 @@ public class Device {
         this.activators = activator;
     }
 
-    /**
-     * Gets the deviceId.
-     * @return the remote deviceId
-     */
     public int getDeviceId() {
         return deviceId;
     }
 
-    /**
-     * Sets the local deviceId.
-     * @param deviceId the Id to be set
-     */
     public void setDeviceId(int deviceId) {
         this.deviceId = deviceId;
     }
 
-    /**
-     * Gets the remote device name.
-     * @return the name of the device as stored on the server
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the local name of the device.
-     * @param name the local name of the device
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Gets the type of the device.
-     * @return a string with the type of the device
-     */
     public String getType() {
         return type;
     }
 
-    /**
-     * Sets the local type of the device.
-     * @param type the new local type
-     */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * Returns an activator based on its Id.
-     * @param activatorId the Id of the activator
-     * @return the activator with the specified Id
+     * Returns the main toggle activator, which will always be the first in the list of activators.
+     * @return the toggle activator.
      */
-    public Activator getActivator(int activatorId){
-        return activators.get(activatorId);
-    }
-
-    /**
-     * Gets the complete list of activators.
-     * @return the list of activators
-     */
-    public ArrayList<Activator> getActivators() {
-        return activators;
+    public Activator getToggle() {
+        return this.activators.get(0);
     }
 
     /**
@@ -99,7 +66,7 @@ public class Device {
      * @return the activators if the array is not empty, null otherwise
      */
     public ArrayList<Activator> getSliders() {
-        ArrayList<Activator> sliders = new ArrayList<Activator>();
+        ArrayList<Activator> sliders = new ArrayList<>();
         for(Activator a : activators){
             String type = a.getState().getType();
             if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")){
@@ -107,6 +74,14 @@ public class Device {
             }
         }
         return (sliders.isEmpty() ? null : sliders);
+    }
+
+    /**
+     * Gets the complete list of activators.
+     * @return the list of activators
+     */
+    public ArrayList<Activator> getActivators() {
+        return activators;
     }
 
     /**

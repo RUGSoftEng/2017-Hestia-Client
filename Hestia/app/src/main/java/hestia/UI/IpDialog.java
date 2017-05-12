@@ -41,13 +41,14 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         ip = ipField.getText().toString();
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.confirm_button:
                 if(ip!=null) {
                     backendInteractor.setIp(ip);
-                    Toast.makeText(getContext(),"IP Address set to: " + backendInteractor.getIp() + ":"
+                    backendInteractor.updateDevices();
+                    Toast.makeText(getContext(),R.string.ipSetTo + backendInteractor.getIp() + ":"
                                     + backendInteractor.getPort(),Toast.LENGTH_SHORT).show();
                 }
                 break;

@@ -12,14 +12,24 @@ import hestia.backend.BackendInteractor;
  */
 
 public class DeviceListActivity extends SingleFragmentActivity {
-    private final static String TAG = "DeviceListActivity";
+    private static final String HESTIA_IP = "HESTIA.IP";
+    private static final String SERVER_IP = "IP_OF_SERVER";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         BackendInteractor backendInteractor = BackendInteractor.getInstance();
-        SharedPreferences prefs = getSharedPreferences("HESTIA.IP", 0);
-        backendInteractor.setIp(prefs.getString("IP_OF_SERVER", backendInteractor.getIp()));
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
+        backendInteractor.setIp(prefs.getString(SERVER_IP, backendInteractor.getIp()));
         super.onCreate(savedInstanceState);
+    }
+
+    /**
+     * When the app resumes, the list of devices is refreshed automatically using onResume.
+     */
+    @Override
+    public void onResume(){
+        BackendInteractor.getInstance().updateDevices();
+        super.onResume();
     }
 
     @Override
@@ -41,7 +51,7 @@ public class DeviceListActivity extends SingleFragmentActivity {
 
     private void storeIP(){
         BackendInteractor backendInteractor = BackendInteractor.getInstance();
-        SharedPreferences.Editor prefs = getSharedPreferences("HESTIA.IP", 0).edit();
-        prefs.putString("IP_OF_SERVER", backendInteractor.getIp()).apply();
+        SharedPreferences.Editor prefs = getSharedPreferences(HESTIA_IP, 0).edit();
+        prefs.putString(SERVER_IP, backendInteractor.getIp()).apply();
     }
 }
