@@ -34,6 +34,7 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ip_dialog);
         ipField = (EditText) findViewById(R.id.ip);
+        ipField.setText(this.backendInteractor.getIp());
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);

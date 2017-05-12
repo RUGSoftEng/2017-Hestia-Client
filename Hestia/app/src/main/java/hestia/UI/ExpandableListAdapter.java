@@ -60,6 +60,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(dBar.getDevice().getName());
 
+            txtListChild.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                    if(device.getSliders()!=null) {
+                        new SlideDialog(context, device).show();
+                    }
+                }
+            });
+
+
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
         Boolean state = Boolean.parseBoolean(dBar.getDevice().getToggle().getState().getRawState().toString());
@@ -76,9 +87,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.sliders:
-                                new SlideDialog(context, device).show();
-                                break;
+                            //case R.id.sliders:
+                               // new SlideDialog(context, device).show();
+                                //break;
                             case R.id.delete:
                                 backendInteractor.deleteDevice(device);
                                 break;
@@ -152,7 +163,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         popup.getMenuInflater().inflate(R.menu.popup,
                 popup.getMenu());
 
-        if (device.getSliders()==null) {
+        if (device.getSliders()==null || device.getSliders() != null) {
             popup.getMenu().findItem(R.id.sliders).setEnabled(false);
             popup.getMenu().findItem(R.id.sliders).setVisible(false);
         }
