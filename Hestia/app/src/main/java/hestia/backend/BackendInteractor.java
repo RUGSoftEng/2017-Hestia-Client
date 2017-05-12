@@ -3,9 +3,11 @@ package hestia.backend;
 import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.rugged.application.hestia.R;
 
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -84,6 +86,17 @@ public class BackendInteractor extends Application{
     }
 
     /**
+     * Executes a POST request, sending a jsonObject containing all information
+     * needed to add a device to the server.
+     * @param requiredInfo the jsonObject containing the information relevant to adding a new device.
+     */
+    public void postDevice(JsonObject requiredInfo) {
+        String path = BackendInteractor.getInstance().getPath() + "devices/";
+        new PostRequest(path, requiredInfo).execute();
+        BackendInteractor.getInstance().updateDevices();
+    }
+
+    /**
      * This overloaded version of addDevice is used exclusively for testing purposes.
      */
     public void addDevice(Device device){
@@ -148,7 +161,8 @@ public class BackendInteractor extends Application{
         JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
         newState.add("state", jPrimitive);
         Log.d(TAG,newState.toString());
-        new PostRequest(activatorPath, newState.toString()).execute();
+
+        new PostRequest(activatorPath, newState).execute();
     }
 
     public String getIp(){
