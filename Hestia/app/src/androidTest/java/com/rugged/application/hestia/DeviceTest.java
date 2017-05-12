@@ -50,13 +50,13 @@ public class DeviceTest {
         tDev.setType("T_DEV");
         assertEquals("T_DEV", tDev.getType());
 
-        assertTrue(tDev.getSliders().isEmpty());
+        assertTrue(tDev.getSliders() == null);
         ActivatorState<Float> testSliderState = new ActivatorState<>((float) 0.3,"SLIDER");
         ArrayList<Activator> arr = new ArrayList<>();
         Activator testSlider = new Activator(0,testSliderState,"newButton");
         arr.add(testSlider);
         tDev.setActivators(arr);
-        assertTrue(tDev.getSliders().isEmpty());
+        assertFalse(tDev.getSliders() == null);
 
     }
 
