@@ -49,6 +49,22 @@ public class ActivatorAndActivatorStateTest {
         boolean returnedBoolState = (boolean) boolActivatorState.getRawState();
         assertEquals(true,returnedBoolState);
         assertEquals("TOGGLE",boolActivatorState.getType());
+
+        // Testing rawState getters and setters
+        boolean newBoolState = false;
+        boolActivatorState.setRawState(newBoolState);
+        assertEquals(newBoolState,boolActivatorState.getRawState());
+
+        float newFloatState = (float) 0.34578;
+        floatActivatorState.setRawState(newFloatState);
+        double allowedDelta = 0.00000005;
+        assertEquals(newFloatState,floatActivatorState.getRawState(),allowedDelta);
+
+        // Testing type setter
+        String typeString = "HESTIA_SWITCH";
+        boolActivatorState.setType(typeString);
+        assertEquals(typeString,boolActivatorState.getType());
+
     }
 
     @Test
@@ -56,5 +72,36 @@ public class ActivatorAndActivatorStateTest {
         assertEquals(floatActivatorState,testFloatActivator.getState());
         assertEquals(boolActivatorState,testBoolActivator.getState());
     }
+
+    @Test
+    public void activatorGettersAndSettersTest(){
+        // Testing getId, setId
+        assertEquals(1,testBoolActivator.getId());
+        testBoolActivator.setId(0);
+        assertEquals(DEFAULT_ID,testBoolActivator.getId());
+        assertNotEquals(DEFAULT_ID,testFloatActivator.getId());
+
+        // Testing setState
+        assertNotEquals(boolActivatorState,testFloatActivator.getState());
+        testFloatActivator.setState(boolActivatorState);
+        assertEquals(boolActivatorState,testFloatActivator.getState());
+
+        // Testing getName, setName
+        assertEquals("TEST_SWITCH",testBoolActivator.getName());
+        testBoolActivator.setName(DEFAULT_NAME);
+        assertEquals(DEFAULT_NAME,testBoolActivator.getName());
+    }
+
+    @Test
+    public void activatorEqualsAndHashTest(){
+        // Testing hashCodes
+        assertNotEquals(testBoolActivator.hashCode(),testFloatActivator.hashCode());
+        assertEquals(testBoolActivator.hashCode(),testBoolActivator.hashCode());
+
+        // Testing equals method
+        assertTrue(testBoolActivator.equals(testBoolActivator));
+        assertFalse(testBoolActivator.equals(testFloatActivator));
+    }
+
 
 }
