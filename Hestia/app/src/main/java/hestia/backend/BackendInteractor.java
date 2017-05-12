@@ -2,9 +2,18 @@ package hestia.backend;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.AsyncTask;
+import android.util.Log;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import hestia.backend.requests.DeleteRequest;
+import hestia.backend.requests.GetDevicesRequest;
+import hestia.backend.requests.GetPluginInformationRequest;
+import hestia.backend.requests.PostRequest;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
@@ -23,8 +32,10 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    private String ip = "145.97.183.6";
+    //private String ip = "82.73.173.179";
+    private String ip="80.114.179.5";
     private int port = 8000;
+
 
     /**
      * The empty constructor, which can not be accessed from the outside,
@@ -35,7 +46,7 @@ public class BackendInteractor extends Application{
     /**
      * Returns the single instance of BackendInteractor.
      * If there was no instance of this class created previously,
-     * then it will create one and return it.
+     * then it will create one and return it
      * @return the single instance of BackendInteractor
      */
     public static BackendInteractor getInstance(){
@@ -46,27 +57,30 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * Deletes a device from the server by starting a RemoveDeviceTask,
+     * Deletes a device from the server by starting a DeleteRequest,
      * which will send a DELETE request to the server.
      * @param device the device to be deleted.
-     * @see RemoveDeviceTask
+     * @see DeleteRequest
      */
     public void deleteDevice(Device device) {
-        new RemoveDeviceTask(device).execute();
+        int id = device.getDeviceId();
+        String path = this.getPath() + "devices/" + id;
+        new DeleteRequest(path).execute();
+        this.updateDevices();
     }
 
     /**
-     * Adds a device to the server, by starting a PluginInformationRetrieverTask,
+     * Adds a device to the server, by starting a GetPluginInformationRequest,
      * which will send a GET request to the server and, based on the data returned from
-     * the GET request, will create a POST request which will contain additional fields.
+     * the GET request, will do a POST request with additional information.
      * @param organisation the organization that has/manufactured the device. (e.g. Philips)
      * @param pluginName the name of the plugin the contains data of the device to be added
      * @param activity the current activity
-     * @see PluginInformationRetrieverTask
+     * @see GetPluginInformationRequest
      */
     public void addDevice(String organisation, String pluginName, Activity activity) {
         String path = this.getPath() + "plugins/" + organisation + "/plugins/" + pluginName;
-        new PluginInformationRetrieverTask(path, activity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new GetPluginInformationRequest(path, activity).execute();
     }
 
     /**
@@ -84,11 +98,12 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * Updates the current list of devices by running the DeviceListRetrieverTask, which
+     * Updates the current list of devices by running the GetDevicesRequest, which
      * will execute a GET request for the list of devices from the server.
      */
     public void updateDevices(){
-        new DeviceListRetrieverTask().execute();
+        String devicesPath = this.getPath() + "devices/";
+        new GetDevicesRequest(devicesPath).execute();
     }
 
     /**
@@ -120,52 +135,34 @@ public class BackendInteractor extends Application{
      * This method implements the HTTP POST method for changing the state of an activator on a
      * device as an AsyncTask.
      * @param device The target device for the post
-     * @param activatorId The target activator for the post
-     * @param newState The new state object to be used by the post
-     * @see StateModificationTask
+     * @param activator The target activator for the post
+     * @param newActivatorState The new state object to be used by the post
+     * @see PostRequest
      */
-    public void setActivatorState(Device device, int activatorId, ActivatorState newState){
-        Activator activator = device.getActivators().get(activatorId);
-        activator.setState(newState);
-        new StateModificationTask(device.getDeviceId(),activatorId,newState).execute();
+    public void setActivatorState(Device device, Activator activator, ActivatorState newActivatorState){
+        activator.setState(newActivatorState);
+        int deviceId = device.getDeviceId();
+        int activatorId = activator.getId();
+        String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
+        JsonObject newState = new JsonObject();
+        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
+        newState.add("state", jPrimitive);
+        Log.d(TAG,newState.toString());
+        new PostRequest(activatorPath, newState.toString()).execute();
     }
 
-    public void setActivatorState(int deviceId, int activatorId, ActivatorState newState){
-        Activator activator = devices.get(deviceId).getActivators().get(activatorId);
-        activator.setState(newState);
-        new StateModificationTask(deviceId,activatorId,newState).execute();
-    }
-
-    /**
-     * Returns the IP of the server.
-     * @return the IP of the server
-     */
     public String getIp(){
         return this.ip;
     }
 
-    /**
-     * Replaces the IP of the server with the specified one.
-     * This is will also cause the list of devices to be updated.
-     * @param ip the IP of the server
-     */
     public void setIp(String ip){
         this.ip = ip;
-        updateDevices();
     }
 
-    /**
-     * Returns the port number of the server.
-     * @return the port number of the server
-     */
     public int getPort(){
         return port;
     }
 
-    /**
-     * Replaces the port number of the server with the specified one.
-     * @param port the port number of the server
-     */
     public void setPort(int port){
         this.port = port;
     }

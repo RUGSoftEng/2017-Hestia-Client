@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/swipe_refresh">
 
     <RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- The main content view -->
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -21,7 +15,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:background="@color/white"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <!--app:layout_scrollFlags="scroll|enterAlways"-->
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="200dp"
@@ -39,10 +32,4 @@
             android:id="@+id/fragment_container"
             >
         </FrameLayout>
-
-
-
     </RelativeLayout>
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
