@@ -44,7 +44,8 @@ before_script:
     - adb shell input keyevent 82 &
 
 script:
-    - bash gradlew app:connectedCheck --stacktrace --info
+    - bash gradlew app:connectedCheck
+    - bash gradlew app:createDebugCoverageReport
 
 after_failure:
   # Prints any linting errors after failing
