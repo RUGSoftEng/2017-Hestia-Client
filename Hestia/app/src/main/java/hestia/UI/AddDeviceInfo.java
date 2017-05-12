@@ -127,7 +127,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             count++;
         }
         JsonObject addDeviceJSON = new JsonObject();
-        addDeviceJSON.addProperty(propReqInfo, requiredInfo.toString());
+        addDeviceJSON.add(propReqInfo, requiredInfo);
         return addDeviceJSON;
     }
 

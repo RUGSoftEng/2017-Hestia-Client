@@ -25,50 +25,26 @@ public class Activator {
         this.name = name;
     }
 
-    /**
-     * Returns the id of the activator.
-     * @return the id of the activator
-     */
     public String getId() {
         return id;
     }
 
-    /**
-     * Replaces the current id of the activator with the specified one.
-     * @param id the new id of the activator
-     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Returns the current state of the activator.
-     * @return the current state of the activator
-     */
     public ActivatorState getState() {
         return state;
     }
 
-    /**
-     * Replaces the current state of the activator with the specified one.
-     * @param state the new state of the activator
-     */
     public void setState(ActivatorState state) {
         this.state = state;
     }
 
-    /**
-     * Returns the name of the activator.
-     * @return the name of the activator
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Replaces the current name of the activator with the specified one.
-     * @param name the new name of the activator
-     */
     public void setName(String name) {
         this.name = name;
     }

@@ -5,10 +5,12 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.rugged.application.hestia.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -156,13 +158,12 @@ public class BackendInteractor extends Application{
         activator.setState(newActivatorState);
         String deviceId = device.getId();
         String activatorId = activator.getId();
-        String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
+        String path = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         JsonObject newState = new JsonObject();
-        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
-        newState.add("state", jPrimitive);
-        Log.d(TAG,newState.toString());
-
-        new PostRequest(activatorPath, newState).execute();
+        //JsonPrimitive jPrimitive = new JsonPrimitive(newActivatorState.getRawState());
+        JsonElement newStateValue = JsonElement.class.cast(newActivatorState.getRawState())  ;
+        newState.add("state", newStateValue);
+        new PostRequest(path, newState).execute();
     }
 
     public String getIp(){
