@@ -32,8 +32,8 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    //private String ip = "82.73.173.179";
-    private String ip="80.114.179.5";
+    private String ip = "82.73.173.179";
+    //private String ip="80.114.179.5";
     private int port = 8000;
 
 
@@ -63,7 +63,7 @@ public class BackendInteractor extends Application{
      * @see DeleteRequest
      */
     public void deleteDevice(Device device) {
-        int id = device.getDeviceId();
+        String id = device.getId();
         String path = this.getPath() + "devices/" + id;
         new DeleteRequest(path).execute();
         this.updateDevices();
@@ -141,8 +141,8 @@ public class BackendInteractor extends Application{
      */
     public void setActivatorState(Device device, Activator activator, ActivatorState newActivatorState){
         activator.setState(newActivatorState);
-        int deviceId = device.getDeviceId();
-        int activatorId = activator.getId();
+        String deviceId = device.getId();
+        String activatorId = activator.getId();
         String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         JsonObject newState = new JsonObject();
         JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));

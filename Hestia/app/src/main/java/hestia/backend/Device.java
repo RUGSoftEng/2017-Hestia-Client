@@ -16,24 +16,24 @@ import java.util.ArrayList;
  */
 
 public class Device {
-    private int deviceId;
+    private String id;
     private String name;
     private String type;
     private ArrayList<Activator> activators;
 
-    public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
-        this.deviceId = deviceId;
+    public Device(String id, String name, String type, ArrayList<Activator> activator) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.activators = activator;
     }
 
-    public int getDeviceId() {
-        return deviceId;
+    public String getId() {
+        return id;
     }
 
-    public void setDeviceId(int deviceId) {
-        this.deviceId = deviceId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -93,7 +93,7 @@ public class Device {
     }
 
     public String toString(){
-        return name +" "+ deviceId + " " + activators + "\n";
+        return name +" "+ id + " " + activators + "\n";
     }
 
     @Override
@@ -103,19 +103,19 @@ public class Device {
 
         Device device = (Device) o;
 
-        if (deviceId != device.deviceId) return false;
-        if (!name.equals(device.name)) return false;
-        if (!type.equals(device.type)) return false;
-        return activators.equals(device.activators);
+        if (!getId().equals(device.getId())) return false;
+        if (!getName().equals(device.getName())) return false;
+        if (!getType().equals(device.getType())) return false;
+        return getActivators().equals(device.getActivators());
 
     }
 
     @Override
     public int hashCode() {
-        int result = deviceId;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + activators.hashCode();
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getType().hashCode();
+        result = 31 * result + getActivators().hashCode();
         return result;
     }
 }

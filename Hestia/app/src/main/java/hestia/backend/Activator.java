@@ -9,7 +9,7 @@ package hestia.backend;
  * @see ActivatorState
  */
 public class Activator {
-    private int id;
+    private String id;
     private ActivatorState state;
     private String name;
 
@@ -19,7 +19,7 @@ public class Activator {
      * @param state the current state of the activator, this is a wrapper around a generic type
      * @param name the name of the activator
      */
-    public Activator(int id, ActivatorState state, String name) {
+    public Activator(String id, ActivatorState state, String name) {
         this.id = id;
         this.state = state;
         this.name = name;
@@ -29,7 +29,7 @@ public class Activator {
      * Returns the id of the activator.
      * @return the id of the activator
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class Activator {
      * Replaces the current id of the activator with the specified one.
      * @param id the new id of the activator
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -88,7 +88,7 @@ public class Activator {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id.hashCode();
         result = 31 * result + state.hashCode();
         result = 31 * result + name.hashCode();
         return result;
