@@ -58,4 +58,23 @@ public class ActivatorState<T> {
     public String toString(){
         return this.type + " - " + this.rawState.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ActivatorState)) return false;
+
+        ActivatorState<?> that = (ActivatorState<?>) o;
+
+        if (!getRawState().equals(that.getRawState())) return false;
+        return getType().equals(that.getType());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getRawState().hashCode();
+        result = 31 * result + getType().hashCode();
+        return result;
+    }
 }

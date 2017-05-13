@@ -2,13 +2,10 @@ package hestia.backend;
 
 import android.app.Activity;
 import android.app.Application;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import hestia.backend.requests.DeleteRequest;
 import hestia.backend.requests.GetDevicesRequest;
 import hestia.backend.requests.GetPluginInformationRequest;
