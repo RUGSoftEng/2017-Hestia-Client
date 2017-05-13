@@ -115,7 +115,7 @@ public class BackendInteractor extends Application{
         String devicesPath = this.getPath() + "devices/";
         new GetDevicesRequest(devicesPath).execute();
     }
-    
+
     public ArrayList<Device> getDevices(){
         return devices;
     }
