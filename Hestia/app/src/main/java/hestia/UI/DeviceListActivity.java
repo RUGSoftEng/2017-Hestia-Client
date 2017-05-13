@@ -26,6 +26,7 @@ public class DeviceListActivity extends SingleFragmentActivity {
     /**
      * When the app resumes, the list of devices is refreshed automatically using onResume.
      */
+
     @Override
     public void onResume(){
         BackendInteractor.getInstance().updateDevices();

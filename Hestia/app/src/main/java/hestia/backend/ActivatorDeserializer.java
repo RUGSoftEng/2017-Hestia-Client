@@ -48,6 +48,9 @@ public class ActivatorDeserializer implements JsonDeserializer<Activator> {
             case "unsigned_int16" :
                 state = new ActivatorState<Float>(Float.parseFloat(rawState),"UNSIGNED_INT16");
                 break;
+            case "float" :
+                state = new ActivatorState<Float>(Float.parseFloat(rawState),"float");
+                break;
             default : break;
         }
 

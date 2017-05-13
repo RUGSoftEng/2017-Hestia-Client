@@ -140,9 +140,20 @@ public class BackendInteractor extends Application{
         String activatorId = activator.getId();
         String path = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         JsonObject newState = new JsonObject();
-        JsonPrimitive newStateValue = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
+        JsonPrimitive newStateValue = this.getNewStateValue(newActivatorState);
         newState.add("state", newStateValue);
         new PostRequest(path, newState).execute();
+    }
+
+    private JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
+        switch (newActivatorState.getType().toLowerCase()) {
+            case "bool":
+                return new JsonPrimitive(Boolean.valueOf(String.valueOf(newActivatorState.getRawState())));
+            case "float":
+                return new JsonPrimitive(Float.valueOf(String.valueOf(newActivatorState.getRawState())));
+            default:
+                return new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
+        }
     }
 
     public String getIp(){
