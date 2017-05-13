@@ -16,24 +16,24 @@ import java.util.ArrayList;
  */
 
 public class Device {
-    private String id;
+    private String deviceId;
     private String name;
     private String type;
     private ArrayList<Activator> activators;
 
-    public Device(String id, String name, String type, ArrayList<Activator> activator) {
-        this.id = id;
+    public Device(String deviceId, String name, String type, ArrayList<Activator> activator) {
+        this.deviceId = deviceId;
         this.name = name;
         this.type = type;
         this.activators = activator;
     }
 
     public String getId() {
-        return id;
+        return deviceId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getName() {
@@ -93,7 +93,7 @@ public class Device {
     }
 
     public String toString(){
-        return name +" "+ id + " " + activators + "\n";
+        return name +" "+ deviceId + " " + activators + "\n";
     }
 
     @Override

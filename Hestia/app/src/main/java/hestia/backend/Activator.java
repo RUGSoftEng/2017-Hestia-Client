@@ -9,28 +9,28 @@ package hestia.backend;
  * @see ActivatorState
  */
 public class Activator {
-    private String id;
+    private String activatorId;
     private ActivatorState state;
     private String name;
 
     /**
      * Creates an Activator with the specified id, state and name.
-     * @param id the id of the activator
+     * @param activatorId the id of the activator
      * @param state the current state of the activator, this is a wrapper around a generic type
      * @param name the name of the activator
      */
-    public Activator(String id, ActivatorState state, String name) {
-        this.id = id;
+    public Activator(String activatorId, ActivatorState state, String name) {
+        this.activatorId = activatorId;
         this.state = state;
         this.name = name;
     }
 
     public String getId() {
-        return id;
+        return activatorId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String activatorId) {
+        this.activatorId = activatorId;
     }
 
     public ActivatorState getState() {
@@ -56,7 +56,7 @@ public class Activator {
 
         Activator activator = (Activator) o;
 
-        if (id != activator.id) return false;
+        if (activatorId != activator.activatorId) return false;
         if (!state.equals(activator.state)) return false;
         return name.equals(activator.name);
 
@@ -64,7 +64,7 @@ public class Activator {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = activatorId.hashCode();
         result = 31 * result + state.hashCode();
         result = 31 * result + name.hashCode();
         return result;

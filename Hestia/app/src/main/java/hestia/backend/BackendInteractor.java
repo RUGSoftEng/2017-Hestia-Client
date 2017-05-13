@@ -2,15 +2,10 @@ package hestia.backend;
 
 import android.app.Activity;
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.rugged.application.hestia.R;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -120,30 +115,18 @@ public class BackendInteractor extends Application{
         String devicesPath = this.getPath() + "devices/";
         new GetDevicesRequest(devicesPath).execute();
     }
-
-    /**
-     * This method will return a list of devices, which is possibly empty. If this is the case, then
-     * an AsyncTask is started to fill the devices so that the devices will eventually be filled.
-     * @return a list of devices known to the server.
-     */
+    
     public ArrayList<Device> getDevices(){
-        if(devices.isEmpty()){
-            updateDevices();
-        }
         return devices;
     }
 
     /**
-     * Attempts to replace the list of devices with the specified one.
-     * If the new list of devices contains different devices, it replaces the old list of devices
-     * with the new one and it will fire a change event. Otherwise, it will not do anything.
+     * Replaces the current list of devices with the specified one and will fire a change event.
      * @param devices the new list of devices
      */
     public void setDevices(ArrayList<Device> devices) {
-        if(!this.devices.equals(devices)) {
-            this.devices = devices;
-            fireChangeEvent();
-        }
+        this.devices = devices;
+        fireChangeEvent();
     }
 
     /**
