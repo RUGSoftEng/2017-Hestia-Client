@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="55dip"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@color/listGroup">
 
     <TextView
         android:id="@+id/child_item_text"
@@ -11,7 +12,8 @@
         android:textSize="17dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:textColor="@color/text"/>
 
     <Switch
         android:id="@+id/light_switch"

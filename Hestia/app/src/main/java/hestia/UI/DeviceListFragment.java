@@ -67,6 +67,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
 
+
             }
 
             @Override
@@ -81,6 +82,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
         backendInteractor.addDevicesChangeListener(this);
         populateUI();
+
         return deviceListView;
     }
 
