@@ -13,7 +13,7 @@
             android:minHeight="?attr/actionBarSize"
             android:elevation="4dp"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:background="@color/listBackground"
+            android:background="@color/background"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
             <ImageView
                 android:id="@+id/imageView"
