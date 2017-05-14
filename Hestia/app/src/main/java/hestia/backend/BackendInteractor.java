@@ -34,7 +34,7 @@ public class BackendInteractor extends Application{
 //    private String ip = "82.73.173.179";
 //    private int port = 8022;
 
-    private String ip = "82.73.173.179";
+    private String ip = "192.168.178.45";
 
     private int port = 8000;
 
