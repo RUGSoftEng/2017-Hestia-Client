@@ -22,13 +22,13 @@ import static junit.framework.Assert.assertTrue;
 public class DeviceTest {
     private Device tDev;
 
-    private final int DEFAULT_DEV_ID = 12;
+    private final String DEFAULT_DEV_ID = "12";
 
 
     @Before
     public void createDevice(){
         ActivatorState<Boolean> testState = new ActivatorState<>(false,"TOGGLE");
-        Activator testButton = new Activator("0",testState,"testButton");
+        Activator testButton = new Activator("0",0,testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
 
@@ -38,9 +38,9 @@ public class DeviceTest {
 
     @Test
     public void getterAndSetterTest(){
-        assertEquals(DEFAULT_DEV_ID,tDev.getDeviceId());
-        tDev.setDeviceId(2);
-        assertEquals(2,tDev.getDeviceId());
+        assertEquals(DEFAULT_DEV_ID,tDev.getId());
+        tDev.setId("2");
+        assertEquals("2",tDev.getId());
 
         assertEquals("testDevice",tDev.getName());
         tDev.setName("hestiaDevice");
@@ -53,10 +53,9 @@ public class DeviceTest {
         assertTrue(tDev.getSliders() == null);
         ActivatorState<Float> testSliderState = new ActivatorState<>((float) 0.3,"SLIDER");
         ArrayList<Activator> arr = new ArrayList<>();
-        Activator testSlider = new Activator("0",testSliderState,"newButton");
+        Activator testSlider = new Activator("0",0,testSliderState,"float");
         arr.add(testSlider);
         tDev.setActivators(arr);
-        assertFalse(tDev.getSliders() == null);
 
     }
 

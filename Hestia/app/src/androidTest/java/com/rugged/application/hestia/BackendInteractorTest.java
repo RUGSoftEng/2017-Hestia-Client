@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class BackendInteractorTest {
-    private static final int TEST_DEVICE_ID = 0;
+    private static final String TEST_DEVICE_ID = "1";
     private static final String TEST_ACTIVATOR_ID = "0";
     private String TAG = "ClientInteractionTest";
     private static BackendInteractor backendInteractor;
@@ -33,17 +33,17 @@ public class BackendInteractorTest {
     public static void runBeforeTests(){
         backendInteractor = BackendInteractor.getInstance();
         ActivatorState<Boolean> testState = new ActivatorState<Boolean>(false,"TOGGLE");
-        Activator testButton = new Activator("0",testState,"testButton");
+        Activator testButton = new Activator("0",0,testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
-        Device testDevice = new Device(0,"testDevice", "testing",arr);
+        Device testDevice = new Device("0","testDevice", "testing",arr);
         backendInteractor.addDevice(testDevice);
     }
 
     @Before
     public void addTestDevice(){
         ActivatorState<Boolean> testState = new ActivatorState<Boolean>(false,"TOGGLE");
-        Activator testButton = new Activator(TEST_ACTIVATOR_ID,testState,"testButton");
+        Activator testButton = new Activator(TEST_ACTIVATOR_ID,0,testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
         Device testDevice = new Device(TEST_DEVICE_ID,"testDevice", "testing",arr);
@@ -52,7 +52,7 @@ public class BackendInteractorTest {
 
     @After
     public void removeTestDevice(){
-        backendInteractor.deleteTestDevice(TEST_DEVICE_ID);
+        backendInteractor.deleteTestDevice(Integer.parseInt(TEST_DEVICE_ID));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class BackendInteractorTest {
     @Test
     public void setActivatorStateTest(){
         ArrayList<Device> testDeviceList = backendInteractor.getDevices();
-        Device testDevice = testDeviceList.get(TEST_DEVICE_ID);
+        Device testDevice = testDeviceList.get(Integer.parseInt(TEST_DEVICE_ID));
         ActivatorState state = testDevice.getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID)).getState();
         boolean testState = (boolean)state.getRawState();
         assertEquals(testState,false);
@@ -97,13 +97,13 @@ public class BackendInteractorTest {
 
         backendInteractor.setActivatorState(testDevice,testDevice.getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID)),state);
 
-        Activator activator = backendInteractor.getDevices().get(TEST_DEVICE_ID).getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID));
+        Activator activator = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID)).getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID));
         assertEquals(true,activator.getState().getRawState());
     }
 
     @Test
     public void deleteDeviceTest(){
-        Device temp = backendInteractor.getDevices().get(TEST_DEVICE_ID);
+        Device temp = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID));
 
         // Removing a device
         backendInteractor.deleteDevice(temp);
@@ -122,7 +122,7 @@ public class BackendInteractorTest {
 
     @Test
     public void setDevicesTest(){
-        Device temp = backendInteractor.getDevices().get(TEST_DEVICE_ID);
+        Device temp = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID));
         ArrayList<Device> newDevices = new ArrayList<>();
         // Adding the same device three times
         newDevices.add(temp);
