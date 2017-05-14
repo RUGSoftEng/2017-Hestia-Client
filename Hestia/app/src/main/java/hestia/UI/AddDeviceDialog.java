@@ -30,7 +30,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
     public AddDeviceDialog(Activity activity) {
         super(activity);
         this.context = activity;
-        this.backendInteractor = BackendInteractor.getInstance();;
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     @Override

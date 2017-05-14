@@ -15,7 +15,7 @@ public class HestiaSwitch implements CompoundButton.OnCheckedChangeListener {
     private Device device;
     private Activator activator;
     private Switch activatorSwitch;
-    private BackendInteractor backendInteractor = BackendInteractor.getInstance();;
+    private BackendInteractor backendInteractor = BackendInteractor.getInstance();
 
     public HestiaSwitch(Device device, Activator activator, Context context) {
         this.device = device;
@@ -34,6 +34,7 @@ public class HestiaSwitch implements CompoundButton.OnCheckedChangeListener {
         ActivatorState state = activator.getState();
         state.setRawState(currentState);
         backendInteractor.setActivatorState(device, activator, state);
+        Log.i(TAG, "Sending a post to the server");
     }
 
     public void addLayout(View v, int layoutId) {
