@@ -2,14 +2,10 @@ package hestia.backend;
 
 import android.app.Activity;
 import android.app.Application;
-import android.util.Log;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import hestia.backend.requests.DeleteRequest;
 import hestia.backend.requests.GetDevicesRequest;
 import hestia.backend.requests.GetPluginInformationRequest;
@@ -28,12 +24,18 @@ public class BackendInteractor extends Application{
      * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
      * a listener attempts to remove itself during event notification.
      */
-    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =  new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =
+            new CopyOnWriteArrayList<>();
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    //private String ip = "82.73.173.179";
-    private String ip="80.114.179.5";
+
+    //PI:
+//    private String ip = "82.73.173.179";
+//    private int port = 8022;
+
+    private String ip = "82.73.173.179";
+
     private int port = 8000;
 
 
@@ -63,7 +65,7 @@ public class BackendInteractor extends Application{
      * @see DeleteRequest
      */
     public void deleteDevice(Device device) {
-        int id = device.getDeviceId();
+        String id = device.getId();
         String path = this.getPath() + "devices/" + id;
         new DeleteRequest(path).execute();
         this.updateDevices();
@@ -84,17 +86,14 @@ public class BackendInteractor extends Application{
     }
 
     /**
-     * This overloaded version of addDevice is used exclusively for testing purposes.
+     * Executes a POST request, sending a jsonObject containing all information
+     * needed to add a device to the server.
+     * @param requiredInfo the jsonObject containing the information relevant to adding a new device.
      */
-    public void addDevice(Device device){
-        devices.add(device);
-    }
-
-    /**
-     * The deleteTestDevice method uses the same
-     */
-    public void deleteTestDevice(int deviceId){
-        devices.remove(deviceId);
+    public void postDevice(JsonObject requiredInfo) {
+        String path = BackendInteractor.getInstance().getPath() + "devices/";
+        new PostRequest(path, requiredInfo).execute();
+        BackendInteractor.getInstance().updateDevices();
     }
 
     /**
@@ -106,29 +105,17 @@ public class BackendInteractor extends Application{
         new GetDevicesRequest(devicesPath).execute();
     }
 
-    /**
-     * This method will return a list of devices, which is possibly empty. If this is the case, then
-     * an AsyncTask is started to fill the devices so that the devices will eventually be filled.
-     * @return a list of devices known to the server.
-     */
     public ArrayList<Device> getDevices(){
-        if(devices.isEmpty()){
-            updateDevices();
-        }
         return devices;
     }
 
     /**
-     * Attempts to replace the list of devices with the specified one.
-     * If the new list of devices contains different devices, it replaces the old list of devices
-     * with the new one and it will fire a change event. Otherwise, it will not do anything.
+     * Replaces the current list of devices with the specified one and will fire a change event.
      * @param devices the new list of devices
      */
     public void setDevices(ArrayList<Device> devices) {
-        if(!this.devices.equals(devices)) {
-            this.devices = devices;
-            fireChangeEvent();
-        }
+        this.devices = devices;
+        fireChangeEvent();
     }
 
     /**
@@ -141,14 +128,31 @@ public class BackendInteractor extends Application{
      */
     public void setActivatorState(Device device, Activator activator, ActivatorState newActivatorState){
         activator.setState(newActivatorState);
-        int deviceId = device.getDeviceId();
-        int activatorId = activator.getId();
-        String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
+        String deviceId = device.getId();
+        String activatorId = activator.getId();
+        String path = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         JsonObject newState = new JsonObject();
-        JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
-        newState.add("state", jPrimitive);
-        Log.d(TAG,newState.toString());
-        new PostRequest(activatorPath, newState.toString()).execute();
+        JsonPrimitive newStateValue = this.getNewStateValue(newActivatorState);
+        newState.add("state", newStateValue);
+        new PostRequest(path, newState).execute();
+    }
+
+    /**
+     * Creates a JsonPrimitive containing the raw value of the new state.
+     * The raw state can be either a Boolean or a Number. In case the state is something else,
+     * it will return a String.
+     * @param newActivatorState the new state of the device
+     * @return JsonPrimitive containing the rawValue
+     */
+    private JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
+        switch (newActivatorState.getType().toLowerCase()) {
+            case "bool":
+                return new JsonPrimitive(Boolean.valueOf(String.valueOf(newActivatorState.getRawState())));
+            case "float":
+                return new JsonPrimitive(Float.valueOf(String.valueOf(newActivatorState.getRawState())));
+            default:
+                return new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
+        }
     }
 
     public String getIp(){
@@ -205,6 +209,17 @@ public class BackendInteractor extends Application{
 
     public CopyOnWriteArrayList<DevicesChangeListener> getListeners(){
         return this.listeners;
+    }
+
+    /**
+     * This overloaded version of addDevice is used exclusively for testing purposes.
+     */
+    public void addDevice(Device device){
+        devices.add(device);
+    }
+
+    public void deleteTestDevice(int deviceId) {
+        devices.remove(deviceId);
     }
 
     public void clearDevices(){

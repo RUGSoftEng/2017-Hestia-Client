@@ -16,23 +16,23 @@ import java.util.ArrayList;
  */
 
 public class Device {
-    private int deviceId;
+    private String deviceId;
     private String name;
     private String type;
     private ArrayList<Activator> activators;
 
-    public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
+    public Device(String deviceId, String name, String type, ArrayList<Activator> activator) {
         this.deviceId = deviceId;
         this.name = name;
         this.type = type;
         this.activators = activator;
     }
 
-    public int getDeviceId() {
+    public String getId() {
         return deviceId;
     }
 
-    public void setDeviceId(int deviceId) {
+    public void setId(String deviceId) {
         this.deviceId = deviceId;
     }
 
@@ -53,11 +53,18 @@ public class Device {
     }
 
     /**
-     * Returns the main toggle activator, which will always be the first in the list of activators.
+     * Returns the main toggle activator, which has the rank 0.
      * @return the toggle activator.
      */
     public Activator getToggle() {
-        return this.activators.get(0);
+        Activator toggle = null;
+        for(Activator activator : activators) {
+            Integer rank = activator.getRank();
+            if(rank == 0) {
+                toggle = activator;
+            }
+        }
+        return toggle;
     }
 
     /**
@@ -67,10 +74,10 @@ public class Device {
      */
     public ArrayList<Activator> getSliders() {
         ArrayList<Activator> sliders = new ArrayList<>();
-        for(Activator a : activators){
-            String type = a.getState().getType();
-            if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")){
-                sliders.add(a);
+        for(Activator activator : activators){
+            String type = activator.getState().getType();
+            if(type.equals("float")){
+                sliders.add(activator);
             }
         }
         return (sliders.isEmpty() ? null : sliders);
@@ -99,23 +106,23 @@ public class Device {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Device)) return false;
 
         Device device = (Device) o;
 
-        if (deviceId != device.deviceId) return false;
-        if (!name.equals(device.name)) return false;
-        if (!type.equals(device.type)) return false;
-        return activators.equals(device.activators);
+        if (!getId().equals(device.getId())) return false;
+        if (!getName().equals(device.getName())) return false;
+        if (!getType().equals(device.getType())) return false;
+        return getActivators().equals(device.getActivators());
 
     }
 
     @Override
     public int hashCode() {
-        int result = deviceId;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + activators.hashCode();
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getType().hashCode();
+        result = 31 * result + getActivators().hashCode();
         return result;
     }
 }
