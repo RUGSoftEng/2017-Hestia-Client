@@ -1,5 +1,9 @@
 package hestia.backend.requests;
 
+import android.util.Log;
+
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -10,9 +14,10 @@ import java.net.HttpURLConnection;
  */
 
 public class PostRequest extends Request {
-    private String object;
+    private JsonObject object;
+    private String TAG = "PostRequest";
 
-    public PostRequest(String path, String object) {
+    public PostRequest(String path, JsonObject object) {
         super("POST", path);
         this.object = object;
     }
@@ -25,7 +30,8 @@ public class PostRequest extends Request {
     @Override
     protected void performIOAction(HttpURLConnection connector) throws IOException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
-        outputStreamWriter.write(this.object);
+        outputStreamWriter.write(this.object.toString());
+        Log.d(TAG, object.toString());
         outputStreamWriter.flush();
         outputStreamWriter.close();
     }
