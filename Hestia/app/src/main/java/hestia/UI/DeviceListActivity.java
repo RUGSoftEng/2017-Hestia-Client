@@ -19,12 +19,8 @@ public class DeviceListActivity extends SingleFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         BackendInteractor backendInteractor = BackendInteractor.getInstance();
-
-        SharedPreferences prefs = getSharedPreferences("HESTIA.IP", 0);
-//        backendInteractor.setIp(prefs.getString("IP_OF_SERVER", backendInteractor.getIp()));
-        Toast.makeText(this,"IP Address set to: " + backendInteractor.getIp() + ":"
-                + backendInteractor.getPort(),Toast.LENGTH_SHORT).show();
-
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
+        //backendInteractor.setIp(prefs.getString(SERVER_IP, backendInteractor.getIp()));
         super.onCreate(savedInstanceState);
     }
 
