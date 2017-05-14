@@ -20,13 +20,15 @@ import static android.support.test.espresso.intent.matcher.ComponentNameMatchers
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
-public class LoginTest {
-    private static final String PACKAGE_NAME = "com.rugged.application.hestia";
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "password";
+public class LoginLogoutTest {
+    private final String PACKAGE_NAME = "com.rugged.application.hestia";
+    private final String USERNAME = "admin";
+    private final String PASSWORD = "password";
+    private final String LOGOUT_TEXT = "Logout ";
 
     /* Instantiate an IntentsTestRule object. */
     @Rule
@@ -34,19 +36,31 @@ public class LoginTest {
             new IntentsTestRule<>(LoginActivity.class);
 
     @Test
-    public void verifyMessageSentToMessageActivity() {
+    public void checkLoginLogout() {
 
+        // Login with 'remember me'
         onView(withId(R.id.username))
                 .perform(typeText(USERNAME), closeSoftKeyboard());
 
         onView(withId(R.id.password))
                 .perform(typeText(PASSWORD), closeSoftKeyboard());
 
+        onView(withId(R.id.rememberButton)).perform(click());
+
         onView(withId(R.id.loginButton)).perform(click());
 
         intended(allOf(
                 hasComponent(hasShortClassName("hestia.UI.DeviceListActivity")),
                 toPackage(PACKAGE_NAME)));
-    }
 
+        // Logout
+        onView(withId(R.id.context_menu)).perform(click());
+
+        onView(withText(LOGOUT_TEXT)).perform(click());
+
+        intended(allOf(
+                hasComponent(hasShortClassName("hestia.UI.LoginActivity")),
+                toPackage(PACKAGE_NAME)));
+
+    }
 }
