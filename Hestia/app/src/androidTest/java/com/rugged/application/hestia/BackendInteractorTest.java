@@ -4,27 +4,23 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import java.util.ArrayList;
-
 import hestia.UI.DeviceListFragment;
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 import hestia.backend.DevicesChangeListener;
-
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class BackendInteractorTest {
     private static final String TEST_DEVICE_ID = "1";
+
     private static final String TEST_ACTIVATOR_ID = "0";
     private String TAG = "ClientInteractionTest";
     private static BackendInteractor backendInteractor;
@@ -38,11 +34,13 @@ public class BackendInteractorTest {
         arr.add(testButton);
         Device testDevice = new Device("0","testDevice", "testing",arr);
         backendInteractor.addDevice(testDevice);
+
     }
 
     @Before
     public void addTestDevice(){
         ActivatorState<Boolean> testState = new ActivatorState<Boolean>(false,"TOGGLE");
+
         Activator testButton = new Activator(TEST_ACTIVATOR_ID,0,testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
@@ -73,12 +71,14 @@ public class BackendInteractorTest {
     /*
      * Test of the singleton reference, two different references should refer to the same object.
      */
+
     @Test
     public void singletonTest(){
         BackendInteractor copyOfInteractor = BackendInteractor.getInstance();
         assertEquals(backendInteractor,copyOfInteractor);
     }
 
+    /*
     @Test
     public void ipTest(){
         String testIp = "192.168.0.1";
@@ -119,7 +119,7 @@ public class BackendInteractorTest {
         assertEquals(2,backendInteractor.getDevices().size());
 
     }
-
+*/
     @Test
     public void setDevicesTest(){
         Device temp = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID));
@@ -145,5 +145,4 @@ public class BackendInteractorTest {
         backendInteractor.removeDevicesChangeListener(l);
         assertEquals(0,backendInteractor.getListeners().size());
     }
-
 }

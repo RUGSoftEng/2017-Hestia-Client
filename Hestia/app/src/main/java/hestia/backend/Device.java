@@ -79,11 +79,6 @@ public class Device {
             if(type.equals("float")){
                 sliders.add(activator);
             }
-            /*
-            if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")) {
-                sliders.add(a);
-            }
-             */
         }
         return (sliders.isEmpty() ? null : sliders);
     }

@@ -63,21 +63,23 @@ public class Activator {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Activator)) return false;
 
         Activator activator = (Activator) o;
 
-        if (activatorId != activator.activatorId) return false;
-        if (!state.equals(activator.state)) return false;
-        return name.equals(activator.name);
+        if (getRank() != activator.getRank()) return false;
+        if (!activatorId.equals(activator.activatorId)) return false;
+        if (!getState().equals(activator.getState())) return false;
+        return getName().equals(activator.getName());
 
     }
 
     @Override
     public int hashCode() {
         int result = activatorId.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + getRank();
+        result = 31 * result + getState().hashCode();
+        result = 31 * result + getName().hashCode();
         return result;
     }
 

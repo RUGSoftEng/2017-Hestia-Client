@@ -28,9 +28,7 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    //private String ip = "82.73.173.179"; //Lars's ip. Forwarded on port 8000
-    //private String ip="80.114.179.5";  // Stefan's ip. Forwarded on port 8000
-    private String ip="192.168.178.30"; //Lars' local network
+    private String ip="80.114.179.5";
     private int port = 8000;
 
 
@@ -89,20 +87,6 @@ public class BackendInteractor extends Application{
         String path = BackendInteractor.getInstance().getPath() + "devices/";
         new PostRequest(path, requiredInfo).execute();
         BackendInteractor.getInstance().updateDevices();
-    }
-
-    /**
-     * This overloaded version of addDevice is used exclusively for testing purposes.
-     */
-    public void addDevice(Device device){
-        devices.add(device);
-    }
-
-    /**
-     * The deleteTestDevice method uses the same
-     */
-    public void deleteTestDevice(int deviceId){
-        devices.remove(deviceId);
     }
 
     /**
