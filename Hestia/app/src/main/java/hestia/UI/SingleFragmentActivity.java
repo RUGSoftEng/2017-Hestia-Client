@@ -90,11 +90,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         objects.add(close);
 
         MenuObject ip = new MenuObject(changeIpText);
-        ip.setResource(R.drawable.ic_router_black_24dp);
+        ip.setResource(R.mipmap.ic_router);
         objects.add(ip);
 
         MenuObject logout = new MenuObject(logoutText);
-        logout.setResource(R.drawable.ic_exit_to_app_black_24dp);
+        logout.setResource(R.mipmap.ic_exit_to_app);
         objects.add(logout);
 
         return objects;
