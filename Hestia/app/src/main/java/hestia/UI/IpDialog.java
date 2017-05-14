@@ -17,6 +17,7 @@ import hestia.backend.BackendInteractor;
  * This class represents the dialog screen with which the IP-address of the server is asked from the
  * user.
  */
+
 public class IpDialog extends Dialog implements android.view.View.OnClickListener{
     private EditText ipField;
     private Button confirm,cancel;
@@ -43,6 +44,7 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     @Override
     public void onClick(View view) {
         ip = ipField.getText().toString();
+        Toast.makeText(getContext(), "ip is: " + ip, Toast.LENGTH_SHORT).show();
         switch (view.getId()) {
             case R.id.confirm_button:
                 if(ip!=null) {
@@ -50,6 +52,10 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
                     backendInteractor.updateDevices();
                     Toast.makeText(getContext(),R.string.ipSetTo + backendInteractor.getIp() + ":"
                                     + backendInteractor.getPort(),Toast.LENGTH_SHORT).show();
+
+                    //TODO give correct response from server after changing ip
+                    Toast.makeText(getContext(), "Server returned message: + serverMessage",
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.back_button:
