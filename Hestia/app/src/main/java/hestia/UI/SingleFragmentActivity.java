@@ -32,8 +32,6 @@ import hestia.backend.BackendInteractor;
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
-    protected abstract Fragment createFragment();
-
     private static String TAG = "SingleFragmentActivity";
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
@@ -45,6 +43,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private final String logoutExtraValue = "logout";
     private final int IP = 1;
     private final int LOGOUT = 2;
+
+    protected abstract Fragment createFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
