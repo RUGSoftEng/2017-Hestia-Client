@@ -33,8 +33,8 @@ public class DeviceListActivity extends SingleFragmentActivity {
      */
     @Override
     public void onResume(){
-        super.onResume();
         BackendInteractor.getInstance().updateDevices();
+        super.onResume();
     }
 
     @Override
@@ -53,7 +53,6 @@ public class DeviceListActivity extends SingleFragmentActivity {
     @Override
     protected void onDestroy() {
         storeIP();
-        //System.exit(0);
         super.onDestroy();
     }
 
