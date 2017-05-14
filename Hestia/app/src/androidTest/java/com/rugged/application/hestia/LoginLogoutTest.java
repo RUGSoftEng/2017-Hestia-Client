@@ -21,6 +21,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.rugged.application.hestia.R.id.context_menu;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
@@ -38,7 +39,7 @@ public class LoginLogoutTest {
     @Test
     public void checkLoginLogout() {
         // Logout
-        onView(withId(R.id.context_menu)).perform(click());
+        //onView(withId(context_menu)).perform(click());
 
         onView(withText(LOGOUT_TEXT)).perform(click());
 
