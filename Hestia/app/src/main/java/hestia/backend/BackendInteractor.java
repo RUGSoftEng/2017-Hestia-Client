@@ -30,7 +30,7 @@ public class BackendInteractor extends Application{
     private final static String TAG = "BackendInteractor";
     //private String ip = "82.73.173.179"; //Lars's ip. Forwarded on port 8000
     //private String ip="80.114.179.5";  // Stefan's ip. Forwarded on port 8000
-    private String ip="192.168.178.30"; //Lars' local network
+    private String ip="192.168.178.45"; //Lars' local network
     private int port = 8000;
 
 
