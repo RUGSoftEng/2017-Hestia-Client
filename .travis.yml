@@ -62,14 +62,3 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-
-deploy:
-  provider: releases
-
-  api_key:
-    secure: DJ0EBLzTtPiOcGtvddDhQhj5caDgNbYB8U/CVDsrtMq/8N4M6HI9hX5Tv2oc95xrZbNaGrFbm6+Eyylv+EopjQLHTsr0MuGQpB3RNhk+pLuIdkKinivhaOVWLTnyHZjZmFc+5AJ0VhCBw8DwUaDvFIBI3uNgMsKooXi/pZg0dmkt3a+TjuzHRmCRCYkDgwY3+jDb5YeRdsZswASLl6yvznKvitkI5Y0+crVikSS1g/9hc4BGdRSSp3oupK4S9gqMH4vtx5i427fhNGkA/Pd9enA4WT2tyiyCCr3NdWnc2J5p8t9SE+6vFQnp0KuIswpNZsofxwlyuM+9Z+6VcI419uDNh7R9cvYjezTPxTw3LqjGyJvhlSm19xorp5uEeubS3LJleUEw/SWMahdJsTdxTttv9eE/h6eWzeK1co3RycSNP0MCT6XhA8hoy7qmIVvBMOrQwpIZWC6H89Hg9UB3q3Wc7O8nux/VuLrO7d/VJilZhl+2+L+vVkqYkQCw0NqFFAFqPK/GVOaupsuWC19S3bdBB9yNMB7Nw12tC/J51b4aRer0LNhWTrxy5DITBYBeZCoHi7iT6/gQ+4XKijSykSqxoE5dljcj8Zt8F0oqQNNEjAKObYbaFjdcJKVZq9CPx4C9QIB10Tuw3wLFfwuTgrH3Pam6oXlu2waY45t5ZWE=
-  file: "Hestia/app/build/outputs/apk/app-release-unsigned.apk"
-  skip_cleanup: "true"
-  on:
-    repo: RUGSoftEng/2017-Hestia-Client
-    branch: release-0.5
