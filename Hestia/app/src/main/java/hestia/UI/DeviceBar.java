@@ -37,11 +37,6 @@ public class DeviceBar {
         hestiaSwitch.getActivatorSwitch().setOnCheckedChangeListener(null);
         hestiaSwitch.getActivatorSwitch().setChecked(state);
         hestiaSwitch.getActivatorSwitch().setOnCheckedChangeListener(hestiaSwitch);
-//        if (hestiaSwitch.getActivatorSwitch().isChecked() != state) {
-//            hestiaSwitch.getActivatorSwitch().setChecked(state);
-//        }
-//        Log.i(TAG, "Layout changed for: " + device.getName() + " And switch truth is: " +
-//                hestiaSwitch.getActivatorSwitch().isChecked());
 
     }
 
