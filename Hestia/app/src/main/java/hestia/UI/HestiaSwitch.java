@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
+
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;

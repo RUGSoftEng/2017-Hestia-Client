@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/switch_color</item>
+        <item name="android:thumbTint">@color/switch_color</item>
+        <item name="android:trackTint">@color/switch_color</item>
+
+    </style>
+
 </resources>
