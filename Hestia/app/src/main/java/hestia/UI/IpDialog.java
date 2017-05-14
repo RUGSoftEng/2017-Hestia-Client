@@ -1,10 +1,12 @@
 package hestia.UI;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,6 +37,8 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
         setContentView(R.layout.ip_dialog);
         ipField = (EditText) findViewById(R.id.ip);
         ipField.setText(this.backendInteractor.getIp());
+        ipField.requestFocus();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
         confirm.setOnClickListener(this);

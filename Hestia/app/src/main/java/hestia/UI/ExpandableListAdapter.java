@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import hestia.backend.BackendInteractor;
 
@@ -60,26 +61,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView txtListChild = (TextView) convertView.findViewById(R.id.child_item_text);
         txtListChild.setText(dBar.getDevice().getName());
 
-            txtListChild.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
-                    if(device.getSliders()!=null) {
-                        new SlideDialog(context, device).show();
-                    }
-                }
-            });
-
-
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
-        Boolean state = Boolean.parseBoolean(dBar.getDevice().getToggle().getState().getRawState().toString());
+        Boolean state = Boolean.parseBoolean(dBar.getDevice().getToggle().getState().getRawState()
+                .toString());
         dBar.setLayout(convertView, R.id.light_switch,state);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                if(device.getSliders()!=null) {
+                    new SlideDialog(context, device).show();
+                }
+            }
+        });
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                final Device device = ((DeviceBar) getChild(groupPosition, childPosition))
+                        .getDevice();
                 PopupMenu popup = createPopupMenu(view,device);
 
                 popup.show();
