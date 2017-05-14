@@ -37,14 +37,6 @@ public class LoginLogoutTest {
 
     @Test
     public void checkLoginLogout() {
-        // Logout
-        onView(withId(R.id.context_menu)).perform(click());
-
-        onView(withText(LOGOUT_TEXT)).perform(click());
-
-        intended(allOf(
-                hasComponent(hasShortClassName("hestia.UI.LoginActivity")),
-                toPackage(PACKAGE_NAME)));
 
         // Login with 'remember me'
         onView(withId(R.id.username))
@@ -59,6 +51,15 @@ public class LoginLogoutTest {
 
         intended(allOf(
                 hasComponent(hasShortClassName("hestia.UI.DeviceListActivity")),
+                toPackage(PACKAGE_NAME)));
+
+        // Logout
+        onView(withId(R.id.context_menu)).perform(click());
+
+        onView(withText(LOGOUT_TEXT)).perform(click());
+
+        intended(allOf(
+                hasComponent(hasShortClassName("hestia.UI.LoginActivity")),
                 toPackage(PACKAGE_NAME)));
 
     }
