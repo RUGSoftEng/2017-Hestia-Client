@@ -51,7 +51,7 @@ public class ActivatorDeserializer implements JsonDeserializer<Activator> {
             default : break;
         }
 
-        int activatorId = jsonObject.get("activatorId").getAsInt();
+        String activatorId = jsonObject.get("activatorId").getAsString();
         String name = jsonObject.get("name").getAsString();
 
         return new Activator(activatorId, state, name);

@@ -142,7 +142,7 @@ public class BackendInteractor extends Application{
     public void setActivatorState(Device device, Activator activator, ActivatorState newActivatorState){
         activator.setState(newActivatorState);
         int deviceId = device.getDeviceId();
-        int activatorId = activator.getId();
+        String activatorId = activator.getId();
         String activatorPath = this.getPath() + "devices/" + deviceId + "/activators/" + activatorId;
         JsonObject newState = new JsonObject();
         JsonPrimitive jPrimitive = new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));

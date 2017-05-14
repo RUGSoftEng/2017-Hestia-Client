@@ -28,7 +28,7 @@ public class DeviceTest {
     @Before
     public void createDevice(){
         ActivatorState<Boolean> testState = new ActivatorState<>(false,"TOGGLE");
-        Activator testButton = new Activator(0,testState,"testButton");
+        Activator testButton = new Activator("0",testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
 
@@ -53,7 +53,7 @@ public class DeviceTest {
         assertTrue(tDev.getSliders() == null);
         ActivatorState<Float> testSliderState = new ActivatorState<>((float) 0.3,"SLIDER");
         ArrayList<Activator> arr = new ArrayList<>();
-        Activator testSlider = new Activator(0,testSliderState,"newButton");
+        Activator testSlider = new Activator("0",testSliderState,"newButton");
         arr.add(testSlider);
         tDev.setActivators(arr);
         assertFalse(tDev.getSliders() == null);
