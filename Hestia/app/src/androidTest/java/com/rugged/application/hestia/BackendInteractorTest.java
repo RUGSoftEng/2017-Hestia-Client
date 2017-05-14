@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -78,7 +80,7 @@ public class BackendInteractorTest {
         assertEquals(backendInteractor,copyOfInteractor);
     }
 
-    /*
+
     @Test
     public void ipTest(){
         String testIp = "192.168.0.1";
@@ -119,7 +121,7 @@ public class BackendInteractorTest {
         assertEquals(2,backendInteractor.getDevices().size());
 
     }
-*/
+
     @Test
     public void setDevicesTest(){
         Device temp = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID));

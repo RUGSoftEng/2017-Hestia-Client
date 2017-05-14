@@ -211,6 +211,17 @@ public class BackendInteractor extends Application{
         return this.listeners;
     }
 
+    /**
+     * This overloaded version of addDevice is used exclusively for testing purposes.
+     */
+    public void addDevice(Device device){
+        devices.add(device);
+    }
+
+    public void deleteTestDevice(int deviceId) {
+        devices.remove(deviceId);
+    }
+
     public void clearDevices(){
         devices = new ArrayList<>();
     }
