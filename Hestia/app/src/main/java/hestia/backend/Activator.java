@@ -10,6 +10,7 @@ package hestia.backend;
  */
 public class Activator {
     private String activatorId;
+    private int rank;
     private ActivatorState state;
     private String name;
 
@@ -19,8 +20,9 @@ public class Activator {
      * @param state the current state of the activator, this is a wrapper around a generic type
      * @param name the name of the activator
      */
-    public Activator(String activatorId, ActivatorState state, String name) {
+    public Activator(String activatorId, Integer rank, ActivatorState state, String name) {
         this.activatorId = activatorId;
+        this.rank = rank;
         this.state = state;
         this.name = name;
     }
@@ -31,6 +33,14 @@ public class Activator {
 
     public void setId(String activatorId) {
         this.activatorId = activatorId;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
     }
 
     public ActivatorState getState() {

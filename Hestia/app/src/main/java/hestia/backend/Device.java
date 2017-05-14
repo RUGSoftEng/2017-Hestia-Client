@@ -53,11 +53,18 @@ public class Device {
     }
 
     /**
-     * Returns the main toggle activator, which will always be the first in the list of activators.
+     * Returns the main toggle activator, which has the rank 0.
      * @return the toggle activator.
      */
     public Activator getToggle() {
-        return this.activators.get(0);
+        Activator toggle = null;
+        for(Activator activator : activators) {
+            Integer rank = activator.getRank();
+            if(rank == 0) {
+                toggle = activator;
+            }
+        }
+        return toggle;
     }
 
     /**
@@ -67,11 +74,16 @@ public class Device {
      */
     public ArrayList<Activator> getSliders() {
         ArrayList<Activator> sliders = new ArrayList<>();
-        for(Activator a : activators){
-            String type = a.getState().getType();
-            if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")||type.equals("float")){
+        for(Activator activator : activators){
+            String type = activator.getState().getType();
+            if(type.equals("float")){
+                sliders.add(activator);
+            }
+            /*
+            if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")) {
                 sliders.add(a);
             }
+             */
         }
         return (sliders.isEmpty() ? null : sliders);
     }

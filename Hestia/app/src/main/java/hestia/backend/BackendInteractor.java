@@ -28,8 +28,9 @@ public class BackendInteractor extends Application{
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    //private String ip = "82.73.173.179";
-    private String ip="80.114.179.5";
+    //private String ip = "82.73.173.179"; //Lars's ip. Forwarded on port 8000
+    //private String ip="80.114.179.5";  // Stefan's ip. Forwarded on port 8000
+    private String ip="192.168.178.30"; //Lars' local network
     private int port = 8000;
 
 
@@ -145,6 +146,13 @@ public class BackendInteractor extends Application{
         new PostRequest(path, newState).execute();
     }
 
+    /**
+     * Creates a JsonPrimitive containing the raw value of the new state.
+     * The raw state can be either a Boolean or a Number. In case the state is something else,
+     * it will return a String.
+     * @param newActivatorState the new state of the device
+     * @return JsonPrimitive containing the rawValue
+     */
     private JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
         switch (newActivatorState.getType().toLowerCase()) {
             case "bool":
