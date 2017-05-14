@@ -24,11 +24,13 @@ public class BackendInteractor extends Application{
      * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
      * a listener attempts to remove itself during event notification.
      */
-    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =  new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =
+            new CopyOnWriteArrayList<>();
     private static BackendInteractor instance;
     private ArrayList<Device> devices = new ArrayList<>();
     private final static String TAG = "BackendInteractor";
-    private String ip="80.114.179.5";
+
+    private String ip="192.168.178.30";
     private int port = 8000;
 
 
