@@ -3,8 +3,8 @@ package hestia.backend;
 /**
  * This class represents a single activator on a device. A single device can have multiple activators.
  * The activator has an id so we can reference it on the server.
- * Furthermore there is a string name and a string state type,
- * which is currently used for casting the generic state variable to an actual type.
+ * Furthermore there is a string name and a string state name,
+ * which is currently used for casting the generic state variable to an actual name.
  * @see Device
  * @see ActivatorState
  */
@@ -30,6 +30,7 @@ public class Activator {
     public String getId() {
         return activatorId;
     }
+
 
     public void setId(String activatorId) {
         this.activatorId = activatorId;
