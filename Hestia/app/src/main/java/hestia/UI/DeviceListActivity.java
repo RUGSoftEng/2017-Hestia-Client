@@ -3,6 +3,7 @@ package hestia.UI;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import hestia.backend.BackendInteractor;
 
@@ -19,7 +20,7 @@ public class DeviceListActivity extends SingleFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         BackendInteractor backendInteractor = BackendInteractor.getInstance();
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-//        backendInteractor.setIp(prefs.getString(SERVER_IP, backendInteractor.getIp()));
+        //backendInteractor.setIp(prefs.getString(SERVER_IP, backendInteractor.getIp()));
         super.onCreate(savedInstanceState);
     }
 

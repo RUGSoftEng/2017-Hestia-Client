@@ -3,8 +3,8 @@ package hestia.backend;
 /**
  * This class represents a single activator on a device. A single device can have multiple activators.
  * The activator has an id so we can reference it on the server.
- * Furthermore there is a string name and a string state type,
- * which is currently used for casting the generic state variable to an actual type.
+ * Furthermore there is a string name and a string state name,
+ * which is currently used for casting the generic state variable to an actual name.
  * @see Device
  * @see ActivatorState
  */
@@ -30,6 +30,7 @@ public class Activator {
     public String getId() {
         return activatorId;
     }
+
 
     public void setId(String activatorId) {
         this.activatorId = activatorId;
@@ -62,21 +63,23 @@ public class Activator {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Activator)) return false;
 
         Activator activator = (Activator) o;
 
-        if (activatorId != activator.activatorId) return false;
-        if (!state.equals(activator.state)) return false;
-        return name.equals(activator.name);
+        if (getRank() != activator.getRank()) return false;
+        if (!activatorId.equals(activator.activatorId)) return false;
+        if (!getState().equals(activator.getState())) return false;
+        return getName().equals(activator.getName());
 
     }
 
     @Override
     public int hashCode() {
         int result = activatorId.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + getRank();
+        result = 31 * result + getState().hashCode();
+        result = 31 * result + getName().hashCode();
         return result;
     }
 
