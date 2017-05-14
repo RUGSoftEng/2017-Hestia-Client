@@ -48,10 +48,11 @@ public class DeserializerTest {
         JsonElement testBool = new JsonParser().parse(testBoolJSON);
         Activator deserializedBool = gson.fromJson(testBool, Activator.class);
 
-        Log.d(TAG,"deserializedBool :: " + deserializedBool);
 
         JsonObject testBoolJson = (JsonObject) testBool;
         assertTrue(deserializedBool.getId().equals(testBoolJson.get("activatorId").getAsString()));
+        assertTrue(deserializedBool.getName().equals(testBoolJson.get("name").getAsString()));
+
 
     }
 
