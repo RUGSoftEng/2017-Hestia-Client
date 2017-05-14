@@ -9,66 +9,52 @@ package hestia.backend;
  * @see ActivatorState
  */
 public class Activator {
-    private int id;
+    private String activatorId;
+    private int rank;
     private ActivatorState state;
     private String name;
 
     /**
      * Creates an Activator with the specified id, state and name.
-     * @param id the id of the activator
+     * @param activatorId the id of the activator
      * @param state the current state of the activator, this is a wrapper around a generic type
      * @param name the name of the activator
      */
-    public Activator(int id, ActivatorState state, String name) {
-        this.id = id;
+    public Activator(String activatorId, Integer rank, ActivatorState state, String name) {
+        this.activatorId = activatorId;
+        this.rank = rank;
         this.state = state;
         this.name = name;
     }
 
-    /**
-     * Returns the id of the activator.
-     * @return the id of the activator
-     */
-    public int getId() {
-        return id;
+    public String getId() {
+        return activatorId;
     }
 
-    /**
-     * Replaces the current id of the activator with the specified one.
-     * @param id the new id of the activator
-     */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String activatorId) {
+        this.activatorId = activatorId;
     }
 
-    /**
-     * Returns the current state of the activator.
-     * @return the current state of the activator
-     */
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
     public ActivatorState getState() {
         return state;
     }
 
-    /**
-     * Replaces the current state of the activator with the specified one.
-     * @param state the new state of the activator
-     */
     public void setState(ActivatorState state) {
         this.state = state;
     }
 
-    /**
-     * Returns the name of the activator.
-     * @return the name of the activator
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Replaces the current name of the activator with the specified one.
-     * @param name the new name of the activator
-     */
     public void setName(String name) {
         this.name = name;
     }
@@ -80,7 +66,7 @@ public class Activator {
 
         Activator activator = (Activator) o;
 
-        if (id != activator.id) return false;
+        if (activatorId != activator.activatorId) return false;
         if (!state.equals(activator.state)) return false;
         return name.equals(activator.name);
 
@@ -88,7 +74,7 @@ public class Activator {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = activatorId.hashCode();
         result = 31 * result + state.hashCode();
         result = 31 * result + name.hashCode();
         return result;

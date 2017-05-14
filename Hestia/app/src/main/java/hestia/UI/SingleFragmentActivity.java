@@ -32,8 +32,6 @@ import hestia.backend.BackendInteractor;
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
-    protected abstract Fragment createFragment();
-
     private static String TAG = "SingleFragmentActivity";
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
@@ -46,6 +44,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private final int IP = 1;
     private final int LOGOUT = 2;
 
+    protected abstract Fragment createFragment();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,17 +56,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             showIpDialog();
         }
 
-        final  SwipeRefreshLayout swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefresh.setRefreshing(true);
-                Log.i(TAG, "Currently refreshing");
-                backendInteractor.updateDevices();
-                Log.i(TAG, "Refresh stopped");
-                swipeRefresh.setRefreshing(false);
-            }
-        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
