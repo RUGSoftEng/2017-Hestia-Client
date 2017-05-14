@@ -18,10 +18,10 @@ public class DeviceListActivity extends SingleFragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         BackendInteractor backendInteractor = BackendInteractor.getInstance();
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
         //backendInteractor.setIp(prefs.getString(SERVER_IP, backendInteractor.getIp()));
-        super.onCreate(savedInstanceState);
     }
 
     /**
@@ -29,8 +29,8 @@ public class DeviceListActivity extends SingleFragmentActivity {
      */
     @Override
     public void onResume(){
-        BackendInteractor.getInstance().updateDevices();
         super.onResume();
+        BackendInteractor.getInstance().updateDevices();
     }
 
     @Override
