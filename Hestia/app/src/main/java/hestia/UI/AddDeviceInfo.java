@@ -98,7 +98,9 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                 String path = BackendInteractor.getInstance().getPath() + "devices/";
                 new PostRequest(path, requiredInfo.toString()).execute();
                 BackendInteractor.getInstance().updateDevices();
-                Toast.makeText(content, "Device added successfully", Toast.LENGTH_SHORT).show();
+                //TODO give correct response from server after adding device info
+                Toast.makeText(content, "Server gave message + serverMessage",
+                        Toast.LENGTH_SHORT).show();
                 Log.d(TAG, requiredInfo.toString());
                 dismiss();
                 break;
