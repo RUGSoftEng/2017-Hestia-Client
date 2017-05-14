@@ -41,14 +41,13 @@ public class DeviceListActivity extends SingleFragmentActivity {
     @Override
     protected void onStop() {
         storeIP();
-        System.exit(0);
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         storeIP();
-        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
         super.onDestroy();
     }
 
