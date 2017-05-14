@@ -34,10 +34,10 @@ public class ActivatorAndActivatorStateTest {
     @Before
     public void setUp(){
         floatActivatorState = new ActivatorState<Float>(Float.valueOf("122"),"UNSIGNED_BYTE");
-        testFloatActivator = new Activator(1,floatActivatorState,"TEST_SLIDER_255");
+        testFloatActivator = new Activator("1",1,floatActivatorState,"TEST_SLIDER_255");
 
         boolActivatorState = new ActivatorState<Boolean>(true,"TOGGLE");
-        testBoolActivator = new Activator(1,boolActivatorState,"TEST_SWITCH");
+        testBoolActivator = new Activator("1",1,boolActivatorState,"TEST_SWITCH");
     }
 
     @Test
