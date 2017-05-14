@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import hestia.backend.BackendInteractor;
 
@@ -62,13 +63,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         ImageView imageview = (ImageView) convertView.findViewById(R.id.imageview);
 
-        Boolean state = Boolean.parseBoolean(dBar.getDevice().getToggle().getState().getRawState().toString());
+        Boolean state = Boolean.parseBoolean(dBar.getDevice().getToggle().getState().getRawState()
+                .toString());
         dBar.setLayout(convertView, R.id.light_switch,state);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                if(device.getSliders()!=null) {
+                    new SlideDialog(context, device).show();
+                }
+            }
+        });
 
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                final Device device = ((DeviceBar) getChild(groupPosition, childPosition))
+                        .getDevice();
                 PopupMenu popup = createPopupMenu(view,device);
 
                 popup.show();
@@ -76,9 +88,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.sliders:
-                                new SlideDialog(context, device).show();
-                                break;
+                            //case R.id.sliders:
+                               // new SlideDialog(context, device).show();
+                                //break;
                             case R.id.delete:
                                 backendInteractor.deleteDevice(device);
                                 break;
@@ -152,7 +164,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         popup.getMenuInflater().inflate(R.menu.popup,
                 popup.getMenu());
 
-        if (device.getSliders()==null) {
+        if (device.getSliders()==null || device.getSliders() != null) {
             popup.getMenu().findItem(R.id.sliders).setEnabled(false);
             popup.getMenu().findItem(R.id.sliders).setVisible(false);
         }

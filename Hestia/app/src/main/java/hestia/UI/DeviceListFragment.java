@@ -25,7 +25,6 @@ import java.util.ArrayList;
  * @see DeviceListActivity
  */
 public class DeviceListFragment extends Fragment implements DevicesChangeListener{
-
     private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
@@ -68,6 +67,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
 
+
             }
 
             @Override
@@ -80,9 +80,8 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
             }
         });
 
-        populateUI();
-
         backendInteractor.addDevicesChangeListener(this);
+        populateUI();
 
         return deviceListView;
     }

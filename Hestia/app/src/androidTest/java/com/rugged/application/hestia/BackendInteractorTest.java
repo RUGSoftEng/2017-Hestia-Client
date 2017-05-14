@@ -10,22 +10,20 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import java.util.ArrayList;
-
 import hestia.UI.DeviceListFragment;
 import hestia.backend.Activator;
 import hestia.backend.ActivatorState;
 import hestia.backend.BackendInteractor;
 import hestia.backend.Device;
 import hestia.backend.DevicesChangeListener;
-
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class BackendInteractorTest {
-    private static final int TEST_DEVICE_ID = 0;
-    private static final int TEST_ACTIVATOR_ID = 0;
+    private static final String TEST_DEVICE_ID = "1";
+
+    private static final String TEST_ACTIVATOR_ID = "0";
     private String TAG = "ClientInteractionTest";
     private static BackendInteractor backendInteractor;
 
@@ -33,17 +31,19 @@ public class BackendInteractorTest {
     public static void runBeforeTests(){
         backendInteractor = BackendInteractor.getInstance();
         ActivatorState<Boolean> testState = new ActivatorState<Boolean>(false,"TOGGLE");
-        Activator testButton = new Activator(0,testState,"testButton");
+        Activator testButton = new Activator("0",0,testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
-        Device testDevice = new Device(0,"testDevice", "testing",arr);
+        Device testDevice = new Device("0","testDevice", "testing",arr);
         backendInteractor.addDevice(testDevice);
+
     }
 
     @Before
     public void addTestDevice(){
         ActivatorState<Boolean> testState = new ActivatorState<Boolean>(false,"TOGGLE");
-        Activator testButton = new Activator(TEST_ACTIVATOR_ID,testState,"testButton");
+
+        Activator testButton = new Activator(TEST_ACTIVATOR_ID,0,testState,"testButton");
         ArrayList<Activator> arr = new ArrayList<>();
         arr.add(testButton);
         Device testDevice = new Device(TEST_DEVICE_ID,"testDevice", "testing",arr);
@@ -52,7 +52,7 @@ public class BackendInteractorTest {
 
     @After
     public void removeTestDevice(){
-        backendInteractor.deleteTestDevice(TEST_DEVICE_ID);
+        backendInteractor.deleteTestDevice(Integer.parseInt(TEST_DEVICE_ID));
     }
 
     @Test
@@ -73,11 +73,13 @@ public class BackendInteractorTest {
     /*
      * Test of the singleton reference, two different references should refer to the same object.
      */
+
     @Test
     public void singletonTest(){
         BackendInteractor copyOfInteractor = BackendInteractor.getInstance();
         assertEquals(backendInteractor,copyOfInteractor);
     }
+
 
     @Test
     public void ipTest(){
@@ -89,21 +91,21 @@ public class BackendInteractorTest {
     @Test
     public void setActivatorStateTest(){
         ArrayList<Device> testDeviceList = backendInteractor.getDevices();
-        Device testDevice = testDeviceList.get(TEST_DEVICE_ID);
-        ActivatorState state = testDevice.getActivators().get(TEST_ACTIVATOR_ID).getState();
+        Device testDevice = testDeviceList.get(Integer.parseInt(TEST_DEVICE_ID));
+        ActivatorState state = testDevice.getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID)).getState();
         boolean testState = (boolean)state.getRawState();
         assertEquals(testState,false);
         state.setRawState(true);
 
-        backendInteractor.setActivatorState(testDevice,testDevice.getActivators().get(TEST_ACTIVATOR_ID),state);
+        backendInteractor.setActivatorState(testDevice,testDevice.getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID)),state);
 
-        Activator activator = backendInteractor.getDevices().get(TEST_DEVICE_ID).getActivators().get(TEST_ACTIVATOR_ID);
+        Activator activator = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID)).getActivators().get(Integer.parseInt(TEST_ACTIVATOR_ID));
         assertEquals(true,activator.getState().getRawState());
     }
 
     @Test
     public void deleteDeviceTest(){
-        Device temp = backendInteractor.getDevices().get(TEST_DEVICE_ID);
+        Device temp = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID));
 
         // Removing a device
         backendInteractor.deleteDevice(temp);
@@ -122,7 +124,7 @@ public class BackendInteractorTest {
 
     @Test
     public void setDevicesTest(){
-        Device temp = backendInteractor.getDevices().get(TEST_DEVICE_ID);
+        Device temp = backendInteractor.getDevices().get(Integer.parseInt(TEST_DEVICE_ID));
         ArrayList<Device> newDevices = new ArrayList<>();
         // Adding the same device three times
         newDevices.add(temp);
@@ -145,5 +147,4 @@ public class BackendInteractorTest {
         backendInteractor.removeDevicesChangeListener(l);
         assertEquals(0,backendInteractor.getListeners().size());
     }
-
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -63,6 +64,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
             //Add field
             EditText field = createEditText(key, params , count);
+            field.requestFocus();
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             subLayout.addView(field);
 
             mainLayout.addView(subLayout);
@@ -91,15 +94,11 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             case R.id.confirm_button:
                 JsonObject requiredInfo = this.getRequiredInfo();
                 if(requiredInfo==null) {
-                    Toast.makeText(getContext(), R.string.emptyValuesEntered
-                            , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.emptyValuesEntered,
+                            Toast.LENGTH_SHORT).show();
                     break;
                 }
-                String path = BackendInteractor.getInstance().getPath() + "devices/";
-                new PostRequest(path, requiredInfo.toString()).execute();
-                BackendInteractor.getInstance().updateDevices();
-                Toast.makeText(content, "Device added successfully", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, requiredInfo.toString());
+                BackendInteractor.getInstance().postDevice(requiredInfo);
                 dismiss();
                 break;
             case R.id.back_button:
@@ -122,7 +121,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         for(String key : this.fields.keySet()) {
             EditText field = (EditText) findViewById(count);
             String valueField = field.getText().toString();
-          
+
             if(EMPTY_STRING.equals(valueField)) {
                 return null;
             }
@@ -132,7 +131,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             count++;
         }
         JsonObject addDeviceJSON = new JsonObject();
-        addDeviceJSON.addProperty(propReqInfo, requiredInfo.toString());
+        addDeviceJSON.add(propReqInfo, requiredInfo);
         return addDeviceJSON;
     }
 
