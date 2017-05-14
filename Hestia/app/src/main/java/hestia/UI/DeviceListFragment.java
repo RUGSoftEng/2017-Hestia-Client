@@ -1,8 +1,10 @@
 package hestia.UI;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +24,6 @@ import java.util.ArrayList;
  * @see DeviceListActivity
  */
 public class DeviceListFragment extends Fragment implements DevicesChangeListener{
-
-
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
@@ -50,9 +50,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         expListView.setAdapter(listAdapter);
 
         backendInteractor.addDevicesChangeListener(this);
-
         populateUI();
-
         return deviceListView;
     }
 
