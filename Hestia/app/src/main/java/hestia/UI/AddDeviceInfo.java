@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -63,6 +64,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
 
             //Add field
             EditText field = createEditText(key, params , count);
+            field.requestFocus();
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             subLayout.addView(field);
 
             mainLayout.addView(subLayout);
@@ -91,7 +94,8 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             case R.id.confirm_button:
                 JsonObject requiredInfo = this.getRequiredInfo();
                 if(requiredInfo==null) {
-                    Toast.makeText(getContext(), R.string.emptyValuesEntered, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.emptyValuesEntered,
+                            Toast.LENGTH_SHORT).show();
                     break;
                 }
                 BackendInteractor.getInstance().postDevice(requiredInfo);

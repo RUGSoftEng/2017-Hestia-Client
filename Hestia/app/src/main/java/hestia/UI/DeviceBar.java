@@ -3,6 +3,7 @@ package hestia.UI;
 import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import hestia.backend.Device;
 
@@ -36,6 +37,7 @@ public class DeviceBar {
         hestiaSwitch.getActivatorSwitch().setChecked(state);
         Log.i(TAG, "Layout changed for: " + device.getName() + " And switch truth is: " +
                 hestiaSwitch.getActivatorSwitch().isChecked());
+
     }
 
     @Override
