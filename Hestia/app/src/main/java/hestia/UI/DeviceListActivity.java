@@ -21,7 +21,6 @@ public class DeviceListActivity extends SingleFragmentActivity {
         super.onCreate(savedInstanceState);
         BackendInteractor backendInteractor = BackendInteractor.getInstance();
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        //backendInteractor.setIp(prefs.getString(SERVER_IP, backendInteractor.getIp()));
     }
 
     /**
