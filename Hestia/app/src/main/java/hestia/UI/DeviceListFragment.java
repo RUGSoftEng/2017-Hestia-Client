@@ -1,5 +1,7 @@
 package hestia.UI;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -32,6 +34,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
     private BackendInteractor backendInteractor =  BackendInteractor.getInstance();
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
+    private Activity surroundingActivity;
 
     /**
      *
@@ -60,7 +63,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
 
         listDataChild = new ArrayList<>();
         expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
-        listAdapter = new ExpandableListAdapter(listDataChild, getActivity());
+        listAdapter = new ExpandableListAdapter(listDataChild, surroundingActivity);
 
         expListView.setAdapter(listAdapter);
         expListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -86,12 +89,21 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         return deviceListView;
     }
 
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        surroundingActivity = context instanceof Activity ? (Activity) context : null;
+    }
+
     private void populateUI() {
         listDataChild = new ArrayList<>();
         ArrayList<Device> devices = backendInteractor.getDevices();
         for (Device device : devices) {
             Activator activator = device.getToggle();
-            HestiaSwitch hestiaSwitch = new HestiaSwitch(device, activator, getActivity());
+            HestiaSwitch hestiaSwitch = new HestiaSwitch(device, activator, surroundingActivity);
             DeviceBar bar = new DeviceBar(device, hestiaSwitch);
             if(!listDataChild.contains(bar)) {
                 if (!typeExists(device)) {
@@ -139,7 +151,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(getActivity()).show();
+                new AddDeviceDialog(surroundingActivity).show();
             }
         });
     }

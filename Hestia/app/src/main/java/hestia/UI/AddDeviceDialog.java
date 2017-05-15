@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
     public AddDeviceDialog(Activity activity) {
         super(activity);
         this.context = activity;
-        this.backendInteractor = BackendInteractor.getInstance();;
+        this.backendInteractor = BackendInteractor.getInstance();
     }
 
     @Override
@@ -38,6 +39,8 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.add_device_dialog);
         organizationField = (EditText) findViewById(R.id.organization);
+        organizationField.requestFocus();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         pluginField = (EditText) findViewById(R.id.pluginName);
         confirm = (Button) findViewById(R.id.confirm_button);
         cancel = (Button) findViewById(R.id.back_button);
