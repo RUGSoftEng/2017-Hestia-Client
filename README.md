@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/RUGSoftEng/2017-Hestia-Client.svg?branch=development)](https://travis-ci.org/RUGSoftEng/2017-Hestia-Client)
-[![codecov.io](https://codecov.io/gh/RUGSoftEng/2017-Hestia-Client/coverage.svg?branch=development)](https://codecov.io/gh/RUGSoftEng/2017-Hestia-Client?branch=development)
+[![Build Status](https://travis-ci.org/RUGSoftEng/2017-Hestia-Client.svg?branch=master)](https://travis-ci.org/RUGSoftEng/2017-Hestia-Client)
+[![codecov.io](https://codecov.io/gh/RUGSoftEng/2017-Hestia-Client/coverage.svg?branch=master)](https://codecov.io/gh/RUGSoftEng/2017-Hestia-Client?branch=master)
 
 # 2017-Hestia
 A home automation system.
