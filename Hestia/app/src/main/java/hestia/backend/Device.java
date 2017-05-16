@@ -9,88 +9,62 @@ import java.util.ArrayList;
  * type of the device so a GUI can be generated with the right icons at the correct location.
  * <p>
  *     Finally, there is a list of activators. These activators represent all the actions which can
- *     be performed remotely on the device. An activator can be for instance an On/Off switch, or
- *     an intensity slider.
+ *     be performed remotely on the device. An activator can be, for instance,
+ *     an On/Off switch (Toggle), or an intensity slider.
  * </p>
  * @see Activator
  */
 
 public class Device {
-    private int deviceId;
+    private String deviceId;
     private String name;
     private String type;
     private ArrayList<Activator> activators;
 
-    public Device(int deviceId, String name, String type, ArrayList<Activator> activator) {
+    public Device(String deviceId, String name, String type, ArrayList<Activator> activator) {
         this.deviceId = deviceId;
         this.name = name;
         this.type = type;
         this.activators = activator;
     }
 
-    /**
-     * Gets the deviceId.
-     * @return the remote deviceId
-     */
-    public int getDeviceId() {
+    public String getId() {
         return deviceId;
     }
 
-    /**
-     * Sets the local deviceId.
-     * @param deviceId the Id to be set
-     */
-    public void setDeviceId(int deviceId) {
+    public void setId(String deviceId) {
         this.deviceId = deviceId;
     }
 
-    /**
-     * Gets the remote device name.
-     * @return the name of the device as stored on the server
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the local name of the device.
-     * @param name the local name of the device
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Gets the type of the device.
-     * @return a string with the type of the device
-     */
     public String getType() {
         return type;
     }
 
-    /**
-     * Sets the local type of the device.
-     * @param type the new local type
-     */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * Returns an activator based on its Id.
-     * @param activatorId the Id of the activator
-     * @return the activator with the specified Id
+     * Returns the main toggle activator, which has the rank 0.
+     * @return the toggle activator.
      */
-    public Activator getActivator(int activatorId){
-        return activators.get(activatorId);
-    }
-
-    /**
-     * Gets the complete list of activators.
-     * @return the list of activators
-     */
-    public ArrayList<Activator> getActivators() {
-        return activators;
+    public Activator getToggle() {
+        Activator toggle = null;
+        for(Activator activator : activators) {
+            Integer rank = activator.getRank();
+            if(rank == 0) {
+                toggle = activator;
+            }
+        }
+        return toggle;
     }
 
     /**
@@ -99,14 +73,22 @@ public class Device {
      * @return the activators if the array is not empty, null otherwise
      */
     public ArrayList<Activator> getSliders() {
-        ArrayList<Activator> sliders = new ArrayList<Activator>();
-        for(Activator a : activators){
-            String type = a.getState().getType();
-            if(type.equals("SLIDER")||type.equals("UNSIGNED_BYTE")||type.equals("UNSIGNED_INT16")){
-                sliders.add(a);
+        ArrayList<Activator> sliders = new ArrayList<>();
+        for(Activator activator : activators){
+            String type = activator.getState().getType();
+            if(type.equals("float")){
+                sliders.add(activator);
             }
         }
         return (sliders.isEmpty() ? null : sliders);
+    }
+
+    /**
+     * Gets the complete list of activators.
+     * @return the list of activators
+     */
+    public ArrayList<Activator> getActivators() {
+        return activators;
     }
 
     /**
@@ -124,23 +106,23 @@ public class Device {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Device)) return false;
 
         Device device = (Device) o;
 
-        if (deviceId != device.deviceId) return false;
-        if (!name.equals(device.name)) return false;
-        if (!type.equals(device.type)) return false;
-        return activators.equals(device.activators);
+        if (!getId().equals(device.getId())) return false;
+        if (!getName().equals(device.getName())) return false;
+        if (!getType().equals(device.getType())) return false;
+        return getActivators().equals(device.getActivators());
 
     }
 
     @Override
     public int hashCode() {
-        int result = deviceId;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + activators.hashCode();
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getType().hashCode();
+        result = 31 * result + getActivators().hashCode();
         return result;
     }
 }

@@ -32,16 +32,19 @@ import hestia.backend.BackendInteractor;
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
-    protected abstract Fragment createFragment();
-
     private static String TAG = "SingleFragmentActivity";
     private ContextMenuDialogFragment mMenuDialogFragment;
-    private FragmentManager fm;
+    private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
     private BackendInteractor backendInteractor;
-
+    private final String changeIpText = "Set IP ";
+    private final String logoutText = "Logout ";
+    private final String extraName = "login";
+    private final String logoutExtraValue = "logout";
     private final int IP = 1;
     private final int LOGOUT = 2;
+
+    protected abstract Fragment createFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,28 +56,18 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             showIpDialog();
         }
 
-        final  SwipeRefreshLayout swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefresh.setRefreshing(true);
-                Log.i(TAG, "Currently refreshing");
-                backendInteractor.updateDevices();
-                Log.i(TAG, "Refresh stopped");
-                swipeRefresh.setRefreshing(false);
-            }
-        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+        fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
             fragment = createFragment();
-            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
         menuObjects = getMenuObjects();
         initMenuFragment();
@@ -96,12 +89,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         close.setResource(R.drawable.ic_action);
         objects.add(close);
 
-        MenuObject ip = new MenuObject("Set Ip");
-        ip.setResource(R.drawable.ic_router_black_24dp);
+        MenuObject ip = new MenuObject(changeIpText);
+        ip.setResource(R.mipmap.ic_router);
         objects.add(ip);
 
-        MenuObject logout = new MenuObject("Logout");
-        logout.setResource(R.drawable.ic_exit_to_app_black_24dp);
+        MenuObject logout = new MenuObject(logoutText);
+        logout.setResource(R.mipmap.ic_exit_to_app);
         objects.add(logout);
 
         return objects;
@@ -117,8 +110,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.context_menu:
-                if (fm.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
-                    mMenuDialogFragment.show(fm, "ContextMenuDialogFragment");
+                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, "ContextMenuDialogFragment");
                 }
                 return true;
 
@@ -129,21 +122,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        switch (position) {
-            case IP:
-                showIpDialog();
-                break;
-            case LOGOUT:
-                gotoLoginActivity();
-                break;
+        if (position == IP){
+            showIpDialog();
+        } else if(position == LOGOUT) {
+            gotoLoginActivity();
         }
     }
 
     private void gotoLoginActivity() {
-        Intent i = new Intent(SingleFragmentActivity.this, LoginActivity.class);
-        String s = "logout";
-        i.putExtra("login", s);
-        startActivity(i);
+        Intent toIntent = new Intent(SingleFragmentActivity.this, LoginActivity.class);
+        toIntent.putExtra(extraName, logoutExtraValue);
+        startActivity(toIntent);
         finish();
     }
 

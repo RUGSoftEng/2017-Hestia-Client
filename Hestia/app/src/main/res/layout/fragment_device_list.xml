@@ -1,15 +1,24 @@
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh">
+
 
 
     <ExpandableListView android:id="@+id/lvExp"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-         />
+        />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button"
@@ -19,8 +28,10 @@
         android:layout_margin="24dp"
         app:layout_anchor="@+id/lvExp"
         app:layout_anchorGravity="bottom|right"
-        app:backgroundTint="#e48912"
+        app:backgroundTint="@color/fab"
         android:src="@drawable/ic_add_black_24dp"
+        android:tint="@color/background"
         />
 </android.support.design.widget.CoordinatorLayout>
+
 

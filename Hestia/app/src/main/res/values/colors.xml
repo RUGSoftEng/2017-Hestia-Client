@@ -7,4 +7,11 @@
     <color name="loginHighlight">#37ff37</color>
     <color name="white">#FFFFFF</color>
     <color name="hint">#a7a7a7</color>
+    <color name="listBackground">#25224A</color>
+    <color name="listGroup">#ADE0F0</color>
+    <color name="background">#ffffff</color>
+    <color name="text">#ffffff</color>
+    <color name="fab">#25224A</color>
+    <color name="switch_color">#25224A</color>
+
 </resources>

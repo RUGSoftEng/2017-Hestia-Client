@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="55dip"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@color/listGroup">
 
     <TextView
         android:id="@+id/child_item_text"
@@ -11,17 +12,20 @@
         android:textSize="17dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:textColor="@color/text"/>
 
     <Switch
         android:id="@+id/light_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:layout_toLeftOf="@+id/imageview"
-        android:layout_toStartOf="@+id/imageview" />
+        android:layout_toStartOf="@+id/imageview"
+        android:checked="false"
+        android:theme="@style/SwitchTheme" />
 
     <ImageView
         android:id="@+id/imageview"
@@ -29,7 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_action" />
+        android:src="@drawable/ic_action"
+        />
 
 
 </RelativeLayout>
