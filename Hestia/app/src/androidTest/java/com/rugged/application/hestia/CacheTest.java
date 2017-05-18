@@ -3,38 +3,36 @@ package com.rugged.application.hestia;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import hestia.UI.DeviceListFragment;
 import hestia.backend.Activator;
-import hestia.backend.ActivatorState;
 import hestia.backend.Cache;
 import hestia.backend.Device;
 import hestia.backend.DevicesChangeListener;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class CacheTest {
-    private String TAG = "ClientInteractionTest";
+    private String TAG = "CacheTest";
     private Cache cache;
     private Device dummyDevice;
+    private String DUMMY_IP;
+    private Integer DUMMY_PORT;
 
     @Before
-    public void addDeviceTest(){
+    public void setUp() {
         cache = Cache.getInstance();
         dummyDevice = new Device("dummyId","dummyName","dummyType",new ArrayList<Activator>());
-        int sizeBefore = cache.getDevices().size();
-        cache.getDevices().add(dummyDevice);
-        int sizeAfter = cache.getDevices().size();
-        assertNotEquals(sizeBefore, sizeAfter);
-        assertTrue(cache.getDevices().contains(dummyDevice));
+        DUMMY_IP = "0.0.0.0";
+        DUMMY_PORT = 1000;
     }
 
     @Test
@@ -45,16 +43,16 @@ public class CacheTest {
 
     @Test
     public void getDevicesTest(){
-        StringBuilder sb = new StringBuilder();
-        for(Device d : cache.getDevices()){
-            sb.append(d.toString());
-        }
-        Log.i(TAG, sb.toString());
-    }
+        assertNotNull(cache.getDevices());
+        assertTrue(cache.getDevices().isEmpty());
 
-    /*
-     * Test of the singleton reference, two different references should refer to the same object.
-     */
+        // adding 3 devices
+        cache.getDevices().add(dummyDevice);
+        cache.getDevices().add(dummyDevice);
+        cache.getDevices().add(dummyDevice);
+        assertTrue(cache.getDevices().contains(dummyDevice));
+        assertEquals(cache.getDevices().size(), 3);
+    }
 
     @Test
     public void singletonTest(){
@@ -62,12 +60,16 @@ public class CacheTest {
         assertEquals(cache,copyOfCache);
     }
 
+    @Test
+    public void setAndGetIpTest(){
+        cache.setIp(DUMMY_IP);
+        assertEquals(DUMMY_IP,cache.getIp());
+    }
 
     @Test
-    public void setIpTest(){
-        String testIp = "192.168.0.1";
-        cache.setIp(testIp);
-        assertEquals(testIp,cache.getIp());
+    public void setAndGetPortTest() {
+        cache.setPort(DUMMY_PORT);
+        assertEquals((long) DUMMY_PORT, (long) cache.getPort());
     }
 
     @Test
@@ -78,10 +80,9 @@ public class CacheTest {
         assertEquals(cache.getDevices().size(), 0);
 
         // adding 3 devices
-        cache.getDevices().add(new Device(null, null, null, null));
-        cache.getDevices().add(new Device(null, null, null, null));
-        cache.getDevices().add(new Device(null, null, null, null));
-        assertEquals(cache.getDevices().size(), 3);
+        cache.getDevices().add(dummyDevice);
+        assertTrue(cache.getDevices().contains(dummyDevice));
+        assertEquals(cache.getDevices().size(), 1);
 
         // clearing the list again
         cache.getDevices().clear();
@@ -91,12 +92,11 @@ public class CacheTest {
 
     @Test
     public void deleteDeviceTest(){
+        cache.getDevices().add(dummyDevice);
         int lengthBefore = cache.getDevices().size();
-        // Removing a device
         cache.getDevices().remove(dummyDevice);
         int lengthAfter = cache.getDevices().size();
         assertNotEquals(lengthBefore, lengthAfter);
-        cache.getDevices().clear();
     }
 
     @Test
@@ -127,8 +127,8 @@ public class CacheTest {
     }
 
     @After
-    public void removeTestDevice(){
-        cache.getDevices().remove(dummyDevice);
-    }
+    public void tearDown(){
+        cache.getDevices().clear();
 
+    }
 }

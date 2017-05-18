@@ -20,8 +20,6 @@ import hestia.backend.requests.PostRequest;
 public class NetworkHandler extends Application{
     private static NetworkHandler instance;
     private static Cache cache = Cache.getInstance();
-    private final static String TAG = "NetworkHandler";
-
 
     /**
      * The empty constructor, which can not be accessed from the outside,
@@ -115,7 +113,7 @@ public class NetworkHandler extends Application{
      * @param newActivatorState the new state of the device
      * @return JsonPrimitive containing the rawValue
      */
-    private JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
+    public JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
         switch (newActivatorState.getType().toLowerCase()) {
             case "bool":
                 return new JsonPrimitive(Boolean.valueOf(String.valueOf(newActivatorState.getRawState())));
