@@ -1,6 +1,5 @@
 package hestia.UI;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import hestia.backend.BackendInteractor;
+import hestia.backend.NetworkHandler;
 import hestia.backend.Cache;
 
 /**
@@ -25,12 +24,12 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
     private EditText ipField;
     private Button confirm,cancel;
     private String ip;
-    private BackendInteractor backendInteractor;
+    private NetworkHandler networkHandler;
     private Cache cache;
 
     public IpDialog(Activity a) {
         super(a);
-        this.backendInteractor = BackendInteractor.getInstance();
+        this.networkHandler = NetworkHandler.getInstance();
         this.cache = Cache.getInstance();
     }
 
@@ -57,7 +56,7 @@ public class IpDialog extends Dialog implements android.view.View.OnClickListene
             case R.id.confirm_button:
                 if(ip!=null) {
                     cache.setIp(ip);
-                    backendInteractor.updateDevices();
+                    networkHandler.updateDevices();
                     Toast.makeText(getContext(),R.string.ipSetTo + cache.getIp() + ":"
                                     + cache.getPort(),Toast.LENGTH_SHORT).show();
 

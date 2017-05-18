@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 import hestia.backend.requests.DeleteRequest;
 import hestia.backend.requests.GetDevicesRequest;
 import hestia.backend.requests.GetPluginInformationRequest;
@@ -13,32 +12,32 @@ import hestia.backend.requests.PostRequest;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
- * used to achieve this. During execution, there is a single BackendInteractor accessible
+ * used to achieve this. During execution, there is a single NetworkHandler accessible
  * throughout the entire app through the HestiaApplication class.
  * @see hestia.UI.HestiaApplication
  */
 
-public class BackendInteractor extends Application{
-    private static BackendInteractor instance;
+public class NetworkHandler extends Application{
+    private static NetworkHandler instance;
     private static Cache cache = Cache.getInstance();
-    private final static String TAG = "BackendInteractor";
+    private final static String TAG = "NetworkHandler";
 
 
     /**
      * The empty constructor, which can not be accessed from the outside,
      * because we want a singleton behavior.
      */
-    private BackendInteractor(){}
+    private NetworkHandler(){}
 
     /**
-     * Returns the single instance of BackendInteractor.
+     * Returns the single instance of NetworkHandler.
      * If there was no instance of this class created previously,
      * then it will create one and return it
-     * @return the single instance of BackendInteractor
+     * @return the single instance of NetworkHandler
      */
-    public static BackendInteractor getInstance(){
+    public static NetworkHandler getInstance(){
         if(instance == null){
-            instance = new BackendInteractor();
+            instance = new NetworkHandler();
         }
         return instance;
     }
@@ -76,9 +75,9 @@ public class BackendInteractor extends Application{
      * @param requiredInfo the jsonObject containing the information relevant to adding a new device.
      */
     public void postDevice(JsonObject requiredInfo) {
-        String path = BackendInteractor.getInstance().getPath() + "devices/";
+        String path = NetworkHandler.getInstance().getPath() + "devices/";
         new PostRequest(path, requiredInfo).execute();
-        BackendInteractor.getInstance().updateDevices();
+        NetworkHandler.getInstance().updateDevices();
     }
 
     /**

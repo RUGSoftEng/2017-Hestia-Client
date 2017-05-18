@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import hestia.backend.BackendInteractor;
+import hestia.backend.NetworkHandler;
 
 import com.rugged.application.hestia.R;
 
@@ -29,12 +28,12 @@ import hestia.backend.Device;
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
-    private BackendInteractor backendInteractor;
+    private NetworkHandler networkHandler;
 
     public ExpandableListAdapter(ArrayList<ArrayList<DeviceBar>> listChildData, Context context) {
         this.listDataChild = listChildData;
         this.context = context;
-        this.backendInteractor = BackendInteractor.getInstance();
+        this.networkHandler = NetworkHandler.getInstance();
     }
 
     @Override
@@ -92,7 +91,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                // new SlideDialog(context, device).show();
                                 //break;
                             case R.id.delete:
-                                backendInteractor.deleteDevice(device);
+                                networkHandler.deleteDevice(device);
                                 break;
                             default:
                                 break;

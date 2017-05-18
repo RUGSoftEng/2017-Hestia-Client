@@ -24,7 +24,7 @@ public class Cache {
      * Returns the single instance of Cache.
      * If there was no instance of this class created previously,
      * then it will create one and return it
-     * @return the single instance of BackendInteractor
+     * @return the single instance of Cache
      */
     public static Cache getInstance(){
         if(instance == null){

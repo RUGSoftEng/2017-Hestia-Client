@@ -12,11 +12,11 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import hestia.backend.BackendInteractor;
+import hestia.backend.NetworkHandler;
 
 /**
 * This class opens the dialog to enter the organization name and plugin name.
-* It then sends this to the backendInteractor which tries to get the required info.
+* It then sends this to the networkHandler which tries to get the required info.
 * If this works it consecutively opens a new dialog for the other info.
 * @see hestia.UI.AddDeviceInfo
  */
@@ -24,13 +24,13 @@ import hestia.backend.BackendInteractor;
 public class AddDeviceDialog extends Dialog implements android.view.View.OnClickListener {
     private EditText organizationField, pluginField;
     private Button confirm, cancel;
-    private BackendInteractor backendInteractor;
+    private NetworkHandler networkHandler;
     private Activity context;
 
     public AddDeviceDialog(Activity activity) {
         super(activity);
         this.context = activity;
-        this.backendInteractor = BackendInteractor.getInstance();
+        this.networkHandler = NetworkHandler.getInstance();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class AddDeviceDialog extends Dialog implements android.view.View.OnClick
 
         switch (view.getId()) {
             case R.id.confirm_button:
-                backendInteractor.addDevice(organization, pluginName, context);
+                networkHandler.addDevice(organization, pluginName, context);
                 //TODO give correct response from server after adding device
                 Toast.makeText(context, "Added device x. Server should let us what response " +
                                 "it gave", Toast.LENGTH_SHORT).show();
