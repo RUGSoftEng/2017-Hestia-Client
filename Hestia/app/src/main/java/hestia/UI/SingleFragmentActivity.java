@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hestia.backend.BackendInteractor;
+import hestia.backend.Cache;
 
 /**
  * This abstract class is used as an abstract wrapper around the device list activity class.
@@ -36,7 +37,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
-    private BackendInteractor backendInteractor;
+    private Cache cache;
     private final String changeIpText = "Set IP ";
     private final String logoutText = "Logout ";
     private final String extraName = "login";
@@ -51,11 +52,16 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
+        /**
         backendInteractor =  ((HestiaApplication)this.getApplication()).getBackendInteractor();
         if(backendInteractor.getIp()==null){
             showIpDialog();
         }
-
+         */
+        cache = Cache.getInstance();
+        if(cache.getIp() == null) {
+            showIpDialog();
+        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

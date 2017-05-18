@@ -19,25 +19,9 @@ import hestia.backend.requests.PostRequest;
  */
 
 public class BackendInteractor extends Application{
-
-    /**
-     * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
-     * a listener attempts to remove itself during event notification.
-     */
-    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =
-            new CopyOnWriteArrayList<>();
     private static BackendInteractor instance;
-    private ArrayList<Device> devices = new ArrayList<>();
+    private static Cache cache = Cache.getInstance();
     private final static String TAG = "BackendInteractor";
-
-    private String ip = "82.73.173.179";
-
-
-    //PI:
-//    private String ip = "82.73.173.179";
-//    private int port = 8022;
-
-    private int port = 8000;
 
 
     /**
@@ -106,19 +90,6 @@ public class BackendInteractor extends Application{
         new GetDevicesRequest(devicesPath).execute();
     }
 
-    public ArrayList<Device> getDevices(){
-        return devices;
-    }
-
-    /**
-     * Replaces the current list of devices with the specified one and will fire a change event.
-     * @param devices the new list of devices
-     */
-    public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-        fireChangeEvent();
-    }
-
     /**
      * This method implements the HTTP POST method for changing the state of an activator on a
      * device as an AsyncTask.
@@ -156,74 +127,12 @@ public class BackendInteractor extends Application{
         }
     }
 
-    public String getIp(){
-        return this.ip;
-    }
-
-    public void setIp(String ip){
-        this.ip = ip;
-    }
-
-    public int getPort(){
-        return port;
-    }
-
-    public void setPort(int port){
-        this.port = port;
-    }
-
     /**
      * Returns the path to the main page of the server.
      * This consists of the server's IP address and port number.
      * @return the path to the main page of the server
      */
     public String getPath(){
-        return "http://" + ip + ":" + port + "/";
-    }
-
-    /**
-     * Triggers a change event. The change is propagated to all listeners.
-     * @see hestia.UI.DeviceListFragment
-     */
-    protected void fireChangeEvent() {
-        DevicesEvent evt = new DevicesEvent(this);
-        for (DevicesChangeListener l : listeners) {
-            l.changeEventReceived(evt);
-        }
-    }
-
-    /**
-     * Adds a DeviceChangeListener to the list of listeners.
-     * @param l the listener to be added to the list of listeners.
-     */
-    public void addDevicesChangeListener(DevicesChangeListener l) {
-        this.listeners.add(l);
-    }
-
-    /**
-     * Removes a DeviceChangeListener from the the list of listeners.
-     * @param l the listener to be removed from the list of listeners.
-     */
-    public void removeDevicesChangeListener(DevicesChangeListener l) {
-        this.listeners.remove(l);
-    }
-
-    public CopyOnWriteArrayList<DevicesChangeListener> getListeners(){
-        return this.listeners;
-    }
-
-    /**
-     * This overloaded version of addDevice is used exclusively for testing purposes.
-     */
-    public void addDevice(Device device){
-        devices.add(device);
-    }
-
-    public void deleteTestDevice(int deviceId) {
-        devices.remove(deviceId);
-    }
-
-    public void clearDevices(){
-        devices = new ArrayList<>();
+        return "http://" + cache.getIp() + ":" + cache.getPort() + "/";
     }
 }

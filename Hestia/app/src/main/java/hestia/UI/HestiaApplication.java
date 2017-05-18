@@ -13,8 +13,9 @@ import hestia.backend.BackendInteractor;
 public class HestiaApplication extends Application {
     private static final BackendInteractor backendInteractor = BackendInteractor.getInstance();
 
-    public BackendInteractor getBackendInteractor() {
+   /* public BackendInteractor getBackendInteractor() {
         return backendInteractor;
     }
+    */
 
 }

@@ -2,15 +2,12 @@ package com.rugged.application.hestia;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import hestia.UI.DeviceListActivity;
-import hestia.backend.BackendInteractor;
-
+import hestia.backend.Cache;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -46,7 +43,7 @@ public class SetIpTest {
 
         onView(withId(R.id.confirm_button)).perform(click());
 
-        assertEquals(BackendInteractor.getInstance().getIp(),TEST_IP);
+        assertEquals(Cache.getInstance().getIp(),TEST_IP);
     }
 
 
