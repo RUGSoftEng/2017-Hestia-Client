@@ -10,13 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import hestia.backend.NetworkHandler;
-
 import com.rugged.application.hestia.R;
-
 import java.util.ArrayList;
-
 import hestia.backend.Device;
 
 /**
@@ -69,7 +65,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             @Override
             public void onClick(View view) {
                 final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
-                if(device.getSliders()!=null) {
+                if(!device.getSliders().isEmpty()) {
                     new SlideDialog(context, device).show();
                 }
             }
@@ -78,9 +74,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Device device = ((DeviceBar) getChild(groupPosition, childPosition))
-                        .getDevice();
-                PopupMenu popup = createPopupMenu(view,device);
+                final Device device = ((DeviceBar) getChild(groupPosition, childPosition)).getDevice();
+                PopupMenu popup = createPopupMenu(view);
 
                 popup.show();
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -133,8 +128,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
+        TextView lblListHeader = (TextView) convertView .findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
@@ -155,15 +149,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         return true;
     }
 
-    private PopupMenu createPopupMenu(View view, Device device){
+    private PopupMenu createPopupMenu(View view){
         PopupMenu popup = new PopupMenu(context, view);
-        popup.getMenuInflater().inflate(R.menu.popup,
-                popup.getMenu());
-
-        if (device.getSliders()==null || device.getSliders() != null) {
-            popup.getMenu().findItem(R.id.sliders).setEnabled(false);
-            popup.getMenu().findItem(R.id.sliders).setVisible(false);
-        }
+        popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
         return popup;
     }
 }

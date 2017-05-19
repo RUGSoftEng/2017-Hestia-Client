@@ -32,7 +32,6 @@ public class Activator {
         return activatorId;
     }
 
-
     public void setId(String activatorId) {
         this.activatorId = activatorId;
     }
