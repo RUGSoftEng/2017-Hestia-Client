@@ -87,9 +87,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            //case R.id.sliders:
-                               // new SlideDialog(context, device).show();
-                                //break;
                             case R.id.delete:
                                 networkHandler.deleteDevice(device);
                                 break;

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import hestia.backend.requests.DeleteRequest;
 import hestia.backend.requests.GetDevicesRequest;
 import hestia.backend.requests.GetPluginInformationRequest;
@@ -19,7 +18,7 @@ import hestia.backend.requests.PostRequest;
 
 public class NetworkHandler extends Application{
     private static NetworkHandler instance;
-    private static Cache cache = Cache.getInstance();
+    private Cache cache = Cache.getInstance();
 
     /**
      * The empty constructor, which can not be accessed from the outside,

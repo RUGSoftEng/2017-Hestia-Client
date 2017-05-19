@@ -3,20 +3,25 @@ package hestia.backend;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
+ * IP address, or port number. During execution, there is a single Cache accessible.
+ */
 public class Cache {
     /**
      * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
      * a listener attempts to remove itself during event notification.
      */
-    private final CopyOnWriteArrayList<DevicesChangeListener> listeners =
-            new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<DevicesChangeListener> listeners = new CopyOnWriteArrayList<>();
     private static Cache instance;
     private ArrayList<Device> devices = new ArrayList<>();
-    private final static String TAG = "Cache";
-
     private String ip = "82.73.173.179";
     private int port = 8000;
 
+    /**
+     * The empty constructor, which can not be accessed from the outside,
+     * because we want a singleton behavior.
+     */
     private Cache() {}
 
     /**
@@ -65,27 +70,27 @@ public class Cache {
      * Triggers a change event. The change is propagated to all listeners.
      * @see hestia.UI.DeviceListFragment
      */
-    protected void fireChangeEvent() {
+    private void fireChangeEvent() {
         DevicesEvent evt = new DevicesEvent(this);
-        for (DevicesChangeListener l : listeners) {
-            l.changeEventReceived(evt);
+        for (DevicesChangeListener listener : listeners) {
+            listener.changeEventReceived(evt);
         }
     }
 
     /**
      * Adds a DeviceChangeListener to the list of listeners.
-     * @param l the listener to be added to the list of listeners.
+     * @param listener the listener to be added to the list of listeners.
      */
-    public void addDevicesChangeListener(DevicesChangeListener l) {
-        this.listeners.add(l);
+    public void addDevicesChangeListener(DevicesChangeListener listener) {
+        this.listeners.add(listener);
     }
 
     /**
      * Removes a DeviceChangeListener from the the list of listeners.
-     * @param l the listener to be removed from the list of listeners.
+     * @param listener the listener to be removed from the list of listeners.
      */
-    public void removeDevicesChangeListener(DevicesChangeListener l) {
-        this.listeners.remove(l);
+    public void removeDevicesChangeListener(DevicesChangeListener listener) {
+        this.listeners.remove(listener);
     }
 
     public CopyOnWriteArrayList<DevicesChangeListener> getListeners(){

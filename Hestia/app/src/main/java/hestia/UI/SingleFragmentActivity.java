@@ -30,7 +30,6 @@ import hestia.backend.Cache;
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
-    private static String TAG = "SingleFragmentActivity";
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
@@ -49,17 +48,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        /**
-        backendInteractor =  ((HestiaApplication)this.getApplication()).getBackendInteractor();
-        if(backendInteractor.getIp()==null){
-            showIpDialog();
-        }
-         */
         cache = Cache.getInstance();
         if(cache.getIp() == null) {
             showIpDialog();
         }
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

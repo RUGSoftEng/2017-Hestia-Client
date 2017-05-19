@@ -3,7 +3,6 @@ package hestia.UI;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-
 import hestia.backend.NetworkHandler;
 import hestia.backend.Cache;
 
@@ -19,9 +18,9 @@ public class DeviceListActivity extends SingleFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NetworkHandler networkHandler = NetworkHandler.getInstance();
+        Cache cache = Cache.getInstance();
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        //networkHandler.setIp(prefs.getString(SERVER_IP, networkHandler.getIp()));
+        cache.setIp(prefs.getString(SERVER_IP, cache.getIp()));
     }
 
     /**
