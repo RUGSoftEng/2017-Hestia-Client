@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package com.rugged.application.hestia.backendTests;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -14,14 +14,12 @@ import hestia.backend.Cache;
 import hestia.backend.Device;
 import hestia.backend.DevicesChangeListener;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class CacheTest {
-    private String TAG = "CacheTest";
     private Cache cache;
     private Device dummyDevice;
     private String DUMMY_IP;
@@ -115,20 +113,21 @@ public class CacheTest {
 
     @Test
     public void listenerTest(){
-        DevicesChangeListener l = new DeviceListFragment();
+        DevicesChangeListener listener = new DeviceListFragment();
+        cache.getListeners().clear();
+        assertTrue(cache.getListeners().isEmpty());
 
         // Testing adding a listener
-        cache.addDevicesChangeListener(l);
-        assertEquals(l,cache.getListeners().get(0));
+        cache.addDevicesChangeListener(listener);
+        assertEquals(listener,cache.getListeners().get(0));
 
         // Testing removing a listener
-        cache.removeDevicesChangeListener(l);
+        cache.removeDevicesChangeListener(listener);
         assertEquals(0,cache.getListeners().size());
     }
 
     @After
     public void tearDown(){
         cache.getDevices().clear();
-
     }
 }

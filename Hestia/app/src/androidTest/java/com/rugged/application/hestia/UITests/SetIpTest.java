@@ -1,7 +1,11 @@
-package com.rugged.application.hestia;
+package com.rugged.application.hestia.UITests;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.rugged.application.hestia.R;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +34,7 @@ public class SetIpTest {
 
     @Before
     public void checkDialog() {
-        onView(withId(R.id.context_menu)).perform(click());
+        onView(ViewMatchers.withId(R.id.context_menu)).perform(click());
 
         onView(withText(SET_IP_TEXT)).perform(click());
 

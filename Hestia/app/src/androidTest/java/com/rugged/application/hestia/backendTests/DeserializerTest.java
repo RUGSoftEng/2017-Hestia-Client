@@ -1,4 +1,4 @@
-package com.rugged.application.hestia;
+package com.rugged.application.hestia.backendTests;
 
 import android.support.test.runner.AndroidJUnit4;
 import com.google.gson.Gson;
