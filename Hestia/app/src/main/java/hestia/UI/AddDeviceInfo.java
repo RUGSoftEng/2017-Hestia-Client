@@ -3,7 +3,6 @@ package hestia.UI;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,8 +16,7 @@ import com.google.gson.JsonObject;
 import com.rugged.application.hestia.R;
 import java.util.HashMap;
 
-import hestia.backend.BackendInteractor;
-import hestia.backend.requests.PostRequest;
+import hestia.backend.NetworkHandler;
 
 /**
  * This class dynamically creates the fields for the required information.
@@ -98,7 +96,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
                             Toast.LENGTH_SHORT).show();
                     break;
                 }
-                BackendInteractor.getInstance().postDevice(requiredInfo);
+                NetworkHandler.getInstance().postDevice(requiredInfo);
                 dismiss();
                 break;
             case R.id.back_button:

@@ -7,10 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +22,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import hestia.backend.BackendInteractor;
+import hestia.backend.Cache;
 
 /**
  * This abstract class is used as an abstract wrapper around the device list activity class.
@@ -32,11 +30,10 @@ import hestia.backend.BackendInteractor;
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity implements
         OnMenuItemClickListener {
-    private static String TAG = "SingleFragmentActivity";
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
-    private BackendInteractor backendInteractor;
+    private Cache cache;
     private final String changeIpText = "Set IP ";
     private final String logoutText = "Logout ";
     private final String extraName = "login";
@@ -51,12 +48,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        backendInteractor =  ((HestiaApplication)this.getApplication()).getBackendInteractor();
-        if(backendInteractor.getIp()==null){
+        cache = Cache.getInstance();
+        if(cache.getIp() == null) {
             showIpDialog();
         }
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
