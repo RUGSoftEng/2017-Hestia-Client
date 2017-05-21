@@ -86,7 +86,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                 networkHandler.deleteDevice(device);
                                 break;
                             case R.id.change_name:
-                                new ChangeNameDialog(context, device.getName()).show();
+                                new ChangeNameDialog(context, device).show();
                                 break;
                             default:
                                 break;
