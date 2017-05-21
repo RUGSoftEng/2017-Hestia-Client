@@ -25,7 +25,7 @@ import hestia.backend.NetworkHandler;
  * Finally it sends back the HashMap to the backendInteractor which posts it to the server.
  */
 
-public class AddDeviceInfo extends Dialog implements android.view.View.OnClickListener {
+public class AddDeviceInfo extends HestiaDialog {
     private HashMap<String, String> fields;
     private Activity content;
     private final String TAG = "AddDeviceInfo";
@@ -35,7 +35,7 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     private static final String EMPTY_STRING="";
 
     public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
-        super(activity);
+        super(activity, R.layout.enter_device_info, "Add a device");
         this.content = activity;
         this.fields = fields;
     }
@@ -43,8 +43,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.enter_device_info);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -69,8 +67,6 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
             mainLayout.addView(subLayout);
             count++;
         }
-        LinearLayout ll = generateButtons(params);
-        mainLayout.addView(ll);
     }
 
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
@@ -87,25 +83,21 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.confirm_button:
-                JsonObject requiredInfo = this.getRequiredInfo();
-                if(requiredInfo==null) {
-                    Toast.makeText(getContext(), R.string.emptyValuesEntered,
-                            Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                NetworkHandler.getInstance().postDevice(requiredInfo);
-                dismiss();
-                break;
-            case R.id.back_button:
-                Toast.makeText(content, R.string.cancel, Toast.LENGTH_SHORT).show();
-                dismiss();
-                break;
-            default:
-                break;
+    protected void pressCancel() {
+        Toast.makeText(content, R.string.cancel, Toast.LENGTH_SHORT).show();
+        dismiss();
+    }
+
+    @Override
+    protected void pressConfirm() {
+        JsonObject requiredInfo = this.getRequiredInfo();
+        if(requiredInfo==null) {
+            Toast.makeText(getContext(), R.string.emptyValuesEntered,
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
+        NetworkHandler.getInstance().postDevice(requiredInfo);
+        dismiss();
     }
 
     /**
@@ -133,18 +125,4 @@ public class AddDeviceInfo extends Dialog implements android.view.View.OnClickLi
         return addDeviceJSON;
     }
 
-    private LinearLayout generateButtons(LinearLayout.LayoutParams params){
-        LinearLayout layout = new LinearLayout(content);
-        final Button confirm = new Button(content);
-        final Button cancel = new Button(content);
-        confirm.setId(R.id.confirm_button);
-        cancel.setId(R.id.back_button);
-        confirm.setText(R.string.confirm);
-        cancel.setText(R.string.cancel);
-        confirm.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-        layout.addView(confirm);
-        layout.addView(cancel);
-        return layout;
-    }
 }
