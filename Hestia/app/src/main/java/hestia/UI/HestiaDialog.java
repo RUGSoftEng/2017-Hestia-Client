@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,18 +21,17 @@ import com.rugged.application.hestia.R;
 import hestia.backend.NetworkHandler;
 
 
-abstract class HestiaDialog extends Dialog implements View.OnClickListener{
-    protected Activity a;
+abstract class HestiaDialog extends Dialog implements android.view.View.OnClickListener{
+    protected Context context;
     private int layoutReference;
 
     private String title;
     private Button cancel;
     private Button confirm;
 
-
-    public HestiaDialog(Activity activity, int reference, String title) {
-        super(activity);
-        this.a = activity;
+    public HestiaDialog(Context context, int reference, String title) {
+        super(context);
+        this.context = context;
         this.layoutReference = reference;
         this.title = title;
     }
@@ -45,7 +45,7 @@ abstract class HestiaDialog extends Dialog implements View.OnClickListener{
         cancel.setOnClickListener(this);
         confirm = (Button)findViewById(R.id.confirm_button);
         confirm.setOnClickListener(this);
-        LayoutInflater inflater = a.getLayoutInflater();
+        LayoutInflater inflater = getLayoutInflater();
         FrameLayout frame = (FrameLayout)findViewById(R.id.dialog_container);
         View v = inflater.inflate(layoutReference, null);
         frame.addView(v);
@@ -55,19 +55,17 @@ abstract class HestiaDialog extends Dialog implements View.OnClickListener{
 
     abstract void pressConfirm();
 
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cancel_button:
                 pressCancel();
                 dismiss();
-            break;
+                break;
             case R.id.confirm_button:
                 pressConfirm();
                 dismiss();
                 break;
-            default:
-                break;
         }
     }
+
 }

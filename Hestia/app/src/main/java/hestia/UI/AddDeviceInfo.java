@@ -2,6 +2,7 @@ package hestia.UI;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -27,16 +28,14 @@ import hestia.backend.NetworkHandler;
 
 public class AddDeviceInfo extends HestiaDialog {
     private HashMap<String, String> fields;
-    private Activity content;
     private final String TAG = "AddDeviceInfo";
     private final String fixedFieldCol = "collection";
     private final String fixedFieldPlugin = "plugin";
     private final String propReqInfo = "required_info";
     private static final String EMPTY_STRING="";
 
-    public AddDeviceInfo(Activity activity, HashMap<String, String> fields) {
-        super(activity, R.layout.enter_device_info, "Add a device");
-        this.content = activity;
+    public AddDeviceInfo(Context context, HashMap<String, String> fields) {
+        super(context, R.layout.enter_device_info, "Add a device");
         this.fields = fields;
     }
 
@@ -51,10 +50,10 @@ public class AddDeviceInfo extends HestiaDialog {
         int count = 0;
 
         for (String key : fields.keySet()) {
-            LinearLayout subLayout = new LinearLayout(content);
+            LinearLayout subLayout = new LinearLayout(context);
 
             // Add text
-            TextView name = new TextView(content);
+            TextView name = new TextView(context);
             name.setText(key);
             subLayout.addView(name);
 
@@ -70,7 +69,7 @@ public class AddDeviceInfo extends HestiaDialog {
     }
 
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
-        final EditText field = new EditText(content);
+        final EditText field = new EditText(context);
         field.setText(fields.get(key));
         field.setId(count);
         if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
@@ -84,8 +83,7 @@ public class AddDeviceInfo extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        Toast.makeText(content, R.string.cancel, Toast.LENGTH_SHORT).show();
-        dismiss();
+        Toast.makeText(context, R.string.cancel, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -97,7 +95,6 @@ public class AddDeviceInfo extends HestiaDialog {
             return;
         }
         NetworkHandler.getInstance().postDevice(requiredInfo);
-        dismiss();
     }
 
     /**

@@ -20,7 +20,7 @@ import hestia.backend.Cache;
  * user.
  */
 
-public class IpDialog extends HestiaDialog implements android.view.View.OnClickListener{
+public class IpDialog extends HestiaDialog{
     private EditText ipField;
     private String ip;
     private NetworkHandler networkHandler;
@@ -43,8 +43,6 @@ public class IpDialog extends HestiaDialog implements android.view.View.OnClickL
 
     @Override
     void pressCancel() {
-        dismiss();
-
     }
 
     @Override
@@ -61,6 +59,5 @@ public class IpDialog extends HestiaDialog implements android.view.View.OnClickL
             Toast.makeText(getContext(), "Server returned message: + serverMessage",
                     Toast.LENGTH_SHORT).show();
         }
-        dismiss();
     }
 }
