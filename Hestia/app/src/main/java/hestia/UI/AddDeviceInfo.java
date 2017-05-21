@@ -29,7 +29,7 @@ public class AddDeviceInfo extends HestiaDialog {
     private HashMap<String, String> fields;
     private Activity content;
     private final String TAG = "AddDeviceInfo";
-    private final String fixedFieldOrg = "organization";
+    private final String fixedFieldCol = "collection";
     private final String fixedFieldPlugin = "plugin";
     private final String propReqInfo = "required_info";
     private static final String EMPTY_STRING="";
@@ -73,7 +73,7 @@ public class AddDeviceInfo extends HestiaDialog {
         final EditText field = new EditText(content);
         field.setText(fields.get(key));
         field.setId(count);
-        if (key.equals(fixedFieldOrg)||key.equals(fixedFieldPlugin)) {
+        if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
             field.setFocusable(false);
             field.setClickable(false);
         }
