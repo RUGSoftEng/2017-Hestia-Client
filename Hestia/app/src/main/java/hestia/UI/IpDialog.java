@@ -42,7 +42,13 @@ public class IpDialog extends HestiaDialog implements android.view.View.OnClickL
     }
 
     @Override
-    protected void pressConfirm() {
+    void pressCancel() {
+        dismiss();
+
+    }
+
+    @Override
+    void pressConfirm() {
         ip = ipField.getText().toString();
         Toast.makeText(getContext(), "ip is: " + ip, Toast.LENGTH_SHORT).show();
         if(ip!=null) {
@@ -55,5 +61,6 @@ public class IpDialog extends HestiaDialog implements android.view.View.OnClickL
             Toast.makeText(getContext(), "Server returned message: + serverMessage",
                     Toast.LENGTH_SHORT).show();
         }
+        dismiss();
     }
 }

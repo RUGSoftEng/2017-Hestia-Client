@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="45dp"
             android:maxLines="1"
-            android:text="@string/back" />
+            android:text="@string/back"
+            android:onClick="pressCancel"/>
 
         <Button
             android:id="@+id/confirm_button"
@@ -44,6 +45,7 @@
             android:layout_marginLeft="45dp"
             android:maxLines="1"
             android:text="@string/confirm"
+            android:onClick="pressConfirm"
              />
     </LinearLayout>
 </RelativeLayout>

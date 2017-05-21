@@ -20,7 +20,7 @@ import com.rugged.application.hestia.R;
 import hestia.backend.NetworkHandler;
 
 
-public class HestiaDialog extends Dialog implements View.OnClickListener{
+abstract class HestiaDialog extends Dialog implements View.OnClickListener{
     protected Activity a;
     private int layoutReference;
 
@@ -51,18 +51,16 @@ public class HestiaDialog extends Dialog implements View.OnClickListener{
         frame.addView(v);
     }
 
-    protected void pressCancel() {
-    }
+    abstract void pressCancel();
 
-    protected void pressConfirm() {
-    }
+    abstract void pressConfirm();
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cancel_button:
-            pressCancel();
-            dismiss();
+                pressCancel();
+                dismiss();
             break;
             case R.id.confirm_button:
                 pressConfirm();

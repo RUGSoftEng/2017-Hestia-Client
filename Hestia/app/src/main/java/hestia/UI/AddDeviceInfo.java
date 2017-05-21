@@ -83,13 +83,13 @@ public class AddDeviceInfo extends HestiaDialog {
     }
 
     @Override
-    protected void pressCancel() {
+    void pressCancel() {
         Toast.makeText(content, R.string.cancel, Toast.LENGTH_SHORT).show();
         dismiss();
     }
 
     @Override
-    protected void pressConfirm() {
+    void pressConfirm() {
         JsonObject requiredInfo = this.getRequiredInfo();
         if(requiredInfo==null) {
             Toast.makeText(getContext(), R.string.emptyValuesEntered,
