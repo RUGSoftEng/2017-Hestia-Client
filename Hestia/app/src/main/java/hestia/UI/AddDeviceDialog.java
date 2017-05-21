@@ -41,18 +41,20 @@ public class AddDeviceDialog extends HestiaDialog{
     }
 
     @Override
-    protected void pressCancel() {
-
+    void pressCancel() {
+        Toast.makeText(context, "Cancel pressed", Toast.LENGTH_SHORT).show();
+        dismiss();
     }
 
     @Override
-    protected void pressConfirm() {
+    void pressConfirm() {
         String organization = organizationField.getText().toString();
         String pluginName = pluginField.getText().toString();
         networkHandler.addDevice(organization, pluginName, context);
 //                //TODO give correct response from server after adding device
 //                Toast.makeText(context, "Added device x. Server should let us what response " +
 //                                "it gave", Toast.LENGTH_SHORT).show();
+        dismiss();
     }
 
 }
