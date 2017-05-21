@@ -30,8 +30,9 @@ public class PostRequest extends Request {
     @Override
     protected void performIOAction(HttpURLConnection connector) throws IOException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
+        connector.setReadTimeout(2000);
+        connector.setConnectTimeout(2000);
         outputStreamWriter.write(this.object.toString());
-        Log.d(TAG, object.toString());
         outputStreamWriter.flush();
         outputStreamWriter.close();
     }

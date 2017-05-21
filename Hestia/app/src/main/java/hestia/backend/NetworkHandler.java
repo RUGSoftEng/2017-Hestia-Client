@@ -2,8 +2,18 @@ package hestia.backend;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
+
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import hestia.backend.requests.DeleteRequest;
 import hestia.backend.requests.GetDevicesRequest;
 import hestia.backend.requests.GetPluginInformationRequest;
@@ -121,6 +131,22 @@ public class NetworkHandler extends Application{
             default:
                 return new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
         }
+    }
+
+    public void setDeviceName(Device device, String newName) throws IOException {
+        JsonObject object = new JsonObject();
+        object.add("name", new JsonPrimitive(newName));
+        String url = this.getPath() + "devices/" + device.getId();
+        putJsonObject( url , object);
+    }
+
+    public void putJsonObject(String path, JsonObject object) throws IOException {
+        URL url = new URL(path);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
+        outputStreamWriter.write(object.toString());
+        outputStreamWriter.flush();
+        outputStreamWriter.close();
     }
 
     /**
