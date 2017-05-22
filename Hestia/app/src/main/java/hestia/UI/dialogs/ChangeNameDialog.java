@@ -1,13 +1,13 @@
-package hestia.UI;
+package hestia.UI.dialogs;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
-
 import hestia.backend.Device;
 
 public class ChangeNameDialog extends HestiaDialog {
@@ -33,8 +33,18 @@ public class ChangeNameDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        String result = t.getText().toString();
-        Toast.makeText(context, "Something should be done with result: " + result, Toast.LENGTH_SHORT)
-                .show();
+        final String result = t.getText().toString();
+        new AsyncTask<Object, Object, Integer>() {
+            @Override
+            protected Integer doInBackground(Object... params) {
+                device.setName(result);
+                return 0;
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                //UPDATE THE GUI
+            }
+        }.execute();
     }
 }

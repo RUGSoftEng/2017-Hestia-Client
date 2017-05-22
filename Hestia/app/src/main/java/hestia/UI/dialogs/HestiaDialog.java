@@ -1,4 +1,4 @@
-package hestia.UI;
+package hestia.UI.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;

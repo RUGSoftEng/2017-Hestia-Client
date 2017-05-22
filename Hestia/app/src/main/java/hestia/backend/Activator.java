@@ -1,5 +1,10 @@
 package hestia.backend;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import hestia.backend.models.ActivatorState;
+
 /**
  * This class represents a single activator on a device. A single device can have multiple activators.
  * The activator has an id so that we can reference it on the server and
@@ -11,9 +16,11 @@ package hestia.backend;
  */
 public class Activator {
     private String activatorId;
+    public String deviceId;
     private int rank;
     private ActivatorState state;
     private String name;
+    private NetworkHandler handler;
 
     /**
      * Creates an Activator with the specified id, state and name.
@@ -26,6 +33,23 @@ public class Activator {
         this.rank = rank;
         this.state = state;
         this.name = name;
+    }
+
+    public void setDeviceId(String deviceId){
+        this.deviceId = deviceId;
+    }
+
+    public void setNetworkHandler(NetworkHandler handler){
+        this.handler = handler;
+    }
+
+    public Activator(String activatorId, String deviceId, Integer rank, ActivatorState state, String name, NetworkHandler handler) {
+        this.activatorId = activatorId;
+        this.deviceId = deviceId;
+        this.rank = rank;
+        this.state = state;
+        this.name = name;
+        this.handler = handler;
     }
 
     public String getId() {
@@ -49,7 +73,23 @@ public class Activator {
     }
 
     public void setState(ActivatorState state) {
-        this.state = state;
+        JsonObject send = new JsonObject();
+        send.add("state", this.getNewStateValue(state));
+        JsonObject returnObject = handler.POST(send, "devices/"+deviceId+"/activators/"+activatorId);
+        //TODO hanlde the returnObject
+        // TODO set the state based on the return
+    }
+
+    // It would be nice if this funcitionality was handled by the respective activator classes.
+    private JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
+        switch (newActivatorState.getType().toLowerCase()) {
+            case "bool":
+                return new JsonPrimitive(Boolean.valueOf(String.valueOf(newActivatorState.getRawState())));
+            case "float":
+                return new JsonPrimitive(Float.valueOf(String.valueOf(newActivatorState.getRawState())));
+            default:
+                return new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
+        }
     }
 
     public String getName() {

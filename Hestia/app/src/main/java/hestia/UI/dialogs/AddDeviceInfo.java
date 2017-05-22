@@ -1,23 +1,19 @@
-package hestia.UI;
+package hestia.UI.dialogs;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.rugged.application.hestia.R;
 import java.util.HashMap;
 
-import hestia.backend.NetworkHandler;
+import hestia.backend.Cache;
+import hestia.backend.models.RequiredInfo;
 
 /**
  * This class dynamically creates the fields for the required information.
@@ -27,16 +23,17 @@ import hestia.backend.NetworkHandler;
  */
 
 public class AddDeviceInfo extends HestiaDialog {
-    private HashMap<String, String> fields;
+    private RequiredInfo info;
+    private Cache cache;
     private final String TAG = "AddDeviceInfo";
     private final String fixedFieldCol = "collection";
     private final String fixedFieldPlugin = "plugin";
     private final String propReqInfo = "required_info";
     private static final String EMPTY_STRING="";
 
-    public AddDeviceInfo(Context context, HashMap<String, String> fields) {
+    public AddDeviceInfo(Context context, RequiredInfo info, Cache cache) {
         super(context, R.layout.enter_device_info, "Add a device");
-        this.fields = fields;
+        this.info = info;
     }
 
     @Override
@@ -49,6 +46,7 @@ public class AddDeviceInfo extends HestiaDialog {
         final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
         int count = 0;
 
+        HashMap<String, String> fields = info.getInfo();
         for (String key : fields.keySet()) {
             LinearLayout subLayout = new LinearLayout(context);
 
@@ -70,7 +68,7 @@ public class AddDeviceInfo extends HestiaDialog {
 
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
         final EditText field = new EditText(context);
-        field.setText(fields.get(key));
+        field.setText(info.getInfo().get(key));
         field.setId(count);
         if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
             field.setFocusable(false);
@@ -88,38 +86,18 @@ public class AddDeviceInfo extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        JsonObject requiredInfo = this.getRequiredInfo();
-        if(requiredInfo==null) {
-            Toast.makeText(getContext(), R.string.emptyValuesEntered,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        NetworkHandler.getInstance().postDevice(requiredInfo);
-    }
-
-    /**
-     * Creates a JSON object containing the relevant information in
-     * the "required_information" key. If any field is left empty, it will return a null.
-     * @return addDeviceJSON json object containing the information needed for adding a new device.
-     */
-    private JsonObject getRequiredInfo() {
-        int count = 0;
-        JsonObject requiredInfo = new JsonObject();
-        for(String key : this.fields.keySet()) {
-            EditText field = (EditText) findViewById(count);
-            String valueField = field.getText().toString();
-
-            if(EMPTY_STRING.equals(valueField)) {
-                return null;
+        new AsyncTask<Object, Object, Integer>() {
+            @Override
+            protected Integer doInBackground(Object... params) {
+                cache.addDevice(info);
+                return 0;
             }
-            this.fields.put(key, valueField);
-            String value = this.fields.get(key);
-            requiredInfo.addProperty(key, value);
-            count++;
-        }
-        JsonObject addDeviceJSON = new JsonObject();
-        addDeviceJSON.add(propReqInfo, requiredInfo);
-        return addDeviceJSON;
+
+            @Override
+            protected void onPostExecute(Integer returnValue) {
+                // TODO update the gui
+            }
+        }.execute();
     }
 
 }

@@ -1,4 +1,4 @@
-package hestia.UI;
+package hestia.UI.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 import hestia.backend.Activator;
-import hestia.backend.ActivatorState;
+import hestia.backend.models.ActivatorState;
 import hestia.backend.NetworkHandler;
 import hestia.backend.Device;
 
@@ -22,16 +22,12 @@ import hestia.backend.Device;
 
 public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
     private Device device;
-    private ArrayList<Activator> fields;
     private Context context;
-    private NetworkHandler networkHandler;
 
     public SlideDialog(Context context, Device device) {
         super(context);
         this.context = context;
-        this.networkHandler = NetworkHandler.getInstance();
         this.device = device;
-        this.fields = device.getSliders();
     }
 
     @Override
@@ -43,7 +39,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         int count = 0;
         final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
 
-        for (Activator activator : fields) {
+        for (Activator activator : getSliders()) {
             LinearLayout subLayout = new LinearLayout(context);
 
             TextView name = new TextView(context);
@@ -59,7 +55,7 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
         }
     }
 
-    private SeekBar createSeekBar(float progress, int count, Activator activator){
+    private SeekBar createSeekBar(float progress, int count, final Activator activator){
         final Activator act = activator;
         SeekBar bar = new SeekBar(context);
         final int maxInt = 100;
@@ -79,11 +75,22 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/maxInt;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                networkHandler.setActivatorState(device,act,state);
+                activator.setState(state);
             }
         });
         return bar;
     }
+
+    private ArrayList<Activator> getSliders(){
+        ArrayList<Activator> list =  new ArrayList<>();
+        for(Activator activator : device.getActivators()){
+            if(activator.getState().getType().equals("float")){
+                list.add(activator);
+            }
+        }
+        return list;
+    }
+
 
     @Override
     public void onClick(View view) {

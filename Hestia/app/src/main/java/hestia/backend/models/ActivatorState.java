@@ -1,4 +1,4 @@
-package hestia.backend;
+package hestia.backend.models;
 
 /**
  * Wrapper class for the different state fields. The activator state has a type T, which is

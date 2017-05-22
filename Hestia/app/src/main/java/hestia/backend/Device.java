@@ -1,5 +1,7 @@
 package hestia.backend;
 
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 
 /**
@@ -20,20 +22,18 @@ public class Device {
     private String name;
     private String type;
     private ArrayList<Activator> activators;
+    private NetworkHandler handler;
 
-    public Device(String deviceId, String name, String type, ArrayList<Activator> activator) {
+    public Device(String deviceId, String name, String type, ArrayList<Activator> activator, NetworkHandler handler) {
         this.deviceId = deviceId;
         this.name = name;
         this.type = type;
         this.activators = activator;
+        this.handler = handler;
     }
 
     public String getId() {
         return deviceId;
-    }
-
-    public void setId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public String getName() {
@@ -41,47 +41,14 @@ public class Device {
     }
 
     public void setName(String name) {
+        JsonObject object = new JsonObject();
+        object.addProperty("name", name);
+        handler.PUT(object, "devices/"+deviceId);
         this.name = name;
     }
 
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * Returns the main toggle activator, which has the rank 0.
-     * @return the toggle activator.
-     */
-    public Activator getToggle() {
-        Activator toggle = null;
-        for(Activator activator : activators) {
-            Integer rank = activator.getRank();
-            if(rank == 0) {
-                toggle = activator;
-                break;
-            }
-        }
-        return toggle;
-    }
-
-    /**
-     * This method will return all activators which need to be implemented in the UI as sliders.
-     * @see hestia.UI.ExpandableListAdapter
-     * @return the activators if the array is not empty, null otherwise
-     */
-    public ArrayList<Activator> getSliders() {
-        ArrayList<Activator> sliders = new ArrayList<>();
-        for(Activator activator : activators){
-            String type = activator.getState().getType();
-            if(type.equals("float")){
-                sliders.add(activator);
-            }
-        }
-        return sliders;
     }
 
     /**
@@ -126,4 +93,37 @@ public class Device {
         result = 31 * result + getActivators().hashCode();
         return result;
     }
+
+    /* Everything below should be done in the frontend
+    /**
+     * Returns the main toggle activator, which has the rank 0.
+     * @return the toggle activator.
+
+    public Activator getToggle() {
+        Activator toggle = null;
+        for(Activator activator : activators) {
+            Integer rank = activator.getRank();
+            if(rank == 0) {
+                toggle = activator;
+                break;
+            }
+        }
+        return toggle;
+    }
+
+    /**
+     * This method will return all activators which need to be implemented in the UI as sliders.
+     * @see hestia.UI.Activities.Home.ExpandableDeviceList
+     * @return the activators if the array is not empty, null otherwise
+
+    public ArrayList<Activator> getSliders() {
+        ArrayList<Activator> sliders = new ArrayList<>();
+        for(Activator activator : activators){
+            String type = activator.getState().getType();
+            if(type.equals("float")){
+                sliders.add(activator);
+            }
+        }
+        return sliders;
+    }*/
 }

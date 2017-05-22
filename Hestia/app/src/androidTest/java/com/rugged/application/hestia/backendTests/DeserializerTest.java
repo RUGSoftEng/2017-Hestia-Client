@@ -13,7 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import static org.junit.Assert.*;
 import hestia.backend.Activator;
-import hestia.backend.ActivatorDeserializer;
+import hestia.backend.models.ActivatorDeserializer;
 
 @RunWith(AndroidJUnit4.class)
 public class DeserializerTest {

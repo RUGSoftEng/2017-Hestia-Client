@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import hestia.backend.Activator;
-import hestia.backend.ActivatorState;
+import hestia.backend.models.ActivatorState;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)

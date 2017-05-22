@@ -1,4 +1,4 @@
-package hestia.UI;
+package hestia.UI.Activities.Home;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,12 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
-import hestia.backend.Activator;
-import hestia.backend.NetworkHandler;
+
+import hestia.UI.elements.DeviceBar;
+import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.Cache;
 import hestia.backend.Device;
-import hestia.backend.DevicesChangeListener;
-import hestia.backend.DevicesEvent;
 
 import com.rugged.application.hestia.R;
 import java.util.ArrayList;
@@ -25,19 +24,23 @@ import java.util.ArrayList;
 /**
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
  * GET request to the server to populate the device list.
- *
- * @see DeviceListActivity
  */
-public class DeviceListFragment extends Fragment implements DevicesChangeListener{
+public class DeviceListFragment extends Fragment{
+    private Cache cache;
+    private Context context;
+
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ExpandableListAdapter listAdapter;
+    private ExpandableDeviceList listAdapter;
     private ExpandableListView expListView;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
-    private NetworkHandler networkHandler =  NetworkHandler.getInstance();
-    private Cache cache = Cache.getInstance();
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
+
+    public DeviceListFragment(Context context, Cache cache) {
+        this.context = context;
+        this.cache = cache;
+    }
 
     /**
      *
@@ -52,23 +55,35 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
         createFloatingButton(deviceListView);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                Log.i(TAG, "Currently refreshing");
-                networkHandler.updateDevices();
-                Log.i(TAG, "Refresh stopped");
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        initRefreshLayou(deviceListView);
 
+        initDeviceList(deviceListView);
+
+        populateUI();
+
+        return deviceListView;
+    }
+    
+    private void populateUI() {
         listDataChild = new ArrayList<>();
-        expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
-        listAdapter = new ExpandableListAdapter(listDataChild, surroundingActivity);
-
+        ArrayList<Device> devices = getDevices();
+        for (Device device : devices) {
+                DeviceBar bar = new DeviceBar(context);
+                bar.setDevice(device);
+                if(!listDataChild.contains(bar)) {
+                    if (!typeExists(device)) {
+                        listDataChild.add(new ArrayList<DeviceBar>());
+                        listDataChild.get(listDataChild.size() - 1).add(bar);
+                    } else {
+                        listDataChild.get(getDeviceType(device)).add(bar);
+                    }
+                }
+        }
+        listAdapter.setListData(listDataChild);
         expListView.setAdapter(listAdapter);
+    }
+
+    private void setOnScrollListeners() {
         expListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
@@ -85,46 +100,40 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
                 swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
             }
         });
-
-        cache.addDevicesChangeListener(this);
-        populateUI();
-
-        return deviceListView;
     }
 
+    private void initDeviceList(View deviceListView) {
+        listDataChild = new ArrayList<>();
+        expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
+        listAdapter = new ExpandableDeviceList(listDataChild, surroundingActivity, this.cache);
+        expListView.setAdapter(listAdapter);
+        setOnScrollListeners();
+    }
 
+    private void initRefreshLayou(View deviceListView) {
+        swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                Log.i(TAG, "Currently refreshing");
+                populateUI();
+                Log.i(TAG, "Refresh stopped");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private ArrayList<Device> getDevices() {
+        // TODO Create asynctask that gets the device list and onPostExecute updates the gui
+        return new ArrayList<>();
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
         surroundingActivity = context instanceof Activity ? (Activity) context : null;
-    }
-
-    private void populateUI() {
-        listDataChild = new ArrayList<>();
-        ArrayList<Device> devices = cache.getDevices();
-        for (Device device : devices) {
-            Activator activator = device.getToggle();
-            HestiaSwitch hestiaSwitch = new HestiaSwitch(device, activator, surroundingActivity);
-            DeviceBar bar = new DeviceBar(device, hestiaSwitch);
-            if(!listDataChild.contains(bar)) {
-                if (!typeExists(device)) {
-                    listDataChild.add(new ArrayList<DeviceBar>());
-                    listDataChild.get(listDataChild.size() - 1).add(bar);
-                } else {
-                    listDataChild.get(getDeviceType(device)).add(bar);
-                }
-            }
-
-        }
-        listAdapter.setListData(listDataChild);
-        expListView.setAdapter(listAdapter);
-    }
-
-    @Override
-    public void changeEventReceived(DevicesEvent evt) {
-        populateUI();
     }
 
     private boolean typeExists(Device device) {
@@ -154,7 +163,7 @@ public class DeviceListFragment extends Fragment implements DevicesChangeListene
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(surroundingActivity).show();
+                new AddDeviceDialog(context, cache).show();
             }
         });
     }

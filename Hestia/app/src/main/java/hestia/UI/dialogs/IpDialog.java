@@ -1,18 +1,12 @@
-package hestia.UI;
+package hestia.UI.dialogs;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
-
-import hestia.backend.NetworkHandler;
 import hestia.backend.Cache;
 
 /**
@@ -20,16 +14,14 @@ import hestia.backend.Cache;
  * user.
  */
 
-public class IpDialog extends HestiaDialog{
+public class IpDialog extends HestiaDialog {
     private EditText ipField;
     private String ip;
-    private NetworkHandler networkHandler;
     private Cache cache;
 
-    public IpDialog(Activity activity) {
+    public IpDialog(Activity activity, Cache cache) {
         super(activity, R.layout.ip_dialog, "Set IP");
-        this.networkHandler = NetworkHandler.getInstance();
-        this.cache = Cache.getInstance();
+        this.cache = cache;
     }
 
     @Override
@@ -51,7 +43,7 @@ public class IpDialog extends HestiaDialog{
         Toast.makeText(getContext(), "ip is: " + ip, Toast.LENGTH_SHORT).show();
         if(ip!=null) {
             cache.setIp(ip);
-            networkHandler.updateDevices();
+            // TODO refresh layout
             Toast.makeText(getContext(),R.string.ipSetTo + cache.getIp() + ":"
                     + cache.getPort(),Toast.LENGTH_SHORT).show();
 

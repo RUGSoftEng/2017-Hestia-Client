@@ -1,100 +1,74 @@
 package hestia.backend;
 
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.HashMap;
+
+import hestia.backend.models.RequiredInfo;
 
 /**
  * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
  * IP address, or port number. During execution, there is a single Cache accessible.
  */
 public class Cache {
-    /**
-     * We use a CopyOnWriteArrayList to avoid ConcurrentModificationExceptions if
-     * a listener attempts to remove itself during event notification.
-     */
-    private final CopyOnWriteArrayList<DevicesChangeListener> listeners = new CopyOnWriteArrayList<>();
-    private static Cache instance;
-    private ArrayList<Device> devices = new ArrayList<>();
-    private String ip = "82.73.173.179";
-    private int port = 8000;
+    private NetworkHandler handler;
 
-    /**
-     * The empty constructor, which can not be accessed from the outside,
-     * because we want a singleton behavior.
-     */
-    private Cache() {}
-
-    /**
-     * Returns the single instance of Cache.
-     * If there was no instance of this class created previously,
-     * then it will create one and return it
-     * @return the single instance of Cache
-     */
-    public static Cache getInstance(){
-        if(instance == null){
-            instance = new Cache();
-        }
-        return instance;
+    public Cache(NetworkHandler handler){
+        this.handler = handler;
     }
 
     public ArrayList<Device> getDevices(){
-        return devices;
+        JsonObject list = handler.GET(null, "devices");
+        // TODO Parse json object into Device list
+        // TODO Make sure the activator is given its device id and handler
+        return new ArrayList<>();
     }
 
-    /**
-     * Replaces the current list of devices with the specified one and will fire a change event.
-     * @param devices the new list of devices
-     */
-    public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-        fireChangeEvent();
+    public void addDevice(RequiredInfo info){
+        JsonObject send = new JsonObject();
+        send.addProperty("collection", info.getCollection());
+        send.addProperty("plugin_name", info.getPlugin());
+        // TODO add info to json object
+        handler.POST(send, "devices");
+    }
+
+    public void removeDevice(Device device){
+        JsonObject result = handler.DELETE(null, "devices/" + device.getId());
+    }
+
+    public ArrayList<String> getCollections(){
+        JsonObject object = handler.GET(null, "plugins");
+        // TODO Parse json into collections list.
+        return new ArrayList<>();
+    }
+
+    public ArrayList<String> getPlugins(String collection){
+        JsonObject object = handler.GET(null, "plugins/" + collection);
+        // TODO Parse json into collections list.
+        return new ArrayList<>();
+    }
+
+    public RequiredInfo getRequiredInfo(String collection, String plugin){
+        JsonObject object = handler.GET(null, "plugins/" + collection + "/plugins/" + plugin);
+        // TODO Parse json into required info
+        return new RequiredInfo("Collection", "Plugin", new HashMap<String, String>());
     }
 
     public String getIp(){
-        return this.ip;
+        return handler.ip;
     }
 
     public void setIp(String ip){
-        this.ip = ip;
+        handler.ip = ip;
     }
 
     public int getPort(){
-        return port;
+        return handler.port;
     }
 
     public void setPort(int port){
-        this.port = port;
-    }
-
-    /**
-     * Triggers a change event. The change is propagated to all listeners.
-     * @see hestia.UI.DeviceListFragment
-     */
-    private void fireChangeEvent() {
-        DevicesEvent evt = new DevicesEvent(this);
-        for (DevicesChangeListener listener : listeners) {
-            listener.changeEventReceived(evt);
-        }
-    }
-
-    /**
-     * Adds a DeviceChangeListener to the list of listeners.
-     * @param listener the listener to be added to the list of listeners.
-     */
-    public void addDevicesChangeListener(DevicesChangeListener listener) {
-        this.listeners.add(listener);
-    }
-
-    /**
-     * Removes a DeviceChangeListener from the the list of listeners.
-     * @param listener the listener to be removed from the list of listeners.
-     */
-    public void removeDevicesChangeListener(DevicesChangeListener listener) {
-        this.listeners.remove(listener);
-    }
-
-    public CopyOnWriteArrayList<DevicesChangeListener> getListeners(){
-        return this.listeners;
+        handler.port = port;
     }
 
 }

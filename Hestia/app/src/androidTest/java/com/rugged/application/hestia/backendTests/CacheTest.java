@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
-import hestia.UI.DeviceListFragment;
+
 import hestia.backend.Activator;
 import hestia.backend.Cache;
 import hestia.backend.Device;
-import hestia.backend.DevicesChangeListener;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -109,21 +109,6 @@ public class CacheTest {
         // setting new list of devices
         cache.setDevices(newDevices);
         assertEquals(3,cache.getDevices().size());
-    }
-
-    @Test
-    public void listenerTest(){
-        DevicesChangeListener listener = new DeviceListFragment();
-        cache.getListeners().clear();
-        assertTrue(cache.getListeners().isEmpty());
-
-        // Testing adding a listener
-        cache.addDevicesChangeListener(listener);
-        assertEquals(listener,cache.getListeners().get(0));
-
-        // Testing removing a listener
-        cache.removeDevicesChangeListener(listener);
-        assertEquals(0,cache.getListeners().size());
     }
 
     @After

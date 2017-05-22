@@ -1,14 +1,13 @@
 package com.rugged.application.hestia.backendTests;
 
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import hestia.backend.Activator;
-import hestia.backend.ActivatorState;
+import hestia.backend.models.ActivatorState;
 import hestia.backend.Device;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;

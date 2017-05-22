@@ -1,4 +1,4 @@
-package hestia.backend;
+package hestia.backend.models;
 
 import android.util.Log;
 import com.google.gson.JsonDeserializationContext;
@@ -7,6 +7,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
+
+import hestia.backend.Activator;
 
 /**
  * A JSON deserializer for the Activator class.
