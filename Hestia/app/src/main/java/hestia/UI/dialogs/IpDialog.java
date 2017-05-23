@@ -34,13 +34,11 @@ public class IpDialog extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {
-    }
+    void pressCancel() {}
 
     @Override
     void pressConfirm() {
         ip = ipField.getText().toString();
-        Toast.makeText(getContext(), "ip is: " + ip, Toast.LENGTH_SHORT).show();
         if(ip!=null) {
             cache.setIp(ip);
             // TODO refresh layout

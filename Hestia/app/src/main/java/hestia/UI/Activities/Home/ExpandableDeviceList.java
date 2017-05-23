@@ -1,4 +1,4 @@
-package hestia.UI.Activities.Home;
+package hestia.UI.activities.home;
 
 import android.content.Context;
 import android.graphics.Typeface;

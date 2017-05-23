@@ -2,13 +2,10 @@ package hestia.backend.models;
 
 import java.util.HashMap;
 
-/**
- * Created by Lars on 22-5-2017.
- */
-
 public class RequiredInfo {
     private String collection;
     private String plugin;
+    private HashMap<String, String> info;
 
     public RequiredInfo(String collection, String plugin, HashMap<String, String> info){
         this.collection = collection;
@@ -39,8 +36,4 @@ public class RequiredInfo {
     public void setInfo(HashMap<String, String> info) {
         this.info = info;
     }
-
-    private HashMap<String, String> info;
-
-
 }

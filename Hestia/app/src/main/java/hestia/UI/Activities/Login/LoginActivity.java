@@ -1,4 +1,4 @@
-package hestia.UI.Activities.Login;
+package hestia.UI.activities.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import com.rugged.application.hestia.R;
 
 import java.util.Locale;
 
-import hestia.UI.Activities.Home.HomeActivity;
+import hestia.UI.activities.home.HomeActivity;
 
 /**
  *  This class handles the login activity.

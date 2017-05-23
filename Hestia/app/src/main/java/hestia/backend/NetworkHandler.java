@@ -14,10 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import hestia.backend.requests.DeleteRequest;
-import hestia.backend.requests.GetDevicesRequest;
-import hestia.backend.requests.GetPluginInformationRequest;
-import hestia.backend.requests.PostRequest;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
@@ -26,8 +22,8 @@ import hestia.backend.requests.PostRequest;
  */
 
 public class NetworkHandler extends Application{
-    public String ip;
-    public int port;
+    private String ip;
+    private int port;
 
     public NetworkHandler(String ip, int port){
         this.ip = ip;
@@ -48,5 +44,21 @@ public class NetworkHandler extends Application{
 
     public JsonObject GET(JsonObject object, String path){
         return new JsonObject();
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

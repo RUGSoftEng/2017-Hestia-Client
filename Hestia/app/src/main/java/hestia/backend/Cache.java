@@ -56,19 +56,19 @@ public class Cache {
     }
 
     public String getIp(){
-        return handler.ip;
+        return handler.getIp();
     }
 
     public void setIp(String ip){
-        handler.ip = ip;
+        handler.setIp(ip);
     }
 
     public int getPort(){
-        return handler.port;
+        return handler.getPort();
     }
 
     public void setPort(int port){
-        handler.port = port;
+        handler.setPort(port);
     }
 
 }

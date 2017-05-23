@@ -1,5 +1,5 @@
 
-package hestia.UI.Activities.Home;
+package hestia.UI.activities.home;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +21,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import hestia.UI.Activities.Login.LoginActivity;
+import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.IpDialog;
 import hestia.backend.Cache;
 import hestia.backend.NetworkHandler;

@@ -1,4 +1,4 @@
-package hestia.UI.Activities.Home;
+package hestia.UI.activities.home;
 
 import android.app.Activity;
 import android.content.Context;
@@ -132,14 +132,13 @@ public class DeviceListFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         surroundingActivity = context instanceof Activity ? (Activity) context : null;
     }
 
     private boolean typeExists(Device device) {
         String deviceType = device.getType();
-        for (int i = 0; i < listDataChild.size(); i++) {
-            Device checkDevice = listDataChild.get(i).get(0).getDevice();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
             if (checkDevice.getType().equals(deviceType)) {
                 return true;
             }
@@ -149,10 +148,10 @@ public class DeviceListFragment extends Fragment{
 
     private int getDeviceType(Device device) {
         String deviceType = device.getType();
-        for (int i = 0; i < listDataChild.size(); i++) {
-            Device checkDevice = listDataChild.get(i).get(0).getDevice();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
             if (checkDevice.getType().equals(deviceType)) {
-                return i;
+                return listDataChild.indexOf(groupOfDevices);
             }
         }
         return -1;
