@@ -74,22 +74,10 @@ public class Activator {
 
     public void setState(ActivatorState state) {
         JsonObject send = new JsonObject();
-        send.add("state", this.getNewStateValue(state));
+        send.add("state", state.getRawStateJSON());
         JsonObject returnObject = handler.POST(send, "devices/"+deviceId+"/activators/"+activatorId);
-        //TODO hanlde the returnObject
+        //TODO handle the returnObject
         // TODO set the state based on the return
-    }
-
-    // It would be nice if this funcitionality was handled by the respective activator classes.
-    private JsonPrimitive getNewStateValue(ActivatorState newActivatorState) {
-        switch (newActivatorState.getType().toLowerCase()) {
-            case "bool":
-                return new JsonPrimitive(Boolean.valueOf(String.valueOf(newActivatorState.getRawState())));
-            case "float":
-                return new JsonPrimitive(Float.valueOf(String.valueOf(newActivatorState.getRawState())));
-            default:
-                return new JsonPrimitive(String.valueOf(newActivatorState.getRawState()));
-        }
     }
 
     public String getName() {
