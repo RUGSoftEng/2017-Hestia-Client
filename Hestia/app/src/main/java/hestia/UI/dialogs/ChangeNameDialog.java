@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 public class ChangeNameDialog extends HestiaDialog {
     private EditText editText;

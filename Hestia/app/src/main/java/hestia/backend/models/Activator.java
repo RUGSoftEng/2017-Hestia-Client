@@ -1,9 +1,8 @@
-package hestia.backend;
+package hestia.backend.models;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
-import hestia.backend.models.ActivatorState;
+import hestia.backend.NetworkHandler;
 
 /**
  * This class represents a single activator on a device. A single device can have multiple activators.

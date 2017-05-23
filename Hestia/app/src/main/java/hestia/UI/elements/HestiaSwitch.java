@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import hestia.backend.Activator;
+import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 
 public class HestiaSwitch implements CompoundButton.OnCheckedChangeListener {

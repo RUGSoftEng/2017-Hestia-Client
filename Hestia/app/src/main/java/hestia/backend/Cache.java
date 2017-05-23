@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
 
 /**

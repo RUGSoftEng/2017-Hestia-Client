@@ -10,10 +10,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.rugged.application.hestia.R;
 import java.util.ArrayList;
-import hestia.backend.Activator;
+import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
-import hestia.backend.NetworkHandler;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 /**
  * This class handles the dialog which is opened if a Device has the 'slide' option.

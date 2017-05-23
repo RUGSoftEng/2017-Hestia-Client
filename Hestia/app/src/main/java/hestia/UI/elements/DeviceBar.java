@@ -12,9 +12,9 @@ import com.rugged.application.hestia.R;
 
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlideDialog;
-import hestia.backend.Activator;
+import hestia.backend.models.Activator;
 import hestia.backend.Cache;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 /**
  *  This class takes care of the deviceBar.

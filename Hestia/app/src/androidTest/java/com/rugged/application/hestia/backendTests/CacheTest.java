@@ -9,9 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
 
-import hestia.backend.Activator;
+import hestia.backend.models.Activator;
 import hestia.backend.Cache;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

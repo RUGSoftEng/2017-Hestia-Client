@@ -1,8 +1,10 @@
-package hestia.backend;
+package hestia.backend.models;
 
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+
+import hestia.backend.NetworkHandler;
 
 /**
  * Represents the internal representation of the device class on the client. The device contains an

@@ -16,7 +16,7 @@ import android.widget.ExpandableListView;
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.Cache;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
 import java.util.ArrayList;
