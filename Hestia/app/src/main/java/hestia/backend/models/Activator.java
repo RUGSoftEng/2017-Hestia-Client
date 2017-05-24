@@ -1,7 +1,8 @@
 package hestia.backend.models;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import java.io.IOException;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -15,39 +16,18 @@ import hestia.backend.NetworkHandler;
  */
 public class Activator {
     private String activatorId;
-    public String deviceId;
-    private int rank;
+    private Integer rank;
     private ActivatorState state;
     private String name;
+    public Device device;
     private NetworkHandler handler;
 
-    /**
-     * Creates an Activator with the specified id, state and name.
-     * @param activatorId the id of the activator
-     * @param state the current state of the activator, this is a wrapper around a generic type
-     * @param name the name of the activator
-     */
-    public Activator(String activatorId, Integer rank, ActivatorState state, String name) {
+    public Activator(String activatorId, Integer rank, ActivatorState state, String name, Device device, NetworkHandler handler) {
         this.activatorId = activatorId;
         this.rank = rank;
         this.state = state;
         this.name = name;
-    }
-
-    public void setDeviceId(String deviceId){
-        this.deviceId = deviceId;
-    }
-
-    public void setNetworkHandler(NetworkHandler handler){
-        this.handler = handler;
-    }
-
-    public Activator(String activatorId, String deviceId, Integer rank, ActivatorState state, String name, NetworkHandler handler) {
-        this.activatorId = activatorId;
-        this.deviceId = deviceId;
-        this.rank = rank;
-        this.state = state;
-        this.name = name;
+        this.device = device;
         this.handler = handler;
     }
 
@@ -71,12 +51,13 @@ public class Activator {
         return state;
     }
 
-    public void setState(ActivatorState state) {
+    public void setState(ActivatorState state) throws IOException {
+        String path = "devices/"+device.getId()+"/activators/"+activatorId;
         JsonObject send = new JsonObject();
         send.add("state", state.getRawStateJSON());
-        JsonObject returnObject = handler.POST(send, "devices/"+deviceId+"/activators/"+activatorId);
-        //TODO handle the returnObject
-        // TODO set the state based on the return
+        JsonElement returnObject = handler.POST(send, path);
+        //TODO handle the returnObject and set the new state accordingly
+        this.state = state;
     }
 
     public String getName() {
@@ -87,6 +68,14 @@ public class Activator {
         this.name = name;
     }
 
+    public NetworkHandler getHandler() {
+        return this.handler;
+    }
+
+    public void setHandler(NetworkHandler handler) {
+        this.handler = handler;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,19 +83,22 @@ public class Activator {
 
         Activator activator = (Activator) o;
 
-        if (getRank() != activator.getRank()) return false;
         if (!activatorId.equals(activator.activatorId)) return false;
+        if (!getRank().equals(activator.getRank())) return false;
         if (!getState().equals(activator.getState())) return false;
-        return getName().equals(activator.getName());
-
+        if (!getName().equals(activator.getName())) return false;
+        if (!device.equals(activator.device)) return false;
+        return getHandler().equals(activator.getHandler());
     }
 
     @Override
     public int hashCode() {
         int result = activatorId.hashCode();
-        result = 31 * result + getRank();
+        result = 31 * result + getRank().hashCode();
         result = 31 * result + getState().hashCode();
         result = 31 * result + getName().hashCode();
+        result = 31 * result + device.hashCode();
+        result = 31 * result + getHandler().hashCode();
         return result;
     }
 

@@ -1,10 +1,10 @@
 package hestia.backend;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
 
@@ -19,14 +19,14 @@ public class Cache {
         this.handler = handler;
     }
 
-    public ArrayList<Device> getDevices(){
-        JsonObject list = handler.GET(null, "devices");
+    public ArrayList<Device> getDevices() throws IOException {
+        JsonElement payload = handler.GET("devices");
         // TODO Parse json object into Device list
         // TODO Make sure the activator is given its device id and handler
         return new ArrayList<>();
     }
 
-    public void addDevice(RequiredInfo info){
+    public void addDevice(RequiredInfo info) throws IOException {
         JsonObject send = new JsonObject();
         send.addProperty("collection", info.getCollection());
         send.addProperty("plugin_name", info.getPlugin());
@@ -34,42 +34,33 @@ public class Cache {
         handler.POST(send, "devices");
     }
 
-    public void removeDevice(Device device){
-        JsonObject result = handler.DELETE(null, "devices/" + device.getId());
+    public void removeDevice(Device device) throws IOException {
+        JsonElement result = handler.DELETE("devices/" + device.getId());
     }
 
-    public ArrayList<String> getCollections(){
-        JsonObject object = handler.GET(null, "plugins");
+    public ArrayList<String> getCollections() throws IOException {
+        JsonElement object = handler.GET("plugins");
         // TODO Parse json into collections list.
         return new ArrayList<>();
     }
 
-    public ArrayList<String> getPlugins(String collection){
-        JsonObject object = handler.GET(null, "plugins/" + collection);
+    public ArrayList<String> getPlugins(String collection) throws IOException {
+        JsonElement object = handler.GET("plugins/" + collection);
         // TODO Parse json into collections list.
         return new ArrayList<>();
     }
 
-    public RequiredInfo getRequiredInfo(String collection, String plugin){
-        JsonObject object = handler.GET(null, "plugins/" + collection + "/plugins/" + plugin);
+    public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException {
+        JsonElement object = handler.GET("plugins/" + collection + "/plugins/" + plugin);
         // TODO Parse json into required info
         return new RequiredInfo("Collection", "Plugin", new HashMap<String, String>());
     }
 
-    public String getIp(){
-        return handler.getIp();
+    public NetworkHandler getHandler() {
+        return handler;
     }
 
-    public void setIp(String ip){
-        handler.setIp(ip);
+    public void setHandler(NetworkHandler handler) {
+        this.handler = handler;
     }
-
-    public int getPort(){
-        return handler.getPort();
-    }
-
-    public void setPort(int port){
-        handler.setPort(port);
-    }
-
 }
