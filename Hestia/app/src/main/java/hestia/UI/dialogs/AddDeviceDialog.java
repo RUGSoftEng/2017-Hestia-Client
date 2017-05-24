@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 
 import hestia.backend.Cache;
 import hestia.backend.models.RequiredInfo;
@@ -48,7 +49,15 @@ public class AddDeviceDialog extends HestiaDialog {
          new AsyncTask<Object, Object, RequiredInfo>() {
             @Override
             protected RequiredInfo doInBackground(Object... params) {
-                RequiredInfo info =  cache.getRequiredInfo(collection, pluginName);
+                RequiredInfo info = null;
+                // TODO: handle try-catch properly
+
+                try {
+                    info = cache.getRequiredInfo(collection, pluginName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 return info;
             }
 

@@ -8,10 +8,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-import java.util.HashMap;
 
+import java.io.IOException;
+import java.util.HashMap;
 import hestia.backend.Cache;
 import hestia.backend.models.RequiredInfo;
 
@@ -89,7 +89,13 @@ public class AddDeviceInfo extends HestiaDialog {
         new AsyncTask<Object, Object, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
-                cache.addDevice(info);
+                //TODO: handle try-catch properly
+
+                try {
+                    cache.addDevice(info);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return 0;
             }
 

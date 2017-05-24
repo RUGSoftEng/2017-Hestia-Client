@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
@@ -74,22 +76,27 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/maxInt;
                 ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                activator.setState(state);
+                //TODO: handle try-catch properly
+
+                try {
+                    activator.setState(state);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return bar;
     }
 
     private ArrayList<Activator> getSliders(){
-        ArrayList<Activator> list =  new ArrayList<>();
+        ArrayList<Activator> sliders =  new ArrayList<>();
         for(Activator activator : device.getActivators()){
             if(activator.getState().getType().equals("float")){
-                list.add(activator);
+                sliders.add(activator);
             }
         }
-        return list;
+        return sliders;
     }
-
 
     @Override
     public void onClick(View view) {
