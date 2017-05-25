@@ -1,9 +1,13 @@
 package hestia.backend.models;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import hestia.backend.ComFaultException;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -67,6 +71,14 @@ public class Device {
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, path);
+        if(payload.getAsJsonObject().has("error")){
+            GsonBuilder gsonBuilder=new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            ComFaultException comFaultException=new ComFaultException(null,null);
+            comFaultException=gson.from
+        }
+
+
         //TODO: parse payload before actually setting the new name
         this.name = name;
     }
