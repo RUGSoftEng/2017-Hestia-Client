@@ -33,32 +33,26 @@ public class NetworkHandler extends Application {
     }
 
     public JsonElement GET(String endpoint) throws IOException {
-        String path = this.getDefaultPath() + endpoint;
-        HttpURLConnection connector = this.connectToServer("GET", path);
+        HttpURLConnection connector = this.connectToServer("GET", endpoint);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement POST(JsonObject object, String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("POST", this.getDefaultPath() + endpoint);
-        connector.setDoOutput(true);
-        //connector.connect();
+        HttpURLConnection connector = this.connectToServer("POST", endpoint);
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement DELETE(String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("DELETE", this.getDefaultPath() + endpoint);
-        //connector.connect();
+        HttpURLConnection connector = this.connectToServer("DELETE", endpoint);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement PUT(JsonObject object, String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", this.getDefaultPath() + endpoint);
-        connector.setDoOutput(true);
-        //connector.connect();
+        HttpURLConnection connector = this.connectToServer("PUT", endpoint);
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
@@ -68,15 +62,16 @@ public class NetworkHandler extends Application {
      * This method establishes the connection to the server, by setting the type of request
      * and the path.
      * @param requestMethod the type of request that will be sent to the server.
-     * @param path path to the server's endpoint.
+     * @param endpoint path to the server's endpoint.
      * @return the object responsible for setting up the connection to the server.
      * @throws IOException
      */
-    private HttpURLConnection connectToServer(String requestMethod, String path) throws IOException {
+    private HttpURLConnection connectToServer(String requestMethod, String endpoint) throws IOException {
+        String path = this.getDefaultPath() + endpoint;
         URL url = new URL(path);
         HttpURLConnection connector = (HttpURLConnection) url.openConnection();
-        connector.setReadTimeout(3000);
-        connector.setConnectTimeout(3000);
+        connector.setReadTimeout(2000);
+        connector.setConnectTimeout(2000);
         connector.setRequestMethod(requestMethod);
         connector.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         return connector;
@@ -86,7 +81,7 @@ public class NetworkHandler extends Application {
      * This method sends the JsonObject object to the server.
      * @param connector the object responsible for setting up the connection to the server.
      * @param object the JsonObject that will be sent to the server.
-     * @throws IOException
+     * @throws IOException IOException
      */
     private void sendToServer(HttpURLConnection connector, JsonObject object) throws IOException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
@@ -101,7 +96,7 @@ public class NetworkHandler extends Application {
      * it will get the input stream from the connector. Otherwise, it will get the error stream.
      * @param connector the object responsible for setting up the connection to the server.
      * @return the payload received from the server.
-     * @throws IOException
+     * @throws IOException IOException
      */
     private JsonElement getPayloadFromServer(HttpURLConnection connector) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -118,7 +113,6 @@ public class NetworkHandler extends Application {
 
         Type returnType = new TypeToken<JsonElement>(){}.getType();
         JsonElement payload = gson.fromJson(gson.newJsonReader(reader), returnType);
-        Log.d(TAG, "RETURN VALUE IS: \n" + payload.toString());
         reader.close();
 
         return payload;
