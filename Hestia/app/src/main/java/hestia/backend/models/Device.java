@@ -30,6 +30,13 @@ public class Device {
     private ArrayList<Activator> activators;
     private NetworkHandler handler;
 
+    public Device(String deviceId, String name, String type, ArrayList<Activator> activator) {
+        this.deviceId = deviceId;
+        this.name = name;
+        this.type = type;
+        this.activators = activator;
+    }
+
     public Device(String deviceId, String name, String type, ArrayList<Activator> activator, NetworkHandler handler) {
         this.deviceId = deviceId;
         this.name = name;
@@ -60,6 +67,9 @@ public class Device {
 
     public void setHandler(NetworkHandler handler) {
         this.handler = handler;
+        for(Activator activator : activators) {
+            activator.setHandler(handler);
+        }
     }
 
     public String getName() {

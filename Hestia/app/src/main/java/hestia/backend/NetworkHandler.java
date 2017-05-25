@@ -34,7 +34,6 @@ public class NetworkHandler extends Application {
 
     public JsonElement GET(String endpoint) throws IOException {
         String path = this.getDefaultPath() + endpoint;
-        Log.d(TAG, "Path is " + path);
         HttpURLConnection connector = this.connectToServer("GET", path);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
