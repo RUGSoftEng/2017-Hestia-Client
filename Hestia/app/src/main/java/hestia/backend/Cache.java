@@ -1,5 +1,7 @@
 package hestia.backend;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -38,10 +40,17 @@ public class Cache {
         JsonElement result = handler.DELETE("devices/" + device.getId());
     }
 
-    public ArrayList<String> getCollections() throws IOException {
+    public ArrayList<String> getCollections() throws IOException, ComFaultException {
         JsonElement object = handler.GET("plugins");
-        // TODO Parse json into collections list.
-        return new ArrayList<>();
+        GsonBuilder gsonBuilder=new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        ArrayList<String> list =new ArrayList<String>();
+        list=gson.fromJson(object,ArrayList.class);
+        if(object.getAsJsonObject().has("error") || list.isEmpty()){
+            ComFaultException comFaultException=gson.fromJson(object,ComFaultException.class);
+            throw comFaultException;
+        }
+        return list;
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException {
