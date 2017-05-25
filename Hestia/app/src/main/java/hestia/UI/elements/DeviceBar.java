@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.rugged.application.hestia.R;
 
+import java.io.IOException;
+
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlideDialog;
 import hestia.backend.models.Activator;
@@ -82,7 +84,12 @@ public class DeviceBar extends RelativeLayout {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete:
-                                cache.removeDevice(device);
+                                //TODO: Handle try-catch properly
+                                try {
+                                    cache.removeDevice(device);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                             case R.id.change_name:
                                 new ChangeNameDialog(getContext(), device).show();

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-
 import hestia.UI.elements.DeviceBar;
 import hestia.backend.Cache;
 import hestia.backend.NetworkHandler;

@@ -10,11 +10,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.util.Locale;
-
 import hestia.UI.activities.home.HomeActivity;
 
 /**

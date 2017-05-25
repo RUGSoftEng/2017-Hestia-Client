@@ -15,6 +15,9 @@ import hestia.backend.Cache;
 import hestia.backend.NetworkHandler;
 import static org.junit.Assert.assertEquals;
 
+
+/**
+
 @RunWith(AndroidJUnit4.class)
 public class NetworkHandlerTest {
     private NetworkHandler networkHandler;
@@ -70,3 +73,5 @@ public class NetworkHandlerTest {
     }
 
 }
+
+ */

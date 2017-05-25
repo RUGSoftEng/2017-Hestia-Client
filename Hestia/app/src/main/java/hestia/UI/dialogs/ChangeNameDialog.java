@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
+
 import hestia.backend.models.Device;
 
 public class ChangeNameDialog extends HestiaDialog {
@@ -37,7 +39,12 @@ public class ChangeNameDialog extends HestiaDialog {
         new AsyncTask<Object, Object, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
-                device.setName(result);
+                //TODO: handle try-catch properly
+                try {
+                    device.setName(result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return 0;
             }
 

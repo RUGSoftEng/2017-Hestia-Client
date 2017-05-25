@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
 @RunWith(AndroidJUnit4.class)
 public class CacheTest {
     private Cache cache;
@@ -115,4 +116,9 @@ public class CacheTest {
     public void tearDown(){
         cache.getDevices().clear();
     }
+
+
+
 }
+
+ */
