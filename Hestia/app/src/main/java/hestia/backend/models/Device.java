@@ -66,14 +66,19 @@ public class Device {
         return name;
     }
 
-    public void setName(String name) throws IOException {
+    public void setName(String name) throws IOException, ComFaultException {
         String path = "devices/"+deviceId;
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, path);
-
-        //TODO: parse payload before actually setting the new name
-        this.name = name;
+        if(payload.getAsJsonObject().has("error")){
+            GsonBuilder gsonBuilder=new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            ComFaultException comFaultException=gson.fromJson(payload,ComFaultException.class);
+            throw comFaultException;
+        }else {
+            this.name = name;
+        }
     }
 
     public ArrayList<Activator> getActivators() {
