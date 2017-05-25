@@ -42,21 +42,12 @@ public class Cache {
 
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
         JsonElement object = handler.GET("plugins");
-        GsonBuilder gsonBuilder=new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-        ArrayList<String> list =new ArrayList<String>();
-        list=gson.fromJson(object,ArrayList.class);
-        if(object.getAsJsonObject().has("error") || list.isEmpty()){
-            ComFaultException comFaultException=gson.fromJson(object,ComFaultException.class);
-            throw comFaultException;
-        }
-        return list;
+        return ParseInfo(object);
     }
 
-    public ArrayList<String> getPlugins(String collection) throws IOException {
+    public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
         JsonElement object = handler.GET("plugins/" + collection);
-        // TODO Parse json into collections list.
-        return new ArrayList<>();
+        return ParseInfo(object);
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException {
@@ -65,6 +56,18 @@ public class Cache {
         return new RequiredInfo("Collection", "Plugin", new HashMap<String, String>());
     }
 
+    private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
+        GsonBuilder gsonBuilder=new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        ArrayList<String> list =new ArrayList<String>();
+        list=gson.fromJson(element,ArrayList.class);
+        if(element.getAsJsonObject().has("error")||list.isEmpty()){
+            ComFaultException comFaultException=gson.fromJson(element,ComFaultException.class);
+            throw comFaultException;
+        }
+        return list;
+
+    }
     public NetworkHandler getHandler() {
         return handler;
     }

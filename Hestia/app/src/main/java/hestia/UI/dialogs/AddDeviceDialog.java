@@ -9,8 +9,10 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import hestia.backend.Cache;
+import hestia.backend.ComFaultException;
 import hestia.backend.models.RequiredInfo;
 
 /**
@@ -69,4 +71,30 @@ public class AddDeviceDialog extends HestiaDialog {
     }
 
 
+    private ArrayList<String> getCollections() {
+        ArrayList<String> list = null;
+        try {
+            list = cache.getCollections();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ComFaultException e) {
+            Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT);
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private ArrayList<String> getPlugins(String collection){
+        ArrayList<String> list = null;
+        try {
+            list = cache.getPlugins(collection);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ComFaultException e) {
+            Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT);
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
+
