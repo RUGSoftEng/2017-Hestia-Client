@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -137,10 +138,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        if (position == IP){
-            showIpDialog();
-        } else if(position == LOGOUT) {
-            gotoLoginActivity();
+        switch(position) {
+            case IP:
+                showIpDialog();
+                break;
+            case LOGOUT:
+                gotoLoginActivity();
+                break;
+            default: break;
         }
     }
 

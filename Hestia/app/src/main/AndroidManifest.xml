@@ -19,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="hestia.UI.activities.home.HomeActivity"
+            android:screenOrientation="locked">
+        </activity>
     </application>
 
 </manifest>

@@ -25,7 +25,7 @@ import java.net.URL;
 public class NetworkHandler extends Application {
     private final String TAG = "NetworkHandler";
     private String ip;
-    private int port;
+    private Integer port;
 
     public NetworkHandler(String ip, int port){
         this.ip = ip;
@@ -33,7 +33,7 @@ public class NetworkHandler extends Application {
     }
 
     public JsonElement GET(String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("GET", path);
+        HttpURLConnection connector = this.connectToServer("GET", this.getDefaultPath() + path);
         connector.setDoInput(true);
         connector.connect();
         JsonElement payload = this.getPayloadFromServer(connector);
@@ -41,7 +41,7 @@ public class NetworkHandler extends Application {
     }
 
     public JsonElement POST(JsonObject object, String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", path);
+        HttpURLConnection connector = this.connectToServer("PUT", this.getDefaultPath() + path);
         connector.setDoOutput(true);
         connector.connect();
         this.sendToServer(connector, object);
@@ -50,14 +50,14 @@ public class NetworkHandler extends Application {
     }
 
     public JsonElement DELETE(String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("DELETE", path);
+        HttpURLConnection connector = this.connectToServer("DELETE", this.getDefaultPath() + path);
         connector.connect();
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement PUT(JsonObject object, String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", path);
+        HttpURLConnection connector = this.connectToServer("PUT", this.getDefaultPath() + path);
         connector.setDoOutput(true);
         connector.connect();
         this.sendToServer(connector, object);
@@ -142,11 +142,15 @@ public class NetworkHandler extends Application {
         this.ip = ip;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getDefaultPath() {
+        return "http://" + ip + ":" + port + "/";
     }
 }
