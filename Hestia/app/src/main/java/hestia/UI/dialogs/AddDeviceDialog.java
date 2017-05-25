@@ -3,8 +3,9 @@ package hestia.UI.dialogs;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.WindowManager;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
@@ -23,7 +24,9 @@ import hestia.backend.models.RequiredInfo;
  */
 
 public class AddDeviceDialog extends HestiaDialog {
-    private EditText collectionField, pluginField;
+    private AutoCompleteTextView collectionField, pluginField;
+    private ArrayAdapter<String> adapterCollections;
+    private ArrayAdapter<String> adapterPlugins;
     private Cache cache;
 
     public AddDeviceDialog(Context context, Cache cache) {
@@ -33,10 +36,25 @@ public class AddDeviceDialog extends HestiaDialog {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        collectionField = (EditText)findViewById(R.id.collection);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        pluginField = (EditText)findViewById(R.id.pluginName);
+        adapterCollections = new ArrayAdapter<String>(context, android.R.layout.simple_expandable_list_item_1);
+        collectionField = (AutoCompleteTextView) findViewById(R.id.collection);
+        collectionField.setAdapter(adapterCollections);
+        collectionField.setThreshold(1);
+
+        adapterPlugins = new ArrayAdapter<String>(context, android.R.layout.simple_expandable_list_item_1);
+        pluginField = (AutoCompleteTextView)findViewById(R.id.pluginName);
+        pluginField.setAdapter(adapterPlugins);
+        pluginField.setThreshold(1);
+
+        getCollections();
+
+        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                getPlugins(collectionField.getText().toString());
+            }
+        });
     }
 
     @Override
@@ -46,8 +64,10 @@ public class AddDeviceDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
+
         final String collection = collectionField.getText().toString();
         final String pluginName = pluginField.getText().toString();
+
          new AsyncTask<Object, Object, RequiredInfo>() {
             @Override
             protected RequiredInfo doInBackground(Object... params) {
@@ -71,30 +91,52 @@ public class AddDeviceDialog extends HestiaDialog {
     }
 
 
-    private ArrayList<String> getCollections() {
-        ArrayList<String> list = null;
-        try {
-            list = cache.getCollections();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ComFaultException e) {
-            Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT);
-            e.printStackTrace();
-        }
-        return list;
+    private void getCollections() {
+        new AsyncTask<Object, Object, ArrayList<String>>() {
+            @Override
+            protected ArrayList<String> doInBackground(Object... params) {
+                ArrayList<String> list = null;
+                try {
+                    list = cache.getCollections();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ComFaultException e) {
+                    Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                return list;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<String> collections) {
+                adapterCollections.clear();
+                adapterCollections.addAll(collections);
+            }
+        }.execute();
     }
 
-    private ArrayList<String> getPlugins(String collection){
-        ArrayList<String> list = null;
-        try {
-            list = cache.getPlugins(collection);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ComFaultException e) {
-            Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT);
-            e.printStackTrace();
-        }
-        return list;
+    private void getPlugins(final String collection) {
+        new AsyncTask<Object, Object, ArrayList<String>>() {
+            @Override
+            protected ArrayList<String> doInBackground(Object... params) {
+                ArrayList<String> list = null;
+                try {
+                    list = cache.getPlugins(collection);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ComFaultException e) {
+                    Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                return list;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<String> collections) {
+                adapterPlugins.clear();
+                adapterPlugins.addAll(collections);
+            }
+        }.execute();
     }
 }
 

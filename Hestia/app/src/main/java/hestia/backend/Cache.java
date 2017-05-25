@@ -77,13 +77,16 @@ public class Cache {
     private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
         GsonBuilder gsonBuilder=new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        ArrayList<String> list = gson.fromJson(element, ArrayList.class);
-        if(element.getAsJsonObject().has("error") || list.isEmpty()){
+        if(element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            ArrayList<String> list = gson.fromJson(array, new TypeToken<ArrayList<String>>() {
+            }.getType());
+            return list;
+        } else if (element.getAsJsonObject().has("error")){
             ComFaultException comFaultException=gson.fromJson(element,ComFaultException.class);
             throw comFaultException;
         }
-        return list;
-
+        return new ArrayList<>();
     }
     public NetworkHandler getHandler() {
         return handler;
