@@ -74,11 +74,9 @@ public class Device {
         if(payload.getAsJsonObject().has("error")){
             GsonBuilder gsonBuilder=new GsonBuilder();
             Gson gson = gsonBuilder.create();
-            ComFaultException comFaultException=new ComFaultException(null,null);
-            comFaultException=gson.fromJson(payload,ComFaultException.class);
+            ComFaultException comFaultException=gson.fromJson(payload,ComFaultException.class);
             throw comFaultException;
         }else {
-            //TODO: parse payload before actually setting the new name
             this.name = name;
         }
     }
