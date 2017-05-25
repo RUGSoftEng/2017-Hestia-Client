@@ -24,12 +24,14 @@ import hestia.backend.Device;
 
 public class DeviceBar extends RelativeLayout {
     private Device device;
+    private Cache cache;
 
     private final static String TAG = "DeviceBar";
 
-    public DeviceBar(Context context, Device device) {
+    public DeviceBar(Context context, Device device, Cache cache) {
         super(context);
         this.device = device;
+        this.cache = cache;
         initView();
     }
 
@@ -60,6 +62,7 @@ public class DeviceBar extends RelativeLayout {
             }
         }
 
+        //TODO fix opening the slider dialog
         if(deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,7 +72,8 @@ public class DeviceBar extends RelativeLayout {
             });
         }
 
-        /*imageview.setOnClickListener(new View.OnClickListener() {
+        //TODO fix opening the popup menu
+        imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = createPopupMenu(view);
@@ -92,7 +96,7 @@ public class DeviceBar extends RelativeLayout {
                     }
                 });
             }
-        });*/
+        });
     }
 
     private PopupMenu createPopupMenu(View view){

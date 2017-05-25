@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hestia.backend.models.ActivatorState;
 import hestia.backend.models.RequiredInfo;
 
 /**
@@ -22,7 +23,22 @@ public class Cache {
         JsonObject list = handler.GET(null, "devices");
         // TODO Parse json object into Device list
         // TODO Make sure the activator is given its device id and handler
-        return new ArrayList<>();
+
+        ArrayList<Device> devices = new ArrayList<>();
+
+        ArrayList<Activator> activators = new ArrayList<>();
+        ActivatorState<Boolean>  state =  new ActivatorState<Boolean>(Boolean.parseBoolean("true"),"bool");
+        activators.add(new Activator("Act_1_Bool", "device_id", 0, state, "name", handler));
+        devices.add(new Device("device_id", "one", "Light", activators, handler));
+
+        ArrayList<Activator> activatorList = new ArrayList<>();
+        ActivatorState<Float> state2 =  new ActivatorState<Float>(Float.parseFloat("0.0"),"float");
+        ActivatorState<Boolean>  state3 =  new ActivatorState<Boolean>(Boolean.parseBoolean("true"),"bool");
+        activatorList.add(new Activator("Act_2_Float", "ffff", 1, state2, "Naam", handler));
+        activatorList.add(new Activator("Act_1_Bool", "ffff", 0, state3, "name", handler));
+        devices.add(new Device("device_id", "one", "Lock", activatorList, handler));
+
+        return devices;
     }
 
     public void addDevice(RequiredInfo info){

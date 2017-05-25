@@ -78,7 +78,7 @@ public class DeviceListFragment extends Fragment{
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(context, device);
+                    DeviceBar bar = new DeviceBar(getActivity(), device, cache);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -169,7 +169,7 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(context, cache).show();
+                new AddDeviceDialog(getActivity(), cache).show();
             }
         });
     }

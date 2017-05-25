@@ -82,7 +82,6 @@ public class Device {
         if (!getName().equals(device.getName())) return false;
         if (!getType().equals(device.getType())) return false;
         return getActivators().equals(device.getActivators());
-
     }
 
     @Override

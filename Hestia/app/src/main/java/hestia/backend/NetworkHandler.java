@@ -1,23 +1,7 @@
 package hestia.backend;
 
-import android.app.Activity;
 import android.app.Application;
-import android.util.Log;
-
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import hestia.backend.requests.DeleteRequest;
-import hestia.backend.requests.GetDevicesRequest;
-import hestia.backend.requests.GetPluginInformationRequest;
-import hestia.backend.requests.PostRequest;
 
 /**
  * A singleton class which handles interaction between front and back-end. The facade pattern is
