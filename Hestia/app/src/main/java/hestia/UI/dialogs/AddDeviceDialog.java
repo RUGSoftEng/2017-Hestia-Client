@@ -72,20 +72,19 @@ public class AddDeviceDialog extends HestiaDialog {
             @Override
             protected RequiredInfo doInBackground(Object... params) {
                 RequiredInfo info = null;
-                // TODO: handle try-catch properly
-
                 try {
                     info = cache.getRequiredInfo(collection, pluginName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 return info;
             }
 
             @Override
             protected void onPostExecute(RequiredInfo info) {
-                new AddDeviceInfo(context, info, cache);
+                if(info != null){
+                    new AddDeviceInfo(context, info, cache).show();
+                }
             }
         }.execute();
     }

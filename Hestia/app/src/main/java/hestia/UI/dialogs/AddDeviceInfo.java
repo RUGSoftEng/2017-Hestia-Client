@@ -8,10 +8,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.JsonObject;
 import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 import java.util.HashMap;
+
+import hestia.UI.activities.home.HomeActivity;
 import hestia.backend.Cache;
 import hestia.backend.models.RequiredInfo;
 
@@ -31,9 +35,11 @@ public class AddDeviceInfo extends HestiaDialog {
     private final String propReqInfo = "required_info";
     private static final String EMPTY_STRING="";
 
+
     public AddDeviceInfo(Context context, RequiredInfo info, Cache cache) {
         super(context, R.layout.enter_device_info, "Add a device");
         this.info = info;
+        this.cache = cache;
     }
 
     @Override
@@ -46,7 +52,10 @@ public class AddDeviceInfo extends HestiaDialog {
         final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
         int count = 0;
 
+        this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
+
         HashMap<String, String> fields = info.getInfo();
+
         for (String key : fields.keySet()) {
             LinearLayout subLayout = new LinearLayout(context);
 
@@ -89,11 +98,11 @@ public class AddDeviceInfo extends HestiaDialog {
         new AsyncTask<Object, Object, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
-                //TODO: handle try-catch properly
-
+                updateRequiredInfo();
                 try {
                     cache.addDevice(info);
                 } catch (IOException e) {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
                 return 0;
@@ -101,9 +110,25 @@ public class AddDeviceInfo extends HestiaDialog {
 
             @Override
             protected void onPostExecute(Integer returnValue) {
-                // TODO update the gui
+                // TODO: find a way to update the GUI from here
             }
         }.execute();
+
+    }
+
+
+    /**
+     * Updates the required info with the entered information
+     */
+    private void updateRequiredInfo() {
+        int count = 0;
+        for(String key : this.info.getInfo().keySet()) {
+            EditText field = (EditText) findViewById(count);
+            String valueField = field.getText().toString();
+
+            this.info.getInfo().put(key, valueField);
+            count++;
+        }
     }
 
 }
