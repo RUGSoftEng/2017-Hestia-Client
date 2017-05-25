@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import hestia.backend.models.Device;
 import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.RequiredInfo;
@@ -59,16 +58,14 @@ public class Cache {
         JsonElement result = handler.DELETE("devices/" + device.getId());
     }
 
-    public ArrayList<String> getCollections() throws IOException {
+    public ArrayList<String> getCollections() throws IOException, ComFaultException {
         JsonElement object = handler.GET("plugins");
-        // TODO Parse json into collections list.
-        return new ArrayList<>();
+        return ParseInfo(object);
     }
 
-    public ArrayList<String> getPlugins(String collection) throws IOException {
+    public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
         JsonElement object = handler.GET("plugins/" + collection);
-        // TODO Parse json into collections list.
-        return new ArrayList<>();
+        return ParseInfo(object);
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException {
@@ -77,6 +74,17 @@ public class Cache {
         return new RequiredInfo("Collection", "Plugin", new HashMap<String, String>());
     }
 
+    private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
+        GsonBuilder gsonBuilder=new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        ArrayList<String> list = gson.fromJson(element, ArrayList.class);
+        if(element.getAsJsonObject().has("error") || list.isEmpty()){
+            ComFaultException comFaultException=gson.fromJson(element,ComFaultException.class);
+            throw comFaultException;
+        }
+        return list;
+
+    }
     public NetworkHandler getHandler() {
         return handler;
     }
