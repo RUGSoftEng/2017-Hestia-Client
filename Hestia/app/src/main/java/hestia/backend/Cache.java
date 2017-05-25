@@ -20,7 +20,8 @@ public class Cache {
     }
 
     public ArrayList<Device> getDevices() throws IOException {
-        JsonElement payload = handler.GET("devices");
+        String endpoint = "devices";
+        JsonElement payload = handler.GET(endpoint);
         // TODO Parse json object into Device list
         // TODO Make sure the activator is given its device id and handler
         return new ArrayList<>();
