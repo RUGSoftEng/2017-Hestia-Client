@@ -2,6 +2,7 @@ package hestia.UI.activities.home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,13 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.Cache;
+import hestia.backend.ComFaultException;
 import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -37,7 +42,12 @@ public class DeviceListFragment extends Fragment{
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
 
+    public DeviceListFragment() {
+        super();
+    }
+
     public DeviceListFragment(Context context, Cache cache) {
+        super();
         this.context = context;
         this.cache = cache;
     }
@@ -53,6 +63,7 @@ public class DeviceListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
+
         createFloatingButton(deviceListView);
 
         initRefreshLayou(deviceListView);
@@ -65,22 +76,39 @@ public class DeviceListFragment extends Fragment{
     }
     
     private void populateUI() {
-        listDataChild = new ArrayList<>();
-        ArrayList<Device> devices = getDevices();
-        for (Device device : devices) {
-                DeviceBar bar = new DeviceBar(context);
-                bar.setDevice(device);
-                if(!listDataChild.contains(bar)) {
-                    if (!typeExists(device)) {
-                        listDataChild.add(new ArrayList<DeviceBar>());
-                        listDataChild.get(listDataChild.size() - 1).add(bar);
-                    } else {
-                        listDataChild.get(getDeviceType(device)).add(bar);
+        new AsyncTask<Object, Object, ArrayList<Device> >() {
+            @Override
+            protected ArrayList<Device>  doInBackground(Object... params) {
+                ArrayList<Device> devices = new ArrayList<>();
+                try {
+                    devices = cache.getDevices();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ComFaultException e) {
+                    e.printStackTrace();
+                }
+                return devices;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Device> devices) {
+                listDataChild = new ArrayList<>();
+                for (Device device : devices) {
+                    Log.i(TAG, "device found");
+                    DeviceBar bar = new DeviceBar(getActivity(), device, cache);
+                    if(!listDataChild.contains(bar)) {
+                        if (!typeExists(device)) {
+                            listDataChild.add(new ArrayList<DeviceBar>());
+                            listDataChild.get(listDataChild.size() - 1).add(bar);
+                        } else {
+                            listDataChild.get(getDeviceType(device)).add(bar);
+                        }
                     }
                 }
-        }
-        listAdapter.setListData(listDataChild);
-        expListView.setAdapter(listAdapter);
+                listAdapter.setListData(listDataChild);
+                expListView.setAdapter(listAdapter);
+            }
+        }.execute();
     }
 
     private void setOnScrollListeners() {
@@ -124,11 +152,6 @@ public class DeviceListFragment extends Fragment{
         });
     }
 
-    private ArrayList<Device> getDevices() {
-        // TODO Create asynctask that gets the device list and onPostExecute updates the gui
-        return new ArrayList<>();
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -162,7 +185,7 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(context, cache).show();
+                new AddDeviceDialog(getActivity(), cache).show();
             }
         });
     }

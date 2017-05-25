@@ -30,13 +30,11 @@ public class DeviceBar extends RelativeLayout {
 
     private final static String TAG = "DeviceBar";
 
-    public DeviceBar(Context context) {
+    public DeviceBar(Context context, Device device, Cache cache) {
         super(context);
-        initView();
-    }
-
-    public void setCache(Cache cache){
+        this.device = device;
         this.cache = cache;
+        initView();
     }
 
     public Device getDevice() {
@@ -66,13 +64,17 @@ public class DeviceBar extends RelativeLayout {
             }
         }
 
-        this.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                new SlideDialog(getContext(), device).show();
-            }
-        });
+        //TODO fix opening the slider dialog
+        if(deviceHasSlider()) {
+            this.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SlideDialog(getContext(), device).show();
+                }
+            });
+        }
 
+        //TODO fix opening the popup menu
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,10 +107,20 @@ public class DeviceBar extends RelativeLayout {
     }
 
     private PopupMenu createPopupMenu(View view){
+        int x  = 1;
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
         return popup;
    }
+
+    private boolean deviceHasSlider(){
+        for(Activator activator : device.getActivators()){
+            if(activator.getState().getType().equals("float")){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public boolean equals(Object object) {

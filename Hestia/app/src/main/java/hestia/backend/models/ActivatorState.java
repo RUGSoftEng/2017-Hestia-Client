@@ -2,6 +2,8 @@ package hestia.backend.models;
 
 import com.google.gson.JsonPrimitive;
 
+import hestia.backend.models.deserializers.ActivatorDeserializer;
+
 /**
  * Wrapper class for the different state fields. The activator state has a type T, which is
  * inferred using a custom JSON deserializer.

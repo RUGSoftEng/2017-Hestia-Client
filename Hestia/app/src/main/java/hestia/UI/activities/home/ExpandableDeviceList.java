@@ -23,7 +23,6 @@ public class ExpandableDeviceList extends BaseExpandableListAdapter{
     private Cache cache;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
-    private NetworkHandler networkHandler;
 
     public ExpandableDeviceList(ArrayList<ArrayList<DeviceBar>> listChildData, Context context, Cache cache) {
         this.listDataChild = listChildData;

@@ -83,6 +83,14 @@ public class Activator {
         this.handler = handler;
     }
 
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

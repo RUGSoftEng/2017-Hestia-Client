@@ -2,12 +2,16 @@ package hestia.backend;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import hestia.backend.models.Device;
+import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.RequiredInfo;
 
 /**
@@ -21,11 +25,25 @@ public class Cache {
         this.handler = handler;
     }
 
-    public ArrayList<Device> getDevices() throws IOException {
-        JsonElement payload = handler.GET("devices");
-        // TODO Parse json object into Device list
-        // TODO Make sure the activator is given its device id and handler
-        return new ArrayList<>();
+    public ArrayList<Device> getDevices() throws IOException, ComFaultException {
+        String endpoint = "devices/";
+        JsonElement payload = handler.GET(endpoint);
+        if(payload.isJsonArray()) {
+            JsonArray jsonArray = payload.getAsJsonArray();
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Device.class, new DeviceDeserializer());
+            Gson gson = gsonBuilder.create();
+
+            Type type = new TypeToken<ArrayList<Device>>(){}.getType();
+            ArrayList<Device> devices = gson.fromJson(jsonArray, type);
+            this.connectDevicesToHandler(devices);
+            return devices;
+        } else {
+            JsonObject jsonObject = payload.getAsJsonObject();
+            String error = jsonObject.get("error").getAsString();
+            String message = jsonObject.get("message").getAsString();
+            throw new ComFaultException(error, message);
+        }
     }
 
     public void addDevice(RequiredInfo info) throws IOException {
@@ -59,9 +77,8 @@ public class Cache {
     private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
         GsonBuilder gsonBuilder=new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        ArrayList<String> list =new ArrayList<String>();
-        list=gson.fromJson(element,ArrayList.class);
-        if(element.getAsJsonObject().has("error")||list.isEmpty()){
+        ArrayList<String> list = gson.fromJson(element, ArrayList.class);
+        if(element.getAsJsonObject().has("error") || list.isEmpty()){
             ComFaultException comFaultException=gson.fromJson(element,ComFaultException.class);
             throw comFaultException;
         }
@@ -74,5 +91,11 @@ public class Cache {
 
     public void setHandler(NetworkHandler handler) {
         this.handler = handler;
+    }
+
+    private void connectDevicesToHandler(ArrayList<Device> devices) {
+        for(Device device : devices) {
+            device.setHandler(this.handler);
+        }
     }
 }
