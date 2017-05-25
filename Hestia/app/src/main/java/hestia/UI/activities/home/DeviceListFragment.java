@@ -18,6 +18,7 @@ import android.widget.Toast;
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.Cache;
+import hestia.backend.ComFaultException;
 import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
@@ -41,7 +42,12 @@ public class DeviceListFragment extends Fragment{
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
 
+    public DeviceListFragment() {
+        super();
+    }
+
     public DeviceListFragment(Context context, Cache cache) {
+        super();
         this.context = context;
         this.cache = cache;
     }
@@ -73,15 +79,15 @@ public class DeviceListFragment extends Fragment{
         new AsyncTask<Object, Object, ArrayList<Device> >() {
             @Override
             protected ArrayList<Device>  doInBackground(Object... params) {
+                ArrayList<Device> devices = new ArrayList<>();
                 try {
-                    return cache.getDevices();
+                    devices = cache.getDevices();
                 } catch (IOException e) {
-                    Toast.makeText(context, "Something went wrong",
-                            Toast.LENGTH_SHORT).show();
-                    this.cancel(true);
-                } finally{
-                    return new ArrayList<Device>();
+                    e.printStackTrace();
+                } catch (ComFaultException e) {
+                    e.printStackTrace();
                 }
+                return devices;
             }
 
             @Override
