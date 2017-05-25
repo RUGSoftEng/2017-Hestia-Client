@@ -3,6 +3,7 @@ package hestia.UI.dialogs;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 
+import hestia.backend.ComFaultException;
 import hestia.backend.models.Device;
 
 public class ChangeNameDialog extends HestiaDialog {
@@ -43,6 +45,9 @@ public class ChangeNameDialog extends HestiaDialog {
                 try {
                     device.setName(result);
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ComFaultException e) {
+                    Log.d("comFault",e.getError()+":" +e.getMessage());
                     e.printStackTrace();
                 }
                 return 0;
