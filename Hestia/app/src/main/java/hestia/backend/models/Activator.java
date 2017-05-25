@@ -1,8 +1,12 @@
 package hestia.backend.models;
 
+import android.util.Log;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
+
+import hestia.backend.ComFaultException;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -58,12 +62,23 @@ public class Activator {
         return state;
     }
 
-    public void setState(ActivatorState state) throws IOException {
+    public void setState(ActivatorState state) throws IOException, ComFaultException {
         String path = "devices/"+device.getId()+"/activators/"+activatorId;
         JsonObject send = new JsonObject();
         send.add("state", state.getRawStateJSON());
-        JsonElement returnObject = handler.POST(send, path);
-        //TODO handle the returnObject and set the new state accordingly
+        JsonElement payload = handler.POST(send, path);
+
+        Log.d("Activator", payload.getAsString());
+
+        if(payload.isJsonObject()) {
+            JsonObject result = payload.getAsJsonObject();
+            if(result.has("error")) {
+                String error = result.get("error").getAsString();
+                String message = result.get("message").getAsString();
+                throw new ComFaultException(error, message);
+            }
+
+        }
         this.state = state;
     }
 

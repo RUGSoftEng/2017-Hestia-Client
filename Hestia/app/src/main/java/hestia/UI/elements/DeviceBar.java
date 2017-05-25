@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlideDialog;
+import hestia.backend.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.Cache;
 import hestia.backend.models.Device;
@@ -37,14 +38,6 @@ public class DeviceBar extends RelativeLayout {
         initView();
     }
 
-    public Device getDevice() {
-        return device;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
-    }
-
     public void initView() {
         View view = inflate(getContext(), R.layout.child_list_item, null);
         addView(view);
@@ -64,7 +57,6 @@ public class DeviceBar extends RelativeLayout {
             }
         }
 
-        //TODO fix opening the slider dialog
         if(deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,7 +66,6 @@ public class DeviceBar extends RelativeLayout {
             });
         }
 
-        //TODO fix opening the popup menu
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +81,8 @@ public class DeviceBar extends RelativeLayout {
                                 try {
                                     cache.removeDevice(device);
                                 } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (ComFaultException e) {
                                     e.printStackTrace();
                                 }
                                 break;
@@ -120,6 +113,14 @@ public class DeviceBar extends RelativeLayout {
             }
         }
         return false;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     @Override
