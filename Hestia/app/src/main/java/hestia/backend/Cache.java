@@ -54,8 +54,17 @@ public class Cache {
         handler.POST(send, "devices");
     }
 
-    public void removeDevice(Device device) throws IOException {
-        JsonElement result = handler.DELETE("devices/" + device.getId());
+    public void removeDevice(Device device) throws IOException, ComFaultException {
+        String endpoint = "devices/" + device.getId();
+        JsonElement payload = handler.DELETE(endpoint);
+        if(payload != null && payload.isJsonObject()) {
+            JsonObject jsonObject = payload.getAsJsonObject();
+            if(jsonObject.has("error")) {
+                String error = jsonObject.get("error").getAsString();
+                String message = jsonObject.get("message").getAsString();
+                throw new ComFaultException(error, message);
+            }
+        }
     }
 
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
@@ -75,7 +84,7 @@ public class Cache {
     }
 
     private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
-        GsonBuilder gsonBuilder=new GsonBuilder();
+        GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         ArrayList<String> list = gson.fromJson(element, ArrayList.class);
         if(element.getAsJsonObject().has("error") || list.isEmpty()){
@@ -83,8 +92,8 @@ public class Cache {
             throw comFaultException;
         }
         return list;
-
     }
+
     public NetworkHandler getHandler() {
         return handler;
     }

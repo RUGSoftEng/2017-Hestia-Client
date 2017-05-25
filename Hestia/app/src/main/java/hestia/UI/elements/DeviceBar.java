@@ -1,19 +1,18 @@
 package hestia.UI.elements;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
-
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlideDialog;
+import hestia.backend.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.Cache;
 import hestia.backend.models.Device;
@@ -27,7 +26,6 @@ import hestia.backend.models.Device;
 public class DeviceBar extends RelativeLayout {
     private Device device;
     private Cache cache;
-
     private final static String TAG = "DeviceBar";
 
     public DeviceBar(Context context, Device device, Cache cache) {
@@ -35,14 +33,6 @@ public class DeviceBar extends RelativeLayout {
         this.device = device;
         this.cache = cache;
         initView();
-    }
-
-    public Device getDevice() {
-        return device;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
     }
 
     public void initView() {
@@ -64,7 +54,6 @@ public class DeviceBar extends RelativeLayout {
             }
         }
 
-        //TODO fix opening the slider dialog
         if(deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,7 +63,6 @@ public class DeviceBar extends RelativeLayout {
             });
         }
 
-        //TODO fix opening the popup menu
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,12 +74,20 @@ public class DeviceBar extends RelativeLayout {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete:
-                                //TODO: Handle try-catch properly
-                                try {
-                                    cache.removeDevice(device);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                new AsyncTask<Object, Object, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Object... params) {
+                                        try {
+                                            cache.removeDevice(device);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        } catch (ComFaultException e) {
+                                            e.printStackTrace();
+                                        }
+                                        return null;
+                                    }
+                                }.execute();
+
                                 break;
                             case R.id.change_name:
                                 new ChangeNameDialog(getContext(), device).show();
@@ -120,6 +116,14 @@ public class DeviceBar extends RelativeLayout {
             }
         }
         return false;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     @Override
