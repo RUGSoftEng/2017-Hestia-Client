@@ -13,6 +13,7 @@ import java.util.HashMap;
 import hestia.backend.models.Device;
 import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.RequiredInfo;
+import hestia.backend.models.deserializers.RequiredInfoDeserializer;
 
 /**
  * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
@@ -50,8 +51,12 @@ public class Cache {
         JsonObject send = new JsonObject();
         send.addProperty("collection", info.getCollection());
         send.addProperty("plugin_name", info.getPlugin());
-        // TODO add info to json object
-        handler.POST(send, "devices");
+        JsonObject required = new JsonObject();
+        for(String key : info.getInfo().keySet()){
+            required.addProperty(key, info.getInfo().get(key));
+        }
+        send.add("required_info", required);
+        handler.POST(send, "devices/");
     }
 
     public void removeDevice(Device device) throws IOException, ComFaultException {
@@ -79,19 +84,30 @@ public class Cache {
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException {
         JsonElement object = handler.GET("plugins/" + collection + "/plugins/" + plugin);
-        // TODO Parse json into required info
-        return new RequiredInfo("Collection", "Plugin", new HashMap<String, String>());
+        if (object.isJsonObject()){
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
+            Gson gson = gsonBuilder.create();
+
+            RequiredInfo requiredInfo = gson.fromJson(object, RequiredInfo.class);
+            return requiredInfo;
+        }
+        return null;
     }
 
     private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        ArrayList<String> list = gson.fromJson(element, ArrayList.class);
-        if(element.getAsJsonObject().has("error") || list.isEmpty()){
+        if(element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            ArrayList<String> list = gson.fromJson(array, new TypeToken<ArrayList<String>>() {
+            }.getType());
+            return list;
+        } else if (element.getAsJsonObject().has("error")){
             ComFaultException comFaultException=gson.fromJson(element,ComFaultException.class);
             throw comFaultException;
         }
-        return list;
+        return new ArrayList<>();
     }
 
     public NetworkHandler getHandler() {

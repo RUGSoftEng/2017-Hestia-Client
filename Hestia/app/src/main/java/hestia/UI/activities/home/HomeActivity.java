@@ -86,7 +86,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void setupCache() {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        String ip = prefs.getString(SERVER_IP, "127.0.0.1");
+        String ip = prefs.getString(SERVER_IP, "192.168.178.31");
         NetworkHandler handler = new NetworkHandler(ip, 8000);
         this.cache = new Cache(handler);
     }
