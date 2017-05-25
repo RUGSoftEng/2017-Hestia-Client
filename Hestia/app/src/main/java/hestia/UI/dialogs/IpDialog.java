@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
 import hestia.backend.Cache;
 
@@ -29,23 +28,21 @@ public class IpDialog extends HestiaDialog {
         super.onCreate(savedInstanceState);
 
         ipField = (EditText) findViewById(R.id.ip);
-        ipField.setText(this.cache.getIp());
+        ipField.setText(this.cache.getHandler().getIp());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override
-    void pressCancel() {
-    }
+    void pressCancel() {}
 
     @Override
     void pressConfirm() {
         ip = ipField.getText().toString();
-        Toast.makeText(getContext(), "ip is: " + ip, Toast.LENGTH_SHORT).show();
         if(ip!=null) {
-            cache.setIp(ip);
+            cache.getHandler().setIp(ip);
             // TODO refresh layout
-            Toast.makeText(getContext(),R.string.ipSetTo + cache.getIp() + ":"
-                    + cache.getPort(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),R.string.ipSetTo + cache.getHandler().getIp() + ":"
+                    + cache.getHandler().getPort(),Toast.LENGTH_SHORT).show();
 
             //TODO give correct response from server after changing ip
             Toast.makeText(getContext(), "Server returned message: + serverMessage",

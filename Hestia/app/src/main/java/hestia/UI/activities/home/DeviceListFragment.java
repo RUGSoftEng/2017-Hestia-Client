@@ -1,4 +1,4 @@
-package hestia.UI.Activities.Home;
+package hestia.UI.activities.home;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,13 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.Cache;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -70,7 +73,15 @@ public class DeviceListFragment extends Fragment{
         new AsyncTask<Object, Object, ArrayList<Device> >() {
             @Override
             protected ArrayList<Device>  doInBackground(Object... params) {
-               return cache.getDevices();
+                try {
+                    return cache.getDevices();
+                } catch (IOException e) {
+                    Toast.makeText(context, "Something went wrong",
+                            Toast.LENGTH_SHORT).show();
+                    this.cancel(true);
+                } finally{
+                    return new ArrayList<Device>();
+                }
             }
 
             @Override
@@ -138,14 +149,13 @@ public class DeviceListFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         surroundingActivity = context instanceof Activity ? (Activity) context : null;
     }
 
     private boolean typeExists(Device device) {
         String deviceType = device.getType();
-        for (int i = 0; i < listDataChild.size(); i++) {
-            Device checkDevice = listDataChild.get(i).get(0).getDevice();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
             if (checkDevice.getType().equals(deviceType)) {
                 return true;
             }
@@ -155,10 +165,10 @@ public class DeviceListFragment extends Fragment{
 
     private int getDeviceType(Device device) {
         String deviceType = device.getType();
-        for (int i = 0; i < listDataChild.size(); i++) {
-            Device checkDevice = listDataChild.get(i).get(0).getDevice();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
             if (checkDevice.getType().equals(deviceType)) {
-                return i;
+                return listDataChild.indexOf(groupOfDevices);
             }
         }
         return -1;

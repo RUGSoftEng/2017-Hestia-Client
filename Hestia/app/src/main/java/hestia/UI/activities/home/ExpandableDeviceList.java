@@ -1,4 +1,4 @@
-package hestia.UI.Activities.Home;
+package hestia.UI.activities.home;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-
 import hestia.UI.elements.DeviceBar;
 import hestia.backend.Cache;
 import hestia.backend.NetworkHandler;
@@ -24,7 +23,6 @@ public class ExpandableDeviceList extends BaseExpandableListAdapter{
     private Cache cache;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
-    private NetworkHandler networkHandler;
 
     public ExpandableDeviceList(ArrayList<ArrayList<DeviceBar>> listChildData, Context context, Cache cache) {
         this.listDataChild = listChildData;

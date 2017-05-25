@@ -9,15 +9,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
 
-import hestia.backend.Activator;
+import hestia.backend.models.Activator;
 import hestia.backend.Cache;
-import hestia.backend.Device;
+import hestia.backend.models.Device;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
 @RunWith(AndroidJUnit4.class)
 public class CacheTest {
     private Cache cache;
@@ -115,4 +116,9 @@ public class CacheTest {
     public void tearDown(){
         cache.getDevices().clear();
     }
+
+
+
 }
+
+ */

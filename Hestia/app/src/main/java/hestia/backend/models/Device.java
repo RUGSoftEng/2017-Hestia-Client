@@ -1,8 +1,14 @@
-package hestia.backend;
+package hestia.backend.models;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
+
+import hestia.backend.ComFaultException;
+import hestia.backend.NetworkHandler;
 
 /**
  * Represents the internal representation of the device class on the client. The device contains an
@@ -36,39 +42,52 @@ public class Device {
         return deviceId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        JsonObject object = new JsonObject();
-        object.addProperty("name", name);
-        handler.PUT(object, "devices/"+deviceId);
-        this.name = name;
+    public void setId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getType() {
         return type;
     }
 
-    /**
-     * Gets the complete list of activators.
-     * @return the list of activators
-     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public NetworkHandler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(NetworkHandler handler) {
+        this.handler = handler;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) throws IOException {
+        String path = "devices/"+deviceId;
+        JsonObject object = new JsonObject();
+        object.addProperty("name", name);
+        JsonElement payload = handler.PUT(object, path);
+        if(payload.getAsJsonObject().has("error")){
+            GsonBuilder gsonBuilder=new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            ComFaultException comFaultException=new ComFaultException(null,null);
+        }
+
+
+        //TODO: parse payload before actually setting the new name
+        this.name = name;
+    }
+
     public ArrayList<Activator> getActivators() {
         return activators;
     }
 
-    /**
-     * Sets the local activators to a different list.
-     * @param activators the list of activators which will be set
-     */
     public void setActivators(ArrayList<Activator> activators) {
         this.activators = activators;
-    }
-
-    public String toString(){
-        return name +" "+ deviceId + " " + activators + "\n";
     }
 
     @Override
@@ -81,7 +100,9 @@ public class Device {
         if (!getId().equals(device.getId())) return false;
         if (!getName().equals(device.getName())) return false;
         if (!getType().equals(device.getType())) return false;
-        return getActivators().equals(device.getActivators());
+        if (!getActivators().equals(device.getActivators())) return false;
+        return getHandler().equals(device.getHandler());
+
     }
 
     @Override
@@ -90,7 +111,12 @@ public class Device {
         result = 31 * result + getName().hashCode();
         result = 31 * result + getType().hashCode();
         result = 31 * result + getActivators().hashCode();
+        result = 31 * result + getHandler().hashCode();
         return result;
+    }
+
+    public String toString(){
+        return name +" "+ deviceId + " " + activators + "\n";
     }
 
     /* Everything below should be done in the frontend

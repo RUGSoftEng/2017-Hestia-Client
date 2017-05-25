@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import hestia.backend.Activator;
+import java.io.IOException;
+
+import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 
 public class HestiaSwitch implements CompoundButton.OnCheckedChangeListener {
@@ -29,7 +31,14 @@ public class HestiaSwitch implements CompoundButton.OnCheckedChangeListener {
     public void onCheckedChanged(CompoundButton compoundButton, boolean currentState) {
         ActivatorState state = activator.getState();
         state.setRawState(currentState);
-        activator.setState(state);
+
+        // TODO: Handle try-catch properly
+
+        try {
+            activator.setState(state);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Log.i(TAG, "Sending a post to the server");
     }
 

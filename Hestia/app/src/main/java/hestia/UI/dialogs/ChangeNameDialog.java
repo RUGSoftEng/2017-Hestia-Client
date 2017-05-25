@@ -6,23 +6,25 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-import hestia.backend.Device;
+
+import java.io.IOException;
+
+import hestia.backend.models.Device;
 
 public class ChangeNameDialog extends HestiaDialog {
-    private EditText t;
+    private EditText editText;
     private Device device;
 
-    public ChangeNameDialog(Context context, Device d) {
+    public ChangeNameDialog(Context context, Device device) {
         super(context, R.layout.set_name, "Change name of your device");
-        this.device = d;
+        this.device = device;
     }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        t = (EditText)findViewById(R.id.change_name_device);
-        t.setText(device.getName());
+        editText = (EditText)findViewById(R.id.change_name_device);
+        editText.setText(device.getName());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
@@ -33,11 +35,16 @@ public class ChangeNameDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        final String result = t.getText().toString();
+        final String result = editText.getText().toString();
         new AsyncTask<Object, Object, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
-                device.setName(result);
+                //TODO: handle try-catch properly
+                try {
+                    device.setName(result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return 0;
             }
 

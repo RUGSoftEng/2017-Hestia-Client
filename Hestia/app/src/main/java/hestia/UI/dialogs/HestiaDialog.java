@@ -47,8 +47,8 @@ abstract class HestiaDialog extends Dialog implements android.view.View.OnClickL
         confirm.setOnClickListener(this);
         LayoutInflater inflater = getLayoutInflater();
         FrameLayout frame = (FrameLayout)findViewById(R.id.dialog_container);
-        View v = inflater.inflate(layoutReference, null);
-        frame.addView(v);
+        View view = inflater.inflate(layoutReference, null);
+        frame.addView(view);
     }
 
     abstract void pressCancel();

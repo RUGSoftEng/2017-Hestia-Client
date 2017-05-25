@@ -1,5 +1,4 @@
-
-package hestia.UI.Activities.Home;
+package hestia.UI.activities.home;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,29 +7,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import hestia.UI.Activities.Login.LoginActivity;
+import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.IpDialog;
 import hestia.backend.Cache;
 import hestia.backend.NetworkHandler;
 
-/**
- * This abstract class is used as an abstract wrapper around the device list activity class.
- */
-public  class HomeActivity extends AppCompatActivity implements
-        OnMenuItemClickListener {
+public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
@@ -47,7 +40,6 @@ public  class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
@@ -88,8 +80,8 @@ public  class HomeActivity extends AppCompatActivity implements
     }
 
     private void storeIP() {
-        SharedPreferences.Editor prefs = getSharedPreferences(HESTIA_IP, 0).edit();
-        prefs.putString(SERVER_IP, cache.getIp()).apply();
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
+        cache.getHandler().setIp(prefs.getString(SERVER_IP, cache.getHandler().getIp()));
     }
 
     private void setupCache() {
@@ -146,10 +138,14 @@ public  class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        if (position == IP){
-            showIpDialog();
-        } else if(position == LOGOUT) {
-            gotoLoginActivity();
+        switch(position) {
+            case IP:
+                showIpDialog();
+                break;
+            case LOGOUT:
+                gotoLoginActivity();
+                break;
+            default: break;
         }
     }
 

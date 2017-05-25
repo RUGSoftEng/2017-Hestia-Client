@@ -8,8 +8,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
-import hestia.backend.Activator;
-
 /**
  * A JSON deserializer for the Activator class.
  * It implements Google's JsonDeserializer interface, and it is used by GSON to deserialize the
