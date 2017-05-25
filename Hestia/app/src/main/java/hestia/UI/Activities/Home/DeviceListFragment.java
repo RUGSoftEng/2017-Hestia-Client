@@ -2,6 +2,7 @@ package hestia.UI.Activities.Home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,7 @@ public class DeviceListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
+
         createFloatingButton(deviceListView);
 
         initRefreshLayou(deviceListView);
@@ -65,22 +67,31 @@ public class DeviceListFragment extends Fragment{
     }
     
     private void populateUI() {
-        listDataChild = new ArrayList<>();
-        ArrayList<Device> devices = getDevices();
-        for (Device device : devices) {
-                DeviceBar bar = new DeviceBar(context);
-                bar.setDevice(device);
-                if(!listDataChild.contains(bar)) {
-                    if (!typeExists(device)) {
-                        listDataChild.add(new ArrayList<DeviceBar>());
-                        listDataChild.get(listDataChild.size() - 1).add(bar);
-                    } else {
-                        listDataChild.get(getDeviceType(device)).add(bar);
+        new AsyncTask<Object, Object, ArrayList<Device> >() {
+            @Override
+            protected ArrayList<Device>  doInBackground(Object... params) {
+               return cache.getDevices();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Device> devices) {
+                listDataChild = new ArrayList<>();
+                for (Device device : devices) {
+                    Log.i(TAG, "device found");
+                    DeviceBar bar = new DeviceBar(context, device);
+                    if(!listDataChild.contains(bar)) {
+                        if (!typeExists(device)) {
+                            listDataChild.add(new ArrayList<DeviceBar>());
+                            listDataChild.get(listDataChild.size() - 1).add(bar);
+                        } else {
+                            listDataChild.get(getDeviceType(device)).add(bar);
+                        }
                     }
                 }
-        }
-        listAdapter.setListData(listDataChild);
-        expListView.setAdapter(listAdapter);
+                listAdapter.setListData(listDataChild);
+                expListView.setAdapter(listAdapter);
+            }
+        }.execute();
     }
 
     private void setOnScrollListeners() {
@@ -122,11 +133,6 @@ public class DeviceListFragment extends Fragment{
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-    }
-
-    private ArrayList<Device> getDevices() {
-        // TODO Create asynctask that gets the device list and onPostExecute updates the gui
-        return new ArrayList<>();
     }
 
     @Override

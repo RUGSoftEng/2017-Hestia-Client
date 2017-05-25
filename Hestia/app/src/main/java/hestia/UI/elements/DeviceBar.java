@@ -24,17 +24,13 @@ import hestia.backend.Device;
 
 public class DeviceBar extends RelativeLayout {
     private Device device;
-    private Cache cache;
 
     private final static String TAG = "DeviceBar";
 
-    public DeviceBar(Context context) {
+    public DeviceBar(Context context, Device device) {
         super(context);
+        this.device = device;
         initView();
-    }
-
-    public void setCache(Cache cache){
-        this.cache = cache;
     }
 
     public Device getDevice() {
@@ -64,14 +60,16 @@ public class DeviceBar extends RelativeLayout {
             }
         }
 
-        this.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                new SlideDialog(getContext(), device).show();
-            }
-        });
+        if(deviceHasSlider()) {
+            this.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SlideDialog(getContext(), device).show();
+                }
+            });
+        }
 
-        imageview.setOnClickListener(new View.OnClickListener() {
+        /*imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = createPopupMenu(view);
@@ -94,14 +92,24 @@ public class DeviceBar extends RelativeLayout {
                     }
                 });
             }
-        });
+        });*/
     }
 
     private PopupMenu createPopupMenu(View view){
+        int x  = 1;
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
         return popup;
    }
+
+    private boolean deviceHasSlider(){
+        for(Activator activator : device.getActivators()){
+            if(activator.getState().getType().equals("float")){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public boolean equals(Object object) {
