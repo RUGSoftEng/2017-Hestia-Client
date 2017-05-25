@@ -17,6 +17,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.rugged.application.hestia.R.id.context_menu;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+
 @RunWith(AndroidJUnit4.class)
 public class LogoutTest {
     private final String LOGOUT_TEXT = "Logout ";
@@ -40,3 +42,5 @@ public class LogoutTest {
     }
 
 }
+
+ */

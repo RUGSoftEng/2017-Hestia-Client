@@ -14,6 +14,8 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+/**
+
 @RunWith(AndroidJUnit4.class)
 public class DeviceTest {
     private Device deviceTest;
@@ -115,3 +117,6 @@ public class DeviceTest {
         assertEquals(dummyDevice, deviceTest);
     }
 }
+
+
+ */

@@ -22,6 +22,13 @@ public class Activator {
     public Device device;
     private NetworkHandler handler;
 
+    public Activator(String activatorId, Integer rank, ActivatorState state, String name) {
+        this.activatorId = activatorId;
+        this.rank = rank;
+        this.state = state;
+        this.name = name;
+    }
+
     public Activator(String activatorId, Integer rank, ActivatorState state, String name, Device device, NetworkHandler handler) {
         this.activatorId = activatorId;
         this.rank = rank;
