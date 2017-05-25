@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
@@ -20,6 +21,8 @@ import hestia.backend.Cache;
 import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -70,7 +73,15 @@ public class DeviceListFragment extends Fragment{
         new AsyncTask<Object, Object, ArrayList<Device> >() {
             @Override
             protected ArrayList<Device>  doInBackground(Object... params) {
-               return cache.getDevices();
+                try {
+                    return cache.getDevices();
+                } catch (IOException e) {
+                    Toast.makeText(context, "Something went wrong",
+                            Toast.LENGTH_SHORT).show();
+                    this.cancel(true);
+                } finally{
+                    return new ArrayList<Device>();
+                }
             }
 
             @Override
@@ -78,7 +89,7 @@ public class DeviceListFragment extends Fragment{
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(context, device);
+                    DeviceBar bar = new DeviceBar(getActivity(), device, cache);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -168,7 +179,7 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(context, cache).show();
+                new AddDeviceDialog(getActivity(), cache).show();
             }
         });
     }

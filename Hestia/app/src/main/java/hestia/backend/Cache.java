@@ -5,6 +5,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import hestia.backend.models.Activator;
+import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
 
@@ -23,7 +26,8 @@ public class Cache {
         JsonElement payload = handler.GET("devices");
         // TODO Parse json object into Device list
         // TODO Make sure the activator is given its device id and handler
-        return new ArrayList<>();
+        ArrayList<Device> devices = new ArrayList<>();
+        return devices;
     }
 
     public void addDevice(RequiredInfo info) throws IOException {
