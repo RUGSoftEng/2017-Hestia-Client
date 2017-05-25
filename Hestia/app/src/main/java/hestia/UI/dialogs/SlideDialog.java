@@ -93,7 +93,6 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                         return null;
                     }
                 }.execute();
-
             }
         });
         return bar;

@@ -47,7 +47,6 @@ public class NetworkHandler extends Application {
 
     public JsonElement DELETE(String endpoint) throws IOException {
         HttpURLConnection connector = this.connectToServer("DELETE", endpoint);
-        //connector.connect();
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
@@ -85,7 +84,6 @@ public class NetworkHandler extends Application {
      * @throws IOException IOException
      */
     private void sendToServer(HttpURLConnection connector, JsonObject object) throws IOException {
-        //connector.setDoOutput(true);
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
         outputStreamWriter.write(object.toString());
         Log.d(TAG, object.toString());
@@ -115,7 +113,6 @@ public class NetworkHandler extends Application {
 
         Type returnType = new TypeToken<JsonElement>(){}.getType();
         JsonElement payload = gson.fromJson(gson.newJsonReader(reader), returnType);
-        Log.d(TAG, "RETURN VALUE IS: \n" + payload.toString());
         reader.close();
 
         return payload;

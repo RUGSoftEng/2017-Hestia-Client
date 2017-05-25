@@ -57,7 +57,7 @@ public class Cache {
     public void removeDevice(Device device) throws IOException, ComFaultException {
         String endpoint = "devices/" + device.getId();
         JsonElement payload = handler.DELETE(endpoint);
-        if(payload.isJsonObject()) {
+        if(payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
             if(jsonObject.has("error")) {
                 String error = jsonObject.get("error").getAsString();
