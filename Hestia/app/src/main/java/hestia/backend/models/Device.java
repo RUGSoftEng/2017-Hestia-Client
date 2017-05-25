@@ -71,13 +71,6 @@ public class Device {
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, path);
-        if(payload.getAsJsonObject().has("error")){
-            GsonBuilder gsonBuilder=new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            ComFaultException comFaultException=new ComFaultException(null,null);
-            comFaultException=gson.from
-        }
-
 
         //TODO: parse payload before actually setting the new name
         this.name = name;

@@ -32,34 +32,34 @@ public class NetworkHandler extends Application {
         this.port = port;
     }
 
-    public JsonElement GET(String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("GET", this.getDefaultPath() + path);
-        connector.setDoInput(true);
-        connector.connect();
+    public JsonElement GET(String endpoint) throws IOException {
+        String path = this.getDefaultPath() + endpoint;
+        Log.d(TAG, "Path is " + path);
+        HttpURLConnection connector = this.connectToServer("GET", path);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
-    public JsonElement POST(JsonObject object, String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", this.getDefaultPath() + path);
+    public JsonElement POST(JsonObject object, String endpoint) throws IOException {
+        HttpURLConnection connector = this.connectToServer("POST", this.getDefaultPath() + endpoint);
         connector.setDoOutput(true);
-        connector.connect();
+        //connector.connect();
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
-    public JsonElement DELETE(String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("DELETE", this.getDefaultPath() + path);
-        connector.connect();
+    public JsonElement DELETE(String endpoint) throws IOException {
+        HttpURLConnection connector = this.connectToServer("DELETE", this.getDefaultPath() + endpoint);
+        //connector.connect();
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
-    public JsonElement PUT(JsonObject object, String path) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", this.getDefaultPath() + path);
+    public JsonElement PUT(JsonObject object, String endpoint) throws IOException {
+        HttpURLConnection connector = this.connectToServer("PUT", this.getDefaultPath() + endpoint);
         connector.setDoOutput(true);
-        connector.connect();
+        //connector.connect();
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
@@ -76,8 +76,8 @@ public class NetworkHandler extends Application {
     private HttpURLConnection connectToServer(String requestMethod, String path) throws IOException {
         URL url = new URL(path);
         HttpURLConnection connector = (HttpURLConnection) url.openConnection();
-        connector.setReadTimeout(2000);
-        connector.setConnectTimeout(2000);
+        connector.setReadTimeout(3000);
+        connector.setConnectTimeout(3000);
         connector.setRequestMethod(requestMethod);
         connector.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         return connector;

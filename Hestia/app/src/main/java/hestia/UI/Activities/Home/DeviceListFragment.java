@@ -20,6 +20,8 @@ import hestia.backend.Cache;
 import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +40,12 @@ public class DeviceListFragment extends Fragment{
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
 
+    public DeviceListFragment() {
+        super();
+    }
+
     public DeviceListFragment(Context context, Cache cache) {
+        super();
         this.context = context;
         this.cache = cache;
     }
@@ -70,7 +77,13 @@ public class DeviceListFragment extends Fragment{
         new AsyncTask<Object, Object, ArrayList<Device> >() {
             @Override
             protected ArrayList<Device>  doInBackground(Object... params) {
-               return cache.getDevices();
+                ArrayList<Device> devices = new ArrayList<>();
+                try {
+                    devices = cache.getDevices();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return devices;
             }
 
             @Override

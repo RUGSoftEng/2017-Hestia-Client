@@ -1,5 +1,7 @@
 package hestia.backend;
 
+import android.util.Log;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -20,8 +22,9 @@ public class Cache {
     }
 
     public ArrayList<Device> getDevices() throws IOException {
-        String endpoint = "devices";
+        String endpoint = "devices/";
         JsonElement payload = handler.GET(endpoint);
+        Log.d("Cache", "Payload is:\n" + payload);
         // TODO Parse json object into Device list
         // TODO Make sure the activator is given its device id and handler
         return new ArrayList<>();
