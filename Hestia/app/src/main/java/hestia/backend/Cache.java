@@ -2,11 +2,20 @@ package hestia.backend;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import hestia.backend.models.Activator;
+import hestia.backend.models.ActivatorDeserializer;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
 
@@ -21,13 +30,24 @@ public class Cache {
         this.handler = handler;
     }
 
-    public ArrayList<Device> getDevices() throws IOException {
+    public ArrayList<Device> getDevices() throws IOException, ComFaultException {
         String endpoint = "devices/";
         JsonElement payload = handler.GET(endpoint);
-        Log.d("Cache", "Payload is:\n" + payload);
-        // TODO Parse json object into Device list
-        // TODO Make sure the activator is given its device id and handler
-        return new ArrayList<>();
+        if(payload.isJsonArray()) {
+            JsonArray jsonArray = payload.getAsJsonArray();
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
+            Gson gson = gsonBuilder.create();
+
+            Type type = new TypeToken<ArrayList<Device>>(){}.getType();
+            ArrayList<Device> devices = gson.fromJson(jsonArray, type);
+            return devices;
+        } else {
+            JsonObject jsonObject = payload.getAsJsonObject();
+            String error = jsonObject.get("error").toString();
+            String message = jsonObject.get("message").toString();
+            throw new ComFaultException(error, message);
+        }
     }
 
     public void addDevice(RequiredInfo info) throws IOException {
