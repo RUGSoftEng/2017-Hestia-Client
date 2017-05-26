@@ -8,9 +8,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
-
 import hestia.backend.ComFaultException;
 import hestia.backend.models.Device;
 
@@ -38,24 +36,27 @@ public class ChangeNameDialog extends HestiaDialog {
     @Override
     void pressConfirm() {
         final String result = editText.getText().toString();
-        new AsyncTask<Object, Object, Integer>() {
+        new AsyncTask<Object, Object, Boolean>() {
             @Override
-            protected Integer doInBackground(Object... params) {
-                //TODO: handle try-catch properly
+            protected Boolean doInBackground(Object... params) {
+                Boolean isSuccessful = false;
                 try {
                     device.setName(result);
+                    isSuccessful = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ComFaultException e) {
                     Log.d("comFault",e.getError()+":" +e.getMessage());
                     e.printStackTrace();
                 }
-                return 0;
+                return isSuccessful;
             }
 
             @Override
-            protected void onPostExecute(Integer integer) {
-                //UPDATE THE GUI
+            protected void onPostExecute(Boolean isSuccessful) {
+                if(isSuccessful) {
+                    //UPDATE THE GUI
+                }
             }
         }.execute();
     }

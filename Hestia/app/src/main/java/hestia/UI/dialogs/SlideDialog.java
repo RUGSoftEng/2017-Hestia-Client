@@ -80,17 +80,26 @@ public class SlideDialog extends Dialog implements android.view.View.OnClickList
                 float value = (float)seekBar.getProgress()/maxInt;
                 final ActivatorState<Float> state = act.getState();
                 state.setRawState(value);
-                new AsyncTask<Object, Object, Void>() {
+                new AsyncTask<Object, Object, Boolean>() {
                     @Override
-                    protected Void doInBackground(Object... params) {
+                    protected Boolean doInBackground(Object... params) {
+                        Boolean isSuccessful = false;
                         try {
                             activator.setState(state);
+                            isSuccessful = true;
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (ComFaultException e) {
                             e.printStackTrace();
                         }
-                        return null;
+                        return isSuccessful;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean isSuccessful) {
+                        if(isSuccessful) {
+                            // Update GUI
+                        }
                     }
                 }.execute();
             }
