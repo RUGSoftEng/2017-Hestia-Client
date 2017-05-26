@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import hestia.backend.ComFaultException;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;
 
 /**

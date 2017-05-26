@@ -1,4 +1,4 @@
-package hestia.backend;
+package hestia.backend.exceptions;
 
 public class ComFaultException extends Exception {
     private String error;

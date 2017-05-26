@@ -14,10 +14,12 @@ public class ActivatorTest {
     private final String DEFAULT_NAME = "TEST_ACTIVATOR";
     private final Integer DEFAULT_BOOL_RANK = 0;
     private final Boolean DEFAULT_BOOL_VALUE = false;
+
     private final String DEFAULT_BOOL_TYPE = "bool";
     private final Integer DEFAULT_FLOAT_RANK = 1;
     private final Float DEFAULT_FLOAT_VALUE = (float) 0.5;
     private final String DEFAULT_FLOAT_TYPE = "float";
+
     private ActivatorState<Float> floatActivatorState;
     private ActivatorState<Boolean> boolActivatorState;
     private Activator testFloatActivator;
@@ -26,10 +28,10 @@ public class ActivatorTest {
     @Before
     public void setUp(){
         floatActivatorState = new ActivatorState<>(DEFAULT_FLOAT_VALUE, DEFAULT_FLOAT_TYPE);
-        //testFloatActivator = new Activator(DEFAULT_ID, DEFAULT_FLOAT_RANK, floatActivatorState, DEFAULT_NAME);
+        testFloatActivator = new Activator(DEFAULT_ID, DEFAULT_FLOAT_RANK, floatActivatorState, DEFAULT_NAME);
 
         boolActivatorState = new ActivatorState<>(DEFAULT_BOOL_VALUE, DEFAULT_BOOL_TYPE);
-        //testBoolActivator = new Activator(DEFAULT_ID, DEFAULT_BOOL_RANK, boolActivatorState, DEFAULT_NAME);
+        testBoolActivator = new Activator(DEFAULT_ID, DEFAULT_BOOL_RANK, boolActivatorState, DEFAULT_NAME);
     }
 
     @Test

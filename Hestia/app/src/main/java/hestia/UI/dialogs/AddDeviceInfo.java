@@ -9,14 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-import hestia.UI.activities.home.HomeActivity;
-import hestia.backend.Cache;
+import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.models.RequiredInfo;
 
 /**
@@ -28,7 +26,7 @@ import hestia.backend.models.RequiredInfo;
 
 public class AddDeviceInfo extends HestiaDialog {
     private RequiredInfo info;
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
     private final String TAG = "AddDeviceInfo";
     private final String fixedFieldCol = "collection";
     private final String fixedFieldPlugin = "plugin";
@@ -36,10 +34,10 @@ public class AddDeviceInfo extends HestiaDialog {
     private static final String EMPTY_STRING="";
 
 
-    public AddDeviceInfo(Context context, RequiredInfo info, Cache cache) {
+    public AddDeviceInfo(Context context, RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
         super(context, R.layout.enter_device_info, "Add a device");
         this.info = info;
-        this.cache = cache;
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     @Override
@@ -100,7 +98,7 @@ public class AddDeviceInfo extends HestiaDialog {
             protected Integer doInBackground(Object... params) {
                 updateRequiredInfo();
                 try {
-                    cache.addDevice(info);
+                    serverCollectionsInteractor.addDevice(info);
                 } catch (IOException e) {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

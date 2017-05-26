@@ -9,7 +9,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.RequiredInfo;
@@ -17,12 +18,12 @@ import hestia.backend.models.deserializers.RequiredInfoDeserializer;
 
 /**
  * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
- * IP address, or port number. During execution, there is a single Cache accessible.
+ * IP address, or port number. During execution, there is a single ServerCollectionsInteractor accessible.
  */
-public class Cache {
+public class ServerCollectionsInteractor {
     private NetworkHandler handler;
 
-    public Cache(NetworkHandler handler){
+    public ServerCollectionsInteractor(NetworkHandler handler){
         this.handler = handler;
     }
 
