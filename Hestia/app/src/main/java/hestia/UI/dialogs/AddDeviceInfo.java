@@ -1,8 +1,14 @@
 package hestia.UI.dialogs;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -52,16 +58,36 @@ public class AddDeviceInfo extends HestiaDialog {
 
         this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
 
-        HashMap<String, String> fields = info.getInfo();
+        final HashMap<String, String> fields = info.getInfo();
 
-        for (String key : fields.keySet()) {
+        for (final String key : fields.keySet()) {
             LinearLayout subLayout = new LinearLayout(context);
 
             // Add text
             TextView name = new TextView(context);
             name.setText(key);
+            name.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                    builder
+                            .setMessage(
+                                    fields.get(key));
+                    AlertDialog dialog = builder.create();
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+
+                    wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+
+                    dialog.show();
+                    return false;
+                }
+            });
             subLayout.addView(name);
 
+
+            //TODO: do not send key to edittext, but show it in dialog:
             //Add field
             EditText field = createEditText(key, params , count);
             field.requestFocus();
@@ -75,7 +101,6 @@ public class AddDeviceInfo extends HestiaDialog {
 
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
         final EditText field = new EditText(context);
-        field.setText(info.getInfo().get(key));
         field.setId(count);
         if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
             field.setFocusable(false);
