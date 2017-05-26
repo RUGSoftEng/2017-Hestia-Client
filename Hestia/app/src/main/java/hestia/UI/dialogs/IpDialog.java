@@ -33,9 +33,6 @@ public class IpDialog extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {}
-
-    @Override
     void pressConfirm() {
         ip = ipField.getText().toString();
         if(ip!=null) {

@@ -39,14 +39,11 @@ abstract class HestiaDialog extends Dialog implements android.view.View.OnClickL
         frame.addView(view);
     }
 
-    abstract void pressCancel();
-
     abstract void pressConfirm();
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cancel_button:
-                pressCancel();
                 dismiss();
                 break;
             case R.id.confirm_button:

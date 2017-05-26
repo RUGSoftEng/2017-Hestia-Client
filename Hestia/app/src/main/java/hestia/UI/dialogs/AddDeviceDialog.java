@@ -58,11 +58,6 @@ public class AddDeviceDialog extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {
-        Toast.makeText(context, "Cancel pressed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     void pressConfirm() {
 
         final String collection = collectionField.getText().toString();

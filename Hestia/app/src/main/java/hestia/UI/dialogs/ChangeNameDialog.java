@@ -29,11 +29,6 @@ public class ChangeNameDialog extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {
-        Toast.makeText(context, "pressed cancel", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     void pressConfirm() {
         final String result = editText.getText().toString();
         new AsyncTask<Object, Object, Boolean>() {

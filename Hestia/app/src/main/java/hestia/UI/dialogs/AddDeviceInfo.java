@@ -89,11 +89,6 @@ public class AddDeviceInfo extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {
-        Toast.makeText(context, R.string.cancel, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     void pressConfirm() {
         new AsyncTask<Object, Object, Integer>() {
             @Override
