@@ -14,10 +14,6 @@ import java.util.HashMap;
 
 import hestia.backend.models.RequiredInfo;
 
-/**
- * Created by Lars on 25-5-2017.
- */
-
 public class RequiredInfoDeserializer implements JsonDeserializer<RequiredInfo> {
 
     @Override

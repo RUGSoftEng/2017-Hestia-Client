@@ -58,11 +58,6 @@ public class AddDeviceDialog extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {
-        Toast.makeText(context, "Cancel pressed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     void pressConfirm() {
 
         final String collection = collectionField.getText().toString();
@@ -76,6 +71,11 @@ public class AddDeviceDialog extends HestiaDialog {
                     info = serverCollectionsInteractor.getRequiredInfo(collection, pluginName);
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (ComFaultException e) {
+                    e.printStackTrace();
+                    String error = e.getError();
+                    String message = e.getMessage();
+                    Toast.makeText(context, error + ":" + message, Toast.LENGTH_SHORT).show();
                 }
                 return info;
             }
@@ -94,16 +94,16 @@ public class AddDeviceDialog extends HestiaDialog {
         new AsyncTask<Object, Object, ArrayList<String>>() {
             @Override
             protected ArrayList<String> doInBackground(Object... params) {
-                ArrayList<String> list = null;
+                ArrayList<String> collections = null;
                 try {
-                    list = serverCollectionsInteractor.getCollections();
+                    collections = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ComFaultException e) {
                     Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-                return list;
+                return collections;
             }
 
             @Override
@@ -118,16 +118,16 @@ public class AddDeviceDialog extends HestiaDialog {
         new AsyncTask<Object, Object, ArrayList<String>>() {
             @Override
             protected ArrayList<String> doInBackground(Object... params) {
-                ArrayList<String> list = null;
+                ArrayList<String> plugins = null;
                 try {
-                    list = serverCollectionsInteractor.getPlugins(collection);
+                    plugins = serverCollectionsInteractor.getPlugins(collection);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ComFaultException e) {
                     Toast.makeText(context, e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-                return list;
+                return plugins;
             }
 
             @Override

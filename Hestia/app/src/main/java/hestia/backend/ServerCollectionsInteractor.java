@@ -48,7 +48,7 @@ public class ServerCollectionsInteractor {
         }
     }
 
-    public void addDevice(RequiredInfo info) throws IOException {
+    public void addDevice(RequiredInfo info) throws IOException, ComFaultException {
         JsonObject send = new JsonObject();
         send.addProperty("collection", info.getCollection());
         send.addProperty("plugin_name", info.getPlugin());
@@ -57,7 +57,16 @@ public class ServerCollectionsInteractor {
             required.addProperty(key, info.getInfo().get(key));
         }
         send.add("required_info", required);
-        handler.POST(send, "devices/");
+        String endpoint = "devices/";
+        JsonElement payload = handler.POST(send, endpoint);
+        if(payload.isJsonObject()) {
+            JsonObject object = payload.getAsJsonObject();
+            if(object.has("error")) {
+                String error = object.get("error").getAsString();
+                String message = object.get("message").getAsString();
+                throw new ComFaultException(error, message);
+            }
+        }
     }
 
     public void removeDevice(Device device) throws IOException, ComFaultException {
@@ -83,15 +92,22 @@ public class ServerCollectionsInteractor {
         return ParseInfo(object);
     }
 
-    public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException {
-        JsonElement object = handler.GET("plugins/" + collection + "/plugins/" + plugin);
-        if (object.isJsonObject()){
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
-            Gson gson = gsonBuilder.create();
+    public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
+        JsonElement rawObject = handler.GET("plugins/" + collection + "/plugins/" + plugin);
+        if (rawObject.isJsonObject()) {
+            JsonObject object = rawObject.getAsJsonObject();
+            if(object.has("error")) {
+                String error = object.get("error").getAsString();
+                String message = object.get("message").getAsString();
+                throw new ComFaultException(error, message);
+            } else {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
+                Gson gson = gsonBuilder.create();
 
-            RequiredInfo requiredInfo = gson.fromJson(object, RequiredInfo.class);
-            return requiredInfo;
+                RequiredInfo requiredInfo = gson.fromJson(object, RequiredInfo.class);
+                return requiredInfo;
+            }
         }
         return null;
     }
