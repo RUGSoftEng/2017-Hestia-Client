@@ -55,5 +55,4 @@ abstract class HestiaDialog extends Dialog implements android.view.View.OnClickL
                 break;
         }
     }
-
 }

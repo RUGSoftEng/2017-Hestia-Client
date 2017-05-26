@@ -3,10 +3,13 @@ package hestia.UI.elements;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
@@ -15,15 +18,16 @@ import hestia.UI.dialogs.SlideDialog;
 import hestia.backend.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.Cache;
+import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 
 /**
  *  This class takes care of the deviceBar.
  * The devicebar is the 'row' in the expandable list of a single device.
- * The DeviceBar class also sets the HestiaSwitch for the boolean activator.
  */
 
 public class DeviceBar extends RelativeLayout {
+    private Context context;
     private Device device;
     private Cache cache;
     private final static String TAG = "DeviceBar";
@@ -32,6 +36,7 @@ public class DeviceBar extends RelativeLayout {
         super(context);
         this.device = device;
         this.cache = cache;
+        this.context = context;
         initView();
     }
 
@@ -44,11 +49,24 @@ public class DeviceBar extends RelativeLayout {
 
         ImageView imageview = (ImageView) this.findViewById(R.id.imageview);
 
-        for(Activator activator : device.getActivators()){
+        final Switch switc = (Switch)this.findViewById(R.id.light_switch);
+        switc.setEnabled(false);
+        switc.setVisibility(View.INVISIBLE);
+
+        Activator rankOne;
+        for(final Activator activator : device.getActivators()){
             if(activator.getRank() == 0){
                 if(activator.getState().getType().equals("bool")){
-                    HestiaSwitch hestiaSwitch = new HestiaSwitch(activator, this.getContext());
-                    break;
+                    switc.setEnabled(true);
+                    switc.setVisibility(View.VISIBLE);
+                    switc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            final ActivatorState<Boolean> state = activator.getState();
+                            state.setRawState(switc.isChecked());
+                            checked(state, activator);
+                        }
+                    });
                 }
                 break;
             }
@@ -138,4 +156,29 @@ public class DeviceBar extends RelativeLayout {
         return equal;
     }
 
+    private void checked(final ActivatorState<Boolean> state, final Activator activator) {
+
+        new AsyncTask<Object, Object, Integer>() {
+            @Override
+            protected Integer  doInBackground(Object... params) {
+                Log.d(TAG, "Changed the switch to " + state);
+
+                try {
+                    activator.setState(state);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ComFaultException e) {
+                    e.printStackTrace();
+                }
+                Log.i(TAG, "Sending a post to the server");
+
+                return 0;
+            }
+
+            @Override
+            protected void onPostExecute(Integer result) {
+                // Update GUI
+            }
+        }.execute();
+    }
 }
