@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -15,7 +14,7 @@ import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import hestia.backend.ComFaultException;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;

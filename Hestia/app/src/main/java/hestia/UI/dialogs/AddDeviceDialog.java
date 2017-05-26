@@ -12,8 +12,8 @@ import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import hestia.backend.Cache;
-import hestia.backend.ComFaultException;
+import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
 
 /**
@@ -27,11 +27,11 @@ public class AddDeviceDialog extends HestiaDialog {
     private AutoCompleteTextView collectionField, pluginField;
     private ArrayAdapter<String> adapterCollections;
     private ArrayAdapter<String> adapterPlugins;
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    public AddDeviceDialog(Context context, Cache cache) {
+    public AddDeviceDialog(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
         super(context, R.layout.add_device_dialog, "Add a device");
-        this.cache = cache;
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class AddDeviceDialog extends HestiaDialog {
             protected RequiredInfo doInBackground(Object... params) {
                 RequiredInfo info = null;
                 try {
-                    info = cache.getRequiredInfo(collection, pluginName);
+                    info = serverCollectionsInteractor.getRequiredInfo(collection, pluginName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -78,7 +78,7 @@ public class AddDeviceDialog extends HestiaDialog {
             @Override
             protected void onPostExecute(RequiredInfo info) {
                 if(info != null){
-                    new AddDeviceInfo(context, info, cache).show();
+                    new AddDeviceInfo(context, info, serverCollectionsInteractor).show();
                 }
             }
         }.execute();
@@ -91,7 +91,7 @@ public class AddDeviceDialog extends HestiaDialog {
             protected ArrayList<String> doInBackground(Object... params) {
                 ArrayList<String> list = null;
                 try {
-                    list = cache.getCollections();
+                    list = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ComFaultException e) {
@@ -115,7 +115,7 @@ public class AddDeviceDialog extends HestiaDialog {
             protected ArrayList<String> doInBackground(Object... params) {
                 ArrayList<String> list = null;
                 try {
-                    list = cache.getPlugins(collection);
+                    list = serverCollectionsInteractor.getPlugins(collection);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ComFaultException e) {

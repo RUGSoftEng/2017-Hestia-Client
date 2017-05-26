@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import hestia.UI.elements.DeviceBar;
-import hestia.backend.Cache;
-import hestia.backend.NetworkHandler;
+import hestia.backend.ServerCollectionsInteractor;
+
 import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 
@@ -20,14 +20,14 @@ import java.util.ArrayList;
  */
 
 public class ExpandableDeviceList extends BaseExpandableListAdapter{
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
     private ArrayList<ArrayList<DeviceBar>> listDataChild;
     private Context context;
 
-    public ExpandableDeviceList(ArrayList<ArrayList<DeviceBar>> listChildData, Context context, Cache cache) {
+    public ExpandableDeviceList(ArrayList<ArrayList<DeviceBar>> listChildData, Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
         this.listDataChild = listChildData;
         this.context = context;
-        this.cache = cache;
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.IpDialog;
-import hestia.backend.Cache;
+import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
 public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
 
     private static final String HESTIA_IP = "HESTIA.IP";
     private static final String SERVER_IP = "IP_OF_SERVER";
@@ -52,7 +51,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
-            fragment = new DeviceListFragment(this.getApplicationContext(), this.cache);
+            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
         menuObjects = getMenuObjects();
@@ -81,14 +80,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void storeIP() {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        cache.getHandler().setIp(prefs.getString(SERVER_IP, cache.getHandler().getIp()));
+        serverCollectionsInteractor.getHandler().setIp(prefs.getString(SERVER_IP, serverCollectionsInteractor.getHandler().getIp()));
     }
 
     private void setupCache() {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
         String ip = prefs.getString(SERVER_IP, "192.168.178.31");
         NetworkHandler handler = new NetworkHandler(ip, 8000);
-        this.cache = new Cache(handler);
+        this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
     }
 
     private void initMenuFragment() {
@@ -157,7 +156,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-        IpDialog d = new IpDialog(HomeActivity.this, cache);
+        IpDialog d = new IpDialog(HomeActivity.this, serverCollectionsInteractor);
         d.show();
     }
 }

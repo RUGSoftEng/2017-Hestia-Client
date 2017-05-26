@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
-import hestia.backend.ComFaultException;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 
 public class ChangeNameDialog extends HestiaDialog {

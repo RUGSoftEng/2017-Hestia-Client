@@ -6,7 +6,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
-import hestia.backend.Cache;
+import hestia.backend.ServerCollectionsInteractor;
 
 /**
  * This class represents the dialog screen with which the IP-address of the server is asked from the
@@ -16,11 +16,11 @@ import hestia.backend.Cache;
 public class IpDialog extends HestiaDialog {
     private EditText ipField;
     private String ip;
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    public IpDialog(Activity activity, Cache cache) {
+    public IpDialog(Activity activity, ServerCollectionsInteractor serverCollectionsInteractor) {
         super(activity, R.layout.ip_dialog, "Set IP");
-        this.cache = cache;
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class IpDialog extends HestiaDialog {
         super.onCreate(savedInstanceState);
 
         ipField = (EditText) findViewById(R.id.ip);
-        ipField.setText(this.cache.getHandler().getIp());
+        ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
@@ -36,10 +36,10 @@ public class IpDialog extends HestiaDialog {
     void pressConfirm() {
         ip = ipField.getText().toString();
         if(ip!=null) {
-            cache.getHandler().setIp(ip);
+            serverCollectionsInteractor.getHandler().setIp(ip);
             // TODO refresh layout
-            Toast.makeText(getContext(),R.string.ipSetTo + cache.getHandler().getIp() + ":"
-                    + cache.getHandler().getPort(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),R.string.ipSetTo + serverCollectionsInteractor.getHandler().getIp() + ":"
+                    + serverCollectionsInteractor.getHandler().getPort(),Toast.LENGTH_SHORT).show();
 
             //TODO give correct response from server after changing ip
             Toast.makeText(getContext(), "Server returned message: + serverMessage",

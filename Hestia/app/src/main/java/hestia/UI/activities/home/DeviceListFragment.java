@@ -13,12 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
-import hestia.backend.Cache;
-import hestia.backend.ComFaultException;
+import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 
 import com.rugged.application.hestia.R;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
  * GET request to the server to populate the device list.
  */
 public class DeviceListFragment extends Fragment{
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
     private Context context;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -46,10 +45,10 @@ public class DeviceListFragment extends Fragment{
         super();
     }
 
-    public DeviceListFragment(Context context, Cache cache) {
+    public DeviceListFragment(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
         super();
         this.context = context;
-        this.cache = cache;
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     /**
@@ -81,7 +80,7 @@ public class DeviceListFragment extends Fragment{
             protected ArrayList<Device>  doInBackground(Object... params) {
                 ArrayList<Device> devices = new ArrayList<>();
                 try {
-                    devices = cache.getDevices();
+                    devices = serverCollectionsInteractor.getDevices();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ComFaultException e) {
@@ -95,7 +94,7 @@ public class DeviceListFragment extends Fragment{
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(getActivity(), device, cache);
+                    DeviceBar bar = new DeviceBar(getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -133,7 +132,7 @@ public class DeviceListFragment extends Fragment{
     private void initDeviceList(View deviceListView) {
         listDataChild = new ArrayList<>();
         expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
-        listAdapter = new ExpandableDeviceList(listDataChild, surroundingActivity, this.cache);
+        listAdapter = new ExpandableDeviceList(listDataChild, surroundingActivity, this.serverCollectionsInteractor);
         expListView.setAdapter(listAdapter);
         setOnScrollListeners();
     }
@@ -185,7 +184,7 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(getActivity(), cache).show();
+                new AddDeviceDialog(getActivity(), serverCollectionsInteractor).show();
             }
         });
     }

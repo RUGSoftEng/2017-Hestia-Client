@@ -15,9 +15,9 @@ import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlideDialog;
-import hestia.backend.ComFaultException;
+import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
-import hestia.backend.Cache;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 
@@ -29,13 +29,13 @@ import hestia.backend.models.Device;
 public class DeviceBar extends RelativeLayout {
     private Context context;
     private Device device;
-    private Cache cache;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
     private final static String TAG = "DeviceBar";
 
-    public DeviceBar(Context context, Device device, Cache cache) {
+    public DeviceBar(Context context, Device device, ServerCollectionsInteractor serverCollectionsInteractor) {
         super(context);
         this.device = device;
-        this.cache = cache;
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
         this.context = context;
         initView();
     }
@@ -59,14 +59,15 @@ public class DeviceBar extends RelativeLayout {
                 if(activator.getState().getType().equals("bool")){
                     switc.setEnabled(true);
                     switc.setVisibility(View.VISIBLE);
+                    final ActivatorState<Boolean> state = activator.getState();
                     switc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            final ActivatorState<Boolean> state = activator.getState();
                             state.setRawState(switc.isChecked());
                             checked(state, activator);
                         }
                     });
+                    switc.setChecked(state.getRawState());
                 }
                 break;
             }
@@ -96,7 +97,7 @@ public class DeviceBar extends RelativeLayout {
                                     @Override
                                     protected Void doInBackground(Object... params) {
                                         try {
-                                            cache.removeDevice(device);
+                                            serverCollectionsInteractor.removeDevice(device);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         } catch (ComFaultException e) {

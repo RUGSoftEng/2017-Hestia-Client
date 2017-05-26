@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 
-import hestia.backend.ComFaultException;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -127,8 +127,12 @@ public class Activator {
         result = 31 * result + getRank().hashCode();
         result = 31 * result + getState().hashCode();
         result = 31 * result + getName().hashCode();
-        result = 31 * result + device.hashCode();
-        result = 31 * result + getHandler().hashCode();
+        if(device != null){
+            result = 31 * result + device.hashCode();
+        }
+        if(handler != null){
+            result = 31 * result + getHandler().hashCode();
+        }
         return result;
     }
 
