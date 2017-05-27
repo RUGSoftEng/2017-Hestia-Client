@@ -33,7 +33,7 @@ public class ServerCollectionsInteractor {
         if(payload.isJsonArray()) {
             JsonArray jsonArray = payload.getAsJsonArray();
             GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Device.class, new DeviceDeserializer());
+            gsonBuilder.registerTypeAdapter(Device.class, new DeviceDeserializer(handler));
             Gson gson = gsonBuilder.create();
 
             Type type = new TypeToken<ArrayList<Device>>(){}.getType();

@@ -15,6 +15,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import hestia.backend.models.Device;
+
 /**
  * A singleton class which handles interaction between front and back-end. It contains methods
  * for sending 4 types of requests (GET, PUT, POST AND DELETE), along with additional methods
@@ -145,5 +147,15 @@ public class NetworkHandler extends Application {
 
     public String getDefaultPath() {
         return "http://" + ip + ":" + port + "/";
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (!(o instanceof NetworkHandler)) return false;
+
+        NetworkHandler networkHandler = (NetworkHandler) o;
+        if(!this.getPort().equals(networkHandler.getPort())) return false;
+        return this.getIp().equals(networkHandler.getIp());
     }
 }

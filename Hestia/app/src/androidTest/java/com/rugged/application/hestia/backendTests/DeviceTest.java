@@ -1,6 +1,9 @@
 package com.rugged.application.hestia.backendTests;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
+
+import com.rugged.application.hestia.backendTests.DummyObjects.DummyNetworkHandler;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class DeviceTest {
     private Device deviceTest;
+    private String TAG = "deviceTest";
     private ArrayList<Activator> activators;
     private final String DEFAULT_DEVICE_ID = "12";
     private final String DEFAULT_DEVICE_NAME = "deviceTest";
@@ -29,7 +33,7 @@ public class DeviceTest {
         activators = new ArrayList<>();
         activators.add(testButton);
 
-        deviceTest = new Device(DEFAULT_DEVICE_ID,DEFAULT_DEVICE_NAME,DEFAULT_DEVICE_TYPE,activators);
+        deviceTest = new Device(DEFAULT_DEVICE_ID,DEFAULT_DEVICE_NAME,DEFAULT_DEVICE_TYPE,activators, new DummyNetworkHandler("127.0.0.1", 80));
     }
 
     @Test
@@ -70,7 +74,8 @@ public class DeviceTest {
     @Test
     public void equalsTest() {
         // create a new Device object with the same data as the deviceTest object
-        Device dummyDevice = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,activators);
+        Device dummyDevice = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,activators, new DummyNetworkHandler("127.0.0.1", 80));
+        Log.e(TAG,dummyDevice.toString() + deviceTest.toString());
         assertTrue(dummyDevice.equals(deviceTest));
         assertEquals(dummyDevice, deviceTest);
     }

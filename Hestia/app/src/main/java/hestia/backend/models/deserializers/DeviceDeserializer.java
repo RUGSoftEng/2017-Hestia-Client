@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import hestia.backend.NetworkHandler;
 import hestia.backend.models.Activator;
 import hestia.backend.models.Device;
 
@@ -26,6 +27,11 @@ import hestia.backend.models.Device;
  */
 
 public class DeviceDeserializer implements JsonDeserializer<Device> {
+    private NetworkHandler handler;
+
+    public DeviceDeserializer(NetworkHandler handler) {
+        this.handler = handler;
+    }
 
     /**
      * Deserializes a JSON object, creating a Device.
@@ -55,10 +61,10 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
         Type typeToken = new TypeToken<ArrayList<Activator>>(){}.getType();
         ArrayList<Activator> activators = gson.fromJson(jsonActivators, typeToken);
 
-        Device device = new Device(deviceId, name, type, activators);
+        Device device = new Device(deviceId, name, type, activators, handler);
         this.connectActivatorsToDevice(activators, device);
 
-        return new Device(deviceId, name, type, activators);
+        return new Device(deviceId, name, type, activators, handler);
     }
 
     private void connectActivatorsToDevice(ArrayList<Activator> activators, Device device) {

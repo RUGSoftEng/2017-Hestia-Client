@@ -63,7 +63,7 @@ public class LoginTest {
         onView(withId(R.id.loginButton)).perform(click());
 
         intended(allOf(
-                hasComponent(hasShortClassName("hestia.UI.Activities.DeviceListActivity")),
+                hasComponent(hasShortClassName("hestia.UI.activities.home.HomeActivity")),
                 toPackage(PACKAGE_NAME)));
 
     }

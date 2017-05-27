@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rugged.application.hestia.backendTests.DummyObjects.DummyNetworkHandler;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class ServerCollectionsInteractorTest {
     @Before
     public void setUp() {
         serverCollectionsInteractor = new ServerCollectionsInteractor(new DummyNetworkHandler("127.0.0.1", 80));
-        dummyDevice = new Device("dummyId","dummyName","dummyType",new ArrayList<Activator>());
+        dummyDevice = new Device("dummyId","dummyName","dummyType",new ArrayList<Activator>(), new DummyNetworkHandler("127.0.0.1", 80));
         DUMMY_IP = "0.0.0.0";
         DUMMY_PORT = 1000;
     }
@@ -78,33 +79,5 @@ public class ServerCollectionsInteractorTest {
     public void setAndGetPortTest() {
     }
 
-    private class DummyNetworkHandler extends NetworkHandler{
-
-        /* TODO implement this class to mcok the behaviour of the network handler based on the endpoint given. */
-
-        public DummyNetworkHandler(String ip, int port) {
-            super(ip, port);
-        }
-
-        public JsonElement GET(String endpoint) throws IOException {
-            JsonElement payload = new JsonObject();
-            return payload;
-        }
-
-        public JsonElement POST(JsonObject object, String endpoint) throws IOException {
-            JsonElement payload = new JsonObject();
-            return payload;
-        }
-
-        public JsonElement DELETE(String endpoint) throws IOException {
-            JsonElement payload = new JsonObject();
-            return payload;
-        }
-
-        public JsonElement PUT(JsonObject object, String endpoint) throws IOException {
-            JsonElement payload = new JsonObject();
-            return payload;
-        }
-    }
 
 }
