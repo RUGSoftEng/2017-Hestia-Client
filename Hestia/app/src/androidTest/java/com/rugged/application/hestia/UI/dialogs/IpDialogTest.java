@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.UITests;
+package com.rugged.application.hestia.UI.dialogs;
 
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;

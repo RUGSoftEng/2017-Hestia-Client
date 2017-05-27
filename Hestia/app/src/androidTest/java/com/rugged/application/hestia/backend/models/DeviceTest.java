@@ -1,9 +1,9 @@
-package com.rugged.application.hestia.backendTests;
+package com.rugged.application.hestia.backend.models;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.rugged.application.hestia.backendTests.DummyObjects.DummyNetworkHandler;
+import com.rugged.application.hestia.backend.dummyObjects.DummyNetworkHandler;
 
 import org.junit.Before;
 import org.junit.Test;

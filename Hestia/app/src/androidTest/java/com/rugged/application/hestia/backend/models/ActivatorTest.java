@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.backendTests;
+package com.rugged.application.hestia.backend.models;
 
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;
