@@ -30,7 +30,7 @@ public class IpDialog extends HestiaDialog {
 
         ipField = (EditText) findViewById(R.id.ip);
         //TODO: app crashes if this.serverCollectionsInteractor.getHandler().getIp() is null
-//        ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
+        ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
