@@ -24,7 +24,6 @@ public class NetworkHandlerTest {
     @Test
     public void packageTest() {}
 
-
     @Test
     public void setAndGetIpTest() {
         assertEquals(dummyIP, dummyHandler.getIp());
@@ -32,7 +31,6 @@ public class NetworkHandlerTest {
         dummyHandler.setIp(newIP);
         assertEquals(newIP, dummyHandler.getIp());
     }
-
 
     @Test
     public void setAndGetPortTest() {
@@ -42,14 +40,30 @@ public class NetworkHandlerTest {
         assertEquals(newPort, dummyHandler.getPort());
     }
 
+    @Test
+    public void isSuccessfulRequestTest() {
+        Integer responseCode1 = 200;
+        Integer responseCode2 = 404;
+        Integer responseCode3 = null;
+        assertTrue(dummyHandler.isSuccessfulRequest(responseCode1));
+        assertFalse(dummyHandler.isSuccessfulRequest(responseCode2));
+        assertFalse(dummyHandler.isSuccessfulRequest(responseCode3));
+    }
 
     @Test
-    public void isSuccessfulRequestTest() {}
+    public void getDefaultPathTest() {
+        String path1 = "http://" + dummyIP + ":" + dummyPort + "/";
+        assertNotNull(dummyHandler.getDefaultPath());
+        assertEquals(path1, dummyHandler.getDefaultPath());
 
-
-    @Test
-    public void getDefaultPathTest() {}
-
+        String IP = "1.1.1.1";
+        Integer port = 2000;
+        String path2 = "http://" + IP + ":" + port + "/";
+        dummyHandler.setIp(IP);
+        dummyHandler.setPort(port);
+        assertNotNull(dummyHandler.getDefaultPath());
+        assertEquals(path2, dummyHandler.getDefaultPath());
+    }
 
     @Test
     public void equalsTest() {}

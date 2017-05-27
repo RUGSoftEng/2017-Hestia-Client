@@ -125,7 +125,7 @@ public class NetworkHandler extends Application {
      * @param responseCode the response code of the request.
      * @return true if it succeeded, false otherwise.
      */
-    private boolean isSuccessfulRequest(Integer responseCode) {
+    public boolean isSuccessfulRequest(Integer responseCode) {
         return (responseCode != null && (200 <= responseCode && responseCode <= 299));
     }
 
