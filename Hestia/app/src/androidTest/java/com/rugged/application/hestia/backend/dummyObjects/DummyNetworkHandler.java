@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.backendTests.DummyObjects;
+package com.rugged.application.hestia.backend.dummyObjects;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

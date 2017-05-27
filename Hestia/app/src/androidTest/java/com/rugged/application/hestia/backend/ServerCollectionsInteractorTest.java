@@ -1,21 +1,17 @@
-package com.rugged.application.hestia.backendTests;
+package com.rugged.application.hestia.backend;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.rugged.application.hestia.backendTests.DummyObjects.DummyNetworkHandler;
+import com.rugged.application.hestia.backend.dummyObjects.DummyNetworkHandler;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.models.Activator;
 import hestia.backend.models.Device;

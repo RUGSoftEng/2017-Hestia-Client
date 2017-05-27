@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.UITests;
+package com.rugged.application.hestia.UI.activities.login;
 
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
