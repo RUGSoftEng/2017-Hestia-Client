@@ -184,7 +184,7 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(getActivity(), serverCollectionsInteractor).show();
+                new AddDeviceDialog(getActivity(), serverCollectionsInteractor);
             }
         });
     }

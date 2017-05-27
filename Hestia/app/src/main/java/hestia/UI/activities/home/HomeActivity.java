@@ -157,6 +157,5 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void showIpDialog() {
         IpDialog d = new IpDialog(HomeActivity.this, serverCollectionsInteractor);
-        d.show();
     }
 }

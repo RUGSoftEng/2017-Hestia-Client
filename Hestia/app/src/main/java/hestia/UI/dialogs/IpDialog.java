@@ -2,6 +2,7 @@ package hestia.UI.dialogs;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,7 +29,8 @@ public class IpDialog extends HestiaDialog {
         super.onCreate(savedInstanceState);
 
         ipField = (EditText) findViewById(R.id.ip);
-        ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
+        //TODO: app crashes if this.serverCollectionsInteractor.getHandler().getIp() is null
+//        ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
@@ -48,5 +50,10 @@ public class IpDialog extends HestiaDialog {
             Toast.makeText(getContext(), "Server returned message: + serverMessage",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
