@@ -109,7 +109,9 @@ public class AddDeviceDialog extends HestiaDialog {
             @Override
             protected void onPostExecute(ArrayList<String> collections) {
                 adapterCollections.clear();
-                adapterCollections.addAll(collections);
+                if(collections != null){
+                    adapterCollections.addAll(collections);
+                }
             }
         }.execute();
     }
