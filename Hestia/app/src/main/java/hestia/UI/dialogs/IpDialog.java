@@ -26,7 +26,6 @@ public class IpDialog extends HestiaDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ipField = (EditText) findViewById(R.id.ip);
         ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
