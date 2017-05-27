@@ -22,9 +22,6 @@ public class NetworkHandlerTest {
     }
 
     @Test
-    public void packageTest() {}
-
-    @Test
     public void setAndGetIpTest() {
         assertEquals(dummyIP, dummyHandler.getIp());
         String newIP ="1.0.0.0";
@@ -66,7 +63,25 @@ public class NetworkHandlerTest {
     }
 
     @Test
-    public void equalsTest() {}
+    public void equalsTest() {
+        NetworkHandler handler1 = this.dummyHandler;
+        assertNotNull(handler1);
+        assertTrue(dummyHandler.equals(handler1));
+
+        NetworkHandler handler2 = new NetworkHandler(dummyIP, dummyPort);
+        assertNotNull(handler2);
+        assertTrue(dummyHandler.equals(handler2));
+
+        NetworkHandler handler3 = null;
+        assertNull(handler3);
+        assertFalse(dummyHandler.equals(handler3));
+
+        String IP = "1.1.1.1";
+        Integer port = 2000;
+        NetworkHandler handler4 = new NetworkHandler(IP, port);
+        assertNotNull(handler4);
+        assertFalse(dummyHandler.equals(handler4));
+    }
 
 
     @After
