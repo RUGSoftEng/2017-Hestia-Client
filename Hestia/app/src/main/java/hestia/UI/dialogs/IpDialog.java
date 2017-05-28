@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
+
+import hestia.UI.activities.home.HomeActivity;
 import hestia.backend.ServerCollectionsInteractor;
 
 /**
@@ -29,23 +31,23 @@ public class IpDialog extends HestiaDialog2  {
 
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    public static IpDialog newInstance(String ip, ServerCollectionsInteractor serverCollectionsInteractor) {
+    public static IpDialog newInstance(String ip) {
         IpDialog fragment = new IpDialog();
         Bundle bundle = new Bundle();
         bundle.putString("IP_ADDRESS", ip);
-        bundle.putSerializable("INTERACTOR", serverCollectionsInteractor);
         fragment.setArguments(bundle);
-
         return fragment;
+    }
+
+    public void setInteractor(ServerCollectionsInteractor interactor) {
+        serverCollectionsInteractor = interactor;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         if (savedInstanceState != null) {
             ip = savedInstanceState.getString("IP_ADDRESS");
-            serverCollectionsInteractor = (ServerCollectionsInteractor)savedInstanceState
-                    .getSerializable("INTERACTOR");
-
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set Dialog Title
@@ -55,6 +57,9 @@ public class IpDialog extends HestiaDialog2  {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Do something else
+                        pressConfirm();
+                        dismiss();
+
                     }
                 })
 
@@ -70,7 +75,7 @@ public class IpDialog extends HestiaDialog2  {
 
         ipField = (EditText) view.findViewById(R.id.ip);
 //        ipField.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
+        ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
 
         if (ip != null) {
             ipField.setText(ip);
@@ -81,6 +86,28 @@ public class IpDialog extends HestiaDialog2  {
         dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         return dlg;
+    }
+
+    @Override
+    void pressCancel() {}
+
+    @Override
+    void pressConfirm() {
+        ip = ipField.getText().toString();
+        Log.i(TAG, "My ip is now:" + ip);
+        if(ip!=null) {
+
+            serverCollectionsInteractor.getHandler().setIp(ip);
+            Log.i(TAG, "My ip is changed to: " + ip);
+//             TODO refresh layout
+            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
+                            .getIp(),
+                    Toast.LENGTH_SHORT).show();
+
+            //TODO give correct response from server after changing ip
+            Toast.makeText(getContext(), "Server returned message: + serverMessage",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -125,23 +152,5 @@ public class IpDialog extends HestiaDialog2  {
 ////        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 //    }
 
-    @Override
-    void pressCancel() {}
 
-    @Override
-    void pressConfirm() {
-        ip = ipField.getText().toString();
-        Log.i(TAG, "My ip is now:" + ip);
-        if(ip!=null) {
-            serverCollectionsInteractor.getHandler().setIp(ip);
-//             TODO refresh layout
-            Toast.makeText(getContext(),R.string.ipSetTo + serverCollectionsInteractor.getHandler()
-                    .getIp() + ":" + serverCollectionsInteractor.getHandler().getPort(),
-                    Toast.LENGTH_SHORT).show();
-
-            //TODO give correct response from server after changing ip
-            Toast.makeText(getContext(), "Server returned message: + serverMessage",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
 }

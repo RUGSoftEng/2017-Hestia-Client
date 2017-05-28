@@ -1,7 +1,9 @@
 package hestia.UI.elements;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.UI.dialogs.ChangeNameDialog;
+import hestia.UI.dialogs.IpDialog;
 import hestia.UI.dialogs.SlideDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
@@ -27,16 +30,18 @@ import hestia.backend.models.Device;
  */
 
 public class DeviceBar extends RelativeLayout {
-    private Context context;
+    private Activity context;
     private Device device;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final static String TAG = "DeviceBar";
+    private FragmentManager fm;
 
-    public DeviceBar(Context context, Device device, ServerCollectionsInteractor serverCollectionsInteractor) {
+    public DeviceBar(FragmentManager fm, Activity context, Device device, ServerCollectionsInteractor serverCollectionsInteractor) {
         super(context);
         this.device = device;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
         this.context = context;
+        this.fm = fm;
         initView();
     }
 
@@ -109,7 +114,11 @@ public class DeviceBar extends RelativeLayout {
 
                                 break;
                             case R.id.change_name:
-                                new ChangeNameDialog(getContext(), device).show();
+                                ChangeNameDialog fragment = ChangeNameDialog.newInstance();
+                                fragment.setDevice(device);
+
+                                fragment.show(fm, "dialog");
+
                                 break;
                             default:
                                 break;

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 
+import hestia.UI.dialogs.IpDialog;
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.ServerCollectionsInteractor;
@@ -40,6 +42,7 @@ public class DeviceListFragment extends Fragment{
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
+    private FragmentManager fm;
 
     public DeviceListFragment() {
         super();
@@ -49,7 +52,10 @@ public class DeviceListFragment extends Fragment{
         super();
         this.context = context;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
+        fm = getActivity().getSupportFragmentManager();
     }
+
+    public void
 
     /**
      *
@@ -65,7 +71,7 @@ public class DeviceListFragment extends Fragment{
 
         createFloatingButton(deviceListView);
 
-        initRefreshLayou(deviceListView);
+        initRefreshLayout(deviceListView);
 
         initDeviceList(deviceListView);
 
@@ -94,7 +100,7 @@ public class DeviceListFragment extends Fragment{
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(getActivity(), device, serverCollectionsInteractor);
+                    DeviceBar bar = new DeviceBar(fm, getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -137,7 +143,7 @@ public class DeviceListFragment extends Fragment{
         setOnScrollListeners();
     }
 
-    private void initRefreshLayou(View deviceListView) {
+    private void initRefreshLayout(View deviceListView) {
         swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -184,7 +190,10 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(getActivity(), serverCollectionsInteractor);
+
+                AddDeviceDialog fragment = AddDeviceDialog.newInstance();
+                fragment.setInteractor(serverCollectionsInteractor);
+                fragment.show(getFragmentManager(), "dialog");
             }
         });
     }

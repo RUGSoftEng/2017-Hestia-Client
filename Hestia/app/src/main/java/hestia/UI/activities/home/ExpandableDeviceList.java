@@ -28,6 +28,7 @@ public class ExpandableDeviceList extends BaseExpandableListAdapter{
         this.listDataChild = listChildData;
         this.context = context;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
+
     }
 
     @Override

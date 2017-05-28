@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,7 +32,7 @@ import hestia.backend.models.RequiredInfo;
  * Finally it sends back the HashMap to the backendInteractor which posts it to the server.
  */
 
-public class AddDeviceInfo extends HestiaDialog {
+public class AddDeviceInfo extends HestiaDialog2 {
     private RequiredInfo info;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final String TAG = "AddDeviceInfo";
@@ -38,38 +40,76 @@ public class AddDeviceInfo extends HestiaDialog {
     private final String fixedFieldPlugin = "plugin";
     private final String propReqInfo = "required_info";
     private static final String EMPTY_STRING="";
+    private View view;
+
+    public static AddDeviceInfo newInstance() {
+        AddDeviceInfo fragment = new AddDeviceInfo();
+
+        return fragment;
+    }
 
 
-    public AddDeviceInfo(Context context, RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
-        super(context, R.layout.enter_device_info, "Add a device");
+//    public AddDeviceInfo(Context context, RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
+//        super(context, R.layout.enter_device_info, "Add a device");
+//        this.info = info;
+//        this.serverCollectionsInteractor = serverCollectionsInteractor;
+//    }
+
+    public void setData(RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
         this.info = info;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        int count = 0;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Set Dialog Title
+        builder.setTitle("Change IP")
+
+                // Positive button
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something else
+                        pressConfirm();
+                        dismiss();
+
+                    }
+                })
+
+                // Negative Button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,	int which) {
+                        // Do something else
+                    }
+
+                });
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
-        int count = 0;
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        view = inflater.inflate(R.layout.ip_dialog, null);
 
-        this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
+        final LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.linearMain);
+
+//        this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
 
         final HashMap<String, String> fields = info.getInfo();
 
+
+
         for (final String key : fields.keySet()) {
-            LinearLayout subLayout = new LinearLayout(context);
+            LinearLayout subLayout = new LinearLayout(getActivity());
 
             // Add text
-            TextView name = new TextView(context);
+            TextView name = new TextView(getActivity());
             name.setText(key);
             name.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage(fields.get(key));
                     AlertDialog dialog = builder.create();
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -85,16 +125,72 @@ public class AddDeviceInfo extends HestiaDialog {
 
             EditText field = createEditText(key, params , count);
             field.requestFocus();
-            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             subLayout.addView(field);
 
             mainLayout.addView(subLayout);
             count++;
         }
+
+
+
+
+        builder.setView(view);
+
+        AlertDialog dlg = builder.create();
+        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dlg;
     }
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//
+//        final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
+//        int count = 0;
+//
+//        this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
+//
+//        final HashMap<String, String> fields = info.getInfo();
+//
+//        for (final String key : fields.keySet()) {
+//            LinearLayout subLayout = new LinearLayout(context);
+//
+//            // Add text
+//            TextView name = new TextView(context);
+//            name.setText(key);
+//            name.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                    builder.setMessage(fields.get(key));
+//                    AlertDialog dialog = builder.create();
+//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+//
+//                    wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+//
+//                    dialog.show();
+//                    return false;
+//                }
+//            });
+//            subLayout.addView(name);
+//
+//            EditText field = createEditText(key, params , count);
+//            field.requestFocus();
+//            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+//            subLayout.addView(field);
+//
+//            mainLayout.addView(subLayout);
+//            count++;
+//        }
+//    }
+
     private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
-        final EditText field = new EditText(context);
+        final EditText field = new EditText(getActivity());
         field.setId(count);
         if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
             field.setFocusable(false);
@@ -107,7 +203,7 @@ public class AddDeviceInfo extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        Toast.makeText(context, R.string.cancel, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.cancel, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -115,11 +211,11 @@ public class AddDeviceInfo extends HestiaDialog {
         new AsyncTask<Object, Object, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
-                updateRequiredInfo();
+                updateRequiredInfo(view);
                 try {
                     serverCollectionsInteractor.addDevice(info);
                 } catch (IOException e) {
-                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
                 return 0;
@@ -134,13 +230,14 @@ public class AddDeviceInfo extends HestiaDialog {
     }
 
 
+
     /**
      * Updates the required info with the entered information
      */
-    private void updateRequiredInfo() {
+    private void updateRequiredInfo(View v) {
         int count = 0;
         for(String key : this.info.getInfo().keySet()) {
-            EditText field = (EditText) findViewById(count);
+            EditText field = (EditText) v.findViewById(count);
             String valueField = field.getText().toString();
 
             this.info.getInfo().put(key, valueField);
