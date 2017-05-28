@@ -28,7 +28,8 @@ public class NetworkHandler extends Application {
     private Integer port;
 
     public NetworkHandler(String ip, int port){
-        this.ip = ip;
+//        this.ip = ip;
+        this.ip = "192.168.178.30";
         this.port = port;
     }
 
@@ -132,7 +133,7 @@ public class NetworkHandler extends Application {
     }
 
     public void setIp(String ip) {
-        this.ip = ip;
+        //this.ip = ip;
     }
 
     public Integer getPort() {

@@ -41,6 +41,7 @@ abstract class HestiaDialog extends AlertDialog{
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(layoutReference, null);
         builder.setView(view);
+//        addSpecificFunctionality(view);
         AlertDialog d = builder.create();
         d.show();
     }
@@ -48,4 +49,6 @@ abstract class HestiaDialog extends AlertDialog{
     abstract void pressCancel();
 
     abstract void pressConfirm();
+
+//    abstract void addSpecificFunctionality(View v);
 }

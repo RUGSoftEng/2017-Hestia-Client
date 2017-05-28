@@ -83,9 +83,6 @@ public class AddDeviceInfo extends HestiaDialog {
             });
             subLayout.addView(name);
 
-
-            //TODO: do not send key to edittext, but show it in dialog:
-            //Add field
             EditText field = createEditText(key, params , count);
             field.requestFocus();
             this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);

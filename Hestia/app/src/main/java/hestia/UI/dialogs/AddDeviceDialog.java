@@ -57,6 +57,8 @@ public class AddDeviceDialog extends HestiaDialog {
         });
     }
 
+
+
     @Override
     void pressCancel() {
         Toast.makeText(context, "Cancel pressed", Toast.LENGTH_SHORT).show();
@@ -88,6 +90,11 @@ public class AddDeviceDialog extends HestiaDialog {
             }
         }.execute();
     }
+
+//    @Override
+//    void addSpecificFunctionality(View v) {
+//        collectionField =
+//    }
 
 
     private void getCollections() {

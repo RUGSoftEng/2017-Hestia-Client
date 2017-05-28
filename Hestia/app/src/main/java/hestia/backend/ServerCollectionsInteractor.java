@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import hestia.backend.models.deserializers.RequiredInfoDeserializer;
  * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
  * IP address, or port number. During execution, there is a single ServerCollectionsInteractor accessible.
  */
-public class ServerCollectionsInteractor {
+public class ServerCollectionsInteractor implements Serializable{
     private NetworkHandler handler;
 
     public ServerCollectionsInteractor(NetworkHandler handler){
