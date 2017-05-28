@@ -2,6 +2,7 @@ package hestia.UI.activities.home;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
+import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.IpDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
@@ -32,10 +34,12 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private static final String SERVER_IP = "IP_OF_SERVER";
     private final String changeIpText = "Set IP ";
     private final String logoutText = "Logout ";
+    public static final String changeCredentialsText = "Change user/pass";
     private final String extraName = "login";
     private final String logoutExtraValue = "logout";
     private final int IP = 1;
-    private final int LOGOUT = 2;
+    private final int CHANGECREDENTIALS = 2;
+    private final int LOGOUT = 3;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,10 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         ip.setResource(R.mipmap.ic_router);
         objects.add(ip);
 
+        MenuObject changeCredentials = new MenuObject(changeCredentialsText);
+        changeCredentials.setResource(R.mipmap.ic_key);
+        objects.add(changeCredentials);
+
         MenuObject logout = new MenuObject(logoutText);
         logout.setResource(R.mipmap.ic_exit_to_app);
         objects.add(logout);
@@ -141,6 +149,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
             case IP:
                 showIpDialog();
                 break;
+            case CHANGECREDENTIALS:
+                showChangeCredentialsDialog();
+                break;
             case LOGOUT:
                 gotoLoginActivity();
                 break;
@@ -158,5 +169,10 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private void showIpDialog() {
         IpDialog d = new IpDialog(HomeActivity.this, serverCollectionsInteractor);
         d.show();
+    }
+
+    private void showChangeCredentialsDialog() {
+        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
+        changeCredentialsDialog.show();
     }
 }
