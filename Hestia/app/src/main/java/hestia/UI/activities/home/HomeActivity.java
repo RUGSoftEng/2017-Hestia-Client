@@ -33,7 +33,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private static final String HESTIA_IP = "HESTIA.IP";
     private static final String SERVER_IP = "IP_OF_SERVER";
     private final String changeIpText = "Set IP ";
-    private final String logoutText = "Logout ";
+    public static final String logoutText = "Logout ";
     public static final String changeCredentialsText = "Change user/pass";
     private final String extraName = "login";
     private final String logoutExtraValue = "logout";
