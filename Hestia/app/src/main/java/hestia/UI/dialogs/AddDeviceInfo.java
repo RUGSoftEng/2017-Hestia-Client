@@ -3,6 +3,7 @@ package hestia.UI.dialogs;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -89,22 +90,29 @@ public class AddDeviceInfo extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        new AsyncTask<Object, Object, Integer>() {
+        new AsyncTask<Object, String, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
                 updateRequiredInfo();
                 try {
                     serverCollectionsInteractor.addDevice(info);
                 } catch (IOException e) {
-                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                } catch (ComFaultException e) {
-                    e.printStackTrace();
-                    String error = e.getError();
-                    String message = e.getMessage();
-                    Toast.makeText(context, error + ":" + message, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG,e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
                 }
                 return 0;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
