@@ -89,7 +89,6 @@ public class AddDeviceDialog extends HestiaDialog {
         }.execute();
     }
 
-
     private void getCollections() {
         new AsyncTask<Object, Object, ArrayList<String>>() {
             @Override
