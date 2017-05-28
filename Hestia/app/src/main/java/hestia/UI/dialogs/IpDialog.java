@@ -29,8 +29,9 @@ public class IpDialog extends HestiaDialog {
         super.onCreate(savedInstanceState);
 
         ipField = (EditText) findViewById(R.id.ip);
-        //TODO: app crashes if this.serverCollectionsInteractor.getHandler().getIp() is null
-        ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
+        if (this.serverCollectionsInteractor.getHandler().getIp() != null) {
+            ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
+        }
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
@@ -50,10 +51,5 @@ public class IpDialog extends HestiaDialog {
             Toast.makeText(getContext(), "Server returned message: + serverMessage",
                     Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 }

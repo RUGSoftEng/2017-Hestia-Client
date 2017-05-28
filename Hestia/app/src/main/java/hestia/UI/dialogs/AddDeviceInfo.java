@@ -70,10 +70,7 @@ public class AddDeviceInfo extends HestiaDialog {
                 @Override
                 public boolean onLongClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                    builder
-                            .setMessage(
-                                    fields.get(key));
+                    builder.setMessage(fields.get(key));
                     AlertDialog dialog = builder.create();
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
