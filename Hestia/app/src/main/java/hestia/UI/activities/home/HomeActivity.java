@@ -1,5 +1,6 @@
 package hestia.UI.activities.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -79,14 +80,15 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void storeIP() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        serverCollectionsInteractor.getHandler().setIp(prefs.getString(SERVER_IP, serverCollectionsInteractor.getHandler().getIp()));
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
+        prefs.edit().putString(SERVER_IP,serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
     private void setupCache() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        String ip = prefs.getString(SERVER_IP, "192.168.178.31");
-        NetworkHandler handler = new NetworkHandler(ip, 8000);
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
+        String ip = prefs.getString(SERVER_IP, getApplicationContext().getString(R.string.default_ip));
+        NetworkHandler handler = new NetworkHandler(ip, Integer.valueOf(
+                getApplicationContext().getString(R.string.default_port)));
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
     }
 
