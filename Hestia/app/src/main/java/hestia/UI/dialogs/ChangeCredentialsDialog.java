@@ -9,6 +9,8 @@ import com.rugged.application.hestia.R;
 
 import hestia.UI.activities.login.LoginActivity;
 
+import static hestia.UI.activities.login.LoginActivity.hashString;
+
 /**
  * This class opens the dialog to change the username and password to login.
  * It uses some of the static variables and the static hashing function form LoginActivity.
@@ -51,13 +53,13 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         String feedback = "";
         if(checkOldPass(oldPass)){
             if(newPass.equals(newPassCheck) && !newPass.equals("")){
-                setSharedPrefs(LoginActivity.prefsPass,LoginActivity.hashPassword(newPass));
+                setSharedPrefs(LoginActivity.prefsPass, hashString(newPass));
                 feedback = pass_set + newPass + "\n";
             } else{
                 feedback = pass_check_wrong + "\n";
             }
             if(newUser.length()>4){
-                setSharedPrefs(LoginActivity.prefsUser,newUser);
+                setSharedPrefs(LoginActivity.prefsUser,hashString(newUser));
                 feedback = feedback + user_set + newUser;
             } else {
                 feedback = feedback + user_not_set;
@@ -71,7 +73,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
 
     private boolean checkOldPass(String oldPass){
         String corrpass = loginPreferences.getString(LoginActivity.prefsPass, "");
-        return corrpass.equals(LoginActivity.hashPassword(oldPass));
+        return corrpass.equals(hashString(oldPass));
     }
 
     private void setSharedPrefs(String name, String value){

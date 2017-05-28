@@ -42,7 +42,7 @@ public class ChangeCredentialsDialogTest {
             new IntentsTestRule<>(HomeActivity.class);
     @Before
     public void setUp(){
-        // To be sure that the correct snadard credentials are set, logout and login.
+        // To be sure that the correct standard credentials are set, logout and login.
         onView(withId(context_menu)).perform(click());
 
         onView(withText(LOGOUT_TEXT)).perform(click());

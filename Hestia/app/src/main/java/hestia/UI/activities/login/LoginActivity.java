@@ -1,7 +1,6 @@
 package hestia.UI.activities.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -56,7 +55,7 @@ public class LoginActivity extends Activity  {
 
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         if(loginPreferences.getString(prefsUser,"").equals("")){
-            setSharedPreferences(standardUser,hashPassword(standardPass),false);
+            setSharedPreferences(hashString(standardUser), hashString(standardPass),false);
         }
         Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
         if (saveLogin) {
@@ -100,8 +99,9 @@ public class LoginActivity extends Activity  {
     private boolean checkCredentials(String username,String password){
         String corrPass = loginPreferences.getString(prefsPass, "");
         String corrUser = loginPreferences.getString(prefsUser, "");
-        String hashedPass = hashPassword(password);
-        return(username.equals(corrUser)&&hashedPass.equals(corrPass));
+        String hashedUser = hashString(username);
+        String hashedPass = hashString(password);
+        return(hashedUser.equals(corrUser)&&hashedPass.equals(corrPass));
     }
 
     private void gotoMainActivity(){
@@ -113,8 +113,8 @@ public class LoginActivity extends Activity  {
     private void setSharedPreferences(String username, String password, Boolean saveLogin){
         loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.putBoolean(saveLoginString, saveLogin);
-        loginPrefsEditor.putString(prefsUser, username);
-        loginPrefsEditor.putString(prefsPass, hashPassword(password));
+        loginPrefsEditor.putString(prefsUser, hashString(username));
+        loginPrefsEditor.putString(prefsPass, hashString(password));
         loginPrefsEditor.apply();
     }
 
@@ -137,18 +137,21 @@ public class LoginActivity extends Activity  {
         Toast.makeText(getApplicationContext(),info,Toast.LENGTH_SHORT).show();
     }
 
-    public static String hashPassword(String password) {
-        MessageDigest digest = null;
-        String output = null;
+    public static String hashString(String string){
+        String hashedString = null;
         try {
-            digest = MessageDigest.getInstance("SHA-512");
-            String input = password + SALT;
-            digest.update(input.getBytes("UTF-8"));
-            byte[] hash = digest.digest();
-            output = new String(hash, "UTF-8");
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(SALT.getBytes("UTF-8"));
+            byte[] bytes = md.digest(string.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++){
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            hashedString = sb.toString();
+        }
+        catch (NoSuchAlgorithmException | UnsupportedEncodingException e){
             e.printStackTrace();
         }
-        return output;
+        return hashedString;
     }
 }
