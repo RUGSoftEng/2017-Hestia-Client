@@ -54,7 +54,7 @@ public class LoginActivity extends Activity  {
         String extra = fromIntent.getStringExtra(intentExtra);
 
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
-        if(loginPreferences.getString(prefsUser,"").equals("")){
+        if(loginPreferences.getString(prefsUser,"").equals("")||loginPreferences.getString(prefsUser,"")==null){
             setSharedPreferences(hashString(standardUser), hashString(standardPass),false);
         }
         Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
