@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import hestia.UI.activities.home.HomeActivity;
+import hestia.UI.activities.login.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -42,6 +43,8 @@ public class ChangeCredentialsDialogTest {
             new IntentsTestRule<>(HomeActivity.class);
     @Before
     public void setUp(){
+
+
         // To be sure that the correct standard credentials are set, logout and login.
         onView(withId(context_menu)).perform(click());
 
