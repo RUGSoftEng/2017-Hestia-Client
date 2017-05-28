@@ -1,6 +1,7 @@
 package hestia.UI.activities.login;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,7 +56,7 @@ public class LoginActivity extends Activity  {
 
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         if(loginPreferences.getString(prefsUser,"").equals("")){
-            setSharedPreferences(standardUser,standardPass,false);
+            setSharedPreferences(standardUser,hashPassword(standardPass),false);
         }
         Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
         if (saveLogin) {
