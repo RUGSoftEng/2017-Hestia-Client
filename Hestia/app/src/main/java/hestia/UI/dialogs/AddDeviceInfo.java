@@ -9,12 +9,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.HashMap;
-
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -90,12 +87,14 @@ public class AddDeviceInfo extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        new AsyncTask<Object, String, Integer>() {
+        new AsyncTask<Object, String, Boolean>() {
+            Boolean isSuccessful = false;
             @Override
-            protected Integer doInBackground(Object... params) {
+            protected Boolean doInBackground(Object... params) {
                 updateRequiredInfo();
                 try {
                     serverCollectionsInteractor.addDevice(info);
+                    isSuccessful = true;
                 } catch (IOException e) {
                     Log.e(TAG,e.toString());
                     String exceptionMessage = "Could not connect to the server";
@@ -107,17 +106,12 @@ public class AddDeviceInfo extends HestiaDialog {
                     String exceptionMessage = error + ":" + message;
                     publishProgress(exceptionMessage);
                 }
-                return 0;
+                return isSuccessful;
             }
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected void onPostExecute(Integer returnValue) {
-                // TODO: find a way to update the GUI from here
             }
         }.execute();
 
@@ -125,7 +119,7 @@ public class AddDeviceInfo extends HestiaDialog {
 
 
     /**
-     * Updates the required info with the entered information
+     * Updates the required info with the entered information.
      */
     private void updateRequiredInfo() {
         int count = 0;
@@ -137,5 +131,4 @@ public class AddDeviceInfo extends HestiaDialog {
             count++;
         }
     }
-
 }

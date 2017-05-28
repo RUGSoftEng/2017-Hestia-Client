@@ -9,7 +9,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import hestia.UI.elements.DeviceBar;
 import hestia.backend.ServerCollectionsInteractor;
-
 import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 
@@ -43,10 +42,7 @@ public class ExpandableDeviceList extends BaseExpandableListAdapter{
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        // TODO move the slide diaog into the device class
-
         final DeviceBar dBar = (DeviceBar) getChild(groupPosition, childPosition);
-
         return dBar;
     }
 

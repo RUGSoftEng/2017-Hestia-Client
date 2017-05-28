@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.deserializers.DeviceDeserializer;
@@ -38,7 +37,7 @@ public class ServerCollectionsInteractor {
 
             Type type = new TypeToken<ArrayList<Device>>(){}.getType();
             ArrayList<Device> devices = gson.fromJson(jsonArray, type);
-            this.connectDevicesToHandler(devices);
+            this.connectHandlerToDevices(devices);
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
@@ -83,19 +82,23 @@ public class ServerCollectionsInteractor {
     }
 
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
-        JsonElement object = handler.GET("plugins");
-        return ParseInfo(object);
+        String endpoint = "plugins";
+        JsonElement payload = handler.GET(endpoint);
+        return ParseInfo(payload);
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
-        JsonElement object = handler.GET("plugins/" + collection);
-        return ParseInfo(object);
+        String endpoint = "plugins/" + collection;
+        JsonElement payload = handler.GET(endpoint);
+        return ParseInfo(payload);
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
-        JsonElement rawObject = handler.GET("plugins/" + collection + "/plugins/" + plugin);
-        if (rawObject.isJsonObject()) {
-            JsonObject object = rawObject.getAsJsonObject();
+        String endpoint = "plugins/" + collection + "/plugins/" + plugin;
+        JsonElement payload = handler.GET(endpoint);
+        RequiredInfo requiredInfo = null;
+        if (payload.isJsonObject()) {
+            JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
                 String error = object.get("error").getAsString();
                 String message = object.get("message").getAsString();
@@ -104,27 +107,27 @@ public class ServerCollectionsInteractor {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
                 Gson gson = gsonBuilder.create();
-
-                RequiredInfo requiredInfo = gson.fromJson(object, RequiredInfo.class);
-                return requiredInfo;
+                requiredInfo = gson.fromJson(object, RequiredInfo.class);
             }
         }
-        return null;
+        return requiredInfo;
     }
 
     private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        if(element.isJsonArray()) {
+        ArrayList<String> list = new ArrayList<>();
+        if(element != null && element.isJsonArray()) {
             JsonArray array = element.getAsJsonArray();
-            ArrayList<String> list = gson.fromJson(array, new TypeToken<ArrayList<String>>() {
-            }.getType());
-            return list;
-        } else if (element.getAsJsonObject().has("error")){
-            ComFaultException comFaultException=gson.fromJson(element,ComFaultException.class);
-            throw comFaultException;
+            list = gson.fromJson(array, new TypeToken<ArrayList<String>>() {}.getType());
+        } else if (element != null && element.isJsonObject()) {
+            JsonObject object = element.getAsJsonObject();
+            if(object.has("error")) {
+                ComFaultException comFaultException = gson.fromJson(element, ComFaultException.class);
+                throw comFaultException;
+            }
         }
-        return new ArrayList<>();
+        return list;
     }
 
     public NetworkHandler getHandler() {
@@ -135,7 +138,7 @@ public class ServerCollectionsInteractor {
         this.handler = handler;
     }
 
-    private void connectDevicesToHandler(ArrayList<Device> devices) {
+    private void connectHandlerToDevices(ArrayList<Device> devices) {
         for(Device device : devices) {
             device.setHandler(this.handler);
         }

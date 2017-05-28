@@ -2,6 +2,13 @@ package hestia.backend.models;
 
 import java.util.HashMap;
 
+/**
+ * This class holds the data that needs to be sent to the server in order to add a new device.
+ * It contains a field for collection, a field for the plugin and a field "info".
+ * Here, "info" is a HashMap and holds key-value pairs containing additional information
+ * specific to each device. For instance, a Philips Hue Light may need to know the IP address
+ * and port number of the bridge.
+ */
 public class RequiredInfo {
     private String collection;
     private String plugin;
