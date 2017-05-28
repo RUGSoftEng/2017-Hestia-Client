@@ -55,7 +55,6 @@ public class DeviceListFragment extends Fragment{
         fm = getActivity().getSupportFragmentManager();
     }
 
-    public void
 
     /**
      *
