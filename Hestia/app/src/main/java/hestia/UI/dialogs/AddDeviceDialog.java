@@ -51,7 +51,7 @@ public class AddDeviceDialog extends HestiaDialog2 {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set Dialog Title
-        builder.setTitle("Change IP")
+        builder.setTitle("Add Device")
 
                 // Positive button
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -142,7 +142,7 @@ public class AddDeviceDialog extends HestiaDialog2 {
                     EnterRequiredInfoDialog fragment = EnterRequiredInfoDialog.newInstance();
                     fragment.setData(info, serverCollectionsInteractor);
                     if(fragmentManager == null){
-                        fragment.show(fragmentManager, "dialog");
+//                        fragment.show(fragmentManager, "dialog");
                     }
                     fragment.show(fragmentManager, "dialog");
                 }
