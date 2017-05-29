@@ -89,9 +89,6 @@ public class IpDialog extends HestiaDialog2  {
     }
 
     @Override
-    void pressCancel() {}
-
-    @Override
     void pressConfirm() {
         ip = ipField.getText().toString();
         Log.i(TAG, "My ip is now:" + ip);
@@ -103,11 +100,12 @@ public class IpDialog extends HestiaDialog2  {
             Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
                             .getIp(),
                     Toast.LENGTH_SHORT).show();
-
-            //TODO give correct response from server after changing ip
-            Toast.makeText(getContext(), "Server returned message: + serverMessage",
-                    Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    void pressCancel() {
+        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
     }
 
 

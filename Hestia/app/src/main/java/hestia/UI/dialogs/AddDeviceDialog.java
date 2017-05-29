@@ -147,17 +147,30 @@ public class AddDeviceDialog extends HestiaDialog2 {
         final String collection = collectionField.getText().toString();
         final String pluginName = pluginField.getText().toString();
 
-         new AsyncTask<Object, Object, RequiredInfo>() {
+         new AsyncTask<Object, String, RequiredInfo>() {
             @Override
             protected RequiredInfo doInBackground(Object... params) {
                 RequiredInfo info = null;
                 try {
                     info = serverCollectionsInteractor.getRequiredInfo(collection, pluginName);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG,e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
                 }
                 return info;
             }
+
+             @Override
+             protected void onProgressUpdate(String... exceptionMessage) {
+                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+             }
 
             @Override
             protected void onPostExecute(RequiredInfo info) {
@@ -171,19 +184,29 @@ public class AddDeviceDialog extends HestiaDialog2 {
     }
 
     private void getCollections() {
-        new AsyncTask<Object, Object, ArrayList<String>>() {
+        new AsyncTask<Object, String, ArrayList<String>>() {
             @Override
             protected ArrayList<String> doInBackground(Object... params) {
-                ArrayList<String> list = null;
+                ArrayList<String> collections = null;
                 try {
-                    list = serverCollectionsInteractor.getCollections();
+                    collections = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ComFaultException e) {
-                    Toast.makeText(getContext(), e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    Log.e(TAG,e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
                 }
-                return list;
+                return collections;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -198,25 +221,37 @@ public class AddDeviceDialog extends HestiaDialog2 {
     }
 
     private void getPlugins(final String collection) {
-        new AsyncTask<Object, Object, ArrayList<String>>() {
+        new AsyncTask<Object, String, ArrayList<String>>() {
             @Override
             protected ArrayList<String> doInBackground(Object... params) {
-                ArrayList<String> list = null;
+                ArrayList<String> plugins = null;
                 try {
-                    list = serverCollectionsInteractor.getPlugins(collection);
+                    plugins = serverCollectionsInteractor.getPlugins(collection);
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ComFaultException e) {
-                    Toast.makeText(getContext(), e.getError() + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    Log.e(TAG,e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
                 }
-                return list;
+                return plugins;
             }
 
             @Override
-            protected void onPostExecute(ArrayList<String> collections) {
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<String> plugins) {
                 adapterPlugins.clear();
-                adapterPlugins.addAll(collections);
+                if(plugins != null) {
+                    adapterPlugins.addAll(plugins);
+                }
             }
         }.execute();
     }

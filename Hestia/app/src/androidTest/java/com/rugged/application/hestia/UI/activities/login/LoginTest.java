@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.UITests;
+package com.rugged.application.hestia.UI.activities.login;
 
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -63,7 +63,7 @@ public class LoginTest {
         onView(withId(R.id.loginButton)).perform(click());
 
         intended(allOf(
-                hasComponent(hasShortClassName("hestia.UI.Activities.DeviceListActivity")),
+                hasComponent(hasShortClassName("hestia.UI.activities.home.HomeActivity")),
                 toPackage(PACKAGE_NAME)));
 
     }

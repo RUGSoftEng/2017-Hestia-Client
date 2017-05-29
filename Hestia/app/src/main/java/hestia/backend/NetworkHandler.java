@@ -123,7 +123,7 @@ public class NetworkHandler extends Application {
      * @param responseCode the response code of the request.
      * @return true if it succeeded, false otherwise.
      */
-    private boolean isSuccessfulRequest(Integer responseCode) {
+    public boolean isSuccessfulRequest(Integer responseCode) {
         return (responseCode != null && (200 <= responseCode && responseCode <= 299));
     }
 
@@ -145,5 +145,15 @@ public class NetworkHandler extends Application {
 
     public String getDefaultPath() {
         return "http://" + ip + ":" + port + "/";
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (!(o instanceof NetworkHandler)) return false;
+
+        NetworkHandler networkHandler = (NetworkHandler) o;
+        if(!this.getPort().equals(networkHandler.getPort())) return false;
+        return this.getIp().equals(networkHandler.getIp());
     }
 }

@@ -1,8 +1,10 @@
 package hestia.UI.activities.home;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
+import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.IpDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
@@ -33,11 +36,13 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private static final String HESTIA_IP = "HESTIA.IP";
     private static final String SERVER_IP = "IP_OF_SERVER";
     private final String changeIpText = "Set IP ";
-    private final String logoutText = "Logout ";
+    public static final String logoutText = "Logout ";
+    public static final String changeCredentialsText = "Change user/pass";
     private final String extraName = "login";
     private final String logoutExtraValue = "logout";
     private final int IP = 1;
-    private final int LOGOUT = 2;
+    private final int CHANGECREDENTIALS = 2;
+    private final int LOGOUT = 3;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,14 +86,15 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void storeIP() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        serverCollectionsInteractor.getHandler().setIp(prefs.getString(SERVER_IP, serverCollectionsInteractor.getHandler().getIp()));
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
+        prefs.edit().putString(SERVER_IP,serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
     private void setupCache() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, 0);
-        String ip = prefs.getString(SERVER_IP, "192.168.178.31");
-        NetworkHandler handler = new NetworkHandler(ip, 8000);
+        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
+        String ip = prefs.getString(SERVER_IP, getApplicationContext().getString(R.string.default_ip));
+        NetworkHandler handler = new NetworkHandler(ip, Integer.valueOf(
+                getApplicationContext().getString(R.string.default_port)));
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
     }
 
@@ -109,6 +115,10 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         MenuObject ip = new MenuObject(changeIpText);
         ip.setResource(R.mipmap.ic_router);
         objects.add(ip);
+
+        MenuObject changeCredentials = new MenuObject(changeCredentialsText);
+        changeCredentials.setResource(R.mipmap.ic_key);
+        objects.add(changeCredentials);
 
         MenuObject logout = new MenuObject(logoutText);
         logout.setResource(R.mipmap.ic_exit_to_app);
@@ -143,6 +153,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
             case IP:
                 showIpDialog();
                 break;
+            case CHANGECREDENTIALS:
+                showChangeCredentialsDialog();
+                break;
             case LOGOUT:
                 gotoLoginActivity();
                 break;
@@ -168,5 +181,10 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         IpDialog fragment = IpDialog.newInstance(ip);
         fragment.setInteractor(serverCollectionsInteractor);
         fragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    private void showChangeCredentialsDialog() {
+        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
+        changeCredentialsDialog.show();
     }
 }

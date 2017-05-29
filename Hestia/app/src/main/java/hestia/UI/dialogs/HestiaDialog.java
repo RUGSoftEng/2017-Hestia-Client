@@ -34,7 +34,6 @@ abstract class HestiaDialog extends AlertDialog{
         builder.setNegativeButton("Cancel", new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                pressCancel();
                 dismiss();
             }
         });
@@ -45,8 +44,6 @@ abstract class HestiaDialog extends AlertDialog{
         AlertDialog d = builder.create();
         d.show();
     }
-
-    abstract void pressCancel();
 
     abstract void pressConfirm();
 

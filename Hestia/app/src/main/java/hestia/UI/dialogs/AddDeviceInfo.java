@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
 
 /**
@@ -208,17 +210,29 @@ public class AddDeviceInfo extends HestiaDialog2 {
 
     @Override
     void pressConfirm() {
-        new AsyncTask<Object, Object, Integer>() {
+        new AsyncTask<Object, String, Integer>() {
             @Override
             protected Integer doInBackground(Object... params) {
                 updateRequiredInfo(view);
                 try {
                     serverCollectionsInteractor.addDevice(info);
                 } catch (IOException e) {
-                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    Log.e(TAG,e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
                 }
                 return 0;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override

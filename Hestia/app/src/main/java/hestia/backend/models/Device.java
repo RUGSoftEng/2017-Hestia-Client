@@ -30,13 +30,6 @@ public class Device {
     private ArrayList<Activator> activators;
     private NetworkHandler handler;
 
-    public Device(String deviceId, String name, String type, ArrayList<Activator> activator) {
-        this.deviceId = deviceId;
-        this.name = name;
-        this.type = type;
-        this.activators = activator;
-    }
-
     public Device(String deviceId, String name, String type, ArrayList<Activator> activator, NetworkHandler handler) {
         this.deviceId = deviceId;
         this.name = name;
@@ -77,14 +70,14 @@ public class Device {
     }
 
     public void setName(String name) throws IOException, ComFaultException {
-        String path = "devices/"+deviceId;
+        String path = "devices/" + deviceId;
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, path);
-        if(payload.getAsJsonObject().has("error")){
-            GsonBuilder gsonBuilder=new GsonBuilder();
+        if(payload.isJsonObject() && payload.getAsJsonObject().has("error")){
+            GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-            ComFaultException comFaultException=gson.fromJson(payload,ComFaultException.class);
+            ComFaultException comFaultException = gson.fromJson(payload, ComFaultException.class);
             throw comFaultException;
         }else {
             this.name = name;
