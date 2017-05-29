@@ -41,7 +41,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set Dialog Title
-        builder.setTitle("Change IP")
+        builder.setTitle("Change Credentials")
 
                 // Positive button
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
