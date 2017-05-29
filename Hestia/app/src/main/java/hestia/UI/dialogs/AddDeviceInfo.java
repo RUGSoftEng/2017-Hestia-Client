@@ -109,38 +109,20 @@ public class AddDeviceInfo extends HestiaDialog2 {
 
         final HashMap<String, String> fields = info.getInfo();
 
-
         LinearLayout.LayoutParams editParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (final String key : fields.keySet()) {
-            LinearLayout subLayout = new LinearLayout(getActivity());
 
-            // Add text
-//            TextView name = new TextView(getActivity());
-//            name.setText(key);
-//            name.setWidth(100);
-//            name.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-
-//                }
-//            });
-//            subLayout.addView(name);
 
             EditText field = createEditText(key, editParams , count, fields);
             if (field.getId() == 0) {
                 field.requestFocus();
 
             }
-            subLayout.addView(field);
+            mainLayout.addView(field);
 
-            mainLayout.addView(subLayout);
             count++;
         }
-
-
-
-
         builder.setView(view);
 
         AlertDialog dlg = builder.create();
@@ -148,53 +130,6 @@ public class AddDeviceInfo extends HestiaDialog2 {
 
         return dlg;
     }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//
-//        final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
-//        int count = 0;
-//
-//        this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
-//
-//        final HashMap<String, String> fields = info.getInfo();
-//
-//        for (final String key : fields.keySet()) {
-//            LinearLayout subLayout = new LinearLayout(context);
-//
-//            // Add text
-//            TextView name = new TextView(context);
-//            name.setText(key);
-//            name.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                    builder.setMessage(fields.get(key));
-//                    AlertDialog dialog = builder.create();
-//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
-//
-//                    wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-//
-//                    dialog.show();
-//                    return false;
-//                }
-//            });
-//            subLayout.addView(name);
-//
-//            EditText field = createEditText(key, params , count);
-//            field.requestFocus();
-//            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//            subLayout.addView(field);
-//
-//            mainLayout.addView(subLayout);
-//            count++;
-//        }
-//    }
 
     private EditText createEditText(final String key, LinearLayout.LayoutParams params, int count,
                                     final HashMap<String, String> fields) {
