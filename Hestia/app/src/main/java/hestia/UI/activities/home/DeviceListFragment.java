@@ -203,6 +203,10 @@ public class DeviceListFragment extends Fragment{
 
                 AddDeviceDialog fragment = AddDeviceDialog.newInstance();
                 fragment.setInteractor(serverCollectionsInteractor);
+                fragment.setFragmentManager(getFragmentManager());
+                if(getFragmentManager() == null){
+                    fragment.show(getFragmentManager(), "dialog");
+                }
                 fragment.show(getFragmentManager(), "dialog");
             }
         });

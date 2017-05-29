@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ public class AddDeviceDialog extends HestiaDialog2 {
     private ArrayAdapter<String> adapterPlugins;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final static String TAG = "AddDeviceDialog";
+    private FragmentManager fragmentManager;
 
     public static AddDeviceDialog newInstance() {
         AddDeviceDialog fragment = new AddDeviceDialog();
@@ -102,40 +104,6 @@ public class AddDeviceDialog extends HestiaDialog2 {
         return dlg;
     }
 
-//    public AddDeviceDialog(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
-//        super(context, R.layout.add_device_dialog, "Add a device");
-//        Log.i(TAG, "I am being called");
-//        this.serverCollectionsInteractor = serverCollectionsInteractor;
-//        if (serverCollectionsInteractor == null) {
-//            Log.i(TAG, "ServerCollectionsInteractor is now null");
-//        }
-//    }
-
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        adapterCollections = new ArrayAdapter<String>(context, android.R.layout.simple_expandable_list_item_1);
-//        collectionField = (AutoCompleteTextView) findViewById(R.id.collection);
-//        collectionField.setAdapter(adapterCollections);
-//        collectionField.setThreshold(1);
-//
-//        adapterPlugins = new ArrayAdapter<String>(context, android.R.layout.simple_expandable_list_item_1);
-//        pluginField = (AutoCompleteTextView)findViewById(R.id.pluginName);
-//        pluginField.setAdapter(adapterPlugins);
-//        pluginField.setThreshold(1);
-//
-//        getCollections();
-//
-//        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                getPlugins(collectionField.getText().toString());
-//            }
-//        });
-//    }
-
-
-
     @Override
     void pressCancel() {
         Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
@@ -177,7 +145,10 @@ public class AddDeviceDialog extends HestiaDialog2 {
                 if(info != null){
                     AddDeviceInfo fragment = AddDeviceInfo.newInstance();
                     fragment.setData(info, serverCollectionsInteractor);
-                    fragment.show(getFragmentManager(), "dialog");
+                    if(fragmentManager == null){
+                        fragment.show(fragmentManager, "dialog");
+                    }
+                    fragment.show(fragmentManager, "dialog");
                 }
             }
         }.execute();
@@ -254,6 +225,10 @@ public class AddDeviceDialog extends HestiaDialog2 {
                 }
             }
         }.execute();
+    }
+
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
     }
 }
 
