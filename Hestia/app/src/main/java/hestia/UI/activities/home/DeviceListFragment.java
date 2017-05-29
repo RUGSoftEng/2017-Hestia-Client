@@ -52,7 +52,7 @@ public class DeviceListFragment extends Fragment{
         super();
         this.context = context;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
-        fm = getActivity().getSupportFragmentManager();
+//        fm = getActivity().getSupportFragmentManager();
     }
 
 
@@ -110,7 +110,7 @@ public class DeviceListFragment extends Fragment{
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(fm, getActivity(), device, serverCollectionsInteractor);
+                    DeviceBar bar = new DeviceBar(getFragmentManager(), getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
