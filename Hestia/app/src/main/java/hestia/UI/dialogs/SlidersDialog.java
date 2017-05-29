@@ -11,12 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
@@ -108,19 +105,16 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
                     protected void onProgressUpdate(String... exceptionMessage) {
                         Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    protected void onPostExecute(Boolean isSuccessful) {
-                        if(isSuccessful) {
-                            // Update GUI
-                        }
-                    }
                 }.execute();
             }
         });
         return bar;
     }
 
+    /**
+     * This methods creates a list of sliders, i.e. a list of activators of type "float".
+     * @return the list of sliders of the device.
+     */
     private ArrayList<Activator> getSliders(){
         ArrayList<Activator> sliders =  new ArrayList<>();
         for(Activator activator : device.getActivators()){

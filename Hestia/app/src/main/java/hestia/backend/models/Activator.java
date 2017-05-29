@@ -1,11 +1,9 @@
 package hestia.backend.models;
 
 import android.util.Log;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
-
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;
 
@@ -17,6 +15,7 @@ import hestia.backend.NetworkHandler;
  * which reflects the current state of the activator
  * @see Device
  * @see ActivatorState
+ * @see NetworkHandler
  */
 public class Activator {
     private String activatorId;

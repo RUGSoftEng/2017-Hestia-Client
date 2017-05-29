@@ -67,7 +67,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     @Override
     public void onResume(){
         super.onResume();
-        // TODO update the device list fragment
     }
 
     @Override

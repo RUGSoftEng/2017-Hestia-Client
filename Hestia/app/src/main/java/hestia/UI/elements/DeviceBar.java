@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.UI.dialogs.ChangeNameDialog;
@@ -58,7 +57,6 @@ public class DeviceBar extends RelativeLayout {
         switc.setEnabled(false);
         switc.setVisibility(View.INVISIBLE);
 
-        Activator rankOne;
         for(final Activator activator : device.getActivators()){
             if(activator.getRank() == 0){
                 if(activator.getState().getType().equals("bool")){
@@ -118,7 +116,6 @@ public class DeviceBar extends RelativeLayout {
     }
 
     private PopupMenu createPopupMenu(View view){
-        int x  = 1;
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
         return popup;
