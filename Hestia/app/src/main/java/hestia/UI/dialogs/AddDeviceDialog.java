@@ -150,7 +150,7 @@ public class AddDeviceDialog extends HestiaDialog {
         new AsyncTask<Object, String, ArrayList<String>>() {
             @Override
             protected ArrayList<String> doInBackground(Object... params) {
-                ArrayList<String> collections = null;
+                ArrayList<String> collections = new ArrayList<String>();
                 try {
                     collections = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
@@ -175,10 +175,9 @@ public class AddDeviceDialog extends HestiaDialog {
             @Override
             protected void onPostExecute(ArrayList<String> collections) {
                 adapterCollections.clear();
-                if (adapterCollections == null) {
-                    Log.i(TAG, "adapterCollections became null?");
+                if (adapterCollections != null) {
+                    adapterCollections.addAll(collections);
                 }
-                adapterCollections.addAll(collections);
             }
         }.execute();
     }
