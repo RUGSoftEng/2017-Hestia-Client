@@ -16,7 +16,6 @@ import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import hestia.UI.dialogs.IpDialog;
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.ServerCollectionsInteractor;

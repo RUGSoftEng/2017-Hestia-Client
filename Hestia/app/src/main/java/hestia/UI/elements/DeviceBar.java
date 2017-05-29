@@ -1,7 +1,6 @@
 package hestia.UI.elements;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
@@ -18,8 +17,7 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.UI.dialogs.ChangeNameDialog;
-import hestia.UI.dialogs.IpDialog;
-import hestia.UI.dialogs.SlideDialog;
+import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
@@ -84,7 +82,7 @@ public class DeviceBar extends RelativeLayout {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new SlideDialog(getContext(), device).show();
+                    new SlidersDialog(getContext(), device).show();
                 }
             });
         }

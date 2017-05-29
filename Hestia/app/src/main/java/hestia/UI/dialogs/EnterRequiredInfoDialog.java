@@ -2,9 +2,7 @@ package hestia.UI.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -34,28 +32,21 @@ import hestia.backend.models.RequiredInfo;
  * Finally it sends back the HashMap to the backendInteractor which posts it to the server.
  */
 
-public class AddDeviceInfo extends HestiaDialog2 {
+public class EnterRequiredInfoDialog extends HestiaDialog2 {
     private RequiredInfo info;
     private ServerCollectionsInteractor serverCollectionsInteractor;
-    private final String TAG = "AddDeviceInfo";
+    private final String TAG = "EnterRequiredInfoDialog";
     private final String fixedFieldCol = "collection";
     private final String fixedFieldPlugin = "plugin";
     private final String propReqInfo = "required_info";
     private static final String EMPTY_STRING="";
     private View view;
 
-    public static AddDeviceInfo newInstance() {
-        AddDeviceInfo fragment = new AddDeviceInfo();
+    public static EnterRequiredInfoDialog newInstance() {
+        EnterRequiredInfoDialog fragment = new EnterRequiredInfoDialog();
 
         return fragment;
     }
-
-
-//    public AddDeviceInfo(Context context, RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
-//        super(context, R.layout.enter_device_info, "Add a device");
-//        this.info = info;
-//        this.serverCollectionsInteractor = serverCollectionsInteractor;
-//    }
 
     public void setData(RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
         this.info = info;
@@ -132,9 +123,6 @@ public class AddDeviceInfo extends HestiaDialog2 {
             mainLayout.addView(subLayout);
             count++;
         }
-
-
-
 
         builder.setView(view);
 

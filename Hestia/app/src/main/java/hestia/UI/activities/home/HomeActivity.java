@@ -1,14 +1,11 @@
 package hestia.UI.activities.home;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
-import hestia.UI.dialogs.IpDialog;
+import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
@@ -171,14 +168,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-//        IpDialog d = new IpDialog(HomeActivity.this, serverCollectionsInteractor);
+//        ChangeIpDialog d = new ChangeIpDialog(HomeActivity.this, serverCollectionsInteractor);
 //        HestiaDialog2 alertdFragment = new HestiaDialog2();
         // Show Alert DialogFragment
-//        IpDialog alertdFragment = new IpDialog();
+//        ChangeIpDialog alertdFragment = new ChangeIpDialog();
         String ip = this.serverCollectionsInteractor.getHandler().getIp();
 //        alertdFragment.show(getFragmentManager(), "Alert Dialog Fragment");
 //        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        IpDialog fragment = IpDialog.newInstance(ip);
+        ChangeIpDialog fragment = ChangeIpDialog.newInstance(ip);
         fragment.setInteractor(serverCollectionsInteractor);
         fragment.show(getSupportFragmentManager(), "dialog");
     }

@@ -2,9 +2,7 @@ package hestia.UI.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -14,14 +12,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import hestia.UI.activities.home.HomeActivity;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -30,7 +26,7 @@ import hestia.backend.models.RequiredInfo;
 * This class opens the dialog to enter the collection name and plugin name.
 * It then sends this to the networkHandler which tries to get the required info.
 * If this works it consecutively opens a new dialog for the other info.
-* @see AddDeviceInfo
+* @see EnterRequiredInfoDialog
  */
 
 public class AddDeviceDialog extends HestiaDialog2 {
@@ -143,7 +139,7 @@ public class AddDeviceDialog extends HestiaDialog2 {
             @Override
             protected void onPostExecute(RequiredInfo info) {
                 if(info != null){
-                    AddDeviceInfo fragment = AddDeviceInfo.newInstance();
+                    EnterRequiredInfoDialog fragment = EnterRequiredInfoDialog.newInstance();
                     fragment.setData(info, serverCollectionsInteractor);
                     if(fragmentManager == null){
                         fragment.show(fragmentManager, "dialog");

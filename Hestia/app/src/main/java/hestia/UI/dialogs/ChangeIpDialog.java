@@ -1,13 +1,10 @@
 package hestia.UI.dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +13,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
-import hestia.UI.activities.home.HomeActivity;
 import hestia.backend.ServerCollectionsInteractor;
 
 /**
@@ -24,15 +20,15 @@ import hestia.backend.ServerCollectionsInteractor;
  * user.
  */
 
-public class IpDialog extends HestiaDialog2  {
-    private final static String TAG = "IpDialog";
+public class ChangeIpDialog extends HestiaDialog2  {
+    private final static String TAG = "ChangeIpDialog";
     private String ip;
     private EditText ipField;
 
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    public static IpDialog newInstance(String ip) {
-        IpDialog fragment = new IpDialog();
+    public static ChangeIpDialog newInstance(String ip) {
+        ChangeIpDialog fragment = new ChangeIpDialog();
         Bundle bundle = new Bundle();
         bundle.putString("IP_ADDRESS", ip);
         fragment.setArguments(bundle);
@@ -109,7 +105,7 @@ public class IpDialog extends HestiaDialog2  {
     }
 
 
-//    public IpDialog(Activity activity, ServerCollectionsInteractor serverCollectionsInteractor) {
+//    public ChangeIpDialog(Activity activity, ServerCollectionsInteractor serverCollectionsInteractor) {
 //        this.activity = activity;
 //        super(activity, R.layout.ip_dialog, "Set IP");
 //        this.serverCollectionsInteractor = serverCollectionsInteractor;

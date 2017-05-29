@@ -43,8 +43,6 @@ public class ChangeCredentialsDialogTest {
             new IntentsTestRule<>(HomeActivity.class);
     @Before
     public void setUp(){
-
-
         // To be sure that the correct standard credentials are set, logout and login.
         onView(withId(context_menu)).perform(click());
 
@@ -83,7 +81,7 @@ public class ChangeCredentialsDialogTest {
 
         onView(withId(R.id.newPassCheck)).perform(clearText(),typeText(nnpass), closeSoftKeyboard());
 
-        onView(withId(R.id.confirm_button)).perform(click());
+        onView(withText("Confirm")).perform(click());
     }
 
     public void logoutLogin(String user, String pass){
