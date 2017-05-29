@@ -184,7 +184,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showChangeCredentialsDialog() {
-        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
-        changeCredentialsDialog.show();
+//        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
+//        changeCredentialsDialog.show();
+        ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
+        fragment.show(getSupportFragmentManager(), "dialog");
     }
 }
