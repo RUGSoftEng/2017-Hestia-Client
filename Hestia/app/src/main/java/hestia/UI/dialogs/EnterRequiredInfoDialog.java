@@ -189,10 +189,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog2 {
                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            protected void onPostExecute(Integer returnValue) {
-                // TODO: find a way to update the GUI from here
-            }
         }.execute();
 
     }
