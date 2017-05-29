@@ -65,13 +65,7 @@ public class DeviceListFragment extends Fragment {
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);
-<<<<<<< HEAD
-
         initRefreshLayout(deviceListView);
-
-=======
-        initRefreshLayou(deviceListView);
->>>>>>> development
         initDeviceList(deviceListView);
         populateUI();
 
@@ -108,12 +102,8 @@ public class DeviceListFragment extends Fragment {
             protected void onPostExecute(ArrayList<Device> devices) {
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
-<<<<<<< HEAD
                     Log.i(TAG, "device found");
                     DeviceBar bar = new DeviceBar(getActivity().getSupportFragmentManager(), getActivity(), device, serverCollectionsInteractor);
-=======
-                    DeviceBar bar = new DeviceBar(getActivity(), device, serverCollectionsInteractor);
->>>>>>> development
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
