@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
  * GET request to the server to populate the device list.
  */
-public class DeviceListFragment extends Fragment{
+public class DeviceListFragment extends Fragment {
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -110,7 +110,7 @@ public class DeviceListFragment extends Fragment{
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(getFragmentManager(), getActivity(), device, serverCollectionsInteractor);
+                    DeviceBar bar = new DeviceBar(getActivity().getSupportFragmentManager(), getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -203,11 +203,8 @@ public class DeviceListFragment extends Fragment{
 
                 AddDeviceDialog fragment = AddDeviceDialog.newInstance();
                 fragment.setInteractor(serverCollectionsInteractor);
-                fragment.setFragmentManager(getFragmentManager());
-                if(getFragmentManager() == null){
-                    fragment.show(getFragmentManager(), "dialog");
-                }
-                fragment.show(getFragmentManager(), "dialog");
+                fragment.setFragmentManager(getActivity().getSupportFragmentManager());
+                fragment.show(getActivity().getSupportFragmentManager(), "dialog");
             }
         });
     }

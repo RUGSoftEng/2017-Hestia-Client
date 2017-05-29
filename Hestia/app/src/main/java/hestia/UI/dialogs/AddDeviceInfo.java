@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,7 +50,6 @@ public class AddDeviceInfo extends HestiaDialog2 {
 
     public static AddDeviceInfo newInstance() {
         AddDeviceInfo fragment = new AddDeviceInfo();
-
         return fragment;
     }
 
@@ -68,7 +71,7 @@ public class AddDeviceInfo extends HestiaDialog2 {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set Dialog Title
-        builder.setTitle("Change IP")
+        builder.setTitle("Add Required Info")
 
                 // Positive button
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -92,41 +95,43 @@ public class AddDeviceInfo extends HestiaDialog2 {
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        view = inflater.inflate(R.layout.ip_dialog, null);
+        view = inflater.inflate(R.layout.enter_device_info, null);
 
         final LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.linearMain);
+        mainLayout.setLayoutParams(params);
+        float scale = getResources().getDisplayMetrics().density;
+        int padding = 8;
+        int dpAsPixels = (int) (padding*scale + 0.5f);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(0, dpAsPixels, 0, 0);
 
 //        this.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection());
 
         final HashMap<String, String> fields = info.getInfo();
 
 
-
+        LinearLayout.LayoutParams editParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (final String key : fields.keySet()) {
             LinearLayout subLayout = new LinearLayout(getActivity());
 
             // Add text
-            TextView name = new TextView(getActivity());
-            name.setText(key);
-            name.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage(fields.get(key));
-                    AlertDialog dialog = builder.create();
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+//            TextView name = new TextView(getActivity());
+//            name.setText(key);
+//            name.setWidth(100);
+//            name.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
 
-                    wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+//                }
+//            });
+//            subLayout.addView(name);
 
-                    dialog.show();
-                    return false;
-                }
-            });
-            subLayout.addView(name);
+            EditText field = createEditText(key, editParams , count, fields);
+            if (field.getId() == 0) {
+                field.requestFocus();
 
-            EditText field = createEditText(key, params , count);
-            field.requestFocus();
+            }
             subLayout.addView(field);
 
             mainLayout.addView(subLayout);
@@ -191,17 +196,42 @@ public class AddDeviceInfo extends HestiaDialog2 {
 //        }
 //    }
 
-    private EditText createEditText(String key, LinearLayout.LayoutParams params, int count) {
+    private EditText createEditText(final String key, LinearLayout.LayoutParams params, int count,
+                                    final HashMap<String, String> fields) {
         final EditText field = new EditText(getActivity());
         field.setId(count);
+        field.setHint(key);
+        field.setInputType(InputType.TYPE_CLASS_TEXT);
+        field.setMaxLines(1);
+        field.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+
+        field.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(fields.get(key));
+                AlertDialog dialog = builder.create();
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+
+                wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+
+                dialog.show();
+                return true;
+            }
+        });
         if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
             field.setFocusable(false);
             field.setClickable(false);
         }
         field.setLayoutParams(params);
-        field.setWidth(800);
+
+
         return field;
     }
+
 
     @Override
     void pressCancel() {
