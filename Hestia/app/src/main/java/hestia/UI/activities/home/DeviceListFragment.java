@@ -14,15 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
-
 import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -64,11 +61,8 @@ public class DeviceListFragment extends Fragment{
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);
-
         initRefreshLayou(deviceListView);
-
         initDeviceList(deviceListView);
-
         populateUI();
 
         return deviceListView;
@@ -104,7 +98,6 @@ public class DeviceListFragment extends Fragment{
             protected void onPostExecute(ArrayList<Device> devices) {
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
-                    Log.i(TAG, "device found");
                     DeviceBar bar = new DeviceBar(getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
@@ -124,10 +117,7 @@ public class DeviceListFragment extends Fragment{
     private void setOnScrollListeners() {
         expListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-
-            }
+            public void onScrollStateChanged(AbsListView absListView, int i) {}
 
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {

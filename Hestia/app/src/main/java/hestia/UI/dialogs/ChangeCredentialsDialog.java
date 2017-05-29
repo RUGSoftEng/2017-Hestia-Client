@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
-
 import hestia.UI.activities.login.LoginActivity;
-
 import static hestia.UI.activities.login.LoginActivity.hashString;
 
 /**

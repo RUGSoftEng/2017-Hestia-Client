@@ -36,14 +36,9 @@ public class IpDialog extends HestiaDialog {
         ip = ipField.getText().toString();
         if(ip!=null) {
             serverCollectionsInteractor.getHandler().setIp(ip);
-            // TODO refresh layout
-            Toast.makeText(getContext(),getContext().getString(R.string.ipSetTo)
-                    + serverCollectionsInteractor.getHandler().getIp() + ":"
-                    + serverCollectionsInteractor.getHandler().getPort(),Toast.LENGTH_LONG).show();
-
-            //TODO give correct response from server after changing ip
-            Toast.makeText(getContext(), "Server returned message: + serverMessage",
-                    Toast.LENGTH_SHORT).show();
+            Integer port = serverCollectionsInteractor.getHandler().getPort();
+            String prefix = getContext().getString(R.string.ipSetTo);
+            Toast.makeText(getContext(), prefix + ip + ":" + port, Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;
 
@@ -15,11 +14,11 @@ import hestia.backend.NetworkHandler;
  * id with which we can reference its remote version on the server. The name string contains the
  * local name of the device, for instance "Front door lock". The type string is used to denote the
  * type of the device so a GUI can be generated with the right icons at the correct location.
- * <p>
- *     Finally, there is a list of activators. These activators represent all the actions which can
- *     be performed remotely on the device. An activator can be, for instance,
- *     an On/Off switch (Toggle), or an intensity slider.
- * </p>
+ * Moreover, there is a list of activators, which represent all the actions that can be performed
+ * remotely on the device. An activator can be, for instance, an On/Off switch (Toggle),
+ * or an intensity slider.
+ * Finally, there is an instance of NetworkHandler, which holds information needed to send
+ * data to the server via a POST request when the name is changed.
  * @see Activator
  */
 
@@ -120,37 +119,4 @@ public class Device {
     public String toString(){
         return name +" "+ deviceId + " " + activators + "\n";
     }
-
-    /* Everything below should be done in the frontend
-    /**
-     * Returns the main toggle activator, which has the rank 0.
-     * @return the toggle activator.
-
-    public Activator getToggle() {
-        Activator toggle = null;
-        for(Activator activator : activators) {
-            Integer rank = activator.getRank();
-            if(rank == 0) {
-                toggle = activator;
-                break;
-            }
-        }
-        return toggle;
-    }
-
-    /**
-     * This method will return all activators which need to be implemented in the UI as sliders.
-     * @see hestia.UI.Activities.Home.ExpandableDeviceList
-     * @return the activators if the array is not empty, null otherwise
-
-    public ArrayList<Activator> getSliders() {
-        ArrayList<Activator> sliders = new ArrayList<>();
-        for(Activator activator : activators){
-            String type = activator.getState().getType();
-            if(type.equals("float")){
-                sliders.add(activator);
-            }
-        }
-        return sliders;
-    }*/
 }

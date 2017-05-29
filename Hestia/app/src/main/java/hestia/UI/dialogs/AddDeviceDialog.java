@@ -9,10 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -61,7 +59,6 @@ public class AddDeviceDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-
         final String collection = collectionField.getText().toString();
         final String pluginName = pluginField.getText().toString();
 
@@ -171,4 +168,3 @@ public class AddDeviceDialog extends HestiaDialog {
         }.execute();
     }
 }
-

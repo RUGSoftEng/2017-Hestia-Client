@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.UI.dialogs.ChangeNameDialog;
@@ -55,7 +54,6 @@ public class DeviceBar extends RelativeLayout {
         switc.setEnabled(false);
         switc.setVisibility(View.INVISIBLE);
 
-        Activator rankOne;
         for(final Activator activator : device.getActivators()){
             if(activator.getRank() == 0){
                 if(activator.getState().getType().equals("bool")){
@@ -78,7 +76,7 @@ public class DeviceBar extends RelativeLayout {
         if(deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     new SlideDialog(getContext(), device).show();
                 }
             });
@@ -111,7 +109,6 @@ public class DeviceBar extends RelativeLayout {
     }
 
     private PopupMenu createPopupMenu(View view){
-        int x  = 1;
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
         return popup;
@@ -172,13 +169,6 @@ public class DeviceBar extends RelativeLayout {
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
-
-            @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                if(isSuccessful) {
-                    // Update GUI
-                }
-            }
         }.execute();
     }
 
@@ -207,13 +197,6 @@ public class DeviceBar extends RelativeLayout {
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                if(isSuccessful) {
-                    // Update GUI
-                }
             }
         }.execute();
     }

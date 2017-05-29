@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.backend.exceptions.ComFaultException;
@@ -57,13 +56,6 @@ public class ChangeNameDialog extends HestiaDialog {
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                if(isSuccessful) {
-                    //UPDATE THE GUI
-                }
             }
         }.execute();
     }
