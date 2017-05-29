@@ -14,10 +14,8 @@ import android.view.View;
 import android.view.Window;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
@@ -36,7 +34,7 @@ import hestia.backend.models.RequiredInfo;
  * Finally it sends back the HashMap to the backendInteractor which posts it to the server.
  */
 
-public class EnterRequiredInfoDialog extends HestiaDialog2 {
+public class EnterRequiredInfoDialog extends HestiaDialog {
     private RequiredInfo info;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final String TAG = "EnterRequiredInfoDialog";
@@ -156,7 +154,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog2 {
         return field;
     }
 
-
     @Override
     void pressCancel() {
         Toast.makeText(getActivity(), R.string.cancel, Toast.LENGTH_SHORT).show();
@@ -192,8 +189,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog2 {
         }.execute();
 
     }
-
-
 
     /**
      * Updates the required info with the entered information

@@ -2,50 +2,36 @@ package hestia.UI.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import com.rugged.application.hestia.R;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
+abstract class HestiaDialog extends DialogFragment {
 
-abstract class HestiaDialog extends AlertDialog{
-    protected Context context;
-    private int layoutReference;
-    private Builder builder;
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new AlertDialog.Builder(getActivity())
 
-    public HestiaDialog(Context context, int reference, String title) {
-        super(context);
-        this.context = context;
-        this.layoutReference = reference;
-        this.builder = new AlertDialog.Builder(context);
-        builder.setTitle(title);
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+                // Set Dialog Title
+                .setTitle("Alert DialogFragment")
 
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                pressConfirm();
-                dismiss();
-            }
-        });
-        builder.setNegativeButton("Cancel", new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dismiss();
-            }
-        });
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(layoutReference, null);
-        builder.setView(view);
-        addSpecificFunctionality(view);
-        AlertDialog d = builder.create();
-        d.show();
+                // Positive button
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        pressConfirm();
+                    }
+                })
+
+                // Negative Button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,	int which) {
+                        pressCancel();
+                    }
+
+                }).create();
     }
 
     abstract void pressConfirm();
+    abstract void pressCancel();
 
-    abstract void addSpecificFunctionality(View v);
 }

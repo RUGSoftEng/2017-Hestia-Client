@@ -20,7 +20,7 @@ import hestia.backend.ServerCollectionsInteractor;
  * user.
  */
 
-public class ChangeIpDialog extends HestiaDialog2  {
+public class ChangeIpDialog extends HestiaDialog {
     private final static String TAG = "ChangeIpDialog";
     private String ip;
     private EditText ipField;
@@ -70,7 +70,6 @@ public class ChangeIpDialog extends HestiaDialog2  {
         View view = inflater.inflate(R.layout.ip_dialog, null);
 
         ipField = (EditText) view.findViewById(R.id.ip);
-//        ipField.setInputType(InputType.TYPE_CLASS_NUMBER);
         ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
 
         if (ip != null) {
@@ -89,10 +88,8 @@ public class ChangeIpDialog extends HestiaDialog2  {
         ip = ipField.getText().toString();
         Log.i(TAG, "My ip is now:" + ip);
         if(ip!=null) {
-
             serverCollectionsInteractor.getHandler().setIp(ip);
             Log.i(TAG, "My ip is changed to: " + ip);
-//             TODO refresh layout
             Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
                             .getIp(),
                     Toast.LENGTH_SHORT).show();
@@ -103,48 +100,4 @@ public class ChangeIpDialog extends HestiaDialog2  {
     void pressCancel() {
         Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
     }
-
-
-//    public ChangeIpDialog(Activity activity, ServerCollectionsInteractor serverCollectionsInteractor) {
-//        this.activity = activity;
-//        super(activity, R.layout.ip_dialog, "Set IP");
-//        this.serverCollectionsInteractor = serverCollectionsInteractor;
-//        ipField = (EditText) findViewById(R.id.ip);
-//        ipField.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
-//        this.setView(ipField);
-//        if (this.serverCollectionsInteractor.getHandler().getIp() != null) {
-//            ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
-//        }
-//    }
-
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        return new AlertDialog.Builder(activity)
-//                .setTitle("App")
-//                .setPositiveButton(new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//
-//                    }
-//                })
-//                .setNegativeButton()
-//                .create();
-//    }
-
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        Log.i(TAG, "I am here");
-//        ipField = (EditText) findViewById(R.id.ip);
-//        ipField.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
-//        this.setView(ipField);
-//        if (this.serverCollectionsInteractor.getHandler().getIp() != null) {
-//            ipField.setText(this.serverCollectionsInteractor.getHandler().getIp());
-//        }
-////        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//    }
-
-
 }

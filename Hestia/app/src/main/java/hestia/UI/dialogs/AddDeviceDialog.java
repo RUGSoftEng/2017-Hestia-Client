@@ -29,7 +29,7 @@ import hestia.backend.models.RequiredInfo;
 * @see EnterRequiredInfoDialog
  */
 
-public class AddDeviceDialog extends HestiaDialog2 {
+public class AddDeviceDialog extends HestiaDialog {
     private AutoCompleteTextView collectionField, pluginField;
     private ArrayAdapter<String> adapterCollections;
     private ArrayAdapter<String> adapterPlugins;
@@ -142,7 +142,6 @@ public class AddDeviceDialog extends HestiaDialog2 {
                     EnterRequiredInfoDialog fragment = EnterRequiredInfoDialog.newInstance();
                     fragment.setData(info, serverCollectionsInteractor);
                     if(fragmentManager == null){
-//                        fragment.show(fragmentManager, "dialog");
                     }
                     fragment.show(fragmentManager, "dialog");
                 }

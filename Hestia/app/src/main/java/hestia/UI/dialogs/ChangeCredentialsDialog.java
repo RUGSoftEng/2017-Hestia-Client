@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
@@ -25,7 +23,7 @@ import static hestia.UI.activities.login.LoginActivity.hashString;
  * @see LoginActivity
  */
 
-public class ChangeCredentialsDialog extends HestiaDialog2 {
+public class ChangeCredentialsDialog extends HestiaDialog {
     private EditText oldPassField, newPassField, newPassCheckField, newUserField;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
@@ -39,20 +37,6 @@ public class ChangeCredentialsDialog extends HestiaDialog2 {
         ChangeCredentialsDialog fragment = new ChangeCredentialsDialog();
         return fragment;
     }
-
-//    public ChangeCredentialsDialog(Context context) {
-//        super(context, R.layout.change_credentials_dialog, "Change username/password");
-//    }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        newUserField = (EditText) findViewById(R.id.newUser);
-//        newUserField.requestFocus();
-//        newPassField = (EditText) findViewById(R.id.newPass);
-//        newPassCheckField = (EditText) findViewById(R.id.newPassCheck);
-//        oldPassField = (EditText) findViewById(R.id.oldPass);
-//    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -2,9 +2,7 @@ package hestia.UI.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,22 +17,10 @@ import java.io.IOException;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 
-public class ChangeNameDialog extends HestiaDialog2 {
+public class ChangeNameDialog extends HestiaDialog {
     private EditText editText;
     private Device device;
     private final String TAG = "ChangeNameDialog";
-
-//    public ChangeNameDialog(Context context, Device device) {
-//        super(context, R.layout.set_name, "Change name of your device");
-//        this.device = device;
-//    }
-
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        editText = (EditText)findViewById(R.id.change_name_device);
-//        editText.setText(device.getName());
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//    }
 
     public static ChangeNameDialog newInstance() {
         ChangeNameDialog fragment = new ChangeNameDialog();
@@ -47,8 +33,6 @@ public class ChangeNameDialog extends HestiaDialog2 {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set Dialog Title
         builder.setTitle("Change name")
@@ -88,7 +72,6 @@ public class ChangeNameDialog extends HestiaDialog2 {
 
     @Override
     void pressCancel() {
-        Toast.makeText(getContext(), "pressed cancel", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -120,12 +103,6 @@ public class ChangeNameDialog extends HestiaDialog2 {
                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                if(isSuccessful) {
-                    //UPDATE THE GUI
-                }
-            }
         }.execute();
     }
 

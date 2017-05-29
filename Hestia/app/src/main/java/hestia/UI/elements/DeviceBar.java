@@ -179,13 +179,6 @@ public class DeviceBar extends RelativeLayout {
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
-
-            @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                if(isSuccessful) {
-                    // Update GUI
-                }
-            }
         }.execute();
     }
 
@@ -214,13 +207,6 @@ public class DeviceBar extends RelativeLayout {
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                if(isSuccessful) {
-                    // Update GUI
-                }
             }
         }.execute();
     }
