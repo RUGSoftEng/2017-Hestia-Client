@@ -3,7 +3,6 @@ package hestia.UI.activities.home;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
-import hestia.UI.dialogs.IpDialog;
+import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
@@ -168,12 +167,22 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-        IpDialog d = new IpDialog(HomeActivity.this, serverCollectionsInteractor);
-        d.show();
+//        ChangeIpDialog d = new ChangeIpDialog(HomeActivity.this, serverCollectionsInteractor);
+//        HestiaDialog2 alertdFragment = new HestiaDialog2();
+        // Show Alert DialogFragment
+//        ChangeIpDialog alertdFragment = new ChangeIpDialog();
+        String ip = this.serverCollectionsInteractor.getHandler().getIp();
+//        alertdFragment.show(getFragmentManager(), "Alert Dialog Fragment");
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ChangeIpDialog fragment = ChangeIpDialog.newInstance(ip);
+        fragment.setInteractor(serverCollectionsInteractor);
+        fragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void showChangeCredentialsDialog() {
-        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
-        changeCredentialsDialog.show();
+//        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
+//        changeCredentialsDialog.show();
+        ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
+        fragment.show(getSupportFragmentManager(), "dialog");
     }
 }

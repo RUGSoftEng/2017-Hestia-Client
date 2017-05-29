@@ -1,55 +1,37 @@
 package hestia.UI.dialogs;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import com.rugged.application.hestia.R;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
+abstract class HestiaDialog extends DialogFragment {
 
-abstract class HestiaDialog extends Dialog implements android.view.View.OnClickListener{
-    protected Context context;
-    private int layoutReference;
-    private String title;
-    private Button cancel;
-    private Button confirm;
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new AlertDialog.Builder(getActivity())
 
-    public HestiaDialog(Context context, int reference, String title) {
-        super(context);
-        this.context = context;
-        this.layoutReference = reference;
-        this.title = title;
-    }
+                // Set Dialog Title
+                .setTitle("Alert DialogFragment")
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.hestia_dialog);
-        TextView header = (TextView)findViewById(R.id.dialog_header);
-        header.setText(title);
-        cancel = (Button)findViewById(R.id.cancel_button);
-        cancel.setOnClickListener(this);
-        confirm = (Button)findViewById(R.id.confirm_button);
-        confirm.setOnClickListener(this);
-        LayoutInflater inflater = getLayoutInflater();
-        FrameLayout frame = (FrameLayout)findViewById(R.id.dialog_container);
-        View view = inflater.inflate(layoutReference, null);
-        frame.addView(view);
+                // Positive button
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        pressConfirm();
+                    }
+                })
+
+                // Negative Button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,	int which) {
+                        pressCancel();
+                    }
+
+                }).create();
     }
 
     abstract void pressConfirm();
+    abstract void pressCancel();
 
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.cancel_button:
-                dismiss();
-                break;
-            case R.id.confirm_button:
-                pressConfirm();
-                dismiss();
-                break;
-        }
-    }
 }

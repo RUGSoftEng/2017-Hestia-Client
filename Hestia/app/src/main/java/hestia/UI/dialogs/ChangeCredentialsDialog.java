@@ -1,8 +1,14 @@
 package hestia.UI.dialogs;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
@@ -25,18 +31,50 @@ public class ChangeCredentialsDialog extends HestiaDialog {
     private final String user_set = "Username set to : ";
     private final String user_not_set = "Username not changed (length<5)";
 
-    public ChangeCredentialsDialog(Context context) {
-        super(context, R.layout.change_credentials_dialog, "Change username/password");
+    public static ChangeCredentialsDialog newInstance() {
+        ChangeCredentialsDialog fragment = new ChangeCredentialsDialog();
+        return fragment;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        newUserField = (EditText) findViewById(R.id.newUser);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Set Dialog Title
+        builder.setTitle("Change Credentials")
+
+                // Positive button
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something else
+                        pressConfirm();
+                        dismiss();
+
+                    }
+                })
+
+                // Negative Button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,	int which) {
+                        // Do something else
+                    }
+
+                });
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.change_credentials_dialog, null);
+
+        newUserField = (EditText) view.findViewById(R.id.newUser);
         newUserField.requestFocus();
-        newPassField = (EditText) findViewById(R.id.newPass);
-        newPassCheckField = (EditText) findViewById(R.id.newPassCheck);
-        oldPassField = (EditText) findViewById(R.id.oldPass);
+        newPassField = (EditText) view.findViewById(R.id.newPass);
+        newPassCheckField = (EditText) view.findViewById(R.id.newPassCheck);
+        oldPassField = (EditText) view.findViewById(R.id.oldPass);
+
+        builder.setView(view);
+
+        AlertDialog dlg = builder.create();
+        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dlg;
     }
 
     @Override
@@ -45,7 +83,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         String newPass = newPassField.getText().toString();
         String newPassCheck = newPassCheckField.getText().toString();
         String oldPass = oldPassField.getText().toString();
-        loginPreferences = context.getSharedPreferences(LoginActivity.LOGIN_PREFERENCES
+        loginPreferences = getActivity().getSharedPreferences(LoginActivity.LOGIN_PREFERENCES
                 , Context.MODE_PRIVATE);
 
         String feedback = "";
@@ -69,6 +107,11 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         dismiss();
     }
 
+    @Override
+    void pressCancel() {
+
+    }
+
     private boolean checkOldPass(String oldPass){
         String corrpass = loginPreferences.getString(LoginActivity.prefsPass, "");
         return corrpass.equals(hashString(oldPass));
@@ -81,6 +124,6 @@ public class ChangeCredentialsDialog extends HestiaDialog {
     }
 
     private void showToast(String text){
-        Toast.makeText(context, text , Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), text , Toast.LENGTH_LONG).show();
     }
 }

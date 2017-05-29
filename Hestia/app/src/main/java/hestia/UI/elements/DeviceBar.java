@@ -1,7 +1,8 @@
 package hestia.UI.elements;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,7 +16,7 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import hestia.UI.dialogs.ChangeNameDialog;
-import hestia.UI.dialogs.SlideDialog;
+import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
@@ -28,16 +29,18 @@ import hestia.backend.models.Device;
  */
 
 public class DeviceBar extends RelativeLayout {
-    private Context context;
+    private Activity context;
     private Device device;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final static String TAG = "DeviceBar";
+    private FragmentManager fm;
 
-    public DeviceBar(Context context, Device device, ServerCollectionsInteractor serverCollectionsInteractor) {
+    public DeviceBar(FragmentManager fm, Activity context, Device device, ServerCollectionsInteractor serverCollectionsInteractor) {
         super(context);
         this.device = device;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
         this.context = context;
+        this.fm = fm;
         initView();
     }
 
@@ -76,8 +79,8 @@ public class DeviceBar extends RelativeLayout {
         if(deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    new SlideDialog(getContext(), device).show();
+                public void onClick(View v) {
+                    new SlidersDialog(getContext(), device).show();
                 }
             });
         }
@@ -96,7 +99,11 @@ public class DeviceBar extends RelativeLayout {
                                 doDeleteRequest();
                                 break;
                             case R.id.change_name:
-                                new ChangeNameDialog(getContext(), device).show();
+                                ChangeNameDialog fragment = ChangeNameDialog.newInstance();
+                                fragment.setDevice(device);
+
+                                fragment.show(fm, "dialog");
+
                                 break;
                             default:
                                 break;

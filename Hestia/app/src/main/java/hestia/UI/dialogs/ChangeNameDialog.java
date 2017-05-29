@@ -1,9 +1,13 @@
 package hestia.UI.dialogs;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,16 +21,56 @@ public class ChangeNameDialog extends HestiaDialog {
     private Device device;
     private final String TAG = "ChangeNameDialog";
 
-    public ChangeNameDialog(Context context, Device device) {
-        super(context, R.layout.set_name, "Change name of your device");
-        this.device = device;
+    public static ChangeNameDialog newInstance() {
+        ChangeNameDialog fragment = new ChangeNameDialog();
+        return fragment;
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        editText = (EditText)findViewById(R.id.change_name_device);
+    public void setDevice(Device d) {
+        device = d;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Set Dialog Title
+        builder.setTitle("Change name")
+
+                // Positive button
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something else
+                        pressConfirm();
+                        dismiss();
+
+                    }
+                })
+
+                // Negative Button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something else
+                        pressCancel();
+
+                    }
+
+                });
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.set_name, null);
+
+
+        editText = (EditText) view.findViewById(R.id.change_name_device);
         editText.setText(device.getName());
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        builder.setView(view);
+
+        AlertDialog dlg = builder.create();
+        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dlg;
+    }
+
+    @Override
+    void pressCancel() {
     }
 
     @Override
@@ -55,8 +99,9 @@ public class ChangeNameDialog extends HestiaDialog {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
         }.execute();
     }
+
 }

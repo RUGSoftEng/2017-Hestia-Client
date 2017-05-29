@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
  * GET request to the server to populate the device list.
  */
-public class DeviceListFragment extends Fragment{
+public class DeviceListFragment extends Fragment {
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -37,6 +38,7 @@ public class DeviceListFragment extends Fragment{
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
+    private FragmentManager fm;
 
     public DeviceListFragment() {
         super();
@@ -46,7 +48,9 @@ public class DeviceListFragment extends Fragment{
         super();
         this.context = context;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
+//        fm = getActivity().getSupportFragmentManager();
     }
+
 
     /**
      *
@@ -61,7 +65,7 @@ public class DeviceListFragment extends Fragment{
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);
-        initRefreshLayou(deviceListView);
+        initRefreshLayout(deviceListView);
         initDeviceList(deviceListView);
         populateUI();
 
@@ -98,7 +102,8 @@ public class DeviceListFragment extends Fragment{
             protected void onPostExecute(ArrayList<Device> devices) {
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
-                    DeviceBar bar = new DeviceBar(getActivity(), device, serverCollectionsInteractor);
+                    Log.i(TAG, "device found");
+                    DeviceBar bar = new DeviceBar(getActivity().getSupportFragmentManager(), getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -138,7 +143,7 @@ public class DeviceListFragment extends Fragment{
         setOnScrollListeners();
     }
 
-    private void initRefreshLayou(View deviceListView) {
+    private void initRefreshLayout(View deviceListView) {
         swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -185,7 +190,11 @@ public class DeviceListFragment extends Fragment{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddDeviceDialog(getActivity(), serverCollectionsInteractor).show();
+
+                AddDeviceDialog fragment = AddDeviceDialog.newInstance();
+                fragment.setInteractor(serverCollectionsInteractor);
+                fragment.setFragmentManager(getActivity().getSupportFragmentManager());
+                fragment.show(getActivity().getSupportFragmentManager(), "dialog");
             }
         });
     }

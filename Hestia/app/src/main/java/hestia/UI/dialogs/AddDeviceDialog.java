@@ -1,10 +1,15 @@
 package hestia.UI.dialogs;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -19,31 +24,60 @@ import hestia.backend.models.RequiredInfo;
 * This class opens the dialog to enter the collection name and plugin name.
 * It then sends this to the networkHandler which tries to get the required info.
 * If this works it consecutively opens a new dialog for the other info.
-* @see AddDeviceInfo
+* @see EnterRequiredInfoDialog
  */
 
 public class AddDeviceDialog extends HestiaDialog {
-    private static final String TAG = "AddDeviceDialog";
     private AutoCompleteTextView collectionField, pluginField;
     private ArrayAdapter<String> adapterCollections;
     private ArrayAdapter<String> adapterPlugins;
     private ServerCollectionsInteractor serverCollectionsInteractor;
+    private final static String TAG = "AddDeviceDialog";
+    private FragmentManager fragmentManager;
 
-    public AddDeviceDialog(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
-        super(context, R.layout.add_device_dialog, "Add a device");
-        this.serverCollectionsInteractor = serverCollectionsInteractor;
+    public static AddDeviceDialog newInstance() {
+        AddDeviceDialog fragment = new AddDeviceDialog();
+        return fragment;
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void setInteractor(ServerCollectionsInteractor interactor) {
+        serverCollectionsInteractor = interactor;
+    }
 
-        adapterCollections = new ArrayAdapter<String>(context, android.R.layout.simple_expandable_list_item_1);
-        collectionField = (AutoCompleteTextView) findViewById(R.id.collection);
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Set Dialog Title
+        builder.setTitle("Add Device")
+
+                // Positive button
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something else
+                        pressConfirm();
+                        dismiss();
+
+                    }
+                })
+
+                // Negative Button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,	int which) {
+                        // Do something else
+                    }
+
+                });
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.add_device_dialog, null);
+
+        adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
+        collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
         collectionField.setAdapter(adapterCollections);
         collectionField.setThreshold(1);
 
-        adapterPlugins = new ArrayAdapter<String>(context, android.R.layout.simple_expandable_list_item_1);
-        pluginField = (AutoCompleteTextView)findViewById(R.id.pluginName);
+        adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
+        pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
         pluginField.setAdapter(adapterPlugins);
         pluginField.setThreshold(1);
 
@@ -55,6 +89,18 @@ public class AddDeviceDialog extends HestiaDialog {
                 getPlugins(collectionField.getText().toString());
             }
         });
+
+        builder.setView(view);
+
+        AlertDialog dlg = builder.create();
+        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dlg;
+    }
+
+    @Override
+    void pressCancel() {
+        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -84,13 +130,17 @@ public class AddDeviceDialog extends HestiaDialog {
 
              @Override
              protected void onProgressUpdate(String... exceptionMessage) {
-                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
              }
 
             @Override
             protected void onPostExecute(RequiredInfo info) {
                 if(info != null){
-                    new AddDeviceInfo(context, info, serverCollectionsInteractor).show();
+                    EnterRequiredInfoDialog fragment = EnterRequiredInfoDialog.newInstance();
+                    fragment.setData(info, serverCollectionsInteractor);
+                    if(fragmentManager == null){
+                    }
+                    fragment.show(fragmentManager, "dialog");
                 }
             }
         }.execute();
@@ -100,7 +150,7 @@ public class AddDeviceDialog extends HestiaDialog {
         new AsyncTask<Object, String, ArrayList<String>>() {
             @Override
             protected ArrayList<String> doInBackground(Object... params) {
-                ArrayList<String> collections = null;
+                ArrayList<String> collections = new ArrayList<String>();
                 try {
                     collections = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
@@ -119,13 +169,13 @@ public class AddDeviceDialog extends HestiaDialog {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
             protected void onPostExecute(ArrayList<String> collections) {
                 adapterCollections.clear();
-                if(collections != null){
+                if (adapterCollections != null) {
                     adapterCollections.addAll(collections);
                 }
             }
@@ -155,7 +205,7 @@ public class AddDeviceDialog extends HestiaDialog {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -167,4 +217,9 @@ public class AddDeviceDialog extends HestiaDialog {
             }
         }.execute();
     }
+
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
 }
+

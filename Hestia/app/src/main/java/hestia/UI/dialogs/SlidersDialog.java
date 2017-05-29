@@ -24,12 +24,12 @@ import hestia.backend.models.Device;
  * It loads all the slider activators, and sends the new state onRelease.
  */
 
-public class SlideDialog extends Dialog implements android.view.View.OnClickListener{
+public class SlidersDialog extends Dialog implements android.view.View.OnClickListener{
     private Device device;
     private Context context;
-    private final String TAG = "SlideDialog";
+    private final String TAG = "SlidersDialog";
 
-    public SlideDialog(Context context, Device device) {
+    public SlidersDialog(Context context, Device device) {
         super(context);
         this.context = context;
         this.device = device;
