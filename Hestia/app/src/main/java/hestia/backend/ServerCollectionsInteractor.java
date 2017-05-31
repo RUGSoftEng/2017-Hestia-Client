@@ -38,7 +38,7 @@ public class ServerCollectionsInteractor implements Serializable{
 
             Type type = new TypeToken<ArrayList<Device>>(){}.getType();
             ArrayList<Device> devices = gson.fromJson(jsonArray, type);
-            this.connectHandlerToDevices(devices);
+            this.connectDevicesToHandler(devices);
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
@@ -85,13 +85,15 @@ public class ServerCollectionsInteractor implements Serializable{
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
         String endpoint = "plugins";
         JsonElement payload = handler.GET(endpoint);
-        return ParseInfo(payload);
+        ArrayList<String> collections = this.parseInfo(payload);
+        return collections;
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
         String endpoint = "plugins/" + collection;
         JsonElement payload = handler.GET(endpoint);
-        return ParseInfo(payload);
+        ArrayList<String> plugins = this.parseInfo(payload);
+        return plugins;
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
@@ -114,7 +116,7 @@ public class ServerCollectionsInteractor implements Serializable{
         return requiredInfo;
     }
 
-    private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
+    private ArrayList<String> parseInfo(JsonElement element) throws ComFaultException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         ArrayList<String> list = new ArrayList<>();
@@ -139,7 +141,7 @@ public class ServerCollectionsInteractor implements Serializable{
         this.handler = handler;
     }
 
-    private void connectHandlerToDevices(ArrayList<Device> devices) {
+    private void connectDevicesToHandler(ArrayList<Device> devices) {
         for(Device device : devices) {
             device.setHandler(this.handler);
         }
