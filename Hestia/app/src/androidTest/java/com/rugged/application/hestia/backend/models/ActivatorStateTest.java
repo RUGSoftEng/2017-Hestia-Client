@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotEquals;
 public class ActivatorStateTest {
     private final Boolean DEFAULT_BOOL_RAW_STATE = false;
     private final String DEFAULT_BOOL_TYPE = "bool";
-    private final Float DEFAULT_FLOAT_RAW_STATE = (float) 0.5;
+    private final Float DEFAULT_FLOAT_RAW_STATE = (float) 0.5f;
     private final String DEFAULT_FLOAT_TYPE = "float";
     private ActivatorState<Float> floatActivatorState;
     private ActivatorState<Boolean> boolActivatorState;

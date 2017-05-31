@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import hestia.UI.activities.home.HomeActivity;
-import hestia.UI.activities.login.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -45,21 +44,15 @@ public class ChangeCredentialsDialogTest {
     public void setUp(){
         // To be sure that the correct standard credentials are set, logout and login.
         onView(withId(context_menu)).perform(click());
-
         onView(withText(LOGOUT_TEXT)).perform(click());
-
         onView(withId(R.id.username)).perform(typeText(OLD_USER), closeSoftKeyboard());
-
         onView(withId(R.id.password)).perform(typeText(OLD_PASS), closeSoftKeyboard());
-
         onView(withId(R.id.loginButton)).perform(click());
     }
 
     @Test
     public void changeUserPassTest(){
-        // Change user
         setCredentials(NEW_USER,OLD_PASS,NEW_PASS,NEW_PASS);
-
         logoutLogin(NEW_USER,NEW_PASS);
     }
 
@@ -70,32 +63,19 @@ public class ChangeCredentialsDialogTest {
 
     public void setCredentials(String user, String pass, String nnpass, String npass){
         onView(withId(context_menu)).perform(click());
-
         onView(withText(CHANGE_TEXT)).perform(click());
-
         onView(withId(R.id.newUser)).perform(clearText(),typeText(user), closeSoftKeyboard());
-
         onView(withId(R.id.oldPass)).perform(clearText(),typeText(pass), closeSoftKeyboard());
-
         onView(withId(R.id.newPass)).perform(clearText(),typeText(npass), closeSoftKeyboard());
-
         onView(withId(R.id.newPassCheck)).perform(clearText(),typeText(nnpass), closeSoftKeyboard());
-
         onView(withText("Confirm")).perform(click());
     }
 
     public void logoutLogin(String user, String pass){
-        // Logout
         onView(withId(context_menu)).perform(click());
-
         onView(withText(LOGOUT_TEXT)).perform(click());
-
-        // Login
-
         onView(withId(R.id.username)).perform(typeText(user), closeSoftKeyboard());
-
         onView(withId(R.id.password)).perform(typeText(pass), closeSoftKeyboard());
-
         onView(withId(R.id.loginButton)).perform(click());
 
         intending(allOf(

@@ -17,9 +17,6 @@ import hestia.backend.models.Activator;
 import hestia.backend.models.Device;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -42,38 +39,4 @@ public class ServerCollectionsInteractorTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
-
-    @Test
-    public void getDevicesTest(){
-    }
-
-    @Test
-    public void addDeviceTest() {
-    }
-
-    @Test
-    public void removeDeviceTest(){
-    }
-
-    @Test
-    public void getCollectionsTest(){
-    }
-
-    @Test
-    public void getPluginsTest(){
-    }
-
-    @Test
-    public void getRequiredInfoTest(){
-    }
-
-    @Test
-    public void setAndGetIpTest(){
-    }
-
-    @Test
-    public void setAndGetPortTest() {
-    }
-
-
 }

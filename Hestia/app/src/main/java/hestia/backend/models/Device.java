@@ -92,11 +92,11 @@ public class Device {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Device)) return false;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Device)) return false;
 
-        Device device = (Device) o;
+        Device device = (Device) object;
 
         if (!getId().equals(device.getId())) return false;
         if (!getName().equals(device.getName())) return false;
