@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.nsd.NsdManager;
+import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -198,38 +199,96 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void networkServerDiscovery(){
         new AsyncTask<Void,Void,Void> () {
+            public NsdServiceInfo mService;
+            public NsdManager.ResolveListener mResolveListener;
+            public NsdManager mNsdManager;
+            String SERVICE_NAME = "HestiaServer";
+            String SERVICE_TYPE = "_http._tcp.";
+
             private String TAG = "Discovery";
 
             @Override
             protected Void doInBackground(Void ...params) {
                 NsdManager.DiscoveryListener discoveryListener = new NsdManager.DiscoveryListener() {
+                    private String TAG = "DiscoveryService";
+
                     //  Called as soon as service discovery begins.
                     @Override
                     public void onDiscoveryStarted(String regType) {
                         Log.d(TAG, "Service discovery started");
                     }
 
+                    @Override
+                    public void onServiceFound(NsdServiceInfo service) {
+                        // A service was found!  Do something with it.
+                        Log.d(TAG, "Service discovery success" + service);
+                        if (!service.getServiceType().equals(SERVICE_TYPE)) {
+                            // Service type is the string containing the protocol and
+                            // transport layer for this service.
+                            Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
+                        } else if (service.getServiceName().equals(SERVICE_NAME)) {
+                            // The name of the service tells the user what they'd be
+                            // connecting to. It could be "Bob's Chat App".
+                            Log.d(TAG, "Same machine: " + SERVICE_NAME);
+                        } else if (service.getServiceName().contains("NsdChat")){
+                            mNsdManager.resolveService(service, mResolveListener);
+                        }
+                    }
+
+                    @Override
+                    public void onServiceLost(NsdServiceInfo service) {
+                        // When the network service is no longer available.
+                        // Internal bookkeeping code goes here.
+                        Log.e(TAG, "service lost" + service);
+                    }
+
+                    @Override
+                    public void onDiscoveryStopped(String serviceType) {
+                        Log.i(TAG, "Discovery stopped: " + serviceType);
+                    }
+
+                    @Override
+                    public void onStartDiscoveryFailed(String serviceType, int errorCode) {
+                        Log.e(TAG, "Discovery failed: Error code:" + errorCode);
+                        mNsdManager.stopServiceDiscovery(this);
+                    }
+
+                    @Override
+                    public void onStopDiscoveryFailed(String serviceType, int errorCode) {
+                        Log.e(TAG, "Discovery failed: Error code:" + errorCode);
+                        mNsdManager.stopServiceDiscovery(this);
+                    }
+
                 };
-                try{
-                    URL url = new URL("255.255.255.255:8000");
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-                    DatagramSocket discoveryBroadcaster = new DatagramSocket();
-                    discoveryBroadcaster.send(new DatagramPacket(msg.getBytes(),msg.getBytes().length,
-                            InetAddress.getByName("255.255.255.255"),8000));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                mResolveListener = new NsdManager.ResolveListener() {
+                    @Override
+                    public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
+                        // Called when the resolve fails.  Use the error code to debug.
+                        Log.e(TAG, "Resolve failed" + errorCode);
+                    }
 
+                    @Override
+                    public void onServiceResolved(NsdServiceInfo serviceInfo) {
+                        Log.e(TAG, "Resolve Succeeded. " + serviceInfo);
+
+                        if (serviceInfo.getServiceName().equals(SERVICE_NAME)) {
+                            Log.d(TAG, "Same IP.");
+                            return;
+                        }
+                        mService = serviceInfo;
+                        int port = mService.getPort();
+                        InetAddress host = mService.getHost();
+                    }
+                };
+
+                mNsdManager.discoverServices("_http._tcp.", NsdManager.PROTOCOL_DNS_SD, discoveryListener);
                 return null;
             }
-
-
-
-
         };
-
     }
+
+
 
     /*
     public void initializeDiscoveryListener() {
