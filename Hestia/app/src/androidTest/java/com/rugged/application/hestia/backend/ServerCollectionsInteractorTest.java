@@ -16,19 +16,19 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class ServerCollectionsInteractorTest {
-    private ServerCollectionsInteractor serverCollectionsInteractor;
+    private ServerCollectionsInteractor dummyServerCollectionsInteractor;
     private Device dummyDevice;
     private String DUMMY_IP;
     private Integer DUMMY_PORT;
-    private NetworkHandler handler;
+    private NetworkHandler dummyHandler;
 
     @Before
     public void setUp() {
         DUMMY_IP = "0.0.0.0";
         DUMMY_PORT = 1000;
-        handler = new NetworkHandler(DUMMY_IP, DUMMY_PORT);
-        serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
-        dummyDevice = new Device("dummyId","dummyName","dummyType",new ArrayList<Activator>(), handler);
+        dummyHandler = new NetworkHandler(DUMMY_IP, DUMMY_PORT);
+        dummyServerCollectionsInteractor = new ServerCollectionsInteractor(dummyHandler);
+        dummyDevice = new Device("dummyId","dummyName","dummyType",new ArrayList<Activator>(), dummyHandler);
     }
 
     @Test
