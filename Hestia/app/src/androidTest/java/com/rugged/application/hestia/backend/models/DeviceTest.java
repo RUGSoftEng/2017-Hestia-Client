@@ -84,22 +84,56 @@ public class DeviceTest {
     @Test
     public void setAndGetNameSuccess() throws IOException, ComFaultException {
         assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
-        String newNameSuccess = "newNameSuccess";
-        NetworkHandler mockHandlerSuccess = this.makeMockHandlerSuccess();
+
+        // mock Network Handler so that the PUT method will return a JsonObject similar to
+        // the one returned when the request is successful
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+        JsonObject object = new JsonObject();
+        object.addProperty("name", "name_field");
+        when(mockHandlerSuccess.PUT(any(JsonObject.class), any(String.class))).thenReturn(object);
         deviceTest.setHandler(mockHandlerSuccess);
+
+        // attempt to change the name
+        String newNameSuccess = "newNameSuccess";
         deviceTest.setName(newNameSuccess);
         assertEquals(newNameSuccess, deviceTest.getName());
     }
 
     @Test(expected = ComFaultException.class)
-    public void setAndGetNameFail() throws IOException, ComFaultException {
+    public void setAndGetNameFailComFaultException() throws IOException, ComFaultException {
         assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
-        String newNameFail = "newNameFail";
-        NetworkHandler mockHandlerFail = this.makeMockHandlerFail();
+
+        // mock Network Handler so that the PUT method will return a JsonObject similar to
+        // the one returned when the request failed and a ComFaultException was thrown
+        NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
+        JsonObject object = new JsonObject(); // Mock a JsonObject containing the error
+        object.addProperty("error", "error_field");
+        object.addProperty("message", "message_field");
+        when(mockHandlerFail.PUT(any(JsonObject.class), any(String.class))).thenReturn(object);
         deviceTest.setHandler(mockHandlerFail);
+
+        // attempt to change the name
+        String newNameFail = "newNameFail";
         deviceTest.setName(newNameFail);
         assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
     }
+
+    @Test(expected = IOException.class)
+    public void setAndGetNameFailIOException() throws IOException, ComFaultException {
+        assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
+
+        // mock Network Handler so that the PUT method will return a JsonObject similar to
+        // the one returned when the request failed and an IOException was thrown
+        NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
+        when(mockHandlerFail.PUT(any(JsonObject.class), any(String.class))).thenThrow(IOException.class);
+        deviceTest.setHandler(mockHandlerFail);
+
+        // attempt to change the name
+        String newNameFail = "newNameFail";
+        deviceTest.setName(newNameFail);
+        assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
+    }
+
 
     @Test
     public void toStringTest() {
@@ -113,34 +147,5 @@ public class DeviceTest {
         Device dummyDevice = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,activators, handler);
         assertTrue(dummyDevice.equals(deviceTest));
         assertEquals(dummyDevice, deviceTest);
-    }
-
-    /**
-     * This method will mock a NetworkHandler whose PUT method will return a JsonObject similar to
-     * the one returned when the request is successful
-     * @return a mocked version of NetworkHandler containing only a mocked version of the PUT method.
-     * @throws IOException exception thrown
-     */
-    private NetworkHandler makeMockHandlerSuccess() throws IOException {
-        NetworkHandler mockNetworkHandlerSuccess = mock(NetworkHandler.class);
-        JsonObject object = new JsonObject();
-        object.addProperty("name", "name_field");
-        when(mockNetworkHandlerSuccess.PUT(any(JsonObject.class), any(String.class))).thenReturn(object);
-        return mockNetworkHandlerSuccess;
-    }
-
-    /**
-     * This method will mock a NetworkHandler whose PUT method will return a JsonObject similar to
-     * the one returned when the request failed
-     * @return a mocked version of NetworkHandler containing only a mocked version of the PUT method.
-     * @throws IOException exception thrown
-     */
-    private NetworkHandler makeMockHandlerFail() throws IOException {
-        NetworkHandler mockNetworkHandlerFail = mock(NetworkHandler.class);
-        JsonObject object = new JsonObject();
-        object.addProperty("error", "error_field");
-        object.addProperty("message", "message_field");
-        when(mockNetworkHandlerFail.PUT(any(JsonObject.class), any(String.class))).thenReturn(object);
-        return mockNetworkHandlerFail;
     }
 }
