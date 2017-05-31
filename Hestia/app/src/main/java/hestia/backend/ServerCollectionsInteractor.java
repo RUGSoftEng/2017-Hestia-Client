@@ -17,8 +17,10 @@ import hestia.backend.models.RequiredInfo;
 import hestia.backend.models.deserializers.RequiredInfoDeserializer;
 
 /**
- * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
- * IP address, or port number. During execution, there is a single ServerCollectionsInteractor accessible.
+ * This class is a facade, performing the basic operations between the User and the Server.
+ * It does so using the NetworkHandler, which implements 4 requests methods:
+ * GET, POST, PUT and DELETE.
+ * @see NetworkHandler
  */
 public class ServerCollectionsInteractor implements Serializable{
     private NetworkHandler handler;
