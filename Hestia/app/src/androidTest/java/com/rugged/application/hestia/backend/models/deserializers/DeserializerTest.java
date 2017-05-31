@@ -1,25 +1,39 @@
 package com.rugged.application.hestia.backend.models.deserializers;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import static org.junit.Assert.*;
+
 import hestia.backend.models.Activator;
 import hestia.backend.models.deserializers.ActivatorDeserializer;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class DeserializerTest {
 
     private static final String testBoolJSON =
             "{\"state\": false,\"type\": \"bool\",\"name\": \"On/Off\",\"activatorId\": \"591853a1094c1d2bdcbe9f21\",\"rank\": 0}";
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.rugged.application.hestia", appContext.getPackageName());
+    }
 
     @Test
     public void deserializeBoolActivatorTest(){

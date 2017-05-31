@@ -1,7 +1,11 @@
 package com.rugged.application.hestia.backend.models;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import com.google.gson.JsonObject;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +44,12 @@ public class DeviceTest {
         handler = new NetworkHandler(defaultIp, defaultPort);
 
         deviceTest = new Device(DEFAULT_DEVICE_ID,DEFAULT_DEVICE_NAME,DEFAULT_DEVICE_TYPE,activators, handler);
+    }
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Assert.assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test

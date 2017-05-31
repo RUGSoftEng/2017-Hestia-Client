@@ -1,5 +1,7 @@
 package com.rugged.application.hestia.backend;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.After;
 import org.junit.Before;
@@ -7,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import hestia.backend.NetworkHandler;
 import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class NetworkHandlerTest {
@@ -19,6 +22,12 @@ public class NetworkHandlerTest {
         assertNull(dummyHandler);
         dummyHandler = new NetworkHandler(dummyIP, dummyPort);
         assertNotNull(dummyHandler);
+    }
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test

@@ -1,5 +1,7 @@
 package com.rugged.application.hestia.backend.models;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +34,12 @@ public class ActivatorTest {
 
         boolActivatorState = new ActivatorState<>(DEFAULT_BOOL_VALUE, DEFAULT_BOOL_TYPE);
         testBoolActivator = new Activator(DEFAULT_ID, DEFAULT_BOOL_RANK, boolActivatorState, DEFAULT_NAME);
+    }
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test

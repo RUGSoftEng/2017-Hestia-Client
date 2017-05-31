@@ -1,6 +1,10 @@
 package com.rugged.application.hestia.backend.models;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +30,12 @@ public class RequiredInfoTest {
         dummyRequiredInfo = new RequiredInfo(DEFAULT_COLLECTION, DEFAULT_PLUGIN, DEFAULT_INFO);
         assertTrue(DEFAULT_INFO.isEmpty());
         assertNotNull(dummyRequiredInfo);
+    }
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Assert.assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test

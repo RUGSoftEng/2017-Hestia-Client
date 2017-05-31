@@ -1,5 +1,9 @@
 package com.rugged.application.hestia.backend.exceptions;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +27,12 @@ public class ComFaultExceptionTest {
         DEFAULT_MESSAGE = "default_message";
         dummyComFaultException = new ComFaultException(DEFAULT_ERROR, DEFAULT_MESSAGE);
         assertNotNull(dummyComFaultException);
+    }
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Assert.assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test

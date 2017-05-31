@@ -18,15 +18,15 @@ import static org.junit.Assert.assertEquals;
 public class ServerCollectionsInteractorTest {
     private ServerCollectionsInteractor dummyServerCollectionsInteractor;
     private Device dummyDevice;
-    private String DUMMY_IP;
-    private Integer DUMMY_PORT;
+    private String DEFAULT_IP;
+    private Integer DEFAULT_PORT;
     private NetworkHandler dummyHandler;
 
     @Before
     public void setUp() {
-        DUMMY_IP = "0.0.0.0";
-        DUMMY_PORT = 1000;
-        dummyHandler = new NetworkHandler(DUMMY_IP, DUMMY_PORT);
+        DEFAULT_IP = "0.0.0.0";
+        DEFAULT_PORT = 1000;
+        dummyHandler = new NetworkHandler(DEFAULT_IP, DEFAULT_PORT);
         dummyServerCollectionsInteractor = new ServerCollectionsInteractor(dummyHandler);
         dummyDevice = new Device("dummyId","dummyName","dummyType",new ArrayList<Activator>(), dummyHandler);
     }
@@ -60,14 +60,5 @@ public class ServerCollectionsInteractorTest {
     @Test
     public void getRequiredInfoTest(){
     }
-
-    @Test
-    public void setAndGetIpTest(){
-    }
-
-    @Test
-    public void setAndGetPortTest() {
-    }
-
 
 }
