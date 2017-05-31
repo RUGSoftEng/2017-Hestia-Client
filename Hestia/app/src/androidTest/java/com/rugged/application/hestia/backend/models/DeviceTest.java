@@ -1,24 +1,17 @@
 package com.rugged.application.hestia.backend.models;
 
 import android.support.test.runner.AndroidJUnit4;
-
 import com.google.gson.JsonObject;
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import hestia.backend.NetworkHandler;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -34,9 +27,6 @@ public class DeviceTest {
     private final String DEFAULT_DEVICE_ID = "12";
     private final String DEFAULT_DEVICE_NAME = "deviceTest";
     private final String DEFAULT_DEVICE_TYPE = "deviceType";
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void createDevice(){
@@ -92,40 +82,23 @@ public class DeviceTest {
     }
 
     @Test
-    public void setAndGetName() throws IOException, ComFaultException {
+    public void setAndGetNameSuccess() throws IOException, ComFaultException {
         assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
-
-        // Expect to change the name successfully
         String newNameSuccess = "newNameSuccess";
         NetworkHandler mockHandlerSuccess = this.makeMockHandlerSuccess();
         deviceTest.setHandler(mockHandlerSuccess);
         deviceTest.setName(newNameSuccess);
         assertEquals(newNameSuccess, deviceTest.getName());
+    }
 
-        // Expect to fail this proces -> should throw an error
+    @Test(expected = ComFaultException.class)
+    public void setAndGetNameFail() throws IOException, ComFaultException {
+        assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
         String newNameFail = "newNameFail";
         NetworkHandler mockHandlerFail = this.makeMockHandlerFail();
         deviceTest.setHandler(mockHandlerFail);
         deviceTest.setName(newNameFail);
-        thrown.expect(ComFaultException.class);
-        assertEquals(newNameSuccess, deviceTest.getName());
-    }
-
-    private NetworkHandler makeMockHandlerSuccess() throws IOException {
-        NetworkHandler mockNetworkHandlerSuccess = mock(NetworkHandler.class);
-        JsonObject object = new JsonObject();
-        object.addProperty("name", "name_field");
-        when(mockNetworkHandlerSuccess.PUT(object, any(String.class))).thenReturn(object);
-        return mockNetworkHandlerSuccess;
-    }
-
-    private NetworkHandler makeMockHandlerFail() throws IOException {
-        NetworkHandler mockNetworkHandlerFail = mock(NetworkHandler.class);
-        JsonObject object = new JsonObject();
-        object.addProperty("error", "error_field");
-        object.addProperty("message", "message_field");
-        when(mockNetworkHandlerFail.PUT(object, "the_endpoint")).thenReturn(object);
-        return mockNetworkHandlerFail;
+        assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
     }
 
     @Test
@@ -140,5 +113,34 @@ public class DeviceTest {
         Device dummyDevice = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,activators, handler);
         assertTrue(dummyDevice.equals(deviceTest));
         assertEquals(dummyDevice, deviceTest);
+    }
+
+    /**
+     * This method will mock a NetworkHandler whose PUT method will return a JsonObject similar to
+     * the one returned when the request is successful
+     * @return a mocked version of NetworkHandler containing only a mocked version of the PUT method.
+     * @throws IOException exception thrown
+     */
+    private NetworkHandler makeMockHandlerSuccess() throws IOException {
+        NetworkHandler mockNetworkHandlerSuccess = mock(NetworkHandler.class);
+        JsonObject object = new JsonObject();
+        object.addProperty("name", "name_field");
+        when(mockNetworkHandlerSuccess.PUT(any(JsonObject.class), any(String.class))).thenReturn(object);
+        return mockNetworkHandlerSuccess;
+    }
+
+    /**
+     * This method will mock a NetworkHandler whose PUT method will return a JsonObject similar to
+     * the one returned when the request failed
+     * @return a mocked version of NetworkHandler containing only a mocked version of the PUT method.
+     * @throws IOException exception thrown
+     */
+    private NetworkHandler makeMockHandlerFail() throws IOException {
+        NetworkHandler mockNetworkHandlerFail = mock(NetworkHandler.class);
+        JsonObject object = new JsonObject();
+        object.addProperty("error", "error_field");
+        object.addProperty("message", "message_field");
+        when(mockNetworkHandlerFail.PUT(any(JsonObject.class), any(String.class))).thenReturn(object);
+        return mockNetworkHandlerFail;
     }
 }
