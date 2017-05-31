@@ -39,12 +39,12 @@ public class NetworkHandlerTest {
 
     @Test
     public void isSuccessfulRequestTest() {
-        Integer responseCode1 = 200;
-        Integer responseCode2 = 404;
-        Integer responseCode3 = null;
-        assertTrue(dummyHandler.isSuccessfulRequest(responseCode1));
-        assertFalse(dummyHandler.isSuccessfulRequest(responseCode2));
-        assertFalse(dummyHandler.isSuccessfulRequest(responseCode3));
+        Integer responseCodeSuccess = 200;
+        Integer responseCodeFail = 404;
+        Integer responseCodeNull = null;
+        assertTrue(dummyHandler.isSuccessfulRequest(responseCodeSuccess));
+        assertFalse(dummyHandler.isSuccessfulRequest(responseCodeFail));
+        assertFalse(dummyHandler.isSuccessfulRequest(responseCodeNull));
     }
 
     @Test
@@ -64,23 +64,23 @@ public class NetworkHandlerTest {
 
     @Test
     public void equalsTest() {
-        NetworkHandler handler1 = this.dummyHandler;
-        assertNotNull(handler1);
-        assertTrue(dummyHandler.equals(handler1));
+        NetworkHandler handlerCurrent = this.dummyHandler;
+        assertNotNull(handlerCurrent);
+        assertTrue(dummyHandler.equals(handlerCurrent));
 
-        NetworkHandler handler2 = new NetworkHandler(dummyIP, dummyPort);
-        assertNotNull(handler2);
-        assertTrue(dummyHandler.equals(handler2));
+        NetworkHandler handlerSameProperties = new NetworkHandler(dummyIP, dummyPort);
+        assertNotNull(handlerSameProperties);
+        assertTrue(dummyHandler.equals(handlerSameProperties));
 
-        NetworkHandler handler3 = null;
-        assertNull(handler3);
-        assertFalse(dummyHandler.equals(handler3));
+        NetworkHandler handlerNull = null;
+        assertNull(handlerNull);
+        assertFalse(dummyHandler.equals(handlerNull));
 
         String IP = "1.1.1.1";
         Integer port = 2000;
-        NetworkHandler handler4 = new NetworkHandler(IP, port);
-        assertNotNull(handler4);
-        assertFalse(dummyHandler.equals(handler4));
+        NetworkHandler handlerDifferentProperties = new NetworkHandler(IP, port);
+        assertNotNull(handlerDifferentProperties);
+        assertFalse(dummyHandler.equals(handlerDifferentProperties));
     }
 
 
@@ -90,5 +90,4 @@ public class NetworkHandlerTest {
         dummyHandler = null;
         assertNull(dummyHandler);
     }
-
 }
