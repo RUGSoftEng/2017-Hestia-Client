@@ -144,4 +144,5 @@ public class ServerCollectionsInteractor implements Serializable{
             device.setHandler(this.handler);
         }
     }
+
 }

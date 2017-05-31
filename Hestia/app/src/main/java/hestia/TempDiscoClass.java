@@ -14,24 +14,7 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Enumeration;
 
-public class TempDiscoClass extends AsyncTask<Void,Void,Void> {
-    private String TAG = "Discovery";
 
-    @Override
-    protected Void doInBackground(Void ...params) {
-        String msg = "Discovery";
-
-        try {
-            DatagramSocket discoveryBroadcaster = new DatagramSocket();
-            discoveryBroadcaster.send(new DatagramPacket(msg.getBytes(),msg.getBytes().length,
-                    InetAddress.getByName("255.255.255.255"),8000));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-}
 
 /*
     static void Main(string[] args)
