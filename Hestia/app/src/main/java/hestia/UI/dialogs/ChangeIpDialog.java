@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import hestia.backend.ServerCollectionsInteractor;
 
 /**
@@ -24,6 +27,13 @@ public class ChangeIpDialog extends HestiaDialog {
     private final static String TAG = "ChangeIpDialog";
     private String ip;
     private EditText ipField;
+    private Pattern pattern;
+    private Matcher matcher;
+    private static final String IPADDRESS_PATTERN =
+                        "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
@@ -86,13 +96,12 @@ public class ChangeIpDialog extends HestiaDialog {
     @Override
     void pressConfirm() {
         ip = ipField.getText().toString();
-        Log.i(TAG, "My ip is now:" + ip);
-        if(ip!=null) {
+        if(checkIp(ip)) {
             serverCollectionsInteractor.getHandler().setIp(ip);
-            Log.i(TAG, "My ip is changed to: " + ip);
-            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
-                            .getIp(),
+            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler().getIp(),
                     Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(),getString(R.string.incorr_ip),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -100,4 +109,10 @@ public class ChangeIpDialog extends HestiaDialog {
     void pressCancel() {
         Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
     }
+
+    private boolean checkIp(String ip) {
+                pattern = Pattern.compile(IPADDRESS_PATTERN);
+                matcher = pattern.matcher(ip);
+                return matcher.matches();
+            }
 }
