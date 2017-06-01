@@ -16,6 +16,8 @@ import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -59,9 +61,9 @@ public class ServerCollectionsInteractorTest {
      */
     @Test
     public void getDevicesTestSuccess() throws IOException, ComFaultException {
-        // Mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonArray similar to
         // the one returned when the request was successful
-        NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
 
         // Creates a dummy JsonArray, containing 1 JsonObject holding information of a dummy Device.
         // It contains a dummy id, a dummy name, a dummy type, and an empty list of activators.
@@ -72,10 +74,10 @@ public class ServerCollectionsInteractorTest {
         deviceObject.addProperty("type", "dummyType");
         deviceObject.add("activators", new JsonArray());
         devicesJsonArray.add(deviceObject);
-        when(mockHandlerFail.GET(any(String.class))).thenReturn(devicesJsonArray);
-        dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(devicesJsonArray);
+        dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
 
-        // attempt to get the list of devices
+        // Attempt to get the list of devices
         ArrayList<Device> devices = dummyServerCollectionsInteractor.getDevices();
         assertNotNull(devices);
         assertEquals(devices.get(0).getId(), deviceObject.get("deviceId").getAsString());
@@ -97,19 +99,19 @@ public class ServerCollectionsInteractorTest {
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the list of devices
+        // Attempt to get the list of devices
         ArrayList<Device> devices = dummyServerCollectionsInteractor.getDevices();
     }
 
     @Test(expected = IOException.class)
     public void getDevicesTestIOException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
         when(mockHandlerFail.GET(any(String.class))).thenThrow(IOException.class);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the list of devices
+        // Attempt to get the list of devices
         ArrayList<Device> devices = dummyServerCollectionsInteractor.getDevices();
     }
 
@@ -120,17 +122,11 @@ public class ServerCollectionsInteractorTest {
     public void addDeviceTestSuccessful() throws IOException {
         // Mock Network Handler so that the POST method will return a JsonObject similar to
         // the one returned when the request was successful
-        NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+        when(mockHandlerSuccess.POST(any(JsonObject.class), any(String.class))).thenReturn(new JsonObject());
+        dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
 
-        // Creates a dummy RequiredInfo as a JsonObject, which will be used to as a return value.
-        JsonObject requiredInfo = new JsonObject();
-        requiredInfo.addProperty("collection", "dummyCollection");
-        requiredInfo.addProperty("plugin_name", "dummyPluginName");
-        requiredInfo.add("required_info", new JsonObject());
-        when(mockHandlerFail.POST(any(JsonObject.class), any(String.class))).thenReturn(requiredInfo);
-        dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
-
-        // attempt to add a device, based on a dummy RequiredInfo object
+        // Attempt to add a device, based on a dummy RequiredInfo object
         String dummyCollection = "dummy_collection";
         String dummyPlugin = "dummy_plugin";
         HashMap<String, String> dummyInfo = new HashMap<>();
@@ -140,11 +136,20 @@ public class ServerCollectionsInteractorTest {
         } catch (Exception exception){
             fail("Test threw exception: " + exception.toString());
         }
+
+        // Override POST method, now returning null.
+        // Will use the same dummy RequiredInfo object as input
+        when(mockHandlerSuccess.POST(any(JsonObject.class), any(String.class))).thenReturn(null);
+        try {
+            dummyServerCollectionsInteractor.addDevice(dummyRequiredInfo);
+        } catch (Exception exception){
+            fail("Test threw exception: " + exception.toString());
+        }
     }
 
     @Test(expected = ComFaultException.class)
     public void addDeviceTestComFaultException() throws IOException, ComFaultException {
-        // mock Network Handler so that the POST method will return a JsonObject similar to
+        // Mock Network Handler so that the POST method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
@@ -155,7 +160,7 @@ public class ServerCollectionsInteractorTest {
         when(mockHandlerFail.POST(any(JsonObject.class), any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to add a device, based on a dummy RequiredInfo object
+        // Attempt to add a device, based on a dummy RequiredInfo object
         String dummyCollection = "dummy_collection";
         String dummyPlugin = "dummy_plugin";
         HashMap<String, String> dummyInfo = new HashMap<>();
@@ -165,31 +170,53 @@ public class ServerCollectionsInteractorTest {
 
     @Test(expected = IOException.class)
     public void addDeviceTestIOException() throws IOException, ComFaultException {
-        // mock Network Handler so that the POST method will return a JsonObject similar to
+        // Mock Network Handler so that the POST method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
         when(mockHandlerFail.POST(any(JsonObject.class), any(String.class))).thenThrow(IOException.class);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to add a device, based on a dummy RequiredInfo object
+        // Attempt to add a device, based on a dummy RequiredInfo object
         String dummyCollection = "dummy_collection";
         String dummyPlugin = "dummy_plugin";
         HashMap<String, String> dummyInfo = new HashMap<>();
         RequiredInfo dummyRequiredInfo = new RequiredInfo(dummyCollection, dummyPlugin, dummyInfo);
         dummyServerCollectionsInteractor.addDevice(dummyRequiredInfo);
-
     }
 
     /**
      * removeDevice tests
      */
     @Test
-    public void removeDeviceTestSuccessful(){
+    public void removeDeviceTestSuccessful() throws IOException {
+        // Mock Network Handler so that the DELETE method will return a JsonObject similar to
+        // the one returned when the request was successful
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+        when(mockHandlerSuccess.DELETE(any(String.class))).thenReturn(new JsonObject());
+        dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
+
+        // Attempt to delete a dummy device. Note: only the ID must not be null.
+        String dummyId = "dummy_id";
+        Device dummyDevice = new Device(dummyId, null, null, null, null);
+        try {
+            dummyServerCollectionsInteractor.removeDevice(dummyDevice);
+        } catch (Exception exception) {
+            fail("Test threw exception: " + exception.toString());
+        }
+
+        // Override DELETE method, now returning null.
+        // Will use the same dummy Device object as input
+        when(mockHandlerSuccess.DELETE(any(String.class))).thenReturn(null);
+        try {
+            dummyServerCollectionsInteractor.removeDevice(dummyDevice);
+        } catch (Exception exception) {
+            fail("Test threw exception: " + exception.toString());
+        }
     }
 
     @Test(expected = ComFaultException.class)
     public void removeDeviceTestComFaultException() throws IOException, ComFaultException {
-        // mock Network Handler so that the DELETE method will return a JsonObject similar to
+        // Mock Network Handler so that the DELETE method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
@@ -200,7 +227,7 @@ public class ServerCollectionsInteractorTest {
         when(mockHandlerFail.DELETE(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to delete a dummy device. Note: only the ID must not be null.
+        // Attempt to delete a dummy device. Note: only the ID must not be null.
         String dummyId = "dummy_id";
         Device dummyDevice = new Device(dummyId, null, null, null, null);
         dummyServerCollectionsInteractor.removeDevice(dummyDevice);
@@ -208,13 +235,13 @@ public class ServerCollectionsInteractorTest {
 
     @Test(expected = IOException.class)
     public void removeDeviceTestIOException() throws IOException, ComFaultException {
-        // mock Network Handler so that the DELETE method will return a JsonObject similar to
+        // Mock Network Handler so that the DELETE method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
         when(mockHandlerFail.DELETE(any(String.class))).thenThrow(IOException.class);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to delete a dummy device. Note: only the ID must not be null.
+        // Attempt to delete a dummy device. Note: only the ID must not be null.
         String dummyId = "dummy_id";
         Device dummyDevice = new Device(dummyId, null, null, null, null);
         dummyServerCollectionsInteractor.removeDevice(dummyDevice);
@@ -225,12 +252,27 @@ public class ServerCollectionsInteractorTest {
      */
     @Test
     public void getCollectionsTestSuccess() throws IOException, ComFaultException {
+        // Mock Network Handler so that the GET method will return a JsonArray similar to
+        // the one returned when the request was successful
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(new JsonArray());
+        dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
 
+        // Attempt to get the list of collections
+        ArrayList<String> collections = dummyServerCollectionsInteractor.getCollections();
+        assertNotNull(collections);
+        assertTrue(collections.isEmpty());
+
+        // Override GET method, now returning null.
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(null);
+        collections = dummyServerCollectionsInteractor.getCollections();
+        assertNotNull(collections);
+        assertTrue(collections.isEmpty());
     }
 
     @Test(expected = ComFaultException.class)
     public void getCollectionsTestComFaultException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
@@ -241,19 +283,19 @@ public class ServerCollectionsInteractorTest {
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the list of collections
+        // Attempt to get the list of collections
         ArrayList<String> collections = dummyServerCollectionsInteractor.getCollections();
     }
 
     @Test(expected = IOException.class)
     public void getCollectionsTestIOException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
         when(mockHandlerFail.GET(any(String.class))).thenThrow(IOException.class);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the list of collections
+        // Attempt to get the list of collections
         ArrayList<String> collections = dummyServerCollectionsInteractor.getCollections();
     }
 
@@ -261,13 +303,29 @@ public class ServerCollectionsInteractorTest {
      * getPlugins tests
      */
     @Test
-    public void getPluginsTestSuccess() {
+    public void getPluginsTestSuccess() throws IOException, ComFaultException {
+        // Mock Network Handler so that the GET method will return a JsonArray similar to
+        // the one returned when the request was successful
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(new JsonArray());
+        dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
 
+        // Attempt to get the list of plugins
+        String dummyCollection = "dummy_collection";
+        ArrayList<String> plugins = dummyServerCollectionsInteractor.getPlugins(dummyCollection);
+        assertNotNull(plugins);
+        assertTrue(plugins.isEmpty());
+
+        // Override GET method, now returning null.
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(null);
+        plugins = dummyServerCollectionsInteractor.getPlugins(dummyCollection);
+        assertNotNull(plugins);
+        assertTrue(plugins.isEmpty());
     }
 
     @Test(expected = ComFaultException.class)
     public void getPluginsTestComFaultException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
@@ -278,20 +336,20 @@ public class ServerCollectionsInteractorTest {
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the list of plugins
+        // Attempt to get the list of plugins
         String dummyCollection = "dummy_collection";
         ArrayList<String> plugins = dummyServerCollectionsInteractor.getPlugins(dummyCollection);
     }
 
     @Test(expected = IOException.class)
     public void getPluginsTestIOException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
         when(mockHandlerFail.GET(any(String.class))).thenThrow(IOException.class);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the list of plugins
+        // Attempt to get the list of plugins
         String dummyCollection = "dummy_collection";
         ArrayList<String> plugins = dummyServerCollectionsInteractor.getPlugins(dummyCollection);
     }
@@ -300,12 +358,48 @@ public class ServerCollectionsInteractorTest {
      * getRequiredInfo tests
      */
     @Test
-    public void getRequiredInfoTestSuccessful() {
+    public void getRequiredInfoTestSuccessful() throws IOException, ComFaultException {
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
+        // the one returned when the request was successful.
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+
+        // Creates a dummy JsonObject which holds data for a dummy RequiredInfo object.
+        String dummyCollection = "dummyCollection";
+        String dummyPlugin = "dummyPlugin";
+        String dummyKey = "dummyKey";
+        String dummyValue = "dummyValue";
+        JsonObject requiredInfoJson = new JsonObject();
+        requiredInfoJson.addProperty("collection", dummyCollection);
+        requiredInfoJson.addProperty("plugin_name", dummyPlugin);
+        JsonObject infoJson = new JsonObject();
+        infoJson.addProperty(dummyKey, dummyValue);
+        requiredInfoJson.add("required_info", infoJson);
+
+        // Creates a HashMap replica of the "info" field of RequiredInfoJson object.
+        HashMap<String, String> info = new HashMap<>();
+        info.put(dummyKey, dummyValue);
+
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(requiredInfoJson);
+        dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
+
+        // Attempt to get the required info.
+        RequiredInfo requiredInfo = dummyServerCollectionsInteractor
+                                        .getRequiredInfo(dummyCollection, dummyPlugin);
+        assertNotNull(requiredInfo);
+        assertEquals(requiredInfo.getCollection(), dummyCollection);
+        assertEquals(requiredInfo.getPlugin(), dummyPlugin);
+        assertEquals(requiredInfo.getInfo(), info);
+
+        // Override GET method, now returning null.
+        when(mockHandlerSuccess.GET(any(String.class))).thenReturn(null);
+        requiredInfo = dummyServerCollectionsInteractor
+                            .getRequiredInfo(dummyCollection, dummyPlugin);
+        assertNull(requiredInfo);
     }
 
     @Test(expected = ComFaultException.class)
     public void getRequiredInfoTestComFaultException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
@@ -316,25 +410,25 @@ public class ServerCollectionsInteractorTest {
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the required info
-        String dummyCollections = "dummy_collections";
-        String dummyPlugins = "dummyPlugins";
+        // Attempt to get the required info
+        String dummyCollection = "dummyCollection";
+        String dummyPlugin = "dummyPlugin";
         RequiredInfo requiredInfo = dummyServerCollectionsInteractor
-                                        .getRequiredInfo(dummyCollections, dummyPlugins);
+                                        .getRequiredInfo(dummyCollection, dummyPlugin);
     }
 
     @Test(expected = IOException.class)
     public void getRequiredInfoTestIOException() throws IOException, ComFaultException {
-        // mock Network Handler so that the GET method will return a JsonObject similar to
+        // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
         when(mockHandlerFail.GET(any(String.class))).thenThrow(IOException.class);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
-        // attempt to get the required info
-        String dummyCollections = "dummy_collections";
-        String dummyPlugins = "dummyPlugins";
+        // Attempt to get the required info
+        String dummyCollection = "dummyCollections";
+        String dummyPlugin = "dummyPlugins";
         RequiredInfo requiredInfo = dummyServerCollectionsInteractor
-                                        .getRequiredInfo(dummyCollections, dummyPlugins);
+                                        .getRequiredInfo(dummyCollection, dummyPlugin);
     }
 }

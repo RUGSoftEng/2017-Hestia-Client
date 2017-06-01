@@ -102,7 +102,7 @@ public class ServerCollectionsInteractor implements Serializable{
         String endpoint = "plugins/" + collection + "/plugins/" + plugin;
         JsonElement payload = handler.GET(endpoint);
         RequiredInfo requiredInfo = null;
-        if (payload.isJsonObject()) {
+        if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
                 String error = object.get("error").getAsString();
