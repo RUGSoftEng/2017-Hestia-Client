@@ -61,7 +61,7 @@ public class ServerCollectionsInteractor implements Serializable{
         send.add("required_info", required);
         String endpoint = "devices/";
         JsonElement payload = handler.POST(send, endpoint);
-        if(payload.isJsonObject()) {
+        if(payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
                 String error = object.get("error").getAsString();

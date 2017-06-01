@@ -3,19 +3,23 @@ package com.rugged.application.hestia.backend.models;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
 import com.google.gson.JsonObject;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
 import hestia.backend.NetworkHandler;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -125,7 +129,6 @@ public class DeviceTest {
         // attempt to change the name
         String newNameFail = "newNameFail";
         deviceTest.setName(newNameFail);
-        assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
     }
 
     @Test(expected = IOException.class)
@@ -141,7 +144,6 @@ public class DeviceTest {
         // attempt to change the name
         String newNameFail = "newNameFail";
         deviceTest.setName(newNameFail);
-        assertEquals(DEFAULT_DEVICE_NAME,deviceTest.getName());
     }
 
 
