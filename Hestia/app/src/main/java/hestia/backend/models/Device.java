@@ -74,7 +74,6 @@ public class Device {
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, endpoint);
 
-        // TODO: we do not actually need to set the name locally. we can retrieve it from the server
         if(payload != null && payload.isJsonObject()) {
             JsonObject payloadObject = payload.getAsJsonObject();
             if(payloadObject.has("error")) {
@@ -82,12 +81,9 @@ public class Device {
                 Gson gson = gsonBuilder.create();
                 ComFaultException comFaultException = gson.fromJson(payload, ComFaultException.class);
                 throw comFaultException;
-            } else {
-                this.name = name;
             }
-        } else {
-            this.name = name;
         }
+        this.name = name;
     }
 
     public ArrayList<Activator> getActivators() {

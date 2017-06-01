@@ -60,7 +60,7 @@ public class ServerCollectionsInteractorTest {
      * getDevices tests
      */
     @Test
-    public void getDevicesTestSuccess() throws IOException, ComFaultException {
+    public void getDevicesTestSuccess() throws IOException {
         // Mock Network Handler so that the GET method will return a JsonArray similar to
         // the one returned when the request was successful
         NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
@@ -78,7 +78,12 @@ public class ServerCollectionsInteractorTest {
         dummyServerCollectionsInteractor.setHandler(mockHandlerSuccess);
 
         // Attempt to get the list of devices
-        ArrayList<Device> devices = dummyServerCollectionsInteractor.getDevices();
+        ArrayList<Device> devices = null;
+        try {
+            devices = dummyServerCollectionsInteractor.getDevices();
+        } catch (Exception exception) {
+            fail("Test threw exception: " + exception.toString());
+        }
         assertNotNull(devices);
         assertEquals(devices.get(0).getId(), deviceObject.get("deviceId").getAsString());
         assertEquals(devices.get(0).getName(), deviceObject.get("name").getAsString());

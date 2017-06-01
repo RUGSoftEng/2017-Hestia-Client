@@ -3,10 +3,15 @@ package com.rugged.application.hestia.backend.models;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import com.google.gson.JsonObject;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import java.io.IOException;
 import hestia.backend.NetworkHandler;
+import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
@@ -17,6 +22,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class ActivatorTest {
@@ -112,22 +121,74 @@ public class ActivatorTest {
         assertEquals(newHandler, boolActivator.getHandler());
     }
 
-    /**
     @Test
-    public void setAndGetStateTest() {
-        assertEquals(boolActivatorState, boolActivator.getState());
-        assertEquals(floatActivatorState, floatActivator.getState());
+    public void setAndGetStateTestSuccess() throws IOException {
+        assertEquals(boolActivatorState, activatorWithHandlerAndDevice.getState());
 
-        ActivatorState<Boolean> newBoolState = new ActivatorState<>(true, "bool");
-        ActivatorState<Float> newFloatState = new ActivatorState<>((float) 0.3, "float");
-        boolActivator.setState(newBoolState);
-        floatActivator.setState(newFloatState);
+        // mock Network Handler so that the POST method will return a JsonObject similar to
+        // the one returned when the request is successful
+        NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
+        when(mockHandlerSuccess.POST(any(JsonObject.class), any(String.class))).thenReturn(new JsonObject());
+        activatorWithHandlerAndDevice.setHandler(mockHandlerSuccess);
 
-        assertEquals(newBoolState,boolActivator.getState());
-        assertEquals(newFloatState,floatActivator.getState());
-        assertNotEquals(boolActivatorState,boolActivator.getId());
-        assertNotEquals(floatActivatorState,floatActivator.getId());
-    }*/
+        // Attempt to change the state
+        ActivatorState<Float> newFloatActivatorState = new ActivatorState<>(0.1f, "float");
+        assertNotNull(newFloatActivatorState);
+        assertNotSame(boolActivatorState, newFloatActivatorState);
+        try {
+            activatorWithHandlerAndDevice.setState(newFloatActivatorState);
+        } catch (Exception exception) {
+            fail("Test threw exception: " + exception.toString());
+        }
+        assertEquals(newFloatActivatorState, activatorWithHandlerAndDevice.getState());
+
+        // Override POST method, now returning null.
+        // Will use the boolActivatorState object as input
+        when(mockHandlerSuccess.POST(any(JsonObject.class), any(String.class))).thenReturn(null);
+        try {
+            activatorWithHandlerAndDevice.setState(boolActivatorState);
+        } catch (Exception exception){
+            Assert.fail("Test threw exception: " + exception.toString());
+        }
+        assertEquals(boolActivatorState, activatorWithHandlerAndDevice.getState());
+    }
+
+    @Test(expected = ComFaultException.class)
+    public void setAndGetStateTestComFaultException() throws IOException, ComFaultException {
+        assertEquals(boolActivatorState, activatorWithHandlerAndDevice.getState());
+
+        // Mock Network Handler so that the POST method will return a JsonObject similar to
+        // the one returned when the request failed and a ComFaultException was thrown
+        NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
+        JsonObject object = new JsonObject(); // Mock a JsonObject containing the error
+        object.addProperty("error", "error_field");
+        object.addProperty("message", "message_field");
+        when(mockHandlerFail.POST(any(JsonObject.class), any(String.class))).thenReturn(object);
+        activatorWithHandlerAndDevice.setHandler(mockHandlerFail);
+
+        // Attempt to change the state
+        ActivatorState<Float> newFloatActivatorState = new ActivatorState<>(0.1f, "float");
+        assertNotNull(newFloatActivatorState);
+        assertNotSame(boolActivatorState, newFloatActivatorState);
+        activatorWithHandlerAndDevice.setState(newFloatActivatorState);
+    }
+
+    @Test(expected = IOException.class)
+    public void setAndGetStateTestIOException() throws IOException, ComFaultException {
+        assertEquals(boolActivatorState, activatorWithHandlerAndDevice.getState());
+
+        // Mck Network Handler so that the POST method will return a JsonObject similar to
+        // the one returned when the request failed and an IOException was thrown
+        NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
+        when(mockHandlerFail.POST(any(JsonObject.class), any(String.class))).thenThrow(IOException.class);
+        activatorWithHandlerAndDevice.setHandler(mockHandlerFail);
+
+        // Attempt to change the state
+        ActivatorState<Float> newFloatActivatorState = new ActivatorState<>(0.1f, "float");
+        assertNotNull(newFloatActivatorState);
+        assertNotSame(boolActivatorState, newFloatActivatorState);
+        activatorWithHandlerAndDevice.setState(newFloatActivatorState);
+    }
 
     @Test
     public void setAndGetNameTest() {
