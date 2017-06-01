@@ -26,18 +26,14 @@ public class LogoutTest {
     private final String LOGOUT_TEXT = "Logout ";
     private final String PACKAGE_NAME = "com.rugged.application.hestia";
 
-
     @Rule
     public IntentsTestRule<HomeActivity> mIntentsRule =
             new IntentsTestRule<>(HomeActivity.class);
 
     @Test
     public void logoutTest(){
-
         onView(withId(context_menu)).perform(click());
-
         onView(withText(LOGOUT_TEXT)).perform(click());
-
         intended(allOf(
                 hasComponent(hasShortClassName("hestia.UI.activities.login.LoginActivity")),
                 toPackage(PACKAGE_NAME)));

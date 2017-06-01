@@ -31,7 +31,6 @@ public class LoginTest {
     private final String LOGOUT_TEXT = "Logout ";
 
 
-    /* Instantiate an IntentsTestRule object. */
     @Rule
     public IntentsTestRule<LoginActivity> mIntentsRule =
             new IntentsTestRule<>(LoginActivity.class);
@@ -51,15 +50,12 @@ public class LoginTest {
 
     @Test
     public void checkLogin() {
-        // Login with 'remember me'
+
         onView(ViewMatchers.withId(R.id.username))
                 .perform(typeText(USERNAME), closeSoftKeyboard());
-
         onView(withId(R.id.password))
                 .perform(typeText(PASSWORD), closeSoftKeyboard());
-
         onView(withId(R.id.rememberButton)).perform(click());
-
         onView(withId(R.id.loginButton)).perform(click());
 
         intended(allOf(
