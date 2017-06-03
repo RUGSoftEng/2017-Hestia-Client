@@ -7,6 +7,12 @@ import android.util.Log;
 
 import com.rugged.application.hestia.R;
 
+/**
+ * The HestiaDiscoveryListener handles the events of finding a hestiaServer on the local network.
+ * In most cases, a simple error message is logged currently. When a service is found the
+ * resolveService method is called, which uses the HestiaResolveListener.
+ * TODO link to the exception handling system.
+ */
 public class HestiaDiscoveryListener implements NsdManager.DiscoveryListener {
     private static final String SERVICE_NAME = Resources.getSystem().getString(R.string.ServiceName);
     private static final String SERVICE_TYPE = Resources.getSystem().getString(R.string.ServiceType);

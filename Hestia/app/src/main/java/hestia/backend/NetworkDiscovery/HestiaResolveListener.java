@@ -7,9 +7,13 @@ import android.util.Log;
 
 import com.rugged.application.hestia.R;
 
-import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 
+/**
+ * The HestiaResolveListener responds to a service being found. It stores a new IP-address and port
+ * in the ServerCollectionsInteractor. The method getUpdatedInteractor is called from the
+ * HomeActivity after the service has been resolved.
+ */
 public class HestiaResolveListener implements NsdManager.ResolveListener{
     private static final String SERVICE_NAME = Resources.getSystem().getString(R.string.ServiceName);
     private String TAG = "HestiaRListener";

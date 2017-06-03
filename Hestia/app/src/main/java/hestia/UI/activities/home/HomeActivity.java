@@ -198,8 +198,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
     }
 
     /**
-     * This method uses the ZeroConf system to look for servers on the local network. If it finds
-     * them it will update the networkHandler
+     * This method uses the ZeroConf system to look for Hestia servers on the local network.
+     * If it finds them it will replace the current ServerCollectionsInteractor with a new one
+     * using the newly found IP-address and port.
      * TODO change control flow so login screen is shown before connecting.
      *
      * @see hestia.backend.NetworkDiscovery.HestiaDiscoveryListener
@@ -216,15 +217,15 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             protected ServerCollectionsInteractor doInBackground(Void... params) {
                 resolveListener = new HestiaResolveListener(serverCollectionsInteractor);
-
                 HestiaDiscoveryListener discoveryListener = new HestiaDiscoveryListener(resolveListener, hestiaNsdManager);
+
                 hestiaNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
                 return resolveListener.getUpdatedInteractor();
             }
 
             @Override
             protected void onPostExecute(ServerCollectionsInteractor host) {
-                // Set new handler in the backend.
+                // Set new interactor in the backend.
                 serverCollectionsInteractor = host;
             }
         }.execute();
