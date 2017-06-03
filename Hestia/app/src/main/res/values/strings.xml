@@ -25,4 +25,6 @@
     <string name="newPassHint">New password</string>
     <string name="newPassCheckHint">New password again</string>
     <string name="newUserHint">New username</string>
+    <string name="ServiceName">HestiaServer</string>
+    <string name="ServiceType">_hestia._tcp.</string>
 </resources>

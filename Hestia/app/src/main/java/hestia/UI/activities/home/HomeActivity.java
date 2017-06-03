@@ -3,6 +3,7 @@ package hestia.UI.activities.home;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
@@ -29,13 +31,16 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
+import hestia.backend.NetworkDiscovery.HestiaDiscoveryListener;
+import hestia.backend.NetworkDiscovery.HestiaResolveListener;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
-public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
+public class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
@@ -51,7 +56,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private final int IP = 1;
     private final int CHANGECREDENTIALS = 2;
     private final int LOGOUT = 3;
-    private InetAddress host;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +81,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
     }
@@ -96,7 +100,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void storeIP() {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        prefs.edit().putString(SERVER_IP,serverCollectionsInteractor.getHandler().getIp()).apply();
+        prefs.edit().putString(SERVER_IP, serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
     private void setupCache() {
@@ -158,7 +162,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        switch(position) {
+        switch (position) {
             case IP:
                 showIpDialog();
                 break;
@@ -168,7 +172,8 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
             case LOGOUT:
                 gotoLoginActivity();
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -180,21 +185,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-//        ChangeIpDialog d = new ChangeIpDialog(HomeActivity.this, serverCollectionsInteractor);
-//        HestiaDialog2 alertdFragment = new HestiaDialog2();
-        // Show Alert DialogFragment
-//        ChangeIpDialog alertdFragment = new ChangeIpDialog();
+
         String ip = this.serverCollectionsInteractor.getHandler().getIp();
-//        alertdFragment.show(getFragmentManager(), "Alert Dialog Fragment");
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ChangeIpDialog fragment = ChangeIpDialog.newInstance(ip);
         fragment.setInteractor(serverCollectionsInteractor);
         fragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void showChangeCredentialsDialog() {
-//        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
-//        changeCredentialsDialog.show();
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
@@ -203,102 +201,33 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
      * This method uses the ZeroConf system to look for servers on the local network. If it finds
      * them it will update the networkHandler
      * TODO change control flow so login screen is shown before connecting.
+     *
+     * @see hestia.backend.NetworkDiscovery.HestiaDiscoveryListener
+     * @see hestia.backend.NetworkDiscovery.HestiaResolveListener
      */
-    public void performNetDiscovery(){
+    public void performNetDiscovery() {
 
-        new AsyncTask<Void, Void, InetAddress>() {
-            private NsdServiceInfo mService;
-            private NsdManager.ResolveListener mResolveListener;
-            private NsdManager mNsdManager;
-            String SERVICE_NAME = "HestiaServer";
-            String SERVICE_TYPE = "_hestia._tcp.";
-
+        new AsyncTask<Void, Void, ServerCollectionsInteractor>() {
+            private final String SERVICE_TYPE = Resources.getSystem().getString(R.string.ServiceType);
+            private HestiaResolveListener resolveListener;
+            private NsdManager hestiaNsdManager;
             private String TAG = "NetDiscovery";
 
             @Override
-            protected InetAddress doInBackground(Void... params) {
-                NsdManager.DiscoveryListener discoveryListener = new NsdManager.DiscoveryListener() {
-                    private String TAG = "DiscoveryService";
+            protected ServerCollectionsInteractor doInBackground(Void... params) {
+                resolveListener = new HestiaResolveListener(serverCollectionsInteractor);
 
-                    //  Called as soon as service discovery begins.
-                    @Override
-                    public void onDiscoveryStarted(String regType) {
-                        Log.d(TAG, "Service discovery started");
-                    }
-
-                    @Override
-                    public void onServiceFound(NsdServiceInfo service) {
-                        // A service was found!  Do something with it.
-                        Log.d(TAG, "Service discovery success" + service);
-                        if (!service.getServiceType().equals(SERVICE_TYPE)) {
-                            // Service type is the string containing the protocol and
-                            // transport layer for this service.
-                            Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
-                        } else if (service.getServiceName().equals(SERVICE_NAME)) {
-                            // The name of the service tells the user what they'd be
-                            // connecting to. It could be "Bob's Chat App".
-                            Log.d(TAG, "Same machine: " + SERVICE_NAME);
-                        } else if (service.getServiceName().contains("NsdChat")) {
-                            mNsdManager.resolveService(service, mResolveListener);
-                        }
-                    }
-
-                    @Override
-                    public void onServiceLost(NsdServiceInfo service) {
-                        // When the network service is no longer available.
-                        // Internal bookkeeping code goes here.
-                        Log.e(TAG, "service lost" + service);
-                    }
-
-                    @Override
-                    public void onDiscoveryStopped(String serviceType) {
-                        Log.i(TAG, "Discovery stopped: " + serviceType);
-                    }
-
-                    @Override
-                    public void onStartDiscoveryFailed(String serviceType, int errorCode) {
-                        Log.e(TAG, "Discovery failed: Error code:" + errorCode);
-                        mNsdManager.stopServiceDiscovery(this);
-                    }
-
-                    @Override
-                    public void onStopDiscoveryFailed(String serviceType, int errorCode) {
-                        Log.e(TAG, "Discovery failed: Error code:" + errorCode);
-                        mNsdManager.stopServiceDiscovery(this);
-                    }
-
-                };
-
-                mResolveListener = new NsdManager.ResolveListener() {
-                    @Override
-                    public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
-                        // Called when the resolve fails.  Use the error code to debug.
-                        Log.e(TAG, "Resolve failed" + errorCode);
-                    }
-
-                    @Override
-                    public void onServiceResolved(NsdServiceInfo serviceInfo) {
-                        Log.e(TAG, "Resolve Succeeded. " + serviceInfo);
-
-                        if (serviceInfo.getServiceName().equals(SERVICE_NAME)) {
-                            Log.d(TAG, "Same IP.");
-                            return;
-                        }
-                        mService = serviceInfo;
-                        host = mService.getHost();
-                    }
-                };
-
-                mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
-                return host;
+                HestiaDiscoveryListener discoveryListener = new HestiaDiscoveryListener(resolveListener, hestiaNsdManager);
+                hestiaNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
+                return resolveListener.getUpdatedInteractor();
             }
 
             @Override
-            protected void onPostExecute(InetAddress host) {
+            protected void onPostExecute(ServerCollectionsInteractor host) {
                 // Set new handler in the backend.
-                serverCollectionsInteractor.setHandler(new NetworkHandler(host.getHostAddress(),8000));
+                serverCollectionsInteractor = host;
             }
-        };
+        }.execute();
     }
 
 }
