@@ -51,11 +51,11 @@ public class ServerCollectionsInteractor implements Serializable{
         }
     }
 
-    public void sendLoginData(String hashedUsername, String hashedPassword) throws IOException,
+    public void sendLoginData(String username, String password) throws IOException,
             ComFaultException {
         JsonObject loginData = new JsonObject();
-        loginData.addProperty("username",hashedUsername);
-        loginData.addProperty("password",hashedPassword);
+        loginData.addProperty("username",username);
+        loginData.addProperty("password",password);
         String endpoint = "login/";
         JsonElement result = handler.PUT(loginData,endpoint);
         if(result.isJsonObject()){
