@@ -6,6 +6,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -45,6 +48,21 @@ public class ServerCollectionsInteractor implements Serializable{
             String error = jsonObject.get("error").getAsString();
             String message = jsonObject.get("message").getAsString();
             throw new ComFaultException(error, message);
+        }
+    }
+
+    public void sendLoginData(String hashedUsername, String hashedPassword) throws IOException,
+            ComFaultException {
+        JsonObject loginData = new JsonObject();
+        loginData.addProperty("username",hashedUsername);
+        loginData.addProperty("password",hashedPassword);
+        String endpoint = "login/";
+        JsonElement result = handler.PUT(loginData,endpoint);
+        if(result.isJsonObject()){
+            JsonObject object = result.getAsJsonObject();
+            if(object.has("error")){
+                throw new ComFaultException(object.get("error").getAsString(),object.get("message").getAsString());
+            }
         }
     }
 
