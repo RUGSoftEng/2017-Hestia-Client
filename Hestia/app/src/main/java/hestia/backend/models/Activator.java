@@ -1,11 +1,12 @@
 package hestia.backend.models;
 
-import android.util.Log;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import java.io.IOException;
-import hestia.backend.exceptions.ComFaultException;
+
 import hestia.backend.NetworkHandler;
+import hestia.backend.exceptions.ComFaultException;
 
 /**
  * This class represents a single activator on a device. A single device can have multiple activators.
@@ -67,9 +68,7 @@ public class Activator {
         send.add("state", state.getRawStateJSON());
         JsonElement payload = handler.POST(send, path);
 
-        Log.d("Activator", payload.getAsString());
-
-        if(payload.isJsonObject()) {
+        if(payload != null && payload.isJsonObject()) {
             JsonObject result = payload.getAsJsonObject();
             if(result.has("error")) {
                 String error = result.get("error").getAsString();

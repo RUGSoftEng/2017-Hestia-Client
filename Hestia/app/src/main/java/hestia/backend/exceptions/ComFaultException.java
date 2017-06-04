@@ -17,4 +17,11 @@ public class ComFaultException extends Exception {
         return message;
     }
 
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
