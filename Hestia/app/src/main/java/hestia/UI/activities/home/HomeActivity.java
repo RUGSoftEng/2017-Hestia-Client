@@ -21,6 +21,7 @@ import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
+import hestia.backend.AdditionalKeyStoresSSLSocketFactory;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
@@ -185,4 +186,41 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
+
+    private void registerCertificate() {
+        final SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        schemeRegistry.register(new Scheme("https", createAdditionalCertsSSLSocketFactory(), 8000));
+
+    // and then however you create your connection manager, I use ThreadSafeClientConnManager
+        final HttpParams params = new BasicHttpParams();
+        final ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+
+    }
+
+    protected AdditionalKeyStoresSSLSocketFactory createAdditionalCertsSSLSocketFactory() {
+
+        AdditionalKeyStoresSSLSocketFactory factory = null;
+        try {
+            final KeyStore ks = KeyStore.getInstance("BKS");
+
+            // the bks file we generated above
+            final InputStream in = getResources().openRawResource(R.raw.mystore);
+            try {
+                // don't forget to put the password used above in strings.xml/mystore_password
+                ks.load(in, Resources.getSystem().getString(R.string.mystore_password).toCharArray());
+            } finally {
+                in.close();
+            }
+
+            factory = new AdditionalKeyStoresSSLSocketFactory(ks);
+
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException | KeyManagementException e) {
+            e.printStackTrace();
+        }
+        this.factory = factory;
+        return factory;
+
+    }
+
 }

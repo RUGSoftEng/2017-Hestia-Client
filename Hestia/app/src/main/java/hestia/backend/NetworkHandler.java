@@ -1,6 +1,7 @@
 package hestia.backend;
 
 import android.app.Application;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -24,11 +25,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 
-import hestia.UI.HestiaApplication;
 
 /**
  * A singleton class which handles interaction between front and back-end. It contains methods
@@ -41,6 +47,7 @@ public class NetworkHandler extends Application {
     private final String TAG = "NetworkHandler";
     private String ip;
     private Integer port;
+    private SSLSocketFactory factory;
 
     public NetworkHandler(String ip, int port) {
         this.ip = ip;
@@ -48,35 +55,6 @@ public class NetworkHandler extends Application {
         registerCertificate();
     }
 
-    private void registerCertificate() {
-        final SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        schemeRegistry.register(new Scheme("https", createAdditionalCertsSSLSocketFactory(), 8000));
-
-    // and then however you create your connection manager, I use ThreadSafeClientConnManager
-        final HttpParams params = new BasicHttpParams();
-        final ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-    }
-
-    protected org.apache.http.conn.ssl.SSLSocketFactory createAdditionalCertsSSLSocketFactory() {
-        try {
-            final KeyStore ks = KeyStore.getInstance("BKS");
-
-            // the bks file we generated above
-            final InputStream in = getResources().openRawResource(R.raw.mystore);
-            try {
-                // don't forget to put the password used above in strings.xml/mystore_password
-                ks.load(in, context.getString(R.string.mystore_password).toCharArray());
-            } finally {
-                in.close();
-            }
-
-            return new AdditionalKeyStoresSSLSocketFactory(ks);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     public JsonElement GET(String endpoint) throws IOException {
@@ -119,6 +97,7 @@ public class NetworkHandler extends Application {
         String path = this.getDefaultPath() + endpoint;
         URL url = new URL(path);
         HttpsURLConnection connector = (HttpsURLConnection) url.openConnection();
+        connector.setSSLSocketFactory(factory);
         connector.setReadTimeout(2000);
         connector.setConnectTimeout(2000);
         connector.setRequestMethod(requestMethod);
