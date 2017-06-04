@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -35,48 +34,29 @@ public class NetworkHandler extends Application {
     }
 
     public JsonElement GET(String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("GET", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("GET", endpoint);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement POST(JsonObject object, String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("POST", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("POST", endpoint);
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement DELETE(String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("DELETE", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("DELETE", endpoint);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement PUT(JsonObject object, String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("PUT", endpoint);
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
-    }
-
-    /**
-     * This method establishes the connection to the server, by setting the type of request
-     * and the path.
-     * @param requestMethod the type of request that will be sent to the server.
-     * @param endpoint path to the server's endpoint.
-     * @return the object responsible for setting up the connection to the server.
-     * @throws IOException
-     */
-    private HttpURLConnection connectToServer(String requestMethod, String endpoint) throws IOException {
-        String path = this.getDefaultPath() + endpoint;
-        URL url = new URL(path);
-        HttpURLConnection connector = (HttpURLConnection) url.openConnection();
-        connector.setReadTimeout(2000);
-        connector.setConnectTimeout(2000);
-        connector.setRequestMethod(requestMethod);
-        connector.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        return connector;
     }
 
     /**
@@ -105,7 +85,7 @@ public class NetworkHandler extends Application {
      * @param object the JsonObject that will be sent to the server.
      * @throws IOException IOException
      */
-    private void sendToServer(HttpURLConnection connector, JsonObject object) throws IOException {
+    private void sendToServer(HttpsURLConnection connector, JsonObject object) throws IOException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
         outputStreamWriter.write(object.toString());
         Log.d(TAG, object.toString());
@@ -120,7 +100,7 @@ public class NetworkHandler extends Application {
      * @return the payload received from the server.
      * @throws IOException IOException
      */
-    private JsonElement getPayloadFromServer(HttpURLConnection connector) throws IOException {
+    private JsonElement getPayloadFromServer(HttpsURLConnection connector) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
 
@@ -141,7 +121,7 @@ public class NetworkHandler extends Application {
     }
 
     /**
-     * Checks if the HTTP request was successful or not.
+     * Checks if the HTTPS request was successful or not.
      * @param responseCode the response code of the request.
      * @return true if it succeeded, false otherwise.
      */
@@ -166,7 +146,7 @@ public class NetworkHandler extends Application {
     }
 
     public String getDefaultPath() {
-        return "http://" + ip + ":" + port + "/";
+        return "https://" + ip + ":" + port + "/";
     }
 
     @Override
