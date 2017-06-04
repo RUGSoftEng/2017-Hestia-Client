@@ -1,49 +1,71 @@
 package hestia.UI.activities.discovery;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.res.Resources;
+import android.net.nsd.NsdManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
-
-import hestia.UI.activities.home.HomeActivity;
-import hestia.UI.activities.login.LoginActivity;
+import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.serverDiscovery.HestiaDiscoveryListener;
+import hestia.backend.serverDiscovery.HestiaResolveListener;
 
 public class ServerDiscoveryActivity extends Activity {
-
-    private final String intentExtra = "login";
+    private Button findServerButton;
+    private EditText ipField;
+    private ServerCollectionsInteractor serverCollectionsInteractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovery);
 
-        Intent fromIntent = getIntent();
-        String extra = fromIntent.getStringExtra(intentExtra);
+        findServerButton = (Button) findViewById(R.id.findServerButton);
+        ipField = (EditText) findViewById(R.id.ipField);
 
-        loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
-        if(loginPreferences.getString(prefsUser,"").equals("")){
-            setSharedPreferences(standardUser, standardPass,false);
-        }
-        Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
-        if (saveLogin) {
-            if(extra==null) {
-                gotoMainActivity();
+        findServerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performNetworkDiscovery();
             }
-            else{
-                clearSaveLogin();
+        });
+    }
+
+    /**
+     * This method uses the ZeroConf system to look for Hestia servers on the local network.
+     * If it finds them it will replace the current ServerCollectionsInteractor with a new one
+     * using the newly found IP-address and port.
+     * TODO change control flow so login screen is shown before connecting.
+     *
+     * @see hestia.backend.serverDiscovery.HestiaDiscoveryListener
+     * @see hestia.backend.serverDiscovery.HestiaResolveListener
+     */
+    public void performNetworkDiscovery() {
+        new AsyncTask<Void, Void, Boolean>() {
+            private final String SERVICE_TYPE = Resources.getSystem().getString(R.string.ServiceType);
+            private HestiaResolveListener resolveListener;
+            private NsdManager hestiaNsdManager;
+            private String TAG = "ServerDiscoveryActivity";
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                Boolean isSuccessful = false;
+                resolveListener = new HestiaResolveListener(serverCollectionsInteractor);
+                HestiaDiscoveryListener discoveryListener = new HestiaDiscoveryListener(resolveListener, hestiaNsdManager);
+
+                hestiaNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
             }
-        }
+
+            @Override
+            protected void onPostExecute(Boolean isSuccessful) {
+                if(isSuccessful) {
+                    // TODO: do something when the async task was successful
+                }
+            }
+        }.execute();
+    }
 
 }

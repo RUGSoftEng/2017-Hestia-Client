@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/findServer"
+        android:id="@+id/findServerButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
@@ -14,23 +14,10 @@
         android:text="Find Server!" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/ipField"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:inputType="textPersonName"
-        android:text="Name" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="200dp"
-        android:layout_weight="1"
-        android:inputType="textPersonName"
-        android:text="Name" />
-
-
+        android:inputType="textPersonName" />
 </LinearLayout>
