@@ -1,13 +1,14 @@
 package hestia.backend.exceptions.ServerExceptions;
 
 public abstract class ServerException extends Exception {
-    String message;
+    String error;
 
     public ServerException(String message){
-        this.message=message;
+        this.error=message;
     }
 
     public String getMessage(){
-        return message;
+        return error;
     }
+
 }
