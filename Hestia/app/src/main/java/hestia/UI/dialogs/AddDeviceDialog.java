@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -75,11 +76,23 @@ public class AddDeviceDialog extends HestiaDialog {
         collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
         collectionField.setAdapter(adapterCollections);
         collectionField.setThreshold(1);
+        collectionField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                collectionField.showDropDown();
+            }
+        });
 
         adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
         pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
         pluginField.setAdapter(adapterPlugins);
         pluginField.setThreshold(1);
+        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                pluginField.showDropDown();
+            }
+        });
 
         getCollections();
 
