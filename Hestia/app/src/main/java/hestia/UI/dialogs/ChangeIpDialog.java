@@ -41,31 +41,25 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         if (savedInstanceState != null) {
             ip = savedInstanceState.getString("IP_ADDRESS");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Change IP")
+        builder.setTitle("Change IP");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something else
+                pressConfirm();
+                dismiss();
 
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,	int which) {
+                dismiss();
+            }
+        });
 
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
-                        // Do something else
-                    }
-
-                });
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.ip_dialog, null);
 
@@ -90,8 +84,7 @@ public class ChangeIpDialog extends HestiaDialog {
         if(ip!=null) {
             serverCollectionsInteractor.getHandler().setIp(ip);
             Log.i(TAG, "My ip is changed to: " + ip);
-            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
-                            .getIp(),
+            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler().getIp(),
                     Toast.LENGTH_SHORT).show();
         }
     }

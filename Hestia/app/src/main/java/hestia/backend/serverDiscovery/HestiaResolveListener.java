@@ -15,7 +15,7 @@ import hestia.backend.ServerCollectionsInteractor;
  * HomeActivity after the service has been resolved.
  */
 public class HestiaResolveListener implements NsdManager.ResolveListener{
-    private static final String SERVICE_NAME = Resources.getSystem().getString(R.string.ServiceName);
+    private static final String SERVICE_NAME = Resources.getSystem().getString(R.string.serviceName);
     private String TAG = "HestiaRListener";
     private ServerCollectionsInteractor interactor;
 

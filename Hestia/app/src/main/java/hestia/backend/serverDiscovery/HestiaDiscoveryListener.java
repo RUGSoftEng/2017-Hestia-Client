@@ -14,8 +14,8 @@ import com.rugged.application.hestia.R;
  * TODO link to the exception handling system.
  */
 public class HestiaDiscoveryListener implements NsdManager.DiscoveryListener {
-    private static final String SERVICE_NAME = Resources.getSystem().getString(R.string.ServiceName);
-    private static final String SERVICE_TYPE = Resources.getSystem().getString(R.string.ServiceType);
+    private static final String SERVICE_NAME = Resources.getSystem().getString(R.string.serviceName);
+    private static final String SERVICE_TYPE = Resources.getSystem().getString(R.string.serviceType);
     private final HestiaResolveListener resolveListener;
     private final NsdManager nsdManager;
     private String TAG = "HestiaDListener";
