@@ -1,4 +1,4 @@
-package hestia.backend.NetworkDiscovery;
+package hestia.backend.serverDiscovery;
 
 import android.content.res.Resources;
 import android.net.nsd.NsdManager;

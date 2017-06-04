@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.nsd.NsdManager;
-import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,20 +21,14 @@ import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
-import hestia.backend.NetworkDiscovery.HestiaDiscoveryListener;
-import hestia.backend.NetworkDiscovery.HestiaResolveListener;
+import hestia.backend.serverDiscovery.HestiaDiscoveryListener;
+import hestia.backend.serverDiscovery.HestiaResolveListener;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
@@ -203,8 +195,8 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * using the newly found IP-address and port.
      * TODO change control flow so login screen is shown before connecting.
      *
-     * @see hestia.backend.NetworkDiscovery.HestiaDiscoveryListener
-     * @see hestia.backend.NetworkDiscovery.HestiaResolveListener
+     * @see hestia.backend.serverDiscovery.HestiaDiscoveryListener
+     * @see hestia.backend.serverDiscovery.HestiaResolveListener
      */
     public void performNetDiscovery() {
 
