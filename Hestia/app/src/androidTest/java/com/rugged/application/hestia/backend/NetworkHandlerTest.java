@@ -58,13 +58,13 @@ public class NetworkHandlerTest {
 
     @Test
     public void getDefaultPathTest() {
-        String path1 = "http://" + dummyIP + ":" + dummyPort + "/";
+        String path1 = "https://" + dummyIP + ":" + dummyPort + "/";
         assertNotNull(dummyHandler.getDefaultPath());
         assertEquals(path1, dummyHandler.getDefaultPath());
 
         String IP = "1.1.1.1";
         Integer port = 2000;
-        String path2 = "http://" + IP + ":" + port + "/";
+        String path2 = "https://" + IP + ":" + port + "/";
         dummyHandler.setIp(IP);
         dummyHandler.setPort(port);
         assertNotNull(dummyHandler.getDefaultPath());

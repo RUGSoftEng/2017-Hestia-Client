@@ -1,7 +1,6 @@
 package hestia.backend;
 
 import android.app.Application;
-import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -9,28 +8,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.rugged.application.hestia.R;
-
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
@@ -47,14 +31,12 @@ public class NetworkHandler extends Application {
     private final String TAG = "NetworkHandler";
     private String ip;
     private Integer port;
-    private SSLSocketFactory factory;
 
-    public NetworkHandler(String ip, Integer port){
+    public NetworkHandler(String ip, Integer port) {
         this.ip = ip;
         this.port = port;
-        registerCertificate();
-    }
 
+    }
 
 
     public JsonElement GET(String endpoint) throws IOException {
@@ -97,7 +79,7 @@ public class NetworkHandler extends Application {
         String path = this.getDefaultPath() + endpoint;
         URL url = new URL(path);
         HttpsURLConnection connector = (HttpsURLConnection) url.openConnection();
-        connector.setSSLSocketFactory(factory);
+        connector.setSSLSocketFactory(new HestiaHttpsCreator().getFactory());
         connector.setReadTimeout(2000);
         connector.setConnectTimeout(2000);
         connector.setRequestMethod(requestMethod);
@@ -189,103 +171,3 @@ public class NetworkHandler extends Application {
         return this.getIp().equals(networkHandler.getIp());
     }
 }
-
-/*
-package com.mkyong.client;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.cert.Certificate;
-import java.io.*;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLPeerUnverifiedException;
-
-public class HttpsClient{
-
-   public static void main(String[] args)
-   {
-        new HttpsClient().testIt();
-   }
-
-   private void testIt(){
-
-      String https_url = "https://www.google.com/";
-      URL url;
-      try {
-
-	     url = new URL(https_url);
-	     HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-
-	     //dumpl all cert info
-	     print_https_cert(con);
-
-	     //dump all the content
-	     print_content(con);
-
-      } catch (MalformedURLException e) {
-	     e.printStackTrace();
-      } catch (IOException e) {
-	     e.printStackTrace();
-      }
-
-   }
-
-   private void print_https_cert(HttpsURLConnection con){
-
-    if(con!=null){
-
-      try {
-
-	System.out.println("Response Code : " + con.getResponseCode());
-	System.out.println("Cipher Suite : " + con.getCipherSuite());
-	System.out.println("\n");
-
-	Certificate[] certs = con.getServerCertificates();
-	for(Certificate cert : certs){
-	   System.out.println("Cert Type : " + cert.getType());
-	   System.out.println("Cert Hash Code : " + cert.hashCode());
-	   System.out.println("Cert Public Key Algorithm : "
-                                    + cert.getPublicKey().getAlgorithm());
-	   System.out.println("Cert Public Key Format : "
-                                    + cert.getPublicKey().getFormat());
-	   System.out.println("\n");
-	}
-
-	} catch (SSLPeerUnverifiedException e) {
-		e.printStackTrace();
-	} catch (IOException e){
-		e.printStackTrace();
-	}
-
-     }
-
-   }
-
-   private void print_content(HttpsURLConnection con){
-	if(con!=null){
-
-	try {
-
-	   System.out.println("****** Content of the URL ********");
-	   BufferedReader br =
-		new BufferedReader(
-			new InputStreamReader(con.getInputStream()));
-
-	   String input;
-
-	   while ((input = br.readLine()) != null){
-	      System.out.println(input);
-	   }
-	   br.close();
-
-	} catch (IOException e) {
-	   e.printStackTrace();
-	}
-
-       }
-
-   }
-
-}
- */
