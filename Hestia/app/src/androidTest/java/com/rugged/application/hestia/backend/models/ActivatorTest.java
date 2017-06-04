@@ -221,7 +221,7 @@ public class ActivatorTest {
     }
 
     @Test
-    public void activatorEqualsAndHashTest(){
+    public void activatorEqualsAndHashCodeTest(){
         // Testing hashCodes
         assertNotEquals(boolActivator.hashCode(), floatActivator.hashCode());
         assertEquals(boolActivator.hashCode(), boolActivator.hashCode());

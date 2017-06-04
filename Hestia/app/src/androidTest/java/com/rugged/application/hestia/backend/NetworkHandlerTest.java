@@ -72,26 +72,34 @@ public class NetworkHandlerTest {
     }
 
     @Test
-    public void equalsTest() {
+    public void equalsCurrentReferenceTest() {
         NetworkHandler handlerCurrent = this.dummyHandler;
         assertNotNull(handlerCurrent);
         assertTrue(dummyHandler.equals(handlerCurrent));
+    }
 
+    @Test
+    public void equalsSamePropertiesTest() {
         NetworkHandler handlerSameProperties = new NetworkHandler(dummyIP, dummyPort);
         assertNotNull(handlerSameProperties);
         assertTrue(dummyHandler.equals(handlerSameProperties));
+    }
 
+    @Test
+    public void equalsNullTest() {
         NetworkHandler handlerNull = null;
         assertNull(handlerNull);
         assertFalse(dummyHandler.equals(handlerNull));
+    }
 
+    @Test
+    public void equalsDifferentPropertiesTest() {
         String IP = "1.1.1.1";
         Integer port = 2000;
         NetworkHandler handlerDifferentProperties = new NetworkHandler(IP, port);
         assertNotNull(handlerDifferentProperties);
         assertFalse(dummyHandler.equals(handlerDifferentProperties));
     }
-
 
     @After
     public void tearDown() {

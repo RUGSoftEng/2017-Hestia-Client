@@ -41,23 +41,29 @@ public class ActivatorStateTest {
         assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
+    /**
+     * setRawState() and getRawState() methods tests.
+     */
     @Test
-    public void setAndGetRawStateTest() {
-        // Test bool activator state
+    public void setAndGetBoolRawStateTest() {
         assertEquals(DEFAULT_BOOL_RAW_STATE, boolActivatorState.getRawState());
         Boolean newBoolRawState = true;
         assertNotEquals(DEFAULT_BOOL_RAW_STATE, newBoolRawState);
         boolActivatorState.setRawState(newBoolRawState);
         assertEquals(newBoolRawState, boolActivatorState.getRawState());
+    }
 
-        // Test float activator state
+    @Test
+    public void setAndGetFloatRawStateTest() {
         assertEquals(DEFAULT_FLOAT_RAW_STATE, floatActivatorState.getRawState());
         Float newFloatRawState = 0.3f;
         assertNotEquals(DEFAULT_FLOAT_RAW_STATE, newFloatRawState);
         floatActivatorState.setRawState(newFloatRawState);
         assertEquals(newFloatRawState, floatActivatorState.getRawState());
+    }
 
-        // Test string activator state
+    @Test
+    public void setAndGetStringRawStateTest() {
         assertEquals(DEFAULT_STRING_RAW_STATE, stringActivatorState.getRawState());
         String newStringRawState = "newState";
         assertNotEquals(DEFAULT_STRING_RAW_STATE, newStringRawState);
@@ -65,23 +71,29 @@ public class ActivatorStateTest {
         assertEquals(newStringRawState, stringActivatorState.getRawState());
     }
 
+    /**
+     * setType() and getType() methods tests.
+     */
     @Test
-    public void setAndGetTypeTest() {
-        // Test bool activator state
+    public void setAndGetBoolTypeTest() {
         assertEquals(DEFAULT_BOOL_TYPE, boolActivatorState.getType());
         String newBoolType = "newBoolType";
         assertNotEquals(DEFAULT_BOOL_TYPE, newBoolType);
         boolActivatorState.setType(newBoolType);
         assertEquals(newBoolType, boolActivatorState.getType());
+    }
 
-        // Test float activator state
+    @Test
+    public void setAndGetFloatTypeTest() {
         assertEquals(DEFAULT_FLOAT_TYPE, floatActivatorState.getType());
         String newFloatType = "newFloatType";
         assertNotEquals(DEFAULT_FLOAT_TYPE, newFloatType);
         floatActivatorState.setType(newFloatType);
         assertEquals(newFloatType, floatActivatorState.getType());
+    }
 
-        // Test string activator state
+    @Test
+    public void setAndGetStringTypeTest() {
         assertEquals(DEFAULT_STRING_TYPE, stringActivatorState.getType());
         String newStringType = "newStringType";
         assertNotEquals(DEFAULT_STRING_TYPE, newStringType);
@@ -89,55 +101,78 @@ public class ActivatorStateTest {
         assertEquals(newStringType, stringActivatorState.getType());
     }
 
+    /**
+     * getRawStateJSON() method tests.
+     */
     @Test
-    public void getRawStateJSONTest() {
-        // Test bool activator state
+    public void getBoolRawStateJSONTest() {
         JsonPrimitive boolPrimitive = new JsonPrimitive(DEFAULT_BOOL_RAW_STATE);
         assertNotNull(boolPrimitive);
         assertEquals(boolPrimitive, boolActivatorState.getRawStateJSON());
+    }
 
-        // Test float activator state
+    @Test
+    public void getFloatRawStateJSONTest() {
         JsonPrimitive floatPrimitive = new JsonPrimitive(DEFAULT_FLOAT_RAW_STATE);
         assertNotNull(floatPrimitive);
         assertEquals(floatPrimitive, floatActivatorState.getRawStateJSON());
+    }
 
-        // Test string activator state
+    @Test
+    public void getStringRawStateJSONTest() {
         JsonPrimitive stringPrimitive = new JsonPrimitive(DEFAULT_STRING_RAW_STATE);
         assertNotNull(stringPrimitive);
         assertEquals(stringPrimitive, stringActivatorState.getRawStateJSON());
     }
 
+    /**
+     * equals() method tests.
+     */
     @Test
-    public void equalsTest() {
-        // Test bool activator state
+    public void boolActivatorEqualsTest() {
         ActivatorState<Boolean> newBoolActivatorState = new ActivatorState<>(DEFAULT_BOOL_RAW_STATE, DEFAULT_BOOL_TYPE);
         assertNotNull(newBoolActivatorState);
         assertTrue(newBoolActivatorState.equals(boolActivatorState));
+        assertFalse(newBoolActivatorState.equals(stringActivatorState));
+        assertFalse(newBoolActivatorState.equals(floatActivatorState));
+    }
 
-        // Test float activator state
+    @Test
+    public void floatActivatorEqualsTest() {
         ActivatorState<Float> newFloatActivatorState = new ActivatorState<>(DEFAULT_FLOAT_RAW_STATE, DEFAULT_FLOAT_TYPE);
         assertNotNull(newFloatActivatorState);
         assertTrue(newFloatActivatorState.equals(floatActivatorState));
-
-        // Test string activator state
-        ActivatorState<String> newStringActivatorState = new ActivatorState<>(DEFAULT_STRING_RAW_STATE, DEFAULT_STRING_TYPE);
-        assertNotNull(newStringActivatorState);
-        assertTrue(newStringActivatorState.equals(stringActivatorState));
-
-        // Other tests
         assertFalse(newFloatActivatorState.equals(boolActivatorState));
-        assertFalse(newBoolActivatorState.equals(stringActivatorState));
         assertFalse(newFloatActivatorState.equals(stringActivatorState));
     }
 
     @Test
-    public void toStringTest() {
-        String boolStateToString = DEFAULT_BOOL_TYPE + " - " + DEFAULT_BOOL_RAW_STATE;
-        String floatStateToString = DEFAULT_FLOAT_TYPE + " - " + DEFAULT_FLOAT_RAW_STATE;
-        String stringStateToString = DEFAULT_STRING_TYPE + " - " + DEFAULT_STRING_RAW_STATE;
+    public void stringActivatorEqualsTest() {
+        ActivatorState<String> newStringActivatorState = new ActivatorState<>(DEFAULT_STRING_RAW_STATE, DEFAULT_STRING_TYPE);
+        assertNotNull(newStringActivatorState);
+        assertTrue(newStringActivatorState.equals(stringActivatorState));
+        assertFalse(newStringActivatorState.equals(boolActivatorState));
+        assertFalse(newStringActivatorState.equals(floatActivatorState));
+    }
 
+    /**
+     * toString() method tests.
+     */
+    @Test
+    public void boolStateToStringTest() {
+        String boolStateToString = DEFAULT_BOOL_TYPE + " - " + DEFAULT_BOOL_RAW_STATE;
         assertEquals(boolStateToString, boolActivatorState.toString());
+    }
+
+    @Test
+    public void floatStateToStringTest() {
+        String floatStateToString = DEFAULT_FLOAT_TYPE + " - " + DEFAULT_FLOAT_RAW_STATE;
         assertEquals(floatStateToString, floatActivatorState.toString());
+    }
+
+    @Test
+    public void stringStateToStringTest() {
+        String stringStateToString = DEFAULT_STRING_TYPE + " - " + DEFAULT_STRING_RAW_STATE;
         assertEquals(stringStateToString, stringActivatorState.toString());
     }
 }
