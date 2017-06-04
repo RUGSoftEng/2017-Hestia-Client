@@ -14,4 +14,13 @@ public class DatabaseException extends DefinedServerException {
         type= details.get("type").getAsString();
         message=details.get("message").getAsString();
     }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }
