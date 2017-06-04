@@ -2,19 +2,33 @@ package hestia.backend;
 
 import android.app.Application;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.rugged.application.hestia.R;
+
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.security.KeyStore;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import hestia.UI.HestiaApplication;
 
 /**
  * A singleton class which handles interaction between front and back-end. It contains methods
@@ -28,10 +42,42 @@ public class NetworkHandler extends Application {
     private String ip;
     private Integer port;
 
-    public NetworkHandler(String ip, int port){
+    public NetworkHandler(String ip, int port) {
         this.ip = ip;
         this.port = port;
+        registerCertificate();
     }
+
+    private void registerCertificate() {
+        final SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        schemeRegistry.register(new Scheme("https", createAdditionalCertsSSLSocketFactory(), 8000));
+
+    // and then however you create your connection manager, I use ThreadSafeClientConnManager
+        final HttpParams params = new BasicHttpParams();
+        final ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+    }
+
+    protected org.apache.http.conn.ssl.SSLSocketFactory createAdditionalCertsSSLSocketFactory() {
+        try {
+            final KeyStore ks = KeyStore.getInstance("BKS");
+
+            // the bks file we generated above
+            final InputStream in = getResources().openRawResource(R.raw.mystore);
+            try {
+                // don't forget to put the password used above in strings.xml/mystore_password
+                ks.load(in, context.getString(R.string.mystore_password).toCharArray());
+            } finally {
+                in.close();
+            }
+
+            return new AdditionalKeyStoresSSLSocketFactory(ks);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public JsonElement GET(String endpoint) throws IOException {
         HttpsURLConnection connector = this.connectToSecureServer("GET", endpoint);
@@ -62,8 +108,9 @@ public class NetworkHandler extends Application {
     /**
      * This method establishes the connection to the server, by setting the type of request
      * and the path.
+     *
      * @param requestMethod the type of request that will be sent to the server.
-     * @param endpoint path to the server's endpoint.
+     * @param endpoint      path to the server's endpoint.
      * @return the object responsible for setting up the connection to the server.
      * @throws IOException
      */
@@ -81,8 +128,9 @@ public class NetworkHandler extends Application {
 
     /**
      * This method sends the JsonObject object to the server.
+     *
      * @param connector the object responsible for setting up the connection to the server.
-     * @param object the JsonObject that will be sent to the server.
+     * @param object    the JsonObject that will be sent to the server.
      * @throws IOException IOException
      */
     private void sendToServer(HttpsURLConnection connector, JsonObject object) throws IOException {
@@ -96,6 +144,7 @@ public class NetworkHandler extends Application {
     /**
      * Returns the payload from the server as a JsonElement. If the response code is successful,
      * it will get the input stream from the connector. Otherwise, it will get the error stream.
+     *
      * @param connector the object responsible for setting up the connection to the server.
      * @return the payload received from the server.
      * @throws IOException IOException
@@ -113,7 +162,8 @@ public class NetworkHandler extends Application {
             reader = new BufferedReader(new InputStreamReader(connector.getErrorStream()));
         }
 
-        Type returnType = new TypeToken<JsonElement>(){}.getType();
+        Type returnType = new TypeToken<JsonElement>() {
+        }.getType();
         JsonElement payload = gson.fromJson(gson.newJsonReader(reader), returnType);
         reader.close();
 
@@ -122,6 +172,7 @@ public class NetworkHandler extends Application {
 
     /**
      * Checks if the HTTPS request was successful or not.
+     *
      * @param responseCode the response code of the request.
      * @return true if it succeeded, false otherwise.
      */
@@ -150,12 +201,12 @@ public class NetworkHandler extends Application {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NetworkHandler)) return false;
 
         NetworkHandler networkHandler = (NetworkHandler) o;
-        if(!this.getPort().equals(networkHandler.getPort())) return false;
+        if (!this.getPort().equals(networkHandler.getPort())) return false;
         return this.getIp().equals(networkHandler.getIp());
     }
 }
