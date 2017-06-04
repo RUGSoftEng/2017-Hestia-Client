@@ -1,5 +1,7 @@
 package com.rugged.application.hestia.backend;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.After;
 import org.junit.Before;
@@ -7,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import hestia.backend.NetworkHandler;
 import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class NetworkHandlerTest {
@@ -19,6 +22,12 @@ public class NetworkHandlerTest {
         assertNull(dummyHandler);
         dummyHandler = new NetworkHandler(dummyIP, dummyPort);
         assertNotNull(dummyHandler);
+    }
+
+    @Test
+    public void packageNameTest(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.rugged.application.hestia", appContext.getPackageName());
     }
 
     @Test
@@ -39,12 +48,12 @@ public class NetworkHandlerTest {
 
     @Test
     public void isSuccessfulRequestTest() {
-        Integer responseCode1 = 200;
-        Integer responseCode2 = 404;
-        Integer responseCode3 = null;
-        assertTrue(dummyHandler.isSuccessfulRequest(responseCode1));
-        assertFalse(dummyHandler.isSuccessfulRequest(responseCode2));
-        assertFalse(dummyHandler.isSuccessfulRequest(responseCode3));
+        Integer responseCodeSuccess = 200;
+        Integer responseCodeFail = 404;
+        Integer responseCodeNull = null;
+        assertTrue(dummyHandler.isSuccessfulRequest(responseCodeSuccess));
+        assertFalse(dummyHandler.isSuccessfulRequest(responseCodeFail));
+        assertFalse(dummyHandler.isSuccessfulRequest(responseCodeNull));
     }
 
     @Test
@@ -63,26 +72,34 @@ public class NetworkHandlerTest {
     }
 
     @Test
-    public void equalsTest() {
-        NetworkHandler handler1 = this.dummyHandler;
-        assertNotNull(handler1);
-        assertTrue(dummyHandler.equals(handler1));
-
-        NetworkHandler handler2 = new NetworkHandler(dummyIP, dummyPort);
-        assertNotNull(handler2);
-        assertTrue(dummyHandler.equals(handler2));
-
-        NetworkHandler handler3 = null;
-        assertNull(handler3);
-        assertFalse(dummyHandler.equals(handler3));
-
-        String IP = "1.1.1.1";
-        Integer port = 2000;
-        NetworkHandler handler4 = new NetworkHandler(IP, port);
-        assertNotNull(handler4);
-        assertFalse(dummyHandler.equals(handler4));
+    public void equalsCurrentReferenceTest() {
+        NetworkHandler handlerCurrent = this.dummyHandler;
+        assertNotNull(handlerCurrent);
+        assertTrue(dummyHandler.equals(handlerCurrent));
     }
 
+    @Test
+    public void equalsSamePropertiesTest() {
+        NetworkHandler handlerSameProperties = new NetworkHandler(dummyIP, dummyPort);
+        assertNotNull(handlerSameProperties);
+        assertTrue(dummyHandler.equals(handlerSameProperties));
+    }
+
+    @Test
+    public void equalsNullTest() {
+        NetworkHandler handlerNull = null;
+        assertNull(handlerNull);
+        assertFalse(dummyHandler.equals(handlerNull));
+    }
+
+    @Test
+    public void equalsDifferentPropertiesTest() {
+        String IP = "1.1.1.1";
+        Integer port = 2000;
+        NetworkHandler handlerDifferentProperties = new NetworkHandler(IP, port);
+        assertNotNull(handlerDifferentProperties);
+        assertFalse(dummyHandler.equals(handlerDifferentProperties));
+    }
 
     @After
     public void tearDown() {
@@ -90,5 +107,4 @@ public class NetworkHandlerTest {
         dummyHandler = null;
         assertNull(dummyHandler);
     }
-
 }
