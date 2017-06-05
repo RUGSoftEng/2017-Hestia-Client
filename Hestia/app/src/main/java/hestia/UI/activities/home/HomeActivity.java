@@ -200,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
     public void performNetDiscovery() {
 
         new AsyncTask<Void, Void, ServerCollectionsInteractor>() {
-            private final String SERVICE_TYPE = Resources.getSystem().getString(R.string.ServiceType);
+            private final String SERVICE_TYPE = Resources.getSystem().getString(R.string.serviceType);
             private HestiaResolveListener resolveListener;
             private NsdManager hestiaNsdManager;
             private String TAG = "NetDiscovery";
