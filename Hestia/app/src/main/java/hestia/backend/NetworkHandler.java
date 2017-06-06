@@ -9,6 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +22,7 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.HostnameVerifier ;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -83,6 +86,7 @@ public class NetworkHandler extends Application {
 
         String path = this.getDefaultPath() + endpoint;
         URL url = new URL(path);
+        Log.i(TAG, "Attempting to connect to server:" + url);
         HttpsURLConnection connector = (HttpsURLConnection) url.openConnection();
         connector.setReadTimeout(2000);
         connector.setConnectTimeout(2000);
@@ -196,6 +200,8 @@ public class NetworkHandler extends Application {
                 }
         };
         SSLContext sc = null;
+
+        HttpsURLConnection.setDefaultHostnameVerifier(new AllowAllHostnameVerifier());
 
         // Install the all-trusting trust manager
         try {
