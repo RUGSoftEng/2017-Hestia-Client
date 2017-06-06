@@ -33,14 +33,12 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private static final String HESTIA_IP = "HESTIA.IP";
     private static final String SERVER_IP = "IP_OF_SERVER";
-    private final String changeIpText = "Set IP ";
     public static final String logoutText = "Logout ";
     public static final String changeCredentialsText = "Change user/pass";
     private final String extraName = "login";
     private final String logoutExtraValue = "logout";
-    private final int IP = 1;
-    private final int CHANGECREDENTIALS = 2;
-    private final int LOGOUT = 3;
+    private final int CHANGECREDENTIALS = 1;
+    private final int LOGOUT = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,10 +111,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         close.setResource(R.drawable.ic_action);
         objects.add(close);
 
-        MenuObject ip = new MenuObject(changeIpText);
-        ip.setResource(R.mipmap.ic_router);
-        objects.add(ip);
-
         MenuObject changeCredentials = new MenuObject(changeCredentialsText);
         changeCredentials.setResource(R.mipmap.ic_key);
         objects.add(changeCredentials);
@@ -151,9 +145,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     @Override
     public void onMenuItemClick(View clickedView, int position) {
         switch(position) {
-            case IP:
-                showIpDialog();
-                break;
             case CHANGECREDENTIALS:
                 showChangeCredentialsDialog();
                 break;
@@ -169,12 +160,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         toIntent.putExtra(extraName, logoutExtraValue);
         startActivity(toIntent);
         finish();
-    }
-
-    private void showIpDialog() {
-        //DiscoverServerDialog fragment = DiscoverServerDialog.newInstance();
-        //fragment.setInteractor(serverCollectionsInteractor);
-       // fragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void showChangeCredentialsDialog() {

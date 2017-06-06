@@ -118,8 +118,6 @@ public class LoginActivity extends FragmentActivity {
                     showLoginToast(incorrectLoginToast);
                     editLoginAttempts();
                 }
-                //TODO remove this agian
-                gotoMainActivity();
             }
         });
 
