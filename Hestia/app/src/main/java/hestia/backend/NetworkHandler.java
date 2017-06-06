@@ -15,9 +15,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 
 /**
@@ -35,7 +40,7 @@ public class NetworkHandler extends Application {
     public NetworkHandler(String ip, Integer port) {
         this.ip = ip;
         this.port = port;
-
+        trustAllCerts();
     }
 
 
@@ -79,7 +84,6 @@ public class NetworkHandler extends Application {
         String path = this.getDefaultPath() + endpoint;
         URL url = new URL(path);
         HttpsURLConnection connector = (HttpsURLConnection) url.openConnection();
-        connector.setSSLSocketFactory(new HestiaHttpsCreator().getFactory());
         connector.setReadTimeout(2000);
         connector.setConnectTimeout(2000);
         connector.setRequestMethod(requestMethod);
@@ -170,4 +174,37 @@ public class NetworkHandler extends Application {
         if (!this.getPort().equals(networkHandler.getPort())) return false;
         return this.getIp().equals(networkHandler.getIp());
     }
+
+    /**
+     * This code creates a socketFactory which trusts all certificates. <b>WARNING</b> this cannot
+     * be used in production code as it leaves the app vulnerable to MITM attacks.
+     */
+    public void trustAllCerts() {
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        SSLContext sc = null;
+
+        // Install the all-trusting trust manager
+        try {
+            sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (GeneralSecurityException e){
+            e.printStackTrace();
+        }
+    }
+
 }

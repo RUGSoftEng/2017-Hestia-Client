@@ -16,10 +16,18 @@ import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
-import hestia.UI.Security.CertificateRegistry;
+import javax.net.ssl.SSLSocketFactory;
+
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
@@ -187,5 +195,18 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
+
+    public void createKeystore(){
+
+        try {
+            KeyStore localTrustStore = KeyStore.getInstance("BKS");
+            InputStream in = getResources().openRawResource(R.raw.mystore);
+            localTrustStore.load(in, getResources().getResourceName(R.string.mystore_password).toCharArray());
+
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
