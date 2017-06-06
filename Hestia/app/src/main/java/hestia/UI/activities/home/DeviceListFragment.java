@@ -24,6 +24,8 @@ import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 /**
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
  * GET request to the server to populate the device list.
@@ -38,17 +40,25 @@ public class DeviceListFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
-    private FragmentManager fm;
 
     public DeviceListFragment() {
         super();
+
     }
 
-    public DeviceListFragment(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
-        super();
-        this.context = context;
-        this.serverCollectionsInteractor = serverCollectionsInteractor;
-//        fm = getActivity().getSupportFragmentManager();
+    /**
+     * This method replaces the non-default constructor in Android. A bundle is constructed and
+     * passed to the fragment. This ensures that we will get the same
+     * @param serverCollectionsInteractor The interactor which has to be reinstantiated
+     * @return The fragment which was constructed
+     */
+
+    public static DeviceListFragment newInstance(ServerCollectionsInteractor serverCollectionsInteractor) {
+        DeviceListFragment fragment = new DeviceListFragment();
+        Bundle bundle = new Bundle(2);
+        bundle.putSerializable("serverCollectionsInteractor", serverCollectionsInteractor);
+        fragment.setArguments(bundle);
+        return fragment ;
     }
 
 
@@ -62,6 +72,9 @@ public class DeviceListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        serverCollectionsInteractor = (ServerCollectionsInteractor) savedInstanceState.get("serverCollectionsInteractor");
+        context = getActivity().getApplicationContext();
+
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);

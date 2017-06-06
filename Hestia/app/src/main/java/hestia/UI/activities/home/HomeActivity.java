@@ -55,7 +55,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
-            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
+            fragment = DeviceListFragment.newInstance(this.serverCollectionsInteractor);
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
         menuObjects = getMenuObjects();
