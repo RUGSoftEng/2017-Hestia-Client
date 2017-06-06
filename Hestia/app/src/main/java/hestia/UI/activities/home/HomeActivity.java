@@ -22,7 +22,6 @@ import java.util.List;
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
-import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
@@ -173,7 +172,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-        //ChangeIpDialog fragment = ChangeIpDialog.newInstance();
+        //DiscoverServerDialog fragment = DiscoverServerDialog.newInstance();
         //fragment.setInteractor(serverCollectionsInteractor);
        // fragment.show(getSupportFragmentManager(), "dialog");
     }

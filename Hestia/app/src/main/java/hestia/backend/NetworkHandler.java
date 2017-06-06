@@ -156,4 +156,9 @@ public class NetworkHandler extends Application {
         if(!this.getPort().equals(networkHandler.getPort())) return false;
         return this.getIp().equals(networkHandler.getIp());
     }
+
+    public String discoverServer() {
+        //TODO implement server Discovery
+        return "192.168.178.30";
+    }
 }

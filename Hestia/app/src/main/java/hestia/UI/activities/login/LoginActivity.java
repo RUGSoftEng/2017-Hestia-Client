@@ -1,10 +1,5 @@
 package hestia.UI.activities.login;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +18,7 @@ import java.util.Locale;
 
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.home.HomeActivity;
-import hestia.UI.dialogs.ChangeIpDialog;
+import hestia.UI.dialogs.DiscoverServerDialog;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -72,7 +67,7 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private void showSetIpDialog() {
-        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
+        DiscoverServerDialog fragment = DiscoverServerDialog.newInstance();
         fragment.setNetworkHandler(((HestiaApplication)getApplication()).getNetworkHandler());
         fragment.show(getSupportFragmentManager(), "tag");
     }
