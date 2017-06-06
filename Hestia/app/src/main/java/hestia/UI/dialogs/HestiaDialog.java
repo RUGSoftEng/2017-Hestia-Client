@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+
+import hestia.UI.activities.home.DeviceListFragment;
+import hestia.UI.activities.home.HomeActivity;
+
 abstract class HestiaDialog extends DialogFragment {
 
     @Override
@@ -29,6 +33,10 @@ abstract class HestiaDialog extends DialogFragment {
                     }
 
                 }).create();
+    }
+
+    protected void refreshUserInterface(){
+        ((HomeActivity)this.getActivity()).refreshUserInterface();
     }
 
     abstract void pressConfirm();

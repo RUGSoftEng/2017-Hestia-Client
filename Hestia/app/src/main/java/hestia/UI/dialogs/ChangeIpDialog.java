@@ -93,6 +93,7 @@ public class ChangeIpDialog extends HestiaDialog {
             Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
                             .getIp(),
                     Toast.LENGTH_SHORT).show();
+            refreshUserInterface();
         }
     }
 
