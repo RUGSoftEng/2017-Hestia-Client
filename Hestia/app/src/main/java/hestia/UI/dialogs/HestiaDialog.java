@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.WindowManager;
+import hestia.UI.activities.home.HomeActivity;
 
 abstract class HestiaDialog extends DialogFragment {
 
@@ -38,5 +39,10 @@ abstract class HestiaDialog extends DialogFragment {
     abstract View buildView();
     abstract void pressConfirm();
     abstract void pressCancel();
+
+    protected void refreshUserInterface(){
+        ((HomeActivity)this.getActivity()).refreshUserInterface();
+    }
+
 
 }

@@ -83,7 +83,7 @@ public class LoginActivity extends Activity  {
     }
 
     private boolean ipSetToValidServer() {
-        NetworkHandler handler = ((HestiaApplication) this.getApplication()).g
+        NetworkHandler handler = ((HestiaApplication) this.getApplication()).getNetworkHandler()
         if()
     }
 
