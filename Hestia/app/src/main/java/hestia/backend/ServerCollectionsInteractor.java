@@ -2,6 +2,7 @@ package hestia.backend;
 
 import android.content.Context;
 import android.net.nsd.NsdServiceInfo;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -9,10 +10,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.rugged.application.hestia.R;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
@@ -62,6 +65,21 @@ public class ServerCollectionsInteractor implements Serializable{
             String error = jsonObject.get("error").getAsString();
             String message = jsonObject.get("message").getAsString();
             throw new ComFaultException(error, message);
+        }
+    }
+
+    public void sendLoginData(String username, String password) throws IOException,
+            ComFaultException {
+        JsonObject loginData = new JsonObject();
+        loginData.addProperty("username",username);
+        loginData.addProperty("password",password);
+        String endpoint = "login/";
+        JsonElement result = handler.PUT(loginData,endpoint);
+        if(result.isJsonObject()){
+            JsonObject object = result.getAsJsonObject();
+            if(object.has("error")){
+                throw new ComFaultException(object.get("error").getAsString(),object.get("message").getAsString());
+            }
         }
     }
 

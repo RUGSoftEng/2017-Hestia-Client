@@ -3,9 +3,6 @@ package hestia.UI.activities.home;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.net.nsd.NsdManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,10 +24,8 @@ import java.util.List;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
-import hestia.backend.serverDiscovery.HestiaDiscoveryListener;
-import hestia.backend.serverDiscovery.HestiaResolveListener;
-import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
+import hestia.backend.ServerCollectionsInteractor;
 
 public class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
@@ -185,39 +180,4 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
-
-    /**
-     * This method uses the ZeroConf system to look for Hestia servers on the local network.
-     * If it finds them it will replace the current ServerCollectionsInteractor with a new one
-     * using the newly found IP-address and port.
-     * TODO change control flow so login screen is shown before connecting.
-     *
-     * @see hestia.backend.serverDiscovery.HestiaDiscoveryListener
-     * @see hestia.backend.serverDiscovery.HestiaResolveListener
-     */
-    public void performNetDiscovery() {
-
-        new AsyncTask<Void, Void, ServerCollectionsInteractor>() {
-            private final String SERVICE_TYPE = Resources.getSystem().getString(R.string.serviceType);
-            private HestiaResolveListener resolveListener;
-            private NsdManager hestiaNsdManager;
-            private String TAG = "NetDiscovery";
-
-            @Override
-            protected ServerCollectionsInteractor doInBackground(Void... params) {
-                resolveListener = new HestiaResolveListener(serverCollectionsInteractor);
-                HestiaDiscoveryListener discoveryListener = new HestiaDiscoveryListener(resolveListener, hestiaNsdManager);
-
-                hestiaNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
-                return resolveListener.getUpdatedInteractor();
-            }
-
-            @Override
-            protected void onPostExecute(ServerCollectionsInteractor host) {
-                // Set new interactor in the backend.
-                serverCollectionsInteractor = host;
-            }
-        }.execute();
-    }
-
 }
