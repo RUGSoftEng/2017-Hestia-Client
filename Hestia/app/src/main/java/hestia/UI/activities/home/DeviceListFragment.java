@@ -92,7 +92,8 @@ public class DeviceListFragment extends Fragment {
     }
 
     /**
-     * Connects to the server using the serverCollectionsInteractor.
+     * Connects to the server using the serverCollectionsInteractor. We run the method in the
+     * background so
      */
     private void populateUI() {
         new AsyncTask<Object, String, ArrayList<Device> >() {
