@@ -1,4 +1,4 @@
-package hestia.UI.activities.home.Tasks;
+package hestia.UI.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
