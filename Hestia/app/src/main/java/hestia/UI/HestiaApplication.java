@@ -3,12 +3,16 @@ package hestia.UI;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.rugged.application.hestia.R;
+
 import hestia.backend.NetworkHandler;
+
 /**
- * An extension of the Application class provided by Android, which additionally contains the
- * NetworkHandler singleton.
+ * An extension of the Application class provided by Android, which additionally creates
+ * the network handler
  */
+
 
 public class HestiaApplication extends Application {
 
@@ -27,7 +31,7 @@ public class HestiaApplication extends Application {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
         String ip = prefs.getString(SERVER_IP, getApplicationContext().getString(R.string.default_ip));
         networkHandler = new NetworkHandler(ip
-                , R.string.default_port);
+                , Integer.valueOf(getApplicationContext().getString(R.string.default_port)));
     }
 
     public NetworkHandler getNetworkHandler(){
