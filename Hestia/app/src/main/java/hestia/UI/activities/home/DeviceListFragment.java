@@ -42,7 +42,6 @@ public class DeviceListFragment extends Fragment {
 
     public DeviceListFragment() {
         super();
-
     }
 
     /**
@@ -83,7 +82,6 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
-
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);
@@ -98,7 +96,72 @@ public class DeviceListFragment extends Fragment {
      * Connects to the server using the serverCollectionsInteractor.
      */
     private void populateUI() {
-        new DeviceTask(this).execute();
+        new AsyncTask<Object, String, ArrayList<Device> >() {
+            @Override
+            protected ArrayList<Device>  doInBackground(Object... params) {
+                ArrayList<Device> devices = new ArrayList<>();
+                try {
+                    devices = serverCollectionsInteractor.getDevices();
+                } catch (IOException e) {
+                    Log.e(TAG, e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
+                }
+                return devices;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Device> devices) {
+                listDataChild = new ArrayList<>();
+                for (Device device : devices) {
+                    Log.i(TAG, "device found");
+                    DeviceBar bar = new DeviceBar(getActivity().getSupportFragmentManager(), getActivity(), device, serverCollectionsInteractor);
+                    if(!listDataChild.contains(bar)) {
+                        if (!typeExists(device)) {
+                            listDataChild.add(new ArrayList<DeviceBar>());
+                            listDataChild.get(listDataChild.size() - 1).add(bar);
+                        } else {
+                            listDataChild.get(getDeviceType(device)).add(bar);
+                        }
+                    }
+                }
+                listAdapter.setListData(listDataChild);
+                expListView.setAdapter(listAdapter);
+            }
+        }.execute();
+    }
+
+    private boolean typeExists(Device device) {
+        String deviceType = device.getType();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
+            if (checkDevice.getType().equals(deviceType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int getDeviceType(Device device) {
+        String deviceType = device.getType();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
+            if (checkDevice.getType().equals(deviceType)) {
+                return listDataChild.indexOf(groupOfDevices);
+            }
+        }
+        return -1;
     }
 
     private void setOnScrollListeners() {
