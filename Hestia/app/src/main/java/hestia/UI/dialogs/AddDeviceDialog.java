@@ -106,6 +106,9 @@ public class AddDeviceDialog extends HestiaDialog {
                     EnterRequiredInfoDialog fragment = EnterRequiredInfoDialog.newInstance();
                     fragment.setData(info, serverCollectionsInteractor);
                     if (fragmentManager == null) {
+                        Log.d(TAG, "FragmentManager is null");
+                        Toast.makeText(getContext(), "Error sending data, try again", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                     fragment.show(fragmentManager, "dialog");
                 }
