@@ -18,8 +18,11 @@ public class NsdHelper {
     private static final String TAG = "NsdHelper";
 
     public NsdHelper(Context context) {
+        Log.d(TAG, "Before nsdManage initialization");
         this.nsdManager = (NsdManager) context.getSystemService(Context.NSD_SERVICE);
+        Log.d(TAG, "After nsdManage initialization; Before listeners' initialization");
         this.initializeNsd();
+        Log.d(TAG, "After listeners' initialization");
     }
 
     private void initializeNsd() {

@@ -4,13 +4,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
 
 import hestia.backend.ServerCollectionsInteractor;
@@ -24,6 +27,7 @@ public class ChangeIpDialog extends HestiaDialog {
     private final static String TAG = "ChangeIpDialog";
     private String ip;
     private EditText ipField;
+    private Button discoveryButton;
 
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
@@ -69,6 +73,9 @@ public class ChangeIpDialog extends HestiaDialog {
         if (ip != null) {
             ipField.setText(ip);
         }
+
+        this.addDiscoveryButton(view);
+
         builder.setView(view);
 
         AlertDialog dlg = builder.create();
@@ -77,8 +84,24 @@ public class ChangeIpDialog extends HestiaDialog {
         return dlg;
     }
 
+    public void addDiscoveryButton(View view) {
+        discoveryButton = (Button) view.findViewById(R.id.findServerButton);
+        discoveryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AsyncTask<Object, Object, Object>() {
+                    @Override
+                    protected Object doInBackground(Object... params) {
+                        serverCollectionsInteractor.discoverServer(getContext());
+                        return null;
+                    }
+                }.execute();
+            }
+        });
+    }
+
     @Override
-    void pressConfirm() {
+    public void pressConfirm() {
         ip = ipField.getText().toString();
         Log.i(TAG, "My ip is now:" + ip);
         if(ip!=null) {
@@ -90,7 +113,7 @@ public class ChangeIpDialog extends HestiaDialog {
     }
 
     @Override
-    void pressCancel() {
+    public void pressCancel() {
         Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
     }
 }
