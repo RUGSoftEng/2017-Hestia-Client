@@ -37,6 +37,11 @@ public class ChangeIpDialog extends HestiaDialog {
     }
 
     @Override
+    String buildTitle() {
+        return "Change IP";
+    }
+
+    @Override
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.ip_dialog, null);

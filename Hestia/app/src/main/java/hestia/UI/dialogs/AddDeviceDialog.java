@@ -99,6 +99,11 @@ public class AddDeviceDialog extends HestiaDialog {
     }
 
     @Override
+    String buildTitle() {
+        return null;
+    }
+
+    @Override
     View buildView() {
         return null;
     }

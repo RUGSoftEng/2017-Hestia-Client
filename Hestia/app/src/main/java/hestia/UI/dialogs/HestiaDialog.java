@@ -13,7 +13,7 @@ abstract class HestiaDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Change IP");
+        builder.setTitle(buildTitle());
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         pressConfirm();
@@ -34,6 +34,7 @@ abstract class HestiaDialog extends DialogFragment {
         return dialog;
     }
 
+    abstract String buildTitle();
     abstract View buildView();
     abstract void pressConfirm();
     abstract void pressCancel();

@@ -119,6 +119,11 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     }
 
     @Override
+    String buildTitle() {
+        return null;
+    }
+
+    @Override
     View buildView() {
         return null;
     }
