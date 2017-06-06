@@ -44,58 +44,26 @@ public class AddDeviceDialog extends HestiaDialog {
         serverCollectionsInteractor = interactor;
     }
 
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    String buildTitle() {
+        return "new Add device";
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Add Device")
-
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
-
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
-                        // Do something else
-                    }
-
-                });
+    @Override
+    View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.add_device_dialog, null);
 
-        adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
-        collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
-        collectionField.setAdapter(adapterCollections);
-        collectionField.setThreshold(1);
+        getCollections(); // Start retrieving the collections from the server
 
-        adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
-        pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
-        pluginField.setAdapter(adapterPlugins);
-        pluginField.setThreshold(1);
+        buildCollectionsField(view);
+        buildPluginField(view);
 
-        getCollections();
-
-        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                getPlugins(collectionField.getText().toString());
-            }
-        });
-
-        builder.setView(view);
-
-        AlertDialog dlg = builder.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        return dlg;
+        return view;
     }
 
     @Override
@@ -108,7 +76,7 @@ public class AddDeviceDialog extends HestiaDialog {
         final String collection = collectionField.getText().toString();
         final String pluginName = pluginField.getText().toString();
 
-         new AsyncTask<Object, String, RequiredInfo>() {
+        new AsyncTask<Object, String, RequiredInfo>() {
             @Override
             protected RequiredInfo doInBackground(Object... params) {
                 RequiredInfo info = null;
@@ -128,10 +96,10 @@ public class AddDeviceDialog extends HestiaDialog {
                 return info;
             }
 
-             @Override
-             protected void onProgressUpdate(String... exceptionMessage) {
-                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
-             }
+            @Override
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+            }
 
             @Override
             protected void onPostExecute(RequiredInfo info) {
@@ -144,6 +112,27 @@ public class AddDeviceDialog extends HestiaDialog {
                 }
             }
         }.execute();
+    }
+
+    private void buildPluginField(View view) {
+        adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
+        pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
+        pluginField.setAdapter(adapterPlugins);
+        pluginField.setThreshold(1);
+
+        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                getPlugins(collectionField.getText().toString());
+            }
+        });
+    }
+
+    private void buildCollectionsField(View view){
+        adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
+        collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
+        collectionField.setAdapter(adapterCollections);
+        collectionField.setThreshold(1);
     }
 
     private void getCollections() {
@@ -216,10 +205,6 @@ public class AddDeviceDialog extends HestiaDialog {
                 }
             }
         }.execute();
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 }
 
