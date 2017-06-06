@@ -99,4 +99,8 @@ public class ExpandableDeviceList extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor) {
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
+    }
 }
