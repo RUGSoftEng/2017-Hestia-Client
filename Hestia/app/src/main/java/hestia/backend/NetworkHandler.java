@@ -22,8 +22,6 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.HostnameVerifier ;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -185,7 +183,7 @@ public class NetworkHandler extends Application {
      */
     public void trustAllCerts() {
         // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[]{
+        TrustManager[] trustingCert = new TrustManager[]{
                 new X509TrustManager() {
                     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                         return new X509Certificate[0];
@@ -206,7 +204,7 @@ public class NetworkHandler extends Application {
         // Install the all-trusting trust manager
         try {
             sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            sc.init(null, trustingCert, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (GeneralSecurityException e){
             e.printStackTrace();

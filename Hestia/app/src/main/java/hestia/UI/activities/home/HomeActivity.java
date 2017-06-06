@@ -196,17 +196,4 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         fragment.show(getSupportFragmentManager(), "dialog");
     }
 
-    public void createKeystore(){
-
-        try {
-            KeyStore localTrustStore = KeyStore.getInstance("BKS");
-            InputStream in = getResources().openRawResource(R.raw.mystore);
-            localTrustStore.load(in, getResources().getResourceName(R.string.mystore_password).toCharArray());
-
-        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }
