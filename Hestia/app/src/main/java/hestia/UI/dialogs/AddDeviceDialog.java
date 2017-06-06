@@ -74,12 +74,12 @@ public class AddDeviceDialog extends HestiaDialog {
         adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
         collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
         collectionField.setAdapter(adapterCollections);
-        collectionField.setThreshold(1);
+        collectionField.setThreshold(0);
 
         adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
         pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
         pluginField.setAdapter(adapterPlugins);
-        pluginField.setThreshold(1);
+        pluginField.setThreshold(0);
 
         getCollections();
 

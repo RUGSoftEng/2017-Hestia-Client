@@ -15,7 +15,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+
+import hestia.UI.HestiaApplication;
 import hestia.UI.activities.home.HomeActivity;
+import hestia.backend.NetworkHandler;
 
 /**
  *  This class handles the login activity.
@@ -52,6 +55,16 @@ public class LoginActivity extends Activity  {
         Intent fromIntent = getIntent();
         String extra = fromIntent.getStringExtra(intentExtra);
 
+        if(!ipSetToValidServer()){
+            showSetIpDialog();
+        } else if(rememberMeSelected()){
+            gotoMainActivity();
+        } else {
+            clearSaveLogin();
+            buildView();
+        }
+
+
         loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
         if(loginPreferences.getString(prefsUser,"").equals("")){
             setSharedPreferences(standardUser, standardPass,false);
@@ -66,6 +79,15 @@ public class LoginActivity extends Activity  {
             }
         }
 
+        buildView();
+    }
+
+    private boolean ipSetToValidServer() {
+        NetworkHandler handler = ((HestiaApplication) this.getApplication()).g
+        if()
+    }
+
+    private void buildView() {
         loginButton = (Button)findViewById(R.id.loginButton);
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
