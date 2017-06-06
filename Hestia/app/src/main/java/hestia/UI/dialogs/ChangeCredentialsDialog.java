@@ -78,6 +78,11 @@ public class ChangeCredentialsDialog extends HestiaDialog {
     }
 
     @Override
+    View buildView() {
+        return null;
+    }
+
+    @Override
     void pressConfirm() {
         String newUser = newUserField.getText().toString();
         String newPass = newPassField.getText().toString();

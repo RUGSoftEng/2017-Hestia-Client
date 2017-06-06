@@ -118,6 +118,11 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
         return dlg;
     }
 
+    @Override
+    View buildView() {
+        return null;
+    }
+
     private EditText createEditText(final String key, LinearLayout.LayoutParams params, int count,
                                     final HashMap<String, String> fields) {
         final EditText field = new EditText(getActivity());
