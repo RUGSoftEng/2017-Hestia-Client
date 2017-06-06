@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import hestia.UI.elements.InstantAutoComplete;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -29,7 +31,7 @@ import hestia.backend.models.RequiredInfo;
  */
 
 public class AddDeviceDialog extends HestiaDialog {
-    private AutoCompleteTextView collectionField, pluginField;
+    private InstantAutoComplete collectionField, pluginField;
     private ArrayAdapter<String> adapterCollections;
     private ArrayAdapter<String> adapterPlugins;
     private ServerCollectionsInteractor serverCollectionsInteractor;
@@ -73,7 +75,7 @@ public class AddDeviceDialog extends HestiaDialog {
         View view = inflater.inflate(R.layout.add_device_dialog, null);
 
         adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
-        collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
+        collectionField = (InstantAutoComplete) view.findViewById(R.id.collection);
         collectionField.setAdapter(adapterCollections);
         collectionField.setThreshold(1);
         collectionField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -84,15 +86,19 @@ public class AddDeviceDialog extends HestiaDialog {
         });
 
         adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
-        pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
+        pluginField = (InstantAutoComplete) view.findViewById(R.id.pluginName);
         pluginField.setAdapter(adapterPlugins);
+//        if (pluginField.isFocused()) {
+//            Toast.makeText(getContext(), "I am focused", Toast.LENGTH_SHORT).show();
+//            pluginField.showDropDown();
+//        }
         pluginField.setThreshold(1);
-        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                pluginField.showDropDown();
-            }
-        });
+//        pluginField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//
+//            }
+//        });
 
         getCollections();
 
@@ -100,6 +106,8 @@ public class AddDeviceDialog extends HestiaDialog {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 getPlugins(collectionField.getText().toString());
+//                if (pluginField.isFocused())
+//                    pluginField.showDropDown();
             }
         });
 
