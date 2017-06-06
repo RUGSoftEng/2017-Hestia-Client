@@ -1,6 +1,7 @@
 package hestia.UI;
 
 import android.app.Application;
+import android.content.Context;
 
 /**
  * An extension of the Application class provided by Android, which additionally contains the
