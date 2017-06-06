@@ -173,8 +173,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-        String ip = this.serverCollectionsInteractor.getHandler().getIp();
-        ChangeIpDialog fragment = ChangeIpDialog.newInstance(ip);
+        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
         fragment.setInteractor(serverCollectionsInteractor);
         fragment.show(getSupportFragmentManager(), "dialog");
     }

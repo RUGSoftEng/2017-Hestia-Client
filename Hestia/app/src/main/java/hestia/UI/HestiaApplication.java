@@ -30,7 +30,7 @@ public class HestiaApplication extends Application {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
         String ip = prefs.getString(SERVER_IP, getApplicationContext().getString(R.string.default_ip));
         networkHandler = new NetworkHandler(ip
-                , Integer.valueOf(getApplicationContext().getString(R.string.default_port)));
+                , R.string.default_port);
     }
 
     public NetworkHandler getNetworkHandler(){

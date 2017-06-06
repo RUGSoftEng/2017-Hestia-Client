@@ -57,7 +57,6 @@ public class ActivatorState<T> {
         this.type = type;
     }
 
-
     public JsonPrimitive getRawStateJSON() {
         switch (this.getType().toLowerCase()) {
             case "bool":

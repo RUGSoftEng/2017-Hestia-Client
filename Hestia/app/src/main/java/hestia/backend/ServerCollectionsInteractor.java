@@ -17,8 +17,10 @@ import hestia.backend.models.RequiredInfo;
 import hestia.backend.models.deserializers.RequiredInfoDeserializer;
 
 /**
- * A singleton class acts as a temporary memory, storing the data regarding the list of devices,
- * IP address, or port number. During execution, there is a single ServerCollectionsInteractor accessible.
+ * This class is a facade, performing the basic operations between the User and the Server.
+ * It does so using the NetworkHandler, which implements 4 requests methods:
+ * GET, POST, PUT and DELETE.
+ * @see NetworkHandler
  */
 public class ServerCollectionsInteractor implements Serializable{
     private NetworkHandler handler;
@@ -38,7 +40,7 @@ public class ServerCollectionsInteractor implements Serializable{
 
             Type type = new TypeToken<ArrayList<Device>>(){}.getType();
             ArrayList<Device> devices = gson.fromJson(jsonArray, type);
-            this.connectHandlerToDevices(devices);
+            this.connectDevicesToHandler(devices);
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
@@ -59,7 +61,7 @@ public class ServerCollectionsInteractor implements Serializable{
         send.add("required_info", required);
         String endpoint = "devices/";
         JsonElement payload = handler.POST(send, endpoint);
-        if(payload.isJsonObject()) {
+        if(payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
                 String error = object.get("error").getAsString();
@@ -85,20 +87,22 @@ public class ServerCollectionsInteractor implements Serializable{
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
         String endpoint = "plugins";
         JsonElement payload = handler.GET(endpoint);
-        return ParseInfo(payload);
+        ArrayList<String> collections = this.parseInfo(payload);
+        return collections;
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
         String endpoint = "plugins/" + collection;
         JsonElement payload = handler.GET(endpoint);
-        return ParseInfo(payload);
+        ArrayList<String> plugins = this.parseInfo(payload);
+        return plugins;
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
         String endpoint = "plugins/" + collection + "/plugins/" + plugin;
         JsonElement payload = handler.GET(endpoint);
         RequiredInfo requiredInfo = null;
-        if (payload.isJsonObject()) {
+        if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
                 String error = object.get("error").getAsString();
@@ -114,7 +118,7 @@ public class ServerCollectionsInteractor implements Serializable{
         return requiredInfo;
     }
 
-    private ArrayList<String> ParseInfo(JsonElement element) throws ComFaultException {
+    private ArrayList<String> parseInfo(JsonElement element) throws ComFaultException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         ArrayList<String> list = new ArrayList<>();
@@ -139,7 +143,7 @@ public class ServerCollectionsInteractor implements Serializable{
         this.handler = handler;
     }
 
-    private void connectHandlerToDevices(ArrayList<Device> devices) {
+    private void connectDevicesToHandler(ArrayList<Device> devices) {
         for(Device device : devices) {
             device.setHandler(this.handler);
         }
