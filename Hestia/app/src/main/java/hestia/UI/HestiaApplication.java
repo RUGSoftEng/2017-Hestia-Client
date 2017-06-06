@@ -3,11 +3,8 @@ package hestia.UI;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.rugged.application.hestia.R;
-
 import hestia.backend.NetworkHandler;
-
 /**
  * An extension of the Application class provided by Android, which additionally contains the
  * NetworkHandler singleton.

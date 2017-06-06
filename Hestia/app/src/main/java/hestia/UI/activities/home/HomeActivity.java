@@ -16,10 +16,12 @@ import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import hestia.UI.HestiaApplication;
+
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
@@ -182,4 +184,5 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
+
 }
