@@ -87,7 +87,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-
+        showToast("Credentials successfully changed");
     }
 
     private boolean checkOldPass(String oldPass){
