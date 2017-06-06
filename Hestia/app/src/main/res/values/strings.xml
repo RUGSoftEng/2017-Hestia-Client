@@ -25,4 +25,11 @@
     <string name="newPassHint">New password</string>
     <string name="newPassCheckHint">New password again</string>
     <string name="newUserHint">New username</string>
+    <string name="hestiaIp">HESTIA.IP</string>
+    <string name="ipOfServer">IP_OF_SERVER</string>
+    <string name="setIp">Set IP</string>
+    <string name="logout">Logout</string>
+    <string name="changeUserPass">Change user/pass</string>
+    <string name="login">login</string>
+    <string name="logoutExtraValue">logout</string>
 </resources>

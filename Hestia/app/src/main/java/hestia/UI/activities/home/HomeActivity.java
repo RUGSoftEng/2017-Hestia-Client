@@ -30,13 +30,13 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private List<MenuObject> menuObjects;
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    private static final String HESTIA_IP = "HESTIA.IP";
-    private static final String SERVER_IP = "IP_OF_SERVER";
-    private final String changeIpText = "Set IP ";
-    public static final String logoutText = "Logout ";
-    public static final String changeCredentialsText = "Change user/pass";
-    private final String extraName = "login";
-    private final String logoutExtraValue = "logout";
+    private final String HESTIA_IP = getString(R.string.hestiaIp);
+    private final String SERVER_IP = getString(R.string.ipOfServer);
+    private final String changeIpText = getString(R.string.setIp);
+    public final String logoutText = getString(R.string.logout);
+    public final String changeCredentialsText = getString(R.string.changeUserPass);
+    private final String extraName = getString(R.string.login);
+    private final String logoutExtraValue = getString(R.string.logoutExtraValue);
     private final int IP = 1;
     private final int CHANGECREDENTIALS = 2;
     private final int LOGOUT = 3;
