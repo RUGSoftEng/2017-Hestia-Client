@@ -1,11 +1,8 @@
 package hestia.backend.serverDiscovery;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.net.nsd.NsdServiceInfo;
 import android.net.nsd.NsdManager;
+import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
-import com.rugged.application.hestia.R;
 
 public class NsdHelper {
     private NsdManager nsdManager;
@@ -13,16 +10,15 @@ public class NsdHelper {
     private NsdManager.ResolveListener resolveListener;
     private NsdManager.DiscoveryListener discoveryListener;
     private NsdManager.RegistrationListener registrationListener;
-    private String SERVICE_NAME = Resources.getSystem().getString(R.string.serviceName);
-    private static final String SERVICE_TYPE = Resources.getSystem().getString(R.string.serviceType);
+    private String serviceName;
+    private String serviceType;
     private static final String TAG = "NsdHelper";
 
-    public NsdHelper(Context context) {
-        Log.d(TAG, "Before nsdManage initialization");
-        this.nsdManager = (NsdManager) context.getSystemService(Context.NSD_SERVICE);
-        Log.d(TAG, "After nsdManage initialization; Before listeners' initialization");
+    public NsdHelper(NsdManager nsdManager, String serviceName, String serviceType) {
+        this.nsdManager = nsdManager;
+        this.serviceName = serviceName;
+        this.serviceType = serviceType;
         this.initializeNsd();
-        Log.d(TAG, "After listeners' initialization");
     }
 
     private void initializeNsd() {
@@ -38,7 +34,7 @@ public class NsdHelper {
                 // Android may have changed the name in order to resolve a conflict,
                 // so the initial name must be updated to match the one actually used by Android.
                 Log.d(TAG, "Service registered successfully");
-                SERVICE_NAME = NsdServiceInfo.getServiceName();
+                serviceName = NsdServiceInfo.getServiceName();
             }
 
             @Override
@@ -68,12 +64,11 @@ public class NsdHelper {
 
             @Override
             public void onServiceFound(NsdServiceInfo service) {
-                Log.d(TAG, "Service discovery success" + service);
-                if (!service.getServiceType().equals(SERVICE_TYPE)) {
+                if (!service.getServiceType().equals(serviceType)) {
                     Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
-                } else if (service.getServiceName().equals(SERVICE_NAME)) {
-                    Log.d(TAG, "Same machine: " + SERVICE_NAME);
-                } else if (service.getServiceName().contains(SERVICE_NAME)){
+                } else if (service.getServiceName().equals(serviceName)) {
+                    Log.d(TAG, "Same machine: " + serviceName);
+                } else if (service.getServiceName().contains(serviceName)){
                     nsdManager.resolveService(service, resolveListener);
                 }
             }
@@ -110,7 +105,7 @@ public class NsdHelper {
             @Override
             public void onServiceResolved(NsdServiceInfo serviceInfo) {
                 Log.d(TAG, "Resolve Succeeded. " + serviceInfo);
-                if (serviceInfo.getServiceName().equals(SERVICE_NAME)) {
+                if (serviceInfo.getServiceName().equals(serviceName)) {
                     Log.d(TAG, "Same IP.");
                     return;
                 }
@@ -125,16 +120,18 @@ public class NsdHelper {
     }
 
     public void registerService(int port) {
+        Log.d(TAG, "registerService() method called");
         NsdServiceInfo serviceInfo  = new NsdServiceInfo();
         serviceInfo.setPort(port);
-        serviceInfo.setServiceName(SERVICE_NAME);
-        serviceInfo.setServiceType(SERVICE_TYPE);
+        serviceInfo.setServiceName(serviceName);
+        serviceInfo.setServiceType(serviceType);
         nsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener);
-
+        Log.d(TAG, "Service registered:\n Name = " + serviceName + " ; Type = " + serviceType);
     }
 
     public void discoverServices() {
-        nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
+        Log.d(TAG, "discoverServices() method called");
+        nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
     }
 
     public NsdServiceInfo getServiceInfo() {

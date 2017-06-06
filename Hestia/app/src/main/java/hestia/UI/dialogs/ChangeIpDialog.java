@@ -1,6 +1,9 @@
 package hestia.UI.dialogs;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.net.nsd.NsdManager;
+import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +14,9 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
+import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.serverDiscovery.NsdHelper;
 
 /**
  * This class represents the dialog screen with which the IP-address of the server is asked from the
@@ -45,6 +50,13 @@ public class ChangeIpDialog extends HestiaDialog {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.ip_dialog, null);
 
+        this.addDiscoveryButton(view);
+        this.addIpField(view);
+
+        return view;
+    }
+
+    public void addIpField(View view) {
         ipField = (EditText) view.findViewById(R.id.ip);
         ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
 
@@ -54,19 +66,39 @@ public class ChangeIpDialog extends HestiaDialog {
         } else {
             ipField.setText(currentIP);
         }
-        return view;
     }
 
     public void addDiscoveryButton(View view) {
         discoveryButton = (Button) view.findViewById(R.id.findServerButton);
         discoveryButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                new AsyncTask<Object, Object, Object>() {
+            public void onClick(final View view) {
+                new AsyncTask<Object, Object, NsdServiceInfo>() {
                     @Override
-                    protected Object doInBackground(Object... params) {
-                        serverCollectionsInteractor.discoverServer(getContext());
-                        return null;
+                    protected NsdServiceInfo doInBackground(Object... params) {
+                        NsdManager nsdManager = (NsdManager) getContext().getSystemService(Context.NSD_SERVICE);
+                        String serviceName = getResources().getString(R.string.serviceName);
+                        String serviceType = getResources().getString(R.string.serviceType);
+                        NsdHelper nsdHelper = new NsdHelper(nsdManager, serviceName, serviceType);
+                        nsdHelper.registerService(R.string.default_port);
+                        nsdHelper.discoverServices();
+                        NsdServiceInfo serviceInfo = nsdHelper.getServiceInfo();
+                        return serviceInfo;
+                    }
+
+                    @Override
+                    protected void onPostExecute(NsdServiceInfo serviceInfo) {
+                        if(serviceInfo != null) {
+                            Log.d(TAG, "ServiceInfo is NOT null");
+                            String ip = serviceInfo.getHost().getHostAddress();
+                            Integer port = serviceInfo.getPort();
+                            serverCollectionsInteractor.setHandler(new NetworkHandler(ip, port));
+                            //nsdHelper.tearDown();
+                        } else {
+                            Log.d(TAG, "ServiceInfo is null");
+                            String message = "Server not found, enter the IP manually";
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }.execute();
             }

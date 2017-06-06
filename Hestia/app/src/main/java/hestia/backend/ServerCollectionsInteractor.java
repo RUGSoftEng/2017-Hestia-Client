@@ -1,27 +1,20 @@
 package hestia.backend;
 
-import android.content.Context;
-import android.net.nsd.NsdServiceInfo;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
 import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.deserializers.RequiredInfoDeserializer;
-import hestia.backend.serverDiscovery.NsdHelper;
 
 /**
  * This class is a facade, performing the basic operations between the User and the Server.
@@ -34,17 +27,6 @@ public class ServerCollectionsInteractor implements Serializable{
 
     public ServerCollectionsInteractor(NetworkHandler handler){
         this.handler = handler;
-    }
-
-    public void discoverServer(Context context) {
-        NsdHelper nsdHelper = new NsdHelper(context);
-        nsdHelper.registerService(R.string.default_port);
-        nsdHelper.discoverServices();
-        NsdServiceInfo serviceInfo = nsdHelper.getServiceInfo();
-        String ip = serviceInfo.getHost().getHostAddress();
-        Integer port = serviceInfo.getPort();
-        handler = new NetworkHandler(ip, port);
-        nsdHelper.tearDown();
     }
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
