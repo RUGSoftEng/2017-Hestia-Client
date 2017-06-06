@@ -70,6 +70,16 @@ public class ChangeNameDialog extends HestiaDialog {
     }
 
     @Override
+    String buildTitle() {
+        return null;
+    }
+
+    @Override
+    View buildView() {
+        return null;
+    }
+
+    @Override
     void pressCancel() {
     }
 
