@@ -28,7 +28,7 @@ public class HestiaApplication extends Application {
 
     private void setupNetworkHandler() {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        String ip = prefs.getString(SERVER_IP, getApplicationContext().getString(R.string.default_ip));
+        String ip = prefs.getString(SERVER_IP, null);
         networkHandler = new NetworkHandler(ip
                 , Integer.valueOf(getApplicationContext().getString(R.string.default_port)));
     }

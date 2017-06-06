@@ -173,9 +173,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
-        fragment.setInteractor(serverCollectionsInteractor);
-        fragment.show(getSupportFragmentManager(), "dialog");
+        //ChangeIpDialog fragment = ChangeIpDialog.newInstance();
+        //fragment.setInteractor(serverCollectionsInteractor);
+       // fragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void showChangeCredentialsDialog() {

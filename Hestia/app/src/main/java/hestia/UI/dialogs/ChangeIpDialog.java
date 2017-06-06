@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
+import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 
 /**
@@ -25,15 +27,15 @@ public class ChangeIpDialog extends HestiaDialog {
     private String ip;
     private EditText ipField;
 
-    private ServerCollectionsInteractor serverCollectionsInteractor;
+    private NetworkHandler handler;
 
     public static ChangeIpDialog newInstance() {
         ChangeIpDialog fragment = new ChangeIpDialog();
         return fragment;
     }
 
-    public void setInteractor(ServerCollectionsInteractor interactor) {
-        serverCollectionsInteractor = interactor;
+    public void setNetworkHandler(NetworkHandler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ChangeIpDialog extends HestiaDialog {
         ipField = (EditText) view.findViewById(R.id.ip);
         ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
 
-        String currentIP = serverCollectionsInteractor.getHandler().getIp();
+        String currentIP = handler.getIp();
         if (currentIP == null) {
             ipField.setHint("Enter ip here");
         } else {
@@ -64,12 +66,10 @@ public class ChangeIpDialog extends HestiaDialog {
         ip = ipField.getText().toString();
         Log.i(TAG, "My ip is now:" + ip);
         if(ip!=null) {
-            serverCollectionsInteractor.getHandler().setIp(ip);
+            handler.setIp(ip);
             Log.i(TAG, "My ip is changed to: " + ip);
-            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
-                            .getIp(),
+            Toast.makeText(getContext(), handler.getIp(),
                     Toast.LENGTH_SHORT).show();
-            refreshUserInterface();
         }
     }
 

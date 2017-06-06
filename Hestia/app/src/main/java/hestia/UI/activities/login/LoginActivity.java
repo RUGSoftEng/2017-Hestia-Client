@@ -1,9 +1,14 @@
 package hestia.UI.activities.login;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,6 +23,7 @@ import java.util.Locale;
 
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.home.HomeActivity;
+import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -26,8 +32,9 @@ import hestia.backend.NetworkHandler;
  *  Furthermore it first checks the shared preferences of the phone if the user is remembered.
  */
 
-public class LoginActivity extends Activity  {
+public class LoginActivity extends FragmentActivity {
     private Button loginButton;
+    private Button setServerButton;
     private EditText userField,passField;
     private CheckBox rememberButton;
     private SharedPreferences loginPreferences;
@@ -47,48 +54,51 @@ public class LoginActivity extends Activity  {
     private final String standardPass = "password";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Intent fromIntent = getIntent();
-        String extra = fromIntent.getStringExtra(intentExtra);
+        loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
 
         if(!ipSetToValidServer()){
             showSetIpDialog();
         } else if(rememberMeSelected()){
             gotoMainActivity();
-        } else {
-            clearSaveLogin();
-            buildView();
         }
 
+        clearSaveLogin();
+        buildView();
+    }
 
-        loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
+    private void showSetIpDialog() {
+        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
+        fragment.setNetworkHandler(((HestiaApplication)getApplication()).getNetworkHandler());
+        fragment.show(getSupportFragmentManager(), "tag");
+    }
+
+    private boolean rememberMeSelected() {
         if(loginPreferences.getString(prefsUser,"").equals("")){
             setSharedPreferences(standardUser, standardPass,false);
         }
         Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
-        if (saveLogin) {
-            if(extra==null) {
-                gotoMainActivity();
-            }
-            else{
-                clearSaveLogin();
-            }
-        }
-
-        buildView();
+        return saveLogin;
     }
 
     private boolean ipSetToValidServer() {
-        NetworkHandler handler = ((HestiaApplication) this.getApplication()).getNetworkHandler()
-        if()
+        NetworkHandler handler = ((HestiaApplication) this.getApplication()).getNetworkHandler();
+        if(handler.getIp() == null){
+            return false;
+        } else {
+            //TODO check if it is a hestia server
+            return true;
+        }
     }
 
     private void buildView() {
         loginButton = (Button)findViewById(R.id.loginButton);
+        setServerButton = (Button)findViewById(R.id.setServerButton);
+
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
         rememberButton = (CheckBox) findViewById(R.id.rememberButton);
@@ -113,6 +123,15 @@ public class LoginActivity extends Activity  {
                     showLoginToast(incorrectLoginToast);
                     editLoginAttempts();
                 }
+                //TODO remove this agian
+                gotoMainActivity();
+            }
+        });
+
+        setServerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSetIpDialog();
             }
         });
     }

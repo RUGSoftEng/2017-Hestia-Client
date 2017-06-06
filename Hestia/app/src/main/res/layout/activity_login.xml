@@ -111,4 +111,13 @@
         android:layout_below="@+id/textView3"
         android:layout_alignLeft="@+id/textview"
         android:layout_alignStart="@+id/textview" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/server"
+        android:id="@+id/setServerButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false" />
+        />
 </RelativeLayout>
