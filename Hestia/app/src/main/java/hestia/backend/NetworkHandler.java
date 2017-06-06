@@ -76,7 +76,7 @@ public class NetworkHandler extends Application {
      * and the path.
      *
      * @param requestMethod the type of request that will be sent to the server.
-     * @param endpoint      path to the server's endpoint.
+     * @param endpoint path to the server's endpoint.
      * @return the object responsible for setting up the connection to the server.
      * @throws IOException
      */
@@ -97,7 +97,7 @@ public class NetworkHandler extends Application {
      * This method sends the JsonObject object to the server.
      *
      * @param connector the object responsible for setting up the connection to the server.
-     * @param object    the JsonObject that will be sent to the server.
+     * @param object the JsonObject that will be sent to the server.
      * @throws IOException IOException
      */
     private void sendToServer(HttpsURLConnection connector, JsonObject object) throws IOException {
@@ -168,11 +168,11 @@ public class NetworkHandler extends Application {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NetworkHandler)) return false;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof NetworkHandler)) return false;
 
-        NetworkHandler networkHandler = (NetworkHandler) o;
+        NetworkHandler networkHandler = (NetworkHandler) object;
         if (!this.getPort().equals(networkHandler.getPort())) return false;
         return this.getIp().equals(networkHandler.getIp());
     }

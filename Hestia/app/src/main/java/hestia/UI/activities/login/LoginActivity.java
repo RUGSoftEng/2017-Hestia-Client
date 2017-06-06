@@ -81,7 +81,7 @@ public class LoginActivity extends Activity  {
         loginButton.setOnClickListener(new View.OnClickListener() {
             /* Button has been clicked, get and check credentials */
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 username = userField.getText().toString();
                 password = passField.getText().toString();
                 if(checkCredentials(username,password)){
@@ -91,14 +91,6 @@ public class LoginActivity extends Activity  {
                         clearSaveLogin();
                     }
                     showLoginToast(correctLoginToast);
-                    //TODO correctly implement secure connection, replace placeholder collectionsInteractor
-                    /*ServerCollectionsInteractor interactor = new ServerCollectionsInteractor(
-                            new NetworkHandler("192.168.1.0",8000));
-                    try {
-                        interactor.sendLoginData(username,password);
-                    } catch (IOException | ComFaultException e) {
-                        e.printStackTrace();
-                    }*/
                     gotoMainActivity();
                 }else{
                     showLoginToast(incorrectLoginToast);
