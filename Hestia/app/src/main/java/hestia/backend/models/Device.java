@@ -69,18 +69,21 @@ public class Device {
     }
 
     public void setName(String name) throws IOException, ComFaultException {
-        String path = "devices/" + deviceId;
+        String endpoint = "devices/" + deviceId;
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
-        JsonElement payload = handler.PUT(object, path);
-        if(payload.isJsonObject() && payload.getAsJsonObject().has("error")){
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            ComFaultException comFaultException = gson.fromJson(payload, ComFaultException.class);
-            throw comFaultException;
-        }else {
-            this.name = name;
+        JsonElement payload = handler.PUT(object, endpoint);
+
+        if(payload != null && payload.isJsonObject()) {
+            JsonObject payloadObject = payload.getAsJsonObject();
+            if(payloadObject.has("error")) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson gson = gsonBuilder.create();
+                ComFaultException comFaultException = gson.fromJson(payload, ComFaultException.class);
+                throw comFaultException;
+            }
         }
+        this.name = name;
     }
 
     public ArrayList<Activator> getActivators() {
