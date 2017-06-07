@@ -2,18 +2,29 @@ package hestia.backend;
 
 import android.app.Application;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 
 /**
  * A singleton class which handles interaction between front and back-end. It contains methods
@@ -27,32 +38,34 @@ public class NetworkHandler extends Application {
     private String ip;
     private Integer port;
 
-    public NetworkHandler(String ip, Integer port){
+    public NetworkHandler(String ip, Integer port) {
         this.ip = ip;
         this.port = port;
+        trustAllCerts();
     }
 
+
     public JsonElement GET(String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("GET", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("GET", endpoint);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement POST(JsonObject object, String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("POST", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("POST", endpoint);
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement DELETE(String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("DELETE", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("DELETE", endpoint);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
     }
 
     public JsonElement PUT(JsonObject object, String endpoint) throws IOException {
-        HttpURLConnection connector = this.connectToServer("PUT", endpoint);
+        HttpsURLConnection connector = this.connectToSecureServer("PUT", endpoint);
         this.sendToServer(connector, object);
         JsonElement payload = this.getPayloadFromServer(connector);
         return payload;
@@ -61,15 +74,18 @@ public class NetworkHandler extends Application {
     /**
      * This method establishes the connection to the server, by setting the type of request
      * and the path.
+     *
      * @param requestMethod the type of request that will be sent to the server.
      * @param endpoint path to the server's endpoint.
      * @return the object responsible for setting up the connection to the server.
      * @throws IOException
      */
-    private HttpURLConnection connectToServer(String requestMethod, String endpoint) throws IOException {
+    private HttpsURLConnection connectToSecureServer(String requestMethod, String endpoint) throws IOException {
+
         String path = this.getDefaultPath() + endpoint;
         URL url = new URL(path);
-        HttpURLConnection connector = (HttpURLConnection) url.openConnection();
+        Log.i(TAG, "Attempting to connect to server:" + url);
+        HttpsURLConnection connector = (HttpsURLConnection) url.openConnection();
         connector.setReadTimeout(2000);
         connector.setConnectTimeout(2000);
         connector.setRequestMethod(requestMethod);
@@ -79,11 +95,12 @@ public class NetworkHandler extends Application {
 
     /**
      * This method sends the JsonObject object to the server.
+     *
      * @param connector the object responsible for setting up the connection to the server.
      * @param object the JsonObject that will be sent to the server.
      * @throws IOException IOException
      */
-    private void sendToServer(HttpURLConnection connector, JsonObject object) throws IOException {
+    private void sendToServer(HttpsURLConnection connector, JsonObject object) throws IOException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connector.getOutputStream());
         outputStreamWriter.write(object.toString());
         Log.d(TAG, object.toString());
@@ -94,11 +111,12 @@ public class NetworkHandler extends Application {
     /**
      * Returns the payload from the server as a JsonElement. If the response code is successful,
      * it will get the input stream from the connector. Otherwise, it will get the error stream.
+     *
      * @param connector the object responsible for setting up the connection to the server.
      * @return the payload received from the server.
      * @throws IOException IOException
      */
-    private JsonElement getPayloadFromServer(HttpURLConnection connector) throws IOException {
+    private JsonElement getPayloadFromServer(HttpsURLConnection connector) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
 
@@ -111,7 +129,8 @@ public class NetworkHandler extends Application {
             reader = new BufferedReader(new InputStreamReader(connector.getErrorStream()));
         }
 
-        Type returnType = new TypeToken<JsonElement>(){}.getType();
+        Type returnType = new TypeToken<JsonElement>() {
+        }.getType();
         JsonElement payload = gson.fromJson(gson.newJsonReader(reader), returnType);
         reader.close();
 
@@ -119,7 +138,8 @@ public class NetworkHandler extends Application {
     }
 
     /**
-     * Checks if the HTTP request was successful or not.
+     * Checks if the HTTPS request was successful or not.
+     *
      * @param responseCode the response code of the request.
      * @return true if it succeeded, false otherwise.
      */
@@ -144,21 +164,50 @@ public class NetworkHandler extends Application {
     }
 
     public String getDefaultPath() {
-        return "http://" + ip + ":" + port + "/";
+        return "https://" + ip + ":" + port + "/";
     }
 
     @Override
-    public boolean equals(Object o){
-        if (this == o) return true;
-        if (!(o instanceof NetworkHandler)) return false;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof NetworkHandler)) return false;
 
-        NetworkHandler networkHandler = (NetworkHandler) o;
-        if(!this.getPort().equals(networkHandler.getPort())) return false;
+        NetworkHandler networkHandler = (NetworkHandler) object;
+        if (!this.getPort().equals(networkHandler.getPort())) return false;
         return this.getIp().equals(networkHandler.getIp());
     }
 
-    public String discoverServer() {
-        //TODO implement server Discovery
-        return "192.168.178.30";
+    /**
+     * This code creates a socketFactory which trusts all certificates. <b>WARNING</b> this cannot
+     * be used in production code as it leaves the app vulnerable to MITM attacks.
+     */
+    public void trustAllCerts() {
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustingCert = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        SSLContext sc = null;
+
+        HttpsURLConnection.setDefaultHostnameVerifier(new AllowAllHostnameVerifier());
+
+        // Install the all-trusting trust manager
+        try {
+            sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustingCert, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (GeneralSecurityException e){
+            e.printStackTrace();
+        }
     }
 }

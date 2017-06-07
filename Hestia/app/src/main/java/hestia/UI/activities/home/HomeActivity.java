@@ -11,11 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
-public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
+public class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
@@ -66,8 +68,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -84,7 +87,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void storeIP() {
         SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        prefs.edit().putString(SERVER_IP,serverCollectionsInteractor.getHandler().getIp()).apply();
+        prefs.edit().putString(SERVER_IP, serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
     private void setupServerCollectionInteractor() {
@@ -151,7 +154,8 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
             case LOGOUT:
                 gotoLoginActivity();
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 

@@ -1,6 +1,9 @@
 package hestia.UI.dialogs;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.net.nsd.NsdManager;
+import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +13,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 
+import hestia.UI.HestiaApplication;
 import hestia.backend.NetworkHandler;
+import hestia.backend.serverDiscovery.NsdHelper;
 
 /**
  * This class represents the dialog screen with which the IP-address of the server is asked from the
@@ -55,19 +60,30 @@ public class DiscoverServerDialog extends HestiaDialog {
     }
 
     private void discoverServer() {
-        new AsyncTask<Object, String, String>() {
+        new AsyncTask<Object, Object, NsdServiceInfo>() {
             @Override
-            protected String doInBackground(Object... params) {
-                return handler.discoverServer();
+            protected NsdServiceInfo doInBackground(Object... params) {
+                NsdManager nsdManager = (NsdManager) getContext().getSystemService(Context.NSD_SERVICE);
+                String serviceName = getResources().getString(R.string.serviceName);
+                String serviceType = getResources().getString(R.string.serviceType);
+                NsdHelper nsdHelper = new NsdHelper(nsdManager, serviceName, serviceType);
+//                nsdHelper.registerService(R.string.default_port);
+                nsdHelper.discoverServices();
+                NsdServiceInfo serviceInfo = nsdHelper.getServiceInfo();
+                return serviceInfo;
             }
 
             @Override
-            protected void onPostExecute(String ip) {
-                if(ip != ""){
-                    discoverButton.setText("Server found at: " + ip);
-                    discoverButton.setEnabled(true);
+            protected void onPostExecute(NsdServiceInfo serviceInfo) {
+                if(serviceInfo != null) {
+                    Log.d(TAG, "ServiceInfo is NOT null");
+                    String ip = serviceInfo.getHost().getHostAddress();
+                    Integer port = serviceInfo.getPort();
+                    discoverButton.setText("Server found at: "+ip);
                     foundIP = ip;
+                    //nsdHelper.tearDown();
                 } else {
+                    Log.d(TAG, "ServiceInfo is null");
                     discoverButton.setText("Server not found");
                 }
             }

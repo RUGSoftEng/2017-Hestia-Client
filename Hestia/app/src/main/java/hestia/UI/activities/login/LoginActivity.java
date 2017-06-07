@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -101,12 +102,11 @@ public class LoginActivity extends FragmentActivity {
         attemptsText.setVisibility(View.GONE);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
-            /* Button has been clicked, get and check credentials */
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 username = userField.getText().toString();
                 password = passField.getText().toString();
-                if(checkCredentials(username,password)){
+                if(checkCredentials(username,password)) {
                     if (rememberButton.isChecked()) {
                         setSharedPreferences(username,password,true);
                     } else {
@@ -114,9 +114,9 @@ public class LoginActivity extends FragmentActivity {
                     }
                     showLoginToast(correctLoginToast);
                     gotoMainActivity();
-                }else{
+                } else {
                     showLoginToast(incorrectLoginToast);
-                    editLoginAttempts();
+                    decreaseLoginAttempts();
                 }
             }
         });
@@ -157,7 +157,7 @@ public class LoginActivity extends FragmentActivity {
         loginPrefsEditor.apply();
     }
 
-    private void editLoginAttempts(){
+    private void decreaseLoginAttempts(){
         attemptsText.setVisibility(View.VISIBLE);
         counter--;
         attemptsText.setText(String.format(Locale.getDefault(), "%d",counter));
