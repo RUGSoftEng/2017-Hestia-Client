@@ -27,8 +27,8 @@ import static org.hamcrest.Matchers.allOf;
 public class LoginTest {
     private final String USERNAME = "admin";
     private final String PASSWORD = "password";
+    private final String LOGOUT_TEXT = "Logout";
     private final String PACKAGE_NAME = "com.rugged.application.hestia";
-    private final String LOGOUT_TEXT = "Logout ";
 
 
     /* Instantiate an IntentsTestRule object. */

@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class LogoutTest {
-    private final String LOGOUT_TEXT = "Logout ";
+    private final String LOGOUT_TEXT = "Logout";
     private final String PACKAGE_NAME = "com.rugged.application.hestia";
 
     @Rule

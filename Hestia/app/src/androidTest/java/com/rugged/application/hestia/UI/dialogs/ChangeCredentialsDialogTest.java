@@ -34,9 +34,9 @@ public class ChangeCredentialsDialogTest {
     private final String OLD_PASS = "password";
     private final String NEW_USER = "testuser";
     private final String NEW_PASS = "testpass";
-    private final String LOGOUT_TEXT = HomeActivity.logoutText;
+    private final String LOGOUT_TEXT = "Logout";
     private final String PACKAGE_NAME = "com.rugged.application.hestia";
-    private final String CHANGE_TEXT = HomeActivity.changeCredentialsText;
+    private final String CHANGE_TEXT = "Change user/pass";
 
     @Rule
     public IntentsTestRule<HomeActivity> mIntentsRule =
