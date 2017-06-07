@@ -25,6 +25,15 @@
     <string name="newPassHint">New password</string>
     <string name="newPassCheckHint">New password again</string>
     <string name="newUserHint">New username</string>
+    <string name="loginPrefs">LoginPreferences</string>
+    <string name="loginPrefsUser">username</string>
+    <string name="loginPrefsPass">password</string>
+    <string name="standardUser">admin</string>
+    <string name="standardPass">password</string>
+    <string name="correctLoginToast">Correct, redirecting."</string>
+    <string name="incorrectLoginToast">Invalid credentials.</string>
+    <string name="loginIntentExtra">login</string>
+    <string name="saveLogin">savelogin</string>
     <string name="hestiaIp">HESTIA.IP</string>
     <string name="ipOfServer">IP_OF_SERVER</string>
     <string name="setIp">Set IP</string>
