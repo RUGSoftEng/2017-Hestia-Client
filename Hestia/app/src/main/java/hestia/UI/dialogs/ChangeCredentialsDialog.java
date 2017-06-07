@@ -37,29 +37,12 @@ public class ChangeCredentialsDialog extends HestiaDialog {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    String buildTitle() {
+        return "Change credentials";
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Change Credentials")
-
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
-
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
-                        // Do something else
-                    }
-
-                });
+    @Override
+    View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.change_credentials_dialog, null);
 
@@ -69,12 +52,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         newPassCheckField = (EditText) view.findViewById(R.id.newPassCheck);
         oldPassField = (EditText) view.findViewById(R.id.oldPass);
 
-        builder.setView(view);
-
-        AlertDialog dlg = builder.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        return dlg;
+        return view;
     }
 
     @Override
@@ -110,7 +88,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-
+        showToast("Credentials successfully changed");
     }
 
     private boolean checkOldPass(String oldPass){
