@@ -42,4 +42,11 @@
     <string name="login">login</string>
     <string name="logoutExtraValue">logout</string>
     <string name="mystore_password">some-password</string>
+    <string name="fixedFieldCol">collection</string>
+    <string name="fixedFieldPlugin">plugin</string>
+    <string name="passOldWrong">Old password is incorrect </string>
+    <string name="passCheckWrong">New password not set </string>
+    <string name="passSet">Password set to: </string>
+    <string name="userSet">Username set to: </string>
+    <string name="userNotSet">Username not changed (length under 5)</string>
 </resources>
