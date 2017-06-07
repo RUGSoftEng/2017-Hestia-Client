@@ -16,8 +16,18 @@ import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLSocketFactory;
+
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
@@ -167,22 +177,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void showIpDialog() {
-//        ChangeIpDialog d = new ChangeIpDialog(HomeActivity.this, serverCollectionsInteractor);
-//        HestiaDialog2 alertdFragment = new HestiaDialog2();
-        // Show Alert DialogFragment
-//        ChangeIpDialog alertdFragment = new ChangeIpDialog();
-        String ip = this.serverCollectionsInteractor.getHandler().getIp();
-//        alertdFragment.show(getFragmentManager(), "Alert Dialog Fragment");
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ChangeIpDialog fragment = ChangeIpDialog.newInstance(ip);
+        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
         fragment.setInteractor(serverCollectionsInteractor);
         fragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void showChangeCredentialsDialog() {
-//        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
-//        changeCredentialsDialog.show();
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
+
 }

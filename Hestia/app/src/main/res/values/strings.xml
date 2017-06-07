@@ -26,4 +26,5 @@
     <string name="newPassCheckHint">New password again</string>
     <string name="newUserHint">New username</string>
     <string name="incorr_ip">"The IP address should be between 0.0.0.0 and 255.255.255.255"</string>
+    <string name="mystore_password">some-password</string>
 </resources>
