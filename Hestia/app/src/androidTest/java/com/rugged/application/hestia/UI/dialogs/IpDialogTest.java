@@ -5,6 +5,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.rugged.application.hestia.R;
+import com.rugged.application.hestia.UI.UiTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,11 +29,9 @@ import static org.hamcrest.CoreMatchers.not;
 
 
 @RunWith(AndroidJUnit4.class)
-public class IpDialogTest {
-    private final String SET_IP_TEXT = "Set IP ";
+public class IpDialogTest extends UiTest {
     private final String VALID_IP = "192.168.0.1";
     private final String INVALID_IP = "0.3000.283.1";
-    private final String INCORR_IP_TOAST="The IP address should be between 0.0.0.0 and 255.255.255.255";
 
     @Rule
     public ActivityTestRule<HomeActivity> activityTestRule =
@@ -40,7 +39,7 @@ public class IpDialogTest {
 
     public void openDialog() {
         onView(ViewMatchers.withId(R.id.context_menu)).perform(click());
-        onView(withText(SET_IP_TEXT)).perform(click());
+        onView(withText(getStr(R.string.setIp))).perform(click());
     }
 
     @Test
@@ -65,7 +64,7 @@ public class IpDialogTest {
         onView(withText("Confirm")).perform(click());
 
         // Check if the toast appears
-        onView(withText(INCORR_IP_TOAST)).inRoot(withDecorView(not(is(activityTestRule.getActivity()
+        onView(withText(getStr(R.string.incorr_ip))).inRoot(withDecorView(not(is(activityTestRule.getActivity()
                 .getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
