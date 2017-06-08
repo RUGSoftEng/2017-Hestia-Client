@@ -29,6 +29,7 @@ import java.util.List;
 import javax.net.ssl.SSLSocketFactory;
 
 import hestia.UI.activities.login.LoginActivity;
+import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.ServerCollectionsInteractor;
@@ -55,12 +56,19 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        //TODO: Check whether this works with a server
+//        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
-        if (fragment == null) {
-            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
+//        if (fragment == null) {
+//            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
+//            fragment = new DeviceListFragment();
+//            fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor)
+//            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
+            DeviceListFragment fragment = DeviceListFragment.newInstance();
+            fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
+//            fragment.show(getActivity().getSupportFragmentManager(), "dialog");
+//        }
         menuObjects = getMenuObjects();
         initMenuFragment();
 
@@ -109,23 +117,17 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> objects = new ArrayList<>();
-        MenuObject close = new MenuObject();
-        close.setResource(R.drawable.ic_action);
-        objects.add(close);
-
-        MenuObject ip = new MenuObject(getString(R.string.setIp));
-        ip.setResource(R.mipmap.ic_router);
-        objects.add(ip);
-
-        MenuObject changeCredentials = new MenuObject(getString(R.string.changeUserPass));
-        changeCredentials.setResource(R.mipmap.ic_key);
-        objects.add(changeCredentials);
-
-        MenuObject logout = new MenuObject(getString(R.string.logout));
-        logout.setResource(R.mipmap.ic_exit_to_app);
-        objects.add(logout);
-
+        addMenuObjects(objects, R.drawable.ic_action, null);
+        addMenuObjects(objects, R.mipmap.ic_router, getString(R.string.setIp));
+        addMenuObjects(objects, R.mipmap.ic_key, getString(R.string.changeUserPass));
+        addMenuObjects(objects, R.mipmap.ic_exit_to_app, getString(R.string.logout));
         return objects;
+    }
+
+    private void addMenuObjects(List<MenuObject> objectList, int id, String title) {
+        MenuObject obj = new MenuObject(title);
+        obj.setResource(id);
+        objectList.add(obj);
     }
 
     @Override

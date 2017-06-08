@@ -44,11 +44,22 @@ public class DeviceListFragment extends Fragment {
         super();
     }
 
-    public DeviceListFragment(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
-        super();
-        this.context = context;
+    public static DeviceListFragment newInstance() {
+        DeviceListFragment fragment = new DeviceListFragment();
+        return fragment;
+    }
+
+    //TODO: Check whether this works with a server
+//    public DeviceListFragment(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
+//        super();
+////        this.context = context;
+////        this.serverCollectionsInteractor = serverCollectionsInteractor;
+////        fm = getActivity().getSupportFragmentManager();
+//    }
+
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor
+                                                       serverCollectionsInteractor) {
         this.serverCollectionsInteractor = serverCollectionsInteractor;
-//        fm = getActivity().getSupportFragmentManager();
     }
 
 
@@ -62,6 +73,7 @@ public class DeviceListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.context = getContext();
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);

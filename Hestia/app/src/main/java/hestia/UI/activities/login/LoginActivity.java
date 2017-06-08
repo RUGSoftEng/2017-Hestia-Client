@@ -56,7 +56,10 @@ public class LoginActivity extends Activity  {
                 clearSaveLogin();
             }
         }
+        addWidgets();
+    }
 
+    private void addWidgets() {
         loginButton = (Button)findViewById(R.id.loginButton);
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
