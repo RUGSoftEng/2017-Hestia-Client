@@ -74,7 +74,6 @@ public class ChangeCredentialsDialogTest {
     public void logoutLogin(String user, String pass){
         onView(withId(context_menu)).perform(click());
         onView(withText(LOGOUT_TEXT)).perform(click());
-
         onView(withId(R.id.username)).perform(typeText(user), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(typeText(pass), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());

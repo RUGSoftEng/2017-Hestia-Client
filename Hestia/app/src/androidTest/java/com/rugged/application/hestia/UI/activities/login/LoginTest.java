@@ -49,10 +49,8 @@ public class LoginTest {
 
     @Test
     public void checkLogin() {
-        onView(ViewMatchers.withId(R.id.username))
-                .perform(typeText(USERNAME), closeSoftKeyboard());
-        onView(withId(R.id.password))
-                .perform(typeText(PASSWORD), closeSoftKeyboard());
+        onView(ViewMatchers.withId(R.id.username)).perform(typeText(USERNAME), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(typeText(PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.rememberButton)).perform(click());
         onView(withId(R.id.loginButton)).perform(click());
         intended(allOf(
