@@ -58,7 +58,7 @@ public class AddDeviceDialog extends HestiaDialog {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.add_device_dialog, null);
 
-        getCollections(); // Start retrieving the collections from the server
+        getCollections();
 
         buildCollectionsField(view);
         buildPluginField(view);

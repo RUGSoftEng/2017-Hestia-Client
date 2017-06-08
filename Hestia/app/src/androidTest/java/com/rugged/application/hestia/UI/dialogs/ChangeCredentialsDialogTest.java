@@ -76,7 +76,7 @@ public class ChangeCredentialsDialogTest extends UiTest {
         onView(withId(R.id.password)).perform(typeText(pass), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
         intending(allOf(
-                hasComponent(hasShortClassName("hestia.UI.activities.home.HomeActivity")),
+                hasComponent(hasShortClassName(HOME_ACTIVITY)),
                 toPackage(PACKAGE_NAME)));
     }
 

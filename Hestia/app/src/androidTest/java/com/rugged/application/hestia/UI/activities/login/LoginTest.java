@@ -55,7 +55,7 @@ public class LoginTest extends UiTest {
         onView(withId(R.id.rememberButton)).perform(click());
         onView(withId(R.id.loginButton)).perform(click());
         intended(allOf(
-                hasComponent(hasShortClassName("hestia.UI.activities.home.HomeActivity")),
+                hasComponent(hasShortClassName(HOME_ACTIVITY)),
                 toPackage(PACKAGE_NAME)));
 
     }

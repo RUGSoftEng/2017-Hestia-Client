@@ -33,7 +33,7 @@ public class LogoutTest extends UiTest {
         onView(withId(context_menu)).perform(click());
         onView(withText(getStr(R.string.logout))).perform(click());
         intended(allOf(
-                hasComponent(hasShortClassName("hestia.UI.activities.login.LoginActivity")),
+                hasComponent(hasShortClassName(LOGIN_ACTIVITY)),
                 toPackage(PACKAGE_NAME)));
     }
 
