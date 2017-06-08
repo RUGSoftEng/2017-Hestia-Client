@@ -38,7 +38,6 @@ public class DeviceListFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
-    private FragmentManager fm;
 
     public DeviceListFragment() {
         super();
@@ -48,14 +47,6 @@ public class DeviceListFragment extends Fragment {
         DeviceListFragment fragment = new DeviceListFragment();
         return fragment;
     }
-
-    //TODO: Check whether this works with a server
-//    public DeviceListFragment(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
-//        super();
-////        this.context = context;
-////        this.serverCollectionsInteractor = serverCollectionsInteractor;
-////        fm = getActivity().getSupportFragmentManager();
-//    }
 
     public void setServerCollectionsInteractor(ServerCollectionsInteractor
                                                        serverCollectionsInteractor) {
