@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import hestia.UI.HestiaApplication;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -158,7 +160,7 @@ public class AddDeviceDialog extends HestiaDialog {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                Toast.makeText(HestiaApplication.getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -194,7 +196,7 @@ public class AddDeviceDialog extends HestiaDialog {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                Toast.makeText(HestiaApplication.getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
