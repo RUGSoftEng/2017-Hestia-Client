@@ -49,7 +49,6 @@ public class ChangeCredentialsDialogTest extends UiTest {
     @Test
     public void changeUserPassTest(){
         setCredentials(NEW_USER,getStr(R.string.standardPass),NEW_PASS,NEW_PASS);
-
         logoutLogin(NEW_USER,NEW_PASS);
     }
 
