@@ -27,6 +27,7 @@ import hestia.backend.models.Device;
 public class SlidersDialog extends Dialog implements android.view.View.OnClickListener{
     private Device device;
     private Context context;
+    private final int maxInt = 100;
     private final String TAG = "SlidersDialog";
 
     public SlidersDialog(Context context, Device device) {
@@ -61,13 +62,7 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
     }
 
     private SeekBar createSeekBar(float progress, int count, final Activator activator){
-        final Activator act = activator;
-        SeekBar bar = new SeekBar(context);
-        final int maxInt = 100;
-        bar.setMax(maxInt);
-        bar.setProgress((int)(progress * maxInt));
-        bar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 80));
-        bar.setId(count);
+        SeekBar bar = setSeekBarProps(progress,count);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
@@ -78,37 +73,50 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float value = (float)seekBar.getProgress()/maxInt;
-                final ActivatorState<Float> state = act.getState();
+                final ActivatorState<Float> state = activator.getState();
                 state.setRawState(value);
-                new AsyncTask<Object, String, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Object... params) {
-                        Boolean isSuccessful = false;
-                        try {
-                            activator.setState(state);
-                            isSuccessful = true;
-                        } catch (IOException e) {
-                            Log.e(TAG,e.toString());
-                            String exceptionMessage = "Could not connect to the server";
-                            publishProgress(exceptionMessage);
-                        } catch (ComFaultException comFaultException) {
-                            Log.e(TAG, comFaultException.toString());
-                            String error = comFaultException.getError();
-                            String message = comFaultException.getMessage();
-                            String exceptionMessage = error + ":" + message;
-                            publishProgress(exceptionMessage);
-                        }
-                        return isSuccessful;
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(String... exceptionMessage) {
-                        Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
-                    }
-                }.execute();
+                executeAsyncTask(activator,state);
             }
         });
         return bar;
+    }
+
+    private SeekBar setSeekBarProps(float progress, int count){
+        SeekBar bar = new SeekBar(context);
+        bar.setMax(maxInt);
+        bar.setProgress((int)(progress * maxInt));
+        bar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 80));
+        bar.setId(count);
+        return bar;
+    }
+
+    private void executeAsyncTask(final Activator activator, final ActivatorState state) {
+        new AsyncTask<Object, String, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Object... params) {
+                Boolean isSuccessful = false;
+                try {
+                    activator.setState(state);
+                    isSuccessful = true;
+                } catch (IOException e) {
+                    Log.e(TAG, e.toString());
+                    String exceptionMessage = "Could not connect to the server";
+                    publishProgress(exceptionMessage);
+                } catch (ComFaultException comFaultException) {
+                    Log.e(TAG, comFaultException.toString());
+                    String error = comFaultException.getError();
+                    String message = comFaultException.getMessage();
+                    String exceptionMessage = error + ":" + message;
+                    publishProgress(exceptionMessage);
+                }
+                return isSuccessful;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... exceptionMessage) {
+                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
     }
 
     /**

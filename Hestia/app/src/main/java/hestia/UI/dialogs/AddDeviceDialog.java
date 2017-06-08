@@ -50,7 +50,7 @@ public class AddDeviceDialog extends HestiaDialog {
 
     @Override
     String buildTitle() {
-        return "new Add device";
+        return getString(R.string.addDeviceTitle);
     }
 
     @Override

@@ -19,16 +19,14 @@ import static hestia.UI.activities.login.LoginActivity.hashString;
 public class ChangeCredentialsDialog extends HestiaDialog {
     private EditText oldPassField, newPassField, newPassCheckField, newUserField;
     private SharedPreferences loginPreferences;
-    private SharedPreferences.Editor loginPrefsEditor;
 
     public static ChangeCredentialsDialog newInstance() {
-        ChangeCredentialsDialog fragment = new ChangeCredentialsDialog();
-        return fragment;
+        return new ChangeCredentialsDialog();
     }
 
     @Override
     String buildTitle() {
-        return "Change credentials";
+        return getString(R.string.changeCredsTitle);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         String newPassCheck = newPassCheckField.getText().toString();
         String oldPass = oldPassField.getText().toString();
         loginPreferences = getActivity().getSharedPreferences(getString(R.string.loginPrefs)
-                , Context.MODE_PRIVATE);
+                ,Context.MODE_PRIVATE);
 
         String feedback = "";
         if(checkOldPass(oldPass)){
@@ -87,7 +85,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
     }
 
     private void setSharedPrefs(String name, String value){
-        loginPrefsEditor = loginPreferences.edit();
+        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.putString(name, value);
         loginPrefsEditor.apply();
     }

@@ -1,16 +1,11 @@
 package hestia.UI.dialogs;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
 
 import java.util.regex.Matcher;
@@ -24,16 +19,11 @@ import hestia.backend.ServerCollectionsInteractor;
  */
 
 public class ChangeIpDialog extends HestiaDialog {
-    private final static String TAG = "ChangeIpDialog";
-    private String ip;
     private EditText ipField;
-    private Pattern pattern;
-    private Matcher matcher;
-    private static final String IPADDRESS_PATTERN =
-                        "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
@@ -48,7 +38,7 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     String buildTitle() {
-        return "Change IP";
+        return getString(R.string.changeIpTitle);
     }
 
     @Override
@@ -61,7 +51,7 @@ public class ChangeIpDialog extends HestiaDialog {
 
         String currentIP = serverCollectionsInteractor.getHandler().getIp();
         if (currentIP == null) {
-            ipField.setHint("Enter ip here");
+            ipField.setHint(getString(R.string.setIpHint));
         } else {
             ipField.setText(currentIP);
         }
@@ -71,7 +61,7 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        ip = ipField.getText().toString();
+        String ip = ipField.getText().toString();
         if(checkIp(ip)) {
             serverCollectionsInteractor.getHandler().setIp(ip);
             Toast.makeText(getContext(), serverCollectionsInteractor.getHandler().getIp(),
@@ -87,8 +77,8 @@ public class ChangeIpDialog extends HestiaDialog {
     }
 
     private boolean checkIp(String ip) {
-                pattern = Pattern.compile(IPADDRESS_PATTERN);
-                matcher = pattern.matcher(ip);
-                return matcher.matches();
-            }
+        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
+    }
 }

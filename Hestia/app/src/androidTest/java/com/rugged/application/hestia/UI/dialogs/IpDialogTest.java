@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.rugged.application.hestia.R;
 import com.rugged.application.hestia.UI.UiTest;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,12 +44,8 @@ public class IpDialogTest extends UiTest {
     @Test
     public void checkValidIp(){
         openDialog();
-
         onView(withId(R.id.ip)).perform(clearText(),typeText(VALID_IP), closeSoftKeyboard());
-
         onView(withText("Confirm")).perform(click());
-
-        // Check if the toast appears
         onView(withText(VALID_IP)).inRoot(withDecorView(not(is(activityTestRule.getActivity()
                 .getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
@@ -58,12 +53,8 @@ public class IpDialogTest extends UiTest {
     @Test
     public void checkInvalidIp(){
         openDialog();
-
         onView(withId(R.id.ip)).perform(clearText(),typeText(INVALID_IP), closeSoftKeyboard());
-
         onView(withText("Confirm")).perform(click());
-
-        // Check if the toast appears
         onView(withText(getStr(R.string.incorr_ip))).inRoot(withDecorView(not(is(activityTestRule.getActivity()
                 .getWindow().getDecorView())))).check(matches(isDisplayed()));
     }

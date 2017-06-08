@@ -32,7 +32,7 @@ public class ChangeNameDialog extends HestiaDialog {
 
     @Override
     String buildTitle() {
-        return "Change name";
+        return getString(R.string.changeNameTitle);
     }
 
     @Override

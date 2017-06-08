@@ -50,4 +50,12 @@
     <string name="passSet">Password set to: </string>
     <string name="userSet">Username set to: </string>
     <string name="userNotSet">Username not changed (length under 5)</string>
+    <string name="setIpHint">Enter ip here</string>
+
+    <!-- Dialog build titles -->
+    <string name="addDeviceTitle">new Add device</string>
+    <string name="changeCredsTitle">Change credentials</string>
+    <string name="changeIpTitle">Change IP</string>
+    <string name="changeNameTitle">Change name</string>
+    
 </resources>
