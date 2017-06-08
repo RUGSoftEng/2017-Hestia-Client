@@ -13,18 +13,23 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
 
 /**
-* This class opens the dialog to enter the collection name and plugin name.
-* It then sends this to the networkHandler which tries to get the required info.
-* If this works it consecutively opens a new dialog for the other info.
-* @see EnterRequiredInfoDialog
+ * This class opens a dialog to enter the collection name and plugin name.
+ * It then sends this information to the networkHandler which tries to obtain the required info from
+ * the server. If this works it consecutively opens a new dialog so the user can enter the specific
+ * information relevant to the device.
+ *
+ * @see EnterRequiredInfoDialog
  */
 
 public class AddDeviceDialog extends HestiaDialog {
@@ -36,8 +41,7 @@ public class AddDeviceDialog extends HestiaDialog {
     private FragmentManager fragmentManager;
 
     public static AddDeviceDialog newInstance() {
-        AddDeviceDialog fragment = new AddDeviceDialog();
-        return fragment;
+        return new AddDeviceDialog();
     }
 
     public void setInteractor(ServerCollectionsInteractor interactor) {
@@ -71,6 +75,12 @@ public class AddDeviceDialog extends HestiaDialog {
         dismiss();
     }
 
+    /**
+     * When we press confirm on the dialog, this method is called. Using the information entered in
+     * the fields, the client contacts the server to ask for the information the server requires to
+     * create a new device. To get the correct required info from the server we need to ask specify
+     * the device and the collection to look at.
+     */
     @Override
     void pressConfirm() {
         final String collection = collectionField.getText().toString();
@@ -83,7 +93,7 @@ public class AddDeviceDialog extends HestiaDialog {
                 try {
                     info = serverCollectionsInteractor.getRequiredInfo(collection, pluginName);
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
+                    Log.e(TAG, e.toString());
                     String exceptionMessage = "Could not connect to the server";
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
@@ -101,13 +111,16 @@ public class AddDeviceDialog extends HestiaDialog {
                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
+            /**
+             * After executing the AsyncTask and obtaining the result, the information will be
+             * passed to the EnterRequiredInfo dialog, which will further handle the addition of a
+             * new device.
+             */
             @Override
             protected void onPostExecute(RequiredInfo info) {
-                if(info != null){
+                if (info != null) {
                     EnterRequiredInfoDialog fragment = EnterRequiredInfoDialog.newInstance();
                     fragment.setData(info, serverCollectionsInteractor);
-                    if(fragmentManager == null){
-                    }
                     fragment.show(fragmentManager, "dialog");
                 }
             }
@@ -128,13 +141,17 @@ public class AddDeviceDialog extends HestiaDialog {
         });
     }
 
-    private void buildCollectionsField(View view){
+    private void buildCollectionsField(View view) {
         adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
         collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
         collectionField.setAdapter(adapterCollections);
         collectionField.setThreshold(1);
     }
 
+    /**
+     * This method uses an AsyncTask to retrieve the list of collections as an ArrayList of strings
+     * from the server.
+     */
     private void getCollections() {
         new AsyncTask<Object, String, ArrayList<String>>() {
             @Override
@@ -143,7 +160,7 @@ public class AddDeviceDialog extends HestiaDialog {
                 try {
                     collections = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
+                    Log.e(TAG, e.toString());
                     String exceptionMessage = "Could not connect to the server";
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
@@ -171,6 +188,11 @@ public class AddDeviceDialog extends HestiaDialog {
         }.execute();
     }
 
+    /**
+     * This method retrieves, for a specific collection, the possible plugins from which devices can
+     * be constructed from the server.
+     * @param collection The specific collection of which we want to know the possible plugins.
+     */
     private void getPlugins(final String collection) {
         new AsyncTask<Object, String, ArrayList<String>>() {
             @Override
@@ -179,7 +201,7 @@ public class AddDeviceDialog extends HestiaDialog {
                 try {
                     plugins = serverCollectionsInteractor.getPlugins(collection);
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
+                    Log.e(TAG, e.toString());
                     String exceptionMessage = "Could not connect to the server";
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
@@ -200,7 +222,7 @@ public class AddDeviceDialog extends HestiaDialog {
             @Override
             protected void onPostExecute(ArrayList<String> plugins) {
                 adapterPlugins.clear();
-                if(plugins != null) {
+                if (plugins != null) {
                     adapterPlugins.addAll(plugins);
                 }
             }
