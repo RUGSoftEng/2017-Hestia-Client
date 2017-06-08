@@ -70,7 +70,6 @@ public class AddDeviceDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        dismiss();
     }
 
     @Override
@@ -86,7 +85,7 @@ public class AddDeviceDialog extends HestiaDialog {
                     info = serverCollectionsInteractor.getRequiredInfo(collection, pluginName);
                 } catch (IOException e) {
                     Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -146,7 +145,7 @@ public class AddDeviceDialog extends HestiaDialog {
                     collections = serverCollectionsInteractor.getCollections();
                 } catch (IOException e) {
                     Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -182,7 +181,7 @@ public class AddDeviceDialog extends HestiaDialog {
                     plugins = serverCollectionsInteractor.getPlugins(collection);
                 } catch (IOException e) {
                     Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());

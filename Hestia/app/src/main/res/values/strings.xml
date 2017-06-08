@@ -5,7 +5,6 @@
     <string name="userHint">Username</string>
     <string name="rememberMeText">Remember me:</string>
     <string name="attemptsLeftText">Attempts Left:</string>
-    <string name="back">Back</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="addDeviceText">Add a new device</string>
@@ -57,5 +56,7 @@
     <string name="changeCredsTitle">Change credentials</string>
     <string name="changeIpTitle">Change IP</string>
     <string name="changeNameTitle">Change name</string>
+
+    <string name="serverNotFound">Could not connect to the server</string>
 
 </resources>

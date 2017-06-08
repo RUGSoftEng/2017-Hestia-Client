@@ -127,7 +127,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        Toast.makeText(getActivity(), R.string.cancel, Toast.LENGTH_SHORT).show();
     }
 
     @Override

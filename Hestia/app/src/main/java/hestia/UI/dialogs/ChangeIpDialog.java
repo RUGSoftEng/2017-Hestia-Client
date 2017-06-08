@@ -71,7 +71,6 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
     }
 
     private boolean checkIp(String ip) {
