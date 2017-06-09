@@ -71,6 +71,9 @@ public class ChangeIpDialog extends HestiaDialog {
         }
     }
 
+    /**
+     * Pressing cancel on the dialog simply displays a text message.
+     */
     @Override
     void pressCancel() {
         Toast.makeText(getContext(), getResources().getText(R.string.cancelIPChange),

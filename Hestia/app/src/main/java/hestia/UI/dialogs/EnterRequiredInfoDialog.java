@@ -42,6 +42,14 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
         return fragment;
     }
 
+    /**
+     * This setter is used to set the information for the dialog after the
+     * AddDeviceDialog has created it.
+     * @param info The requiredInfo which was obtained from the server by the AddDeviceDialog
+     * @param serverCollectionsInteractor The object used for interacting with the server
+     *
+     * @see AddDeviceDialog
+     */
     public void setData(RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
         this.info = info;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
