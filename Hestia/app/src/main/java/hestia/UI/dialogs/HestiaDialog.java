@@ -31,7 +31,7 @@ abstract class HestiaDialog extends DialogFragment {
         builder.setView(buildView());
         AlertDialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
+        dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }
 

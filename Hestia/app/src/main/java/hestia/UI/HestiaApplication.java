@@ -14,26 +14,29 @@ import hestia.backend.NetworkHandler;
  */
 
 public class HestiaApplication extends Application {
-
+    private static Context context;
     private NetworkHandler networkHandler;
-
-    private static final String HESTIA_IP = "HESTIA.IP";
-    private static final String SERVER_IP = "IP_OF_SERVER";
 
     @Override
     public void onCreate() {
-        setupNetworkHandler();
         super.onCreate();
+        context = this;
+        setupNetworkHandler();
     }
 
     private void setupNetworkHandler() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        String ip = prefs.getString(SERVER_IP, null);
-        networkHandler = new NetworkHandler(ip
-                , Integer.valueOf(getApplicationContext().getString(R.string.default_port)));
+        SharedPreferences prefs = getSharedPreferences(
+                      getApplicationContext().getString(R.string.hestiaIp), Context.MODE_PRIVATE);
+        String ip = prefs.getString( getApplicationContext().getString(R.string.ipOfServer), null);
+        networkHandler = new NetworkHandler(ip, Integer.valueOf(getApplicationContext().
+                                                                getString(R.string.default_port)));
     }
 
     public NetworkHandler getNetworkHandler(){
         return networkHandler;
+    }
+
+    public static Context getContext(){
+        return context;
     }
 }
