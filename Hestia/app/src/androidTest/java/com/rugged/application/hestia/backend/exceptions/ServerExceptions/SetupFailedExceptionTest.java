@@ -11,32 +11,33 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import hestia.backend.exceptions.ServerExceptions.DatabaseException;
+import hestia.backend.exceptions.ServerExceptions.SetupFailedException;
 import hestia.backend.models.ActivatorState;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
-public class DataBaseExceptionTest {
-    private DatabaseException testException;
+public class SetupFailedExceptionTest {
+    private SetupFailedException testException;
     private JsonObject testDetails=new JsonObject();
     private String testError;
-    private String type;
-    private String message;
+    private String field;
+    private String hint;
 
     @Before
     public void setUp() {
         testError="testError";
-        type="testType";
-        message= "error message";
-        testDetails.addProperty("type",type);
-        testDetails.addProperty("message",message);
-        testException   = new DatabaseException(testError,testDetails);
+        field="testfield";
+        hint= "error hint";
+        testDetails.addProperty("field",field);
+        testDetails.addProperty("hint",hint);
+        testException = new SetupFailedException(testError,testDetails);
 
     }
     @Test
     public void ExceptionTest(){
         assertEquals("testError",testException.getError());
-        assertEquals("error message",testException.getMessage());
-        assertEquals("testType",testException.getType());
+        assertEquals("error hint",testException.getHint());
+        assertEquals("testfield",testException.getField());
     }
 }

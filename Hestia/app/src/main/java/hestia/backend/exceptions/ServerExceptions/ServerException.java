@@ -7,7 +7,7 @@ public abstract class ServerException extends Exception {
         this.error=message;
     }
 
-    public String getMessage(){
+    public String getError(){
         return error;
     }
 

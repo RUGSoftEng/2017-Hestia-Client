@@ -1,10 +1,8 @@
 package hestia.backend.exceptions.ServerExceptions;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-public class DatabaseException extends DefinedServerException {
+public class DatabaseException extends ServerException {
 
     String type;
     String message;
