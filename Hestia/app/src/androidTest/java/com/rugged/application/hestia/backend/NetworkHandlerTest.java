@@ -79,10 +79,11 @@ public class NetworkHandlerTest {
     }
 
     @Test
-    public void equalsSamePropertiesTest() {
+    public void equalsAndHashCodeSamePropertiesTest() {
         NetworkHandler handlerSameProperties = new NetworkHandler(dummyIP, dummyPort);
         assertNotNull(handlerSameProperties);
         assertTrue(dummyHandler.equals(handlerSameProperties));
+        assertEquals(dummyHandler.hashCode(), handlerSameProperties.hashCode());
     }
 
     @Test
@@ -93,12 +94,13 @@ public class NetworkHandlerTest {
     }
 
     @Test
-    public void equalsDifferentPropertiesTest() {
+    public void equalsAndHashCodeDifferentPropertiesTest() {
         String IP = "1.1.1.1";
         Integer port = 2000;
         NetworkHandler handlerDifferentProperties = new NetworkHandler(IP, port);
         assertNotNull(handlerDifferentProperties);
         assertFalse(dummyHandler.equals(handlerDifferentProperties));
+        assertNotSame(dummyHandler.hashCode(), handlerDifferentProperties.hashCode());
     }
 
     @After
