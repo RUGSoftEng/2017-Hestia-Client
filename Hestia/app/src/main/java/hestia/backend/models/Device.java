@@ -4,8 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rugged.application.hestia.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
+import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;
 
@@ -95,27 +99,25 @@ public class Device {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Device)) return false;
-
-        Device device = (Device) o;
-
-        if (!getId().equals(device.getId())) return false;
-        if (!getName().equals(device.getName())) return false;
-        if (!getType().equals(device.getType())) return false;
-        if (!getActivators().equals(device.getActivators())) return false;
-        return getHandler().equals(device.getHandler());
+    public boolean equals(Object object) {
+        if(!(object instanceof Device)) return false;
+        Device device = (Device) object;
+        return (this == device || (this.getId().equals(device.getId()) &&
+                                   this.getName().equals(device.getName()) &&
+                                   this.getType().equals(device.getType()) &&
+                                   this.getActivators().equals(device.getActivators()) &&
+                                   this.getHandler().equals(device.getHandler())));
 
     }
 
     @Override
     public int hashCode() {
+        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
         int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
-        result = 31 * result + getType().hashCode();
-        result = 31 * result + getActivators().hashCode();
-        result = 31 * result + getHandler().hashCode();
+        result = result * multiplier + getName().hashCode();
+        result = result * multiplier + getType().hashCode();
+        result = result * multiplier + getActivators().hashCode();
+        result = result * multiplier + getHandler().hashCode();
         return result;
     }
 
