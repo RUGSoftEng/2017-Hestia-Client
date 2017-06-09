@@ -16,8 +16,18 @@ import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLSocketFactory;
+
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
@@ -30,13 +40,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private List<MenuObject> menuObjects;
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    private static final String HESTIA_IP = "HESTIA.IP";
-    private static final String SERVER_IP = "IP_OF_SERVER";
-    private final String changeIpText = "Set IP ";
-    public static final String logoutText = "Logout ";
-    public static final String changeCredentialsText = "Change user/pass";
-    private final String extraName = "login";
-    private final String logoutExtraValue = "logout";
     private final int IP = 1;
     private final int CHANGECREDENTIALS = 2;
     private final int LOGOUT = 3;
@@ -82,13 +85,15 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void storeIP() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        prefs.edit().putString(SERVER_IP,serverCollectionsInteractor.getHandler().getIp()).apply();
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
+        prefs.edit().putString(getString(R.string.ipOfServer)
+                ,serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
     private void setupCache() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        String ip = prefs.getString(SERVER_IP, getApplicationContext().getString(R.string.default_ip));
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
+        String ip = prefs.getString(getString(R.string.ipOfServer)
+                , getApplicationContext().getString(R.string.default_ip));
         NetworkHandler handler = new NetworkHandler(ip, Integer.valueOf(
                 getApplicationContext().getString(R.string.default_port)));
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
@@ -108,15 +113,15 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         close.setResource(R.drawable.ic_action);
         objects.add(close);
 
-        MenuObject ip = new MenuObject(changeIpText);
+        MenuObject ip = new MenuObject(getString(R.string.setIp));
         ip.setResource(R.mipmap.ic_router);
         objects.add(ip);
 
-        MenuObject changeCredentials = new MenuObject(changeCredentialsText);
+        MenuObject changeCredentials = new MenuObject(getString(R.string.changeUserPass));
         changeCredentials.setResource(R.mipmap.ic_key);
         objects.add(changeCredentials);
 
-        MenuObject logout = new MenuObject(logoutText);
+        MenuObject logout = new MenuObject(getString(R.string.logout));
         logout.setResource(R.mipmap.ic_exit_to_app);
         objects.add(logout);
 
@@ -161,28 +166,20 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void gotoLoginActivity() {
         Intent toIntent = new Intent(HomeActivity.this, LoginActivity.class);
-        toIntent.putExtra(extraName, logoutExtraValue);
+        toIntent.putExtra(getString(R.string.login), getString(R.string.logoutExtraValue));
         startActivity(toIntent);
         finish();
     }
 
     private void showIpDialog() {
-//        ChangeIpDialog d = new ChangeIpDialog(HomeActivity.this, serverCollectionsInteractor);
-//        HestiaDialog2 alertdFragment = new HestiaDialog2();
-        // Show Alert DialogFragment
-//        ChangeIpDialog alertdFragment = new ChangeIpDialog();
-        String ip = this.serverCollectionsInteractor.getHandler().getIp();
-//        alertdFragment.show(getFragmentManager(), "Alert Dialog Fragment");
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ChangeIpDialog fragment = ChangeIpDialog.newInstance(ip);
+        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
         fragment.setInteractor(serverCollectionsInteractor);
         fragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void showChangeCredentialsDialog() {
-//        ChangeCredentialsDialog changeCredentialsDialog = new ChangeCredentialsDialog(HomeActivity.this);
-//        changeCredentialsDialog.show();
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
+
 }

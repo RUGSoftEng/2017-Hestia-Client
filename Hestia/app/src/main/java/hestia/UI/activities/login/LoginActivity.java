@@ -11,11 +11,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import hestia.UI.activities.home.HomeActivity;
+import hestia.backend.NetworkHandler;
+import hestia.backend.ServerCollectionsInteractor;
+import hestia.backend.exceptions.ComFaultException;
 
 /**
  *  This class handles the login activity.
@@ -32,17 +37,7 @@ public class LoginActivity extends Activity  {
     private TextView attemptsText;
     private int counter = 10;
     private String username,password;
-    public static final String LOGIN_PREFERENCES = "LoginPreferences";
-    public static final String prefsUser = "username";
-    public static final String prefsPass = "password";
     private static final String SALT = "RuGg3Ds0ftWarE";
-    private final String intentExtra = "login";
-    private final String correctLoginToast = "Correct, redirecting.";
-    private final String incorrectLoginToast = "Invalid credentials.";
-    private final String saveLoginString = "saveLogin";
-    private final String standardUser = "admin";
-    private final String standardPass = "password";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +45,13 @@ public class LoginActivity extends Activity  {
         setContentView(R.layout.activity_login);
 
         Intent fromIntent = getIntent();
-        String extra = fromIntent.getStringExtra(intentExtra);
+        String extra = fromIntent.getStringExtra(getString(R.string.loginIntentExtra));
 
-        loginPreferences = getSharedPreferences(LOGIN_PREFERENCES, MODE_PRIVATE);
-        if(loginPreferences.getString(prefsUser,"").equals("")){
-            setSharedPreferences(standardUser, standardPass,false);
+        loginPreferences = getSharedPreferences(getString(R.string.loginPrefs), MODE_PRIVATE);
+        if(loginPreferences.getString(getString(R.string.loginPrefsUser),"").equals("")){
+            setSharedPreferences(getString(R.string.standardUser), getString(R.string.standardPass),false);
         }
-        Boolean saveLogin = loginPreferences.getBoolean(saveLoginString, false);
+        Boolean saveLogin = loginPreferences.getBoolean(getString(R.string.saveLogin), false);
         if (saveLogin) {
             if(extra==null) {
                 gotoMainActivity();
@@ -76,7 +71,7 @@ public class LoginActivity extends Activity  {
         loginButton.setOnClickListener(new View.OnClickListener() {
             /* Button has been clicked, get and check credentials */
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 username = userField.getText().toString();
                 password = passField.getText().toString();
                 if(checkCredentials(username,password)){
@@ -85,10 +80,10 @@ public class LoginActivity extends Activity  {
                     } else {
                         clearSaveLogin();
                     }
-                    showLoginToast(correctLoginToast);
+                    showLoginToast(getString(R.string.correctLoginToast));
                     gotoMainActivity();
                 }else{
-                    showLoginToast(incorrectLoginToast);
+                    showLoginToast(getString(R.string.incorrectLoginToast));
                     editLoginAttempts();
                 }
             }
@@ -96,8 +91,8 @@ public class LoginActivity extends Activity  {
     }
 
     private boolean checkCredentials(String username,String password){
-        String corrPass = loginPreferences.getString(prefsPass, "");
-        String corrUser = loginPreferences.getString(prefsUser, "");
+        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), "");
+        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), "");
         String hashedUser = hashString(username);
         String hashedPass = hashString(password);
         return(hashedUser.equals(corrUser)&&hashedPass.equals(corrPass));
@@ -111,15 +106,15 @@ public class LoginActivity extends Activity  {
 
     private void setSharedPreferences(String username, String password, Boolean saveLogin){
         loginPrefsEditor = loginPreferences.edit();
-        loginPrefsEditor.putBoolean(saveLoginString, saveLogin);
-        loginPrefsEditor.putString(prefsUser, hashString(username));
-        loginPrefsEditor.putString(prefsPass, hashString(password));
+        loginPrefsEditor.putBoolean(getString(R.string.saveLogin), saveLogin);
+        loginPrefsEditor.putString(getString(R.string.loginPrefsUser), hashString(username));
+        loginPrefsEditor.putString(getString(R.string.loginPrefsPass), hashString(password));
         loginPrefsEditor.apply();
     }
 
     private void clearSaveLogin(){
         loginPrefsEditor = loginPreferences.edit();
-        loginPrefsEditor.putBoolean(saveLoginString, false);
+        loginPrefsEditor.putBoolean(getString(R.string.saveLogin), false);
         loginPrefsEditor.apply();
     }
 

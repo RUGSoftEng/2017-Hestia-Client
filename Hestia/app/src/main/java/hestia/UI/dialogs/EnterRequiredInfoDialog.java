@@ -38,10 +38,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     private RequiredInfo info;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final String TAG = "EnterRequiredInfoDialog";
-    private final String fixedFieldCol = "collection";
-    private final String fixedFieldPlugin = "plugin";
-    private final String propReqInfo = "required_info";
-    private static final String EMPTY_STRING="";
     private View view;
 
     public static EnterRequiredInfoDialog newInstance() {
@@ -55,31 +51,13 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    String buildTitle() {
+        return "Adding " + info.getPlugin() + " from " + info.getCollection();
+    }
+
+    @Override
+    View buildView() {
         int count = 0;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection())
-
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
-
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
-                        // Do something else
-                    }
-
-                });
-
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -110,12 +88,7 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
             count++;
         }
 
-        builder.setView(view);
-
-        AlertDialog dlg = builder.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        return dlg;
+        return view;
     }
 
     private EditText createEditText(final String key, LinearLayout.LayoutParams params, int count,
@@ -144,7 +117,8 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                 return true;
             }
         });
-        if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
+        if (key.equals(getString(R.string.fixedFieldCol))||
+                key.equals(getString(R.string.fixedFieldPlugin))) {
             field.setFocusable(false);
             field.setClickable(false);
         }
