@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 public class DeviceTest {
     private Device deviceTest;
+    private Activator dummyActivator;
     private ArrayList<Activator> activators;
     private NetworkHandler handler;
     private final String DEFAULT_DEVICE_ID = "12";
@@ -37,16 +38,19 @@ public class DeviceTest {
 
     @Before
     public void createDevice(){
-        ActivatorState<Boolean> testState = new ActivatorState<>(false,"bool");
-        Activator testButton = new Activator("0",0,testState,"testButton");
+        ActivatorState<Boolean> testState = new ActivatorState<>(false, "bool");
+        dummyActivator = new Activator("0", 0, testState, "testButton");
         activators = new ArrayList<>();
-        activators.add(testButton);
+        activators.add(dummyActivator);
 
         String defaultIp = "127.0.0.1";
         Integer defaultPort = 1000;
         handler = new NetworkHandler(defaultIp, defaultPort);
 
-        deviceTest = new Device(DEFAULT_DEVICE_ID,DEFAULT_DEVICE_NAME,DEFAULT_DEVICE_TYPE,activators, handler);
+        deviceTest = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,
+                                activators, handler);
+        dummyActivator.setDevice(deviceTest);
+        dummyActivator.setHandler(handler);
     }
 
     @Test
