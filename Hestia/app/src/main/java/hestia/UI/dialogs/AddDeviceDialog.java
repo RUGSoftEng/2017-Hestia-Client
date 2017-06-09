@@ -127,6 +127,11 @@ public class AddDeviceDialog extends HestiaDialog {
         }.execute();
     }
 
+    /**
+     * Method for creating a text field for the plugin based on the plugins we retrieved from the
+     * server.
+     * @param view The view in which the list of plugins will be shown.
+     */
     private void buildPluginField(View view) {
         adapterPlugins = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
         pluginField = (AutoCompleteTextView) view.findViewById(R.id.pluginName);
@@ -141,6 +146,10 @@ public class AddDeviceDialog extends HestiaDialog {
         });
     }
 
+    /**
+     * Method for creating the text field based on the collections we retrieved from the server.
+     * @param view The view in which we will create the collections field.
+     */
     private void buildCollectionsField(View view) {
         adapterCollections = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1);
         collectionField = (AutoCompleteTextView) view.findViewById(R.id.collection);
@@ -178,6 +187,12 @@ public class AddDeviceDialog extends HestiaDialog {
                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
+            /**
+             * After a connection to the server is established, we can set the collections we found
+             * as the current collections.
+             * @param collections An ArrayAdapter of strings containing the representations of the
+             *                    collections
+             */
             @Override
             protected void onPostExecute(ArrayList<String> collections) {
                 adapterCollections.clear();
@@ -219,6 +234,11 @@ public class AddDeviceDialog extends HestiaDialog {
                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
 
+            /**
+             * After we have obtained the plugins from the server, we set our local plugins to them.
+             * @param plugins An ArrayAdapter of strings containing the representations of the
+             *                plugins
+             */
             @Override
             protected void onPostExecute(ArrayList<String> plugins) {
                 adapterPlugins.clear();
