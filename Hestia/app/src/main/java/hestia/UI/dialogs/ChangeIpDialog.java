@@ -15,7 +15,6 @@ import hestia.backend.ServerCollectionsInteractor;
  * This class represents the dialog screen with which the IP-address of the server is asked from the
  * user.
  */
-
 public class ChangeIpDialog extends HestiaDialog {
     private final static String TAG = "ChangeIpDialog";
     private String ip;
@@ -55,13 +54,17 @@ public class ChangeIpDialog extends HestiaDialog {
         return view;
     }
 
+    /**
+     * After pressing confirm the entered ip is checked and, if it is a valid address,
+     * sent to the handler. A text message is displayed to the user showing the new IP-address.
+     */
     @Override
     void pressConfirm() {
         ip = ipField.getText().toString();
-        Log.i(TAG, "My ip is now:" + ip);
+        Log.i(TAG, "My ip before changing is:" + ip);
         if(ip!=null) {
             serverCollectionsInteractor.getHandler().setIp(ip);
-            Log.i(TAG, "My ip is changed to: " + ip);
+            Log.i(TAG, "My ip was changed to: " + ip);
             Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
                             .getIp(),
                     Toast.LENGTH_SHORT).show();
@@ -70,6 +73,7 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getResources().getText(R.string.cancelIPChange),
+                Toast.LENGTH_SHORT).show();
     }
 }
