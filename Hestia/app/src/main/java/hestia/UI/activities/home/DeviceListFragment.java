@@ -15,14 +15,16 @@ import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import hestia.UI.elements.DeviceBar;
+import com.rugged.application.hestia.R;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import hestia.UI.dialogs.AddDeviceDialog;
+import hestia.UI.elements.DeviceBar;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
-import com.rugged.application.hestia.R;
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
