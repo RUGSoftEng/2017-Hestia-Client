@@ -11,9 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
 
-import hestia.UI.HestiaApplication;
 import hestia.backend.NetworkHandler;
 import hestia.backend.serverDiscovery.NsdHelper;
 
@@ -67,7 +67,6 @@ public class DiscoverServerDialog extends HestiaDialog {
                 String serviceName = getResources().getString(R.string.serviceName);
                 String serviceType = getResources().getString(R.string.serviceType);
                 NsdHelper nsdHelper = new NsdHelper(nsdManager, serviceName, serviceType);
-                nsdHelper.registerService(R.string.default_port);
                 nsdHelper.discoverServices();
                 NsdServiceInfo serviceInfo = nsdHelper.getServiceInfo();
                 return serviceInfo;
