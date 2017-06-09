@@ -170,21 +170,6 @@ public class NetworkHandler extends Application {
         return "https://" + ip + ":" + port + "/";
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if(!(object instanceof NetworkHandler)) return false;
-        NetworkHandler networkHandler = (NetworkHandler) object;
-        return (this == networkHandler || (this.getPort().equals(networkHandler.getPort()) &&
-                                           this.getIp().equals(networkHandler.getIp())));
-    }
-
-    @Override
-    public int hashCode() {
-        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
-        int result = getIp().hashCode() * multiplier + getPort().hashCode();
-        return result;
-    }
-
     /**
      * This code creates a socketFactory which trusts all certificates. <b>WARNING</b> this cannot
      * be used in production code as it leaves the app vulnerable to MITM attacks.
@@ -219,4 +204,18 @@ public class NetworkHandler extends Application {
         }
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof NetworkHandler)) return false;
+        NetworkHandler networkHandler = (NetworkHandler) object;
+        return (this == networkHandler || (this.getPort().equals(networkHandler.getPort()) &&
+                                           this.getIp().equals(networkHandler.getIp())));
+    }
+
+    @Override
+    public int hashCode() {
+        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
+        int result = getIp().hashCode() * multiplier + getPort().hashCode();
+        return result;
+    }
 }
