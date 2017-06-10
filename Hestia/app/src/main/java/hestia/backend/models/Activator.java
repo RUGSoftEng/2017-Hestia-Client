@@ -2,9 +2,11 @@ package hestia.backend.models;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 
+import hestia.UI.HestiaApplication;
 import hestia.backend.NetworkHandler;
 import hestia.backend.exceptions.ComFaultException;
 
@@ -31,15 +33,6 @@ public class Activator {
         this.rank = rank;
         this.state = state;
         this.name = name;
-    }
-
-    public Activator(String activatorId, Integer rank, ActivatorState state, String name, Device device, NetworkHandler handler) {
-        this.activatorId = activatorId;
-        this.rank = rank;
-        this.state = state;
-        this.name = name;
-        this.device = device;
-        this.handler = handler;
     }
 
     public String getId() {
@@ -105,32 +98,24 @@ public class Activator {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Activator)) return false;
-
-        Activator activator = (Activator) o;
-
-        if (!activatorId.equals(activator.activatorId)) return false;
-        if (!getRank().equals(activator.getRank())) return false;
-        if (!getState().equals(activator.getState())) return false;
-        if (!getName().equals(activator.getName())) return false;
-        if (!device.equals(activator.device)) return false;
-        return getHandler().equals(activator.getHandler());
+    public boolean equals(Object object) {
+        if(!(object instanceof Activator)) return false;
+        Activator activator = (Activator) object;
+        return (this == activator || (this.getId().equals(activator.getId()) &&
+                                      this.getRank().equals(activator.getRank()) &&
+                                      this.getState().equals(activator.getState()) &&
+                                      this.getName().equals(activator.getName()) &&
+                                      this.getHandler().equals(activator.getHandler())));
     }
 
     @Override
     public int hashCode() {
-        int result = activatorId.hashCode();
-        result = 31 * result + getRank().hashCode();
-        result = 31 * result + getState().hashCode();
-        result = 31 * result + getName().hashCode();
-        if(device != null){
-            result = 31 * result + device.hashCode();
-        }
-        if(handler != null){
-            result = 31 * result + getHandler().hashCode();
-        }
+        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
+        int result = getId().hashCode();
+        result = result * multiplier + getRank().hashCode();
+        result = result * multiplier + getState().hashCode();
+        result = result * multiplier + getName().hashCode();
+        result = result * multiplier + getHandler().hashCode();
         return result;
     }
 
