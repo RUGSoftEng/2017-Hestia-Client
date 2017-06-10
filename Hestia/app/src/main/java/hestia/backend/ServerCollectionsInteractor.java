@@ -1,11 +1,14 @@
 package hestia.backend;
 
+import android.content.res.Resources;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.rugged.application.hestia.R;
 
 import org.json.JSONObject;
 
@@ -13,6 +16,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.deserializers.DeviceDeserializer;
@@ -33,7 +38,7 @@ public class ServerCollectionsInteractor implements Serializable{
     }
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
-        String endpoint = "devices/";
+        String endpoint = HestiaApplication.getContext().getString(R.string.deviceEndpoint);
         JsonElement payload = handler.GET(endpoint);
         if(payload.isJsonArray()) {
             JsonArray jsonArray = payload.getAsJsonArray();
@@ -58,7 +63,7 @@ public class ServerCollectionsInteractor implements Serializable{
         JsonObject loginData = new JsonObject();
         loginData.addProperty("username",username);
         loginData.addProperty("password",password);
-        String endpoint = "login/";
+        String endpoint = HestiaApplication.getContext().getString(R.string.loginEndpoint);
         JsonElement result = handler.PUT(loginData,endpoint);
         if(result.isJsonObject()){
             JsonObject object = result.getAsJsonObject();
@@ -77,7 +82,7 @@ public class ServerCollectionsInteractor implements Serializable{
             required.addProperty(key, info.getInfo().get(key));
         }
         send.add("required_info", required);
-        String endpoint = "devices/";
+        String endpoint = HestiaApplication.getContext().getString(R.string.deviceEndpoint);
         JsonElement payload = handler.POST(send, endpoint);
         if(payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
@@ -90,7 +95,7 @@ public class ServerCollectionsInteractor implements Serializable{
     }
 
     public void removeDevice(Device device) throws IOException, ComFaultException {
-        String endpoint = "devices/" + device.getId();
+        String endpoint = HestiaApplication.getContext().getString(R.string.deviceEndpoint) + device.getId();
         JsonElement payload = handler.DELETE(endpoint);
         if(payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
@@ -103,21 +108,21 @@ public class ServerCollectionsInteractor implements Serializable{
     }
 
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
-        String endpoint = "plugins";
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginEndpoint);
         JsonElement payload = handler.GET(endpoint);
         ArrayList<String> collections = this.parseInfo(payload);
         return collections;
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
-        String endpoint = "plugins/" + collection;
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginEndpoint) + collection;
         JsonElement payload = handler.GET(endpoint);
         ArrayList<String> plugins = this.parseInfo(payload);
         return plugins;
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
-        String endpoint = "plugins/" + collection + "/plugins/" + plugin;
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginEndpoint) + collection + "/plugins/" + plugin;
         JsonElement payload = handler.GET(endpoint);
         RequiredInfo requiredInfo = null;
         if (payload != null && payload.isJsonObject()) {
