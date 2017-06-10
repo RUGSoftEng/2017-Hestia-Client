@@ -47,19 +47,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
-        //TODO: Check whether this works with a server
-//        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-
-//        if (fragment == null) {
-//            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
-//            fragment = new DeviceListFragment();
-//            fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor)
-//            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
-            DeviceListFragment fragment = DeviceListFragment.newInstance();
-            fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
-            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
-//            fragment.show(getActivity().getSupportFragmentManager(), "dialog");
-//        }
+        DeviceListFragment fragment = DeviceListFragment.newInstance();
+        fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
+        fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         menuObjects = getMenuObjects();
         initMenuFragment();
 
@@ -135,7 +125,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
                     mMenuDialogFragment.show(fragmentManager, "ContextMenuDialogFragment");
                 }
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -174,5 +163,4 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
-
 }

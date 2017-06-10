@@ -55,19 +55,13 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     @Override
     View buildView() {
         int count = 0;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         view = inflater.inflate(R.layout.enter_device_info, null);
 
         final LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.linearMain);
-        mainLayout.setLayoutParams(params);
-        float scale = getResources().getDisplayMetrics().density;
-        int padding = 8;
-        int dpAsPixels = (int) (padding*scale + 0.5f);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setPadding(0, dpAsPixels, 0, 0);
+        setLayoutProperties(mainLayout);
 
         final HashMap<String, String> fields = info.getInfo();
 
@@ -86,6 +80,17 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
         }
 
         return view;
+    }
+
+    private void setLayoutProperties(LinearLayout layout) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layout.setLayoutParams(params);
+        float scale = getResources().getDisplayMetrics().density;
+        int padding = 8;
+        int dpAsPixels = (int) (padding*scale + 0.5f);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(0, dpAsPixels, 0, 0);
     }
 
     private EditText createEditText(final String key, LinearLayout.LayoutParams params, int count,
@@ -120,7 +125,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
             field.setClickable(false);
         }
         field.setLayoutParams(params);
-
 
         return field;
     }
@@ -173,5 +177,4 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
             count++;
         }
     }
-
 }

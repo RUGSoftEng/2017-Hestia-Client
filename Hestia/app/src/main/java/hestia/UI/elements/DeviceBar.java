@@ -91,26 +91,6 @@ public class DeviceBar extends RelativeLayout {
                 PopupMenu popup = createPopupMenu(view);
 
                 popup.show();
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.delete:
-                                doDeleteRequest();
-                                break;
-                            case R.id.change_name:
-                                ChangeNameDialog fragment = ChangeNameDialog.newInstance();
-                                fragment.setDevice(device);
-
-                                fragment.show(fm, "dialog");
-
-                                break;
-                            default:
-                                break;
-                        }
-                        return true;
-                    }
-                });
             }
         });
     }
@@ -118,6 +98,24 @@ public class DeviceBar extends RelativeLayout {
     private PopupMenu createPopupMenu(View view){
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        doDeleteRequest();
+                        break;
+                    case R.id.change_name:
+                        ChangeNameDialog fragment = ChangeNameDialog.newInstance();
+                        fragment.setDevice(device);
+                        fragment.show(fm, "dialog");
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
         return popup;
    }
 
