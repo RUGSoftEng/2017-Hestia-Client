@@ -18,7 +18,6 @@ import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 
-import hestia.UI.HestiaApplication;
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;
@@ -29,7 +28,7 @@ import hestia.backend.models.Device;
 
 /**
  *  This class takes care of the deviceBar.
- * The devicebar is the 'row' in the expandable list of a single device.
+ * The DeviceBar is the 'row' in the expandable list of a single device.
  */
 
 public class DeviceBar extends RelativeLayout {
@@ -201,15 +200,6 @@ public class DeviceBar extends RelativeLayout {
 
     @Override
     public boolean equals(Object object) {
-//        boolean equal = false;
-//
-//        if (object != null && object instanceof DeviceBar) {
-//            if(this.device.getId().equals(((DeviceBar) object).getDevice().getId())) {
-//                equal = true;
-//            }
-//        }
-//        return equal;
-
         if(!(object instanceof DeviceBar)) return false;
         DeviceBar deviceBar = (DeviceBar) object;
         return (this == deviceBar || (this.getDevice().equals(deviceBar.getDevice())));
@@ -217,7 +207,6 @@ public class DeviceBar extends RelativeLayout {
 
     @Override
     public int hashCode() {
-        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
         int result = getDevice().hashCode();
         return result;
     }
