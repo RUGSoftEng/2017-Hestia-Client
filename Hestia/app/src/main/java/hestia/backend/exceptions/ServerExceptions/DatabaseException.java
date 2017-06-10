@@ -17,4 +17,7 @@ public class DatabaseException extends ServerException {
         return type;
     }
 
+    public String getMessage() {
+        return message;
+    }
 }
