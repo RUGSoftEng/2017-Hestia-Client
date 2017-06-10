@@ -17,8 +17,4 @@ public class DatabaseException extends ServerException {
         return type;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
 }

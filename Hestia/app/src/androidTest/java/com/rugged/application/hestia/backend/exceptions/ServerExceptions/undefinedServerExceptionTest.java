@@ -11,7 +11,7 @@ import hestia.backend.exceptions.ServerExceptions.UndefinedServerException;
 
 import static org.junit.Assert.assertEquals;
 
-public class undefinedServerExceptionTest {
+public class UndefinedServerExceptionTest {
     private UndefinedServerException testException;
     private String testError;
 

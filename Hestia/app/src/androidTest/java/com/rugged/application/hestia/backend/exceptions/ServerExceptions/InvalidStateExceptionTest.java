@@ -26,7 +26,6 @@ public class InvalidStateExceptionTest {
         testDetails.addProperty("expected_type",testExpectedType);
         testDetails.addProperty("value_type",testActualType);
         testException = new InvalidStateException(testError,testDetails);
-
     }
     @Test
     public void ExceptionTest(){

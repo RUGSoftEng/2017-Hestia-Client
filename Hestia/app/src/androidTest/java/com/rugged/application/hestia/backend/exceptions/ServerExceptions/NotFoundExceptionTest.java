@@ -9,9 +9,6 @@ import hestia.backend.exceptions.ServerExceptions.InvalidStateException;
 import hestia.backend.exceptions.ServerExceptions.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
-
-
-
 public class NotFoundExceptionTest {
     private NotFoundException testException;
     private JsonObject testDetails=new JsonObject();

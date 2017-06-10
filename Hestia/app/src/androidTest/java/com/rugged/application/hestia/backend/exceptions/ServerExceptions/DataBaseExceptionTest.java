@@ -31,7 +31,6 @@ public class DataBaseExceptionTest {
         testDetails.addProperty("type",type);
         testDetails.addProperty("message",message);
         testException   = new DatabaseException(testError,testDetails);
-
     }
     @Test
     public void ExceptionTest(){
