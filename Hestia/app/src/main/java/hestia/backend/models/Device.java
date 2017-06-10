@@ -4,8 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rugged.application.hestia.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
+import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;
 
@@ -69,7 +73,7 @@ public class Device {
     }
 
     public void setName(String name) throws IOException, ComFaultException {
-        String endpoint = "devices/" + deviceId;
+        String endpoint = HestiaApplication.getContext().getString(R.string.deviceEndpoint) + deviceId;
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, endpoint);

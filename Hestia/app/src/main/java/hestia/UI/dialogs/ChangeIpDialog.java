@@ -38,7 +38,7 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     String buildTitle() {
-        return "Change IP";
+        return getContext().getString(R.string.changeIpTitle);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ChangeIpDialog extends HestiaDialog {
 
         String currentIP = serverCollectionsInteractor.getHandler().getIp();
         if (currentIP == null) {
-            ipField.setHint("Enter ip here");
+            ipField.setHint(getContext().getString(R.string.enterIpHint));
         } else {
             ipField.setText(currentIP);
         }
@@ -74,6 +74,6 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
-        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getContext().getString(R.string.cancelPressed), Toast.LENGTH_SHORT).show();
     }
 }
