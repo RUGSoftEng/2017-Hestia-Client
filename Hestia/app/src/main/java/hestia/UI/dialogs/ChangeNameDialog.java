@@ -59,7 +59,7 @@ public class ChangeNameDialog extends HestiaDialog {
                     isSuccessful = true;
                 } catch (IOException e) {
                     Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());

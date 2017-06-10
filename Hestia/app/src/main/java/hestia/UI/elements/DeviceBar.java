@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
+
+import hestia.UI.HestiaApplication;
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;
@@ -158,7 +160,8 @@ public class DeviceBar extends RelativeLayout {
                     isSuccessful = true;
                 } catch (IOException e) {
                     Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = HestiaApplication.getContext().
+                            getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
