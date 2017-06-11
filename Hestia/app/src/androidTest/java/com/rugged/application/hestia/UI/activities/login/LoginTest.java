@@ -1,5 +1,6 @@
 package com.rugged.application.hestia.UI.activities.login;
 
+import android.app.Application;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -11,7 +12,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
+import hestia.backend.NetworkHandler;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -36,6 +41,7 @@ public class LoginTest extends UiTest {
     public void setUp() {
         // Check if you were already logged in. In this case, log out.
         // This can only happen when you previously logged it and selected the "Remember me" box.
+        ((HestiaApplication)mIntentsRule.getActivity().getApplication()).setNetworkHandler(new NetworkHandler("192.168.178.30", 8000));
         try {
             onView(ViewMatchers.withId(R.id.username)).perform(click());
         } catch(NoMatchingViewException e) {

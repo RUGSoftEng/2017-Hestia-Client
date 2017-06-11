@@ -38,8 +38,6 @@ public class DiscoverServerDialog extends HestiaDialog {
     private NsdManager.ResolveListener resolveListener;
     private NsdManager.DiscoveryListener discoveryListener;
     private NsdManager nsdManager;
-    private final String serviceName = getContext().getString(R.string.serviceName);
-    private final String serviceType = getContext().getString(R.string.serviceType);
     private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
             "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
             "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -82,7 +80,7 @@ public class DiscoverServerDialog extends HestiaDialog {
             protected Void doInBackground(Object... params) {
                 nsdManager = (NsdManager) getContext().getSystemService(Context.NSD_SERVICE);
                 initializeDiscoveryListener();
-                nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
+                nsdManager.discoverServices(getString(R.string.serviceType), NsdManager.PROTOCOL_DNS_SD, discoveryListener);
                 return null;
             }
         }.execute();
@@ -144,18 +142,18 @@ public class DiscoverServerDialog extends HestiaDialog {
             @Override
             public void onDiscoveryStarted(String regType) {
                 Log.d(TAG, "Service discovery started");
-                Log.d(TAG, "  Service name: " + serviceName);
-                Log.d(TAG, "  Service type: " + serviceType);
+                Log.d(TAG, "  Service name: " + getString(R.string.serviceName));
+                Log.d(TAG, "  Service type: " + getString(R.string.serviceType));
             }
 
             @Override
             public void onServiceFound(NsdServiceInfo service) {
-                if (!service.getServiceType().equals(serviceType)) {
+                if (!service.getServiceType().equals(getString(R.string.serviceType))) {
                     Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
-                } else if (service.getServiceName().equals(serviceName)) {
-                    Log.d(TAG, "Same machine: " + serviceName);
+                } else if (service.getServiceName().equals(getString(R.string.serviceName))) {
+                    Log.d(TAG, "Same machine: " + getString(R.string.serviceName));
                 } else {
-                    Log.d(TAG, "Found a different Host: " + serviceName);
+                    Log.d(TAG, "Found a different Host: " + getString(R.string.serviceName));
                     initializeResolveListener();
                     nsdManager.resolveService(service, resolveListener);
                 }
@@ -199,7 +197,7 @@ public class DiscoverServerDialog extends HestiaDialog {
             @Override
             public void onServiceResolved(NsdServiceInfo serviceInfo) {
                 Log.d(TAG, "Resolve Succeeded. " + serviceInfo);
-                if (serviceInfo.getServiceName().equals(serviceName)) {
+                if (serviceInfo.getServiceName().equals(getString(R.string.serviceName))) {
                     Log.d(TAG, "Same IP.");
                     return;
                 }

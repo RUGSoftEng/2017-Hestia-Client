@@ -38,8 +38,7 @@ public class IpDialogTest extends UiTest {
             new ActivityTestRule<>(LoginActivity.class);
 
     public void openDialog() {
-        onView(ViewMatchers.withId(R.id.context_menu)).perform(click());
-        onView(withText(getStr(R.string.setIp))).perform(click());
+        onView(ViewMatchers.withId(R.id.setServerButton)).perform(click());
     }
 
     @Test

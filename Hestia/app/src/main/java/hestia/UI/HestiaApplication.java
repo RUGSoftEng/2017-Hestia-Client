@@ -37,6 +37,10 @@ public class HestiaApplication extends Application {
         return networkHandler;
     }
 
+    public void setNetworkHandler(NetworkHandler handler){
+        this.networkHandler = handler;
+    }
+
     public static Context getContext(){
         return mContext;
     }
