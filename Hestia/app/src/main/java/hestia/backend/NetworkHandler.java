@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.GeneralSecurityException;
@@ -36,7 +37,7 @@ import hestia.UI.HestiaApplication;
  * as well as getters and setters for the ip and the port number.
  */
 
-public class NetworkHandler extends Application {
+public class NetworkHandler extends Application implements Serializable{
     private final String TAG = "NetworkHandler";
     private String ip;
     private Integer port;

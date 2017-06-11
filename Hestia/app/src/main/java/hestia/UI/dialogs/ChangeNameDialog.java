@@ -14,6 +14,9 @@ import java.io.IOException;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 
+/**
+ * This dialog can be used for changing the name of a particular device.
+ */
 public class ChangeNameDialog extends HestiaDialog {
     private EditText editText;
     private Device device;
@@ -24,8 +27,8 @@ public class ChangeNameDialog extends HestiaDialog {
         return fragment;
     }
 
-    public void setDevice(Device d) {
-        device = d;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     @Override
@@ -45,8 +48,14 @@ public class ChangeNameDialog extends HestiaDialog {
 
     @Override
     void pressCancel() {
+        Toast.makeText(getContext(), getResources().getText(R.string.cancelNameChange),
+                Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Upon confirming a new name, the server is contacted to set the name. This method does not
+     * require any further action from the client.
+     */
     @Override
     void pressConfirm() {
         final String result = editText.getText().toString();

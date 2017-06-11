@@ -1,10 +1,12 @@
 package hestia.UI.dialogs;
 
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +17,6 @@ import hestia.backend.ServerCollectionsInteractor;
  * This class represents the dialog screen with which the IP-address of the server is asked from the
  * user.
  */
-
 public class ChangeIpDialog extends HestiaDialog {
     private EditText ipField;
     private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -56,6 +57,10 @@ public class ChangeIpDialog extends HestiaDialog {
         return view;
     }
 
+    /**
+     * After pressing confirm the entered ip is checked and, if it is a valid address,
+     * sent to the handler. A text message is displayed to the user showing the new IP-address.
+     */
     @Override
     void pressConfirm() {
         String ip = ipField.getText().toString();
@@ -69,8 +74,12 @@ public class ChangeIpDialog extends HestiaDialog {
         }
     }
 
+    /**
+     * Pressing cancel on the dialog simply displays a text message.
+     */
     @Override
     void pressCancel() {
+        refreshUserInterface();
     }
 
     private boolean checkIp(String ip) {

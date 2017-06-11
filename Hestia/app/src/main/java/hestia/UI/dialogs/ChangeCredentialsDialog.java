@@ -6,16 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
+
 import hestia.UI.activities.login.LoginActivity;
+
 import static hestia.UI.activities.login.LoginActivity.hashString;
 
 /**
  * This class opens the dialog to change the username and password to login.
- * It uses some of the static variables and the static hashing function form LoginActivity.
+ * It uses some of the static variables and the static hashing function from the LoginActivity.
  * @see LoginActivity
  */
-
 public class ChangeCredentialsDialog extends HestiaDialog {
     private EditText oldPassField, newPassField, newPassCheckField, newUserField;
     private SharedPreferences loginPreferences;
@@ -43,6 +45,11 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         return view;
     }
 
+    /**
+     * This method is called when the confirm button is pressed on the dialog. We store the new
+     * password and username in variables. Next we check whether the credentials are admissible,
+     * after first verifying that the old password which was provided is correct.
+     */
     @Override
     void pressConfirm() {
         String newUser = newUserField.getText().toString();
@@ -57,13 +64,13 @@ public class ChangeCredentialsDialog extends HestiaDialog {
             if(newPass.equals(newPassCheck) && !newPass.equals("")){
                 setSharedPrefs(getString(R.string.loginPrefsPass
                 ), hashString(newPass));
-                feedback = getString(R.string.passSet) + newPass + "\n";
+                feedback = getString(R.string.passSet);
             } else{
-                feedback = getString(R.string.passCheckWrong) + "\n";
+                feedback = getString(R.string.passCheckWrong);
             }
             if(newUser.length()>4){
                 setSharedPrefs(getString(R.string.loginPrefsUser),hashString(newUser));
-                feedback = feedback + getString(R.string.userSet) + newUser;
+                feedback = feedback + getString(R.string.userSet);
             } else {
                 feedback = feedback + getString(R.string.userNotSet);
             }
@@ -74,8 +81,12 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         dismiss();
     }
 
+    /**
+     * This method displays a simple message if the cancel button is pressed.
+     */
     @Override
     void pressCancel() {
+        refreshUserInterface();
     }
 
     private boolean checkOldPass(String oldPass){
@@ -83,6 +94,11 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         return corrpass.equals(hashString(oldPass));
     }
 
+    /**
+     * A method for changing the value of a specific resource stored in the system.
+     * @param name The key of the string as it is stored in the system
+     * @param value The new value for the string in the system
+     */
     private void setSharedPrefs(String name, String value){
         SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.putString(name, value);

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hestia.UI.HestiaApplication;
-
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;

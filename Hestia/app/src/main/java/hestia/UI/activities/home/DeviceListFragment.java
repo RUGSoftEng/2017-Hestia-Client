@@ -45,6 +45,12 @@ public class DeviceListFragment extends Fragment {
         super();
     }
 
+    /**
+     * This method replaces the non-default constructor in Android. A bundle is constructed and
+     * passed to the fragment. This ensures that we will get the same
+     * @param serverCollectionsInteractor The interactor which has to be reinstantiated
+     * @return The fragment which was constructed
+     */
     public static DeviceListFragment newInstance() {
         DeviceListFragment fragment = new DeviceListFragment();
         return fragment;
@@ -56,7 +62,7 @@ public class DeviceListFragment extends Fragment {
     }
 
     /**
-     *
+     * This method is called when the fragment view is created.
      * @param inflater The layout inflater used to generate the layout hierarchy
      * @param container The viewgroup with which the layout is instantiated
      * @return A view of an expandable list linked to the listDataHeader and listDataChild
@@ -66,6 +72,7 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.context = getContext();
+        super.onCreateView(inflater,container,savedInstanceState);
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);
@@ -75,7 +82,11 @@ public class DeviceListFragment extends Fragment {
 
         return deviceListView;
     }
-    
+
+    /**
+     * Connects to the server using the serverCollectionsInteractor. We run the method in the
+     * background so
+     */
     public void populateUI() {
         new AsyncTask<Object, String, ArrayList<Device> >() {
             @Override
@@ -124,8 +135,30 @@ public class DeviceListFragment extends Fragment {
         }.execute();
     }
 
+    private boolean typeExists(Device device) {
+        String deviceType = device.getType();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
+            if (checkDevice.getType().equals(deviceType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int getDeviceType(Device device) {
+        String deviceType = device.getType();
+        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
+            Device checkDevice = groupOfDevices.get(0).getDevice();
+            if (checkDevice.getType().equals(deviceType)) {
+                return listDataChild.indexOf(groupOfDevices);
+            }
+        }
+        return -1;
+    }
+
     private void setOnScrollListeners() {
-        expListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        getExpListView().setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {}
 
@@ -142,9 +175,9 @@ public class DeviceListFragment extends Fragment {
 
     private void initDeviceList(View deviceListView) {
         listDataChild = new ArrayList<>();
-        expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
-        listAdapter = new ExpandableDeviceList(listDataChild, surroundingActivity);
-        expListView.setAdapter(listAdapter);
+        setExpListView((ExpandableListView) deviceListView.findViewById(R.id.lvExp));
+        setListAdapter(new ExpandableDeviceList(listDataChild, surroundingActivity));
+        getExpListView().setAdapter(getListAdapter());
         setOnScrollListeners();
     }
 
@@ -168,28 +201,6 @@ public class DeviceListFragment extends Fragment {
         surroundingActivity = context instanceof Activity ? (Activity) context : null;
     }
 
-    private boolean typeExists(Device device) {
-        String deviceType = device.getType();
-        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
-            Device checkDevice = groupOfDevices.get(0).getDevice();
-            if (checkDevice.getType().equals(deviceType)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private int getDeviceType(Device device) {
-        String deviceType = device.getType();
-        for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
-            Device checkDevice = groupOfDevices.get(0).getDevice();
-            if (checkDevice.getType().equals(deviceType)) {
-                return listDataChild.indexOf(groupOfDevices);
-            }
-        }
-        return -1;
-    }
-
     private void createFloatingButton(View view) {
         floatingActionButton = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -202,5 +213,25 @@ public class DeviceListFragment extends Fragment {
                 fragment.show(getActivity().getSupportFragmentManager(), "dialog");
             }
         });
+    }
+
+    public ServerCollectionsInteractor getServerCollectionsInteractor() {
+        return serverCollectionsInteractor;
+    }
+
+    public ExpandableDeviceList getListAdapter() {
+        return listAdapter;
+    }
+
+    public void setListAdapter(ExpandableDeviceList listAdapter) {
+        this.listAdapter = listAdapter;
+    }
+
+    public ExpandableListView getExpListView() {
+        return expListView;
+    }
+
+    public void setExpListView(ExpandableListView expListView) {
+        this.expListView = expListView;
     }
 }
