@@ -22,7 +22,6 @@ import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.backend.ServerCollectionsInteractor;
-import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -40,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.home_activity);
 
         setupServerCollectionInteractor();
 

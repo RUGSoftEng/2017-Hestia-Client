@@ -1,7 +1,6 @@
 package hestia.UI.dialogs;
 
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -43,7 +42,7 @@ public class ChangeIpDialog extends HestiaDialog {
     @Override
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.ip_dialog, null);
+        View view = inflater.inflate(R.layout.discover_server_dialog, null);
 
         ipField = (EditText) view.findViewById(R.id.ip);
         ipField.setRawInputType(Configuration.KEYBOARD_12KEY);

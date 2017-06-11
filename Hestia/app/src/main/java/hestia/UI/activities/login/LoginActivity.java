@@ -43,7 +43,7 @@ public class LoginActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activity);
         counter = Integer.valueOf(getString(R.string.initialCount));
         loginPreferences = getSharedPreferences(getString(R.string.loginPrefs), MODE_PRIVATE);
         if(!ipSetToValidServer()){

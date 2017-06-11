@@ -39,7 +39,7 @@ public class ChangeNameDialog extends HestiaDialog {
     @Override
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.set_name, null);
+        View view = inflater.inflate(R.layout.change_name_dialog, null);
         editText = (EditText) view.findViewById(R.id.change_name_device);
         editText.setText(device.getName());
 
