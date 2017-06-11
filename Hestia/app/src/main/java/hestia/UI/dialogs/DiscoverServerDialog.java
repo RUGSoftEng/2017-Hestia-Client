@@ -48,7 +48,7 @@ public class DiscoverServerDialog extends HestiaDialog {
 
     @Override
     String buildTitle() {
-        return "Find server";
+        return getString(R.string.findServerTitle);
     }
 
     @Override
@@ -78,19 +78,17 @@ public class DiscoverServerDialog extends HestiaDialog {
 
     private void initStatus(View view) {
         status = (TextView) view.findViewById(R.id.status);
+        status.setTextColor(getContext().getColor(R.color.black));
         status.setEnabled(false);
         status.setFocusable(false);
-        status.setText("Searching...");
+        status.setText(R.string.searching);
     }
 
     private void initIpField(View view) {
         ipField = (EditText) view.findViewById(R.id.ip);
         ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
-
         String currentIP = handler.getIp();
-        if (currentIP == null) {
-            ipField.setHint("Enter ip here");
-        } else {
+        if (currentIP != null) {
             ipField.setText(currentIP);
             ipField.setSelection(ipField.getText().length());
         }
@@ -98,7 +96,7 @@ public class DiscoverServerDialog extends HestiaDialog {
 
     private void initDiscoverButton(View view) {
         discoverButton = (Button) view.findViewById(R.id.discover);
-        discoverButton.setText("Autocomplete!");
+        discoverButton.setText(R.string.autocomplete);
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,10 +162,7 @@ public class DiscoverServerDialog extends HestiaDialog {
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        //discoverButton.setText("Server Not Found");
-                        status.setText("Server Not Found");
-                        //int color = DiscoverServerDialog.this.getContext().getColor(R.color.lightRed);
-                        //discoverButton.setBackgroundColor(color);
+                        status.setText(getString(R.string.serverNotFound));
                     }
                 };
                 mainHandler.post(myRunnable);
@@ -196,16 +191,12 @@ public class DiscoverServerDialog extends HestiaDialog {
                     Log.d(TAG, "Same IP.");
                     return;
                 }
-                String ip = serviceInfo.getHost().getHostAddress();
-                foundIp = ip;
+                foundIp = serviceInfo.getHost().getHostAddress();
                 Handler mainHandler = new Handler(DiscoverServerDialog.this.getContext().getMainLooper());
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        status.setText("Server Found: " + foundIp);
-//                        discoverButton.setText("Server Found: " + foundIp);
-                        //int color = DiscoverServerDialog.this.getContext().getColor(R.color.fadedGreen);
-                        //discoverButton.setBackgroundColor(color);
+                        status.setText(getString(R.string.serverFound) + foundIp);
                         discoverButton.setEnabled(true);
                     }
                 };
