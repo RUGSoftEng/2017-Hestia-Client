@@ -72,7 +72,7 @@ public class DeviceListFragment extends Fragment {
                              Bundle savedInstanceState) {
         this.context = getContext();
         super.onCreateView(inflater,container,savedInstanceState);
-        View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
+        View deviceListView = inflater.inflate(R.layout.device_list_fragment, container, false);
 
         createFloatingButton(deviceListView);
         initRefreshLayout(deviceListView);

@@ -60,7 +60,7 @@ public class DiscoverServerDialog extends HestiaDialog {
     @Override
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.ip_dialog, null);
+        View view = inflater.inflate(R.layout.discover_server_dialog, null);
         initStatus(view);
         initDiscoverButton(view);
         initIpField(view);

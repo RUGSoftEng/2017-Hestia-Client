@@ -43,7 +43,7 @@ public class LoginActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activity);
         counter = Integer.valueOf(getString(R.string.initialCount));
         loginPreferences = getSharedPreferences(getString(R.string.loginPrefs), MODE_PRIVATE);
         if(!ipSetToValidServer()){
@@ -123,8 +123,8 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private boolean checkCredentials(String username,String password){
-        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), "");
-        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), "");
+        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), hashString("admin"));
+        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString("password"));
         String hashedUser = hashString(username);
         String hashedPass = hashString(password);
         return (hashedUser.equals(corrUser) && hashedPass.equals(corrPass));

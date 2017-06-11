@@ -13,7 +13,6 @@ import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 
 import hestia.UI.elements.DeviceBar;
-import hestia.backend.ServerCollectionsInteractor;
 
 /**
  * The ExpandableDeviceList represent the expandable list. It receives an Arraylist with deviceBars
@@ -117,7 +116,7 @@ public class ExpandableDeviceList extends BaseExpandableListAdapter{
             LayoutInflater layoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = layoutInflater.inflate(R.layout.list_group, null);
+            convertView = layoutInflater.inflate(R.layout.expandable_device_list, null);
         }
 
         TextView lblListHeader = (TextView) convertView .findViewById(R.id.lblListHeader);

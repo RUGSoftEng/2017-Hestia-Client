@@ -44,7 +44,7 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.slide_dialog);
+        setContentView(R.layout.sliders_dialog);
 
         int count = 0;
         final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearMain);
