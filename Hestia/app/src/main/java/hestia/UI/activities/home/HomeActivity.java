@@ -4,24 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
+import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 import java.util.List;
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.backend.ServerCollectionsInteractor;
+import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.NetworkHandler;
 
 public class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
@@ -44,12 +45,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-
-        if (fragment == null) {
-            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
-            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment, "DeviceListFragment").commit();
-        }
+        DeviceListFragment fragment = DeviceListFragment.newInstance();
+        fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
+        fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         menuObjects = getMenuObjects();
 
         initMenuFragment();
@@ -100,19 +98,16 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> objects = new ArrayList<>();
-        MenuObject close = new MenuObject();
-        close.setResource(R.drawable.ic_action);
-        objects.add(close);
-
-        MenuObject changeCredentials = new MenuObject(getString(R.string.changeUserPass));
-        changeCredentials.setResource(R.mipmap.ic_key);
-        objects.add(changeCredentials);
-
-        MenuObject logout = new MenuObject(getString(R.string.logout));
-        logout.setResource(R.mipmap.ic_exit_to_app);
-        objects.add(logout);
-
+        addMenuObjects(objects, R.drawable.ic_action, null);
+        addMenuObjects(objects, R.mipmap.ic_key, getString(R.string.changeUserPass));
+        addMenuObjects(objects, R.mipmap.ic_exit_to_app, getString(R.string.logout));
         return objects;
+    }
+
+    private void addMenuObjects(List<MenuObject> objectList, int id, String title) {
+        MenuObject obj = new MenuObject(title);
+        obj.setResource(id);
+        objectList.add(obj);
     }
 
     @Override
@@ -129,7 +124,6 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
                     mMenuDialogFragment.show(fragmentManager, "ContextMenuDialogFragment");
                 }
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -155,7 +149,6 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         startActivity(toIntent);
         finish();
     }
-
     private void showChangeCredentialsDialog() {
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");

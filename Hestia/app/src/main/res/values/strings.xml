@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Hestia</string>
-    <string name="offText">Off</string>
-    <string name="onText">On</string>
     <string name="loginText">Login</string>
     <string name="passHint">Password</string>
     <string name="userHint">Username</string>
@@ -16,7 +14,6 @@
     <string name="addDeviceText">Add a new device</string>
     <string name="collectionHint">Collection</string>
     <string name="pluginHint">Plugin</string>
-    <string name="bridgeHint">Bridge (e.g. 192.168.1.0)</string>
     <string name="emptyValuesEntered">One or more empty values were entered.</string>
     <string name="ipSetTo">Ip address set to : </string>
     <string name="default_ip">80.114.179.5</string>
@@ -26,6 +23,7 @@
     <string name="newPassCheckHint">New password again</string>
     <string name="newUserHint">New username</string>
     <string name="server">server</string>
+    <string name="incorr_ip">"Invalid IP"</string>
     <string name="loginPrefs">LoginPreferences</string>
     <string name="loginPrefsUser">username</string>
     <string name="loginPrefsPass">password</string>
@@ -35,20 +33,25 @@
     <string name="incorrectLoginToast">Invalid credentials.</string>
     <string name="loginIntentExtra">login</string>
     <string name="saveLogin">savelogin</string>
+
     <string name="hestiaIp">HESTIA.IP</string>
     <string name="ipOfServer">IP_OF_SERVER</string>
+    <!-- Menu items text-->
     <string name="setIp">Set IP</string>
     <string name="logout">Logout</string>
     <string name="changeUserPass">Change user/pass</string>
+
     <string name="login">login</string>
     <string name="logoutExtraValue">logout</string>
     <string name="mystore_password">some-password</string>
+
     <string name="fixedFieldCol">collection</string>
     <string name="fixedFieldPlugin">plugin</string>
+
     <string name="passOldWrong">Old password is incorrect </string>
     <string name="passCheckWrong">New password not set </string>
-    <string name="passSet">Password set to: </string>
-    <string name="userSet">Username set to: </string>
+    <string name="passSet">Password changed </string>
+    <string name="userSet">Username changed </string>
     <string name="userNotSet">Username not changed (length under 5)</string>
     <string name="serviceName">HestiaClient</string>
     <string name="serviceType">_hestia._tcp.</string>
@@ -56,8 +59,20 @@
     <string name="searching">Searching...</string>
     <string name="autocomplete">Autocomplete!</string>
     <string name="serverFound">Server Found: </string>
-    <string name="serverNotFound">Server Not Found</string>
     <string name="findServerTitle">"Find server"</string>
+    <string name="setIpHint">Enter ip here</string>
+
+    <!-- Dialog build titles -->
+    <string name="addDeviceTitle">new Add device</string>
+    <string name="changeCredsTitle">Change credentials</string>
+    <string name="changeIpTitle">Change IP</string>
+    <string name="changeNameTitle">Change name</string>
+
+    <string name="serverNotFound">Could not connect to the server</string>
     <string name="hashCodeMultiplier">31</string>
     <string name="toggleRank">0</string>
+    <string name="cancelNameChange">Name of the device was not changed</string>
+    <string name="titleNameChange">Change name</string>
+    <string name="cancelIPChange">\"Cancel pressed\"</string>
+    <string name="versionToLow">Android version to low</string>
 </resources>

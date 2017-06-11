@@ -1,10 +1,12 @@
 package hestia.UI.dialogs;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,9 @@ import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
 
-import hestia.UI.HestiaApplication;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import hestia.backend.NetworkHandler;
 
 /**
@@ -34,8 +38,12 @@ public class DiscoverServerDialog extends HestiaDialog {
     private NsdManager.ResolveListener resolveListener;
     private NsdManager.DiscoveryListener discoveryListener;
     private NsdManager nsdManager;
-    private final String serviceName = HestiaApplication.getContext().getString(R.string.serviceName);
-    private final String serviceType = HestiaApplication.getContext().getString(R.string.serviceType);
+    private final String serviceName = getContext().getString(R.string.serviceName);
+    private final String serviceType = getContext().getString(R.string.serviceType);
+    private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
     public static DiscoverServerDialog newInstance() {
         DiscoverServerDialog fragment = new DiscoverServerDialog();
@@ -58,14 +66,18 @@ public class DiscoverServerDialog extends HestiaDialog {
         initStatus(view);
         initDiscoverButton(view);
         initIpField(view);
-
-        discoverServer();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            discoverServer();
+        } else {
+            status.setText(R.string.versionToLow);
+        }
 
         return view;
     }
 
     private void discoverServer() {
         new AsyncTask<Object, Object, Void>() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             protected Void doInBackground(Object... params) {
                 nsdManager = (NsdManager) getContext().getSystemService(Context.NSD_SERVICE);
@@ -78,7 +90,6 @@ public class DiscoverServerDialog extends HestiaDialog {
 
     private void initStatus(View view) {
         status = (TextView) view.findViewById(R.id.status);
-        status.setTextColor(getContext().getColor(R.color.black));
         status.setEnabled(false);
         status.setFocusable(false);
         status.setText(R.string.searching);
@@ -110,14 +121,16 @@ public class DiscoverServerDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        String enteredIp = ipField.getText().toString();
-        if(!enteredIp.isEmpty()) {
-            handler.setIp(enteredIp);
-            Log.i(TAG, "My ip is changed to: " + enteredIp);
-            Toast.makeText(getContext(), handler.getIp(), Toast.LENGTH_SHORT).show();
+        String ip = ipField.getText().toString();
+        if(checkIp(ip)) {
+            handler.setIp(ip);
+        } else {
+            Toast.makeText(getContext(),getString(R.string.incorr_ip),Toast.LENGTH_SHORT).show();
+            refreshUserInterface();
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     void pressCancel() {
         Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
@@ -125,9 +138,7 @@ public class DiscoverServerDialog extends HestiaDialog {
         discoveryListener = null;
     }
 
-
-    // -----------------------
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeDiscoveryListener() {
         discoveryListener = new NsdManager.DiscoveryListener() {
             @Override
@@ -182,6 +193,7 @@ public class DiscoverServerDialog extends HestiaDialog {
         };
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeResolveListener() {
         resolveListener = new NsdManager.ResolveListener() {
             @Override
@@ -208,5 +220,11 @@ public class DiscoverServerDialog extends HestiaDialog {
                 Log.e(TAG, "Resolve failed" + errorCode);
             }
         };
+    }
+
+    private boolean checkIp(String ip) {
+        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
     }
 }

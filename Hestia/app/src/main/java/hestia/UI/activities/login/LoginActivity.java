@@ -10,11 +10,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.home.HomeActivity;
 import hestia.UI.dialogs.DiscoverServerDialog;
@@ -49,7 +51,6 @@ public class LoginActivity extends FragmentActivity {
         } else if(rememberMeSelected()){
             gotoMainActivity();
         }
-
         clearSaveLogin();
         buildView();
     }
@@ -57,7 +58,11 @@ public class LoginActivity extends FragmentActivity {
     private void buildView() {
         initLoginButton();
         initServerButton();
+        addWidgets();
+    }
 
+    private void addWidgets() {
+        loginButton = (Button)findViewById(R.id.loginButton);
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
         rememberButton = (CheckBox) findViewById(R.id.rememberButton);

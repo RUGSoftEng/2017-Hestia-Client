@@ -9,19 +9,20 @@ import com.rugged.application.hestia.R;
 import hestia.backend.NetworkHandler;
 
 /**
- * An extension of the Application class provided by Android, which additionally contains the
- * NetworkHandler singleton.
+ * An extension of the Application class provided by Android, which additionally creates
+ * the network handler
  */
 
+
 public class HestiaApplication extends Application {
-    private static Context context;
+    private static Context mContext;
     private NetworkHandler networkHandler;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
         setupNetworkHandler();
+        mContext = this;
     }
 
     private void setupNetworkHandler() {
@@ -37,6 +38,6 @@ public class HestiaApplication extends Application {
     }
 
     public static Context getContext(){
-        return context;
+        return mContext;
     }
 }

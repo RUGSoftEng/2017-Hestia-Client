@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,14 +14,17 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
-import hestia.UI.elements.DeviceBar;
+
+import com.rugged.application.hestia.R;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import hestia.UI.dialogs.AddDeviceDialog;
+import hestia.UI.elements.DeviceBar;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
-import com.rugged.application.hestia.R;
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This fragment takes care of generating the list of peripherals on the phone. It sends an HTTP
@@ -38,20 +40,29 @@ public class DeviceListFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     private final static String TAG = "DeviceListFragment";
     private Activity surroundingActivity;
-    private FragmentManager fm;
 
     public DeviceListFragment() {
         super();
     }
 
-    public DeviceListFragment(Context context, ServerCollectionsInteractor serverCollectionsInteractor) {
-        super();
-        this.context = context;
+    /**
+     * This method replaces the non-default constructor in Android. A bundle is constructed and
+     * passed to the fragment. This ensures that we will get the same
+     * @param serverCollectionsInteractor The interactor which has to be reinstantiated
+     * @return The fragment which was constructed
+     */
+    public static DeviceListFragment newInstance() {
+        DeviceListFragment fragment = new DeviceListFragment();
+        return fragment;
+    }
+
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor
+                                                       serverCollectionsInteractor) {
         this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     /**
-     *
+     * This method is called when the fragment view is created.
      * @param inflater The layout inflater used to generate the layout hierarchy
      * @param container The viewgroup with which the layout is instantiated
      * @return A view of an expandable list linked to the listDataHeader and listDataChild
@@ -60,6 +71,8 @@ public class DeviceListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.context = getContext();
+        super.onCreateView(inflater,container,savedInstanceState);
         View deviceListView = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         createFloatingButton(deviceListView);
@@ -69,7 +82,11 @@ public class DeviceListFragment extends Fragment {
 
         return deviceListView;
     }
-    
+
+    /**
+     * Connects to the server using the serverCollectionsInteractor. We run the method in the
+     * background so
+     */
     public void populateUI() {
         new AsyncTask<Object, String, ArrayList<Device> >() {
             @Override
@@ -79,7 +96,7 @@ public class DeviceListFragment extends Fragment {
                     devices = serverCollectionsInteractor.getDevices();
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -101,7 +118,8 @@ public class DeviceListFragment extends Fragment {
                 listDataChild = new ArrayList<>();
                 for (Device device : devices) {
                     Log.i(TAG, "device found");
-                    DeviceBar bar = new DeviceBar(getActivity().getSupportFragmentManager(), getActivity(), device, serverCollectionsInteractor);
+                    DeviceBar bar = new DeviceBar(getActivity().getSupportFragmentManager(),
+                            getActivity(), device, serverCollectionsInteractor);
                     if(!listDataChild.contains(bar)) {
                         if (!typeExists(device)) {
                             listDataChild.add(new ArrayList<DeviceBar>());
@@ -115,50 +133,6 @@ public class DeviceListFragment extends Fragment {
                 expListView.setAdapter(listAdapter);
             }
         }.execute();
-    }
-
-    private void setOnScrollListeners() {
-        expListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {}
-
-            @Override
-            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-                int topRowVerticalPosition = (absListView == null ||
-                        absListView.getChildCount() == 0) ? 0 :
-                        absListView.getFirstVisiblePosition() == 0 ?
-                                absListView.getChildAt(0).getTop() : - 1;
-                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
-            }
-        });
-    }
-
-    private void initDeviceList(View deviceListView) {
-        listDataChild = new ArrayList<>();
-        expListView = (ExpandableListView) deviceListView.findViewById(R.id.lvExp);
-        listAdapter = new ExpandableDeviceList(listDataChild, surroundingActivity, this.serverCollectionsInteractor);
-        expListView.setAdapter(listAdapter);
-        setOnScrollListeners();
-    }
-
-    private void initRefreshLayout(View deviceListView) {
-        swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                Log.i(TAG, "Currently refreshing");
-                populateUI();
-                Log.i(TAG, "Refresh stopped");
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        surroundingActivity = context instanceof Activity ? (Activity) context : null;
     }
 
     private boolean typeExists(Device device) {
@@ -183,6 +157,50 @@ public class DeviceListFragment extends Fragment {
         return -1;
     }
 
+    private void setOnScrollListeners() {
+        getExpListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {}
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                int topRowVerticalPosition = (absListView == null ||
+                        absListView.getChildCount() == 0) ? 0 :
+                        absListView.getFirstVisiblePosition() == 0 ?
+                                absListView.getChildAt(0).getTop() : - 1;
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
+    }
+
+    private void initDeviceList(View deviceListView) {
+        listDataChild = new ArrayList<>();
+        setExpListView((ExpandableListView) deviceListView.findViewById(R.id.lvExp));
+        setListAdapter(new ExpandableDeviceList(listDataChild, surroundingActivity));
+        getExpListView().setAdapter(getListAdapter());
+        setOnScrollListeners();
+    }
+
+    private void initRefreshLayout(View deviceListView) {
+        swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                Log.i(TAG, "Currently refreshing");
+                populateUI();
+                Log.i(TAG, "Refresh stopped");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        surroundingActivity = context instanceof Activity ? (Activity) context : null;
+    }
+
     private void createFloatingButton(View view) {
         floatingActionButton = (FloatingActionButton)view.findViewById(R.id.floating_action_button);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -195,5 +213,25 @@ public class DeviceListFragment extends Fragment {
                 fragment.show(getActivity().getSupportFragmentManager(), "dialog");
             }
         });
+    }
+
+    public ServerCollectionsInteractor getServerCollectionsInteractor() {
+        return serverCollectionsInteractor;
+    }
+
+    public ExpandableDeviceList getListAdapter() {
+        return listAdapter;
+    }
+
+    public void setListAdapter(ExpandableDeviceList listAdapter) {
+        this.listAdapter = listAdapter;
+    }
+
+    public ExpandableListView getExpListView() {
+        return expListView;
+    }
+
+    public void setExpListView(ExpandableListView expListView) {
+        this.expListView = expListView;
     }
 }
