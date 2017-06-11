@@ -23,7 +23,8 @@ android:
     - addon-google_apis-google-19
 
     #System images
-    - sys-img-armeabi-v7a-android-26
+    - sys-img-armeabi-v7a-android-16
+
 before_install:
   # copy the licenses to the correct file on the Travis system
     - pip install --user codecov    #Install codecov
@@ -42,15 +43,6 @@ before_script:
     - adb shell input keyevent 82 &
 
 script:
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.exceptions.ComFaultExceptionTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.deserializers.ActivatorDeserializerTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.ActivatorStateTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.ActivatorTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.DeviceTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.RequiredInfoTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.NetworkHandlerTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.ServerCollectionsInteractorTest
-
     - bash gradlew app:createDebugCoverageReport
 
 after_failure:
