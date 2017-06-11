@@ -101,7 +101,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      */
     public void refreshUserInterface(){
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
-        fragment.populateUI();
+        if(fragment != null){
+            fragment.populateUI();
+        }
     }
 
     /**
