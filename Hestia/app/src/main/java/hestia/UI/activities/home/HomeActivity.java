@@ -25,6 +25,10 @@ import hestia.backend.ServerCollectionsInteractor;
 import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.NetworkHandler;
 
+/**
+ * This activity marks the main screen for the app. It contains the serverCollectionsInteractor for
+ * talking to the server.
+ */
 public class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
@@ -73,21 +77,37 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         super.onDestroy();
     }
 
+    /**
+     * This method retrieves the IP as it is currently set in the networkHandler of the
+     * serverCollectionsInteractor and adds it to the SharedPreferences. The SharedPreferences
+     * object can be used as a local database on the Android platform.
+     */
     private void storeIP() {
         SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
         prefs.edit().putString(getString(R.string.ipOfServer), serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
+    /**
+     * Creates a new networkHandler and serverCollectionsInteractor. These classes are used for
+     * communicating with the server.
+     */
     private void setupServerCollectionInteractor() {
         NetworkHandler handler = ((HestiaApplication)this.getApplication()).getNetworkHandler();
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
     }
 
+    /**
+     * This method contacts the server to update the list of devices in the GUI if a change has
+     * occurred.
+     */
     public void refreshUserInterface(){
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
         fragment.populateUI();
     }
 
+    /**
+     * This method creates the fragment for the Menu in the top right corner of the application.
+     */
     private void initMenuFragment() {
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
