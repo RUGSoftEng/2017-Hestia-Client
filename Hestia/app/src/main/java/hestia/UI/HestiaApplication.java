@@ -17,16 +17,9 @@ import hestia.backend.NetworkHandler;
 public class HestiaApplication extends Application {
     private static Context mContext;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mContext = this;
-    }
-
     public static Context getContext(){
         return mContext;
     }
-
 
     private NetworkHandler networkHandler;
 
@@ -35,8 +28,9 @@ public class HestiaApplication extends Application {
 
     @Override
     public void onCreate() {
-        setupNetworkHandler();
         super.onCreate();
+        setupNetworkHandler();
+        mContext = this;
     }
 
     private void setupNetworkHandler() {
