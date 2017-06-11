@@ -2,15 +2,16 @@ package hestia.UI.dialogs;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rugged.application.hestia.R;
@@ -28,6 +29,7 @@ public class DiscoverServerDialog extends HestiaDialog {
     private String foundIp;
     private EditText ipField;
     private Button discoverButton;
+    private TextView status;
     private NetworkHandler handler;
     private NsdManager.ResolveListener resolveListener;
     private NsdManager.DiscoveryListener discoveryListener;
@@ -53,6 +55,7 @@ public class DiscoverServerDialog extends HestiaDialog {
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.ip_dialog, null);
+        initStatus(view);
         initDiscoverButton(view);
         initIpField(view);
 
@@ -67,14 +70,17 @@ public class DiscoverServerDialog extends HestiaDialog {
             protected Void doInBackground(Object... params) {
                 nsdManager = (NsdManager) getContext().getSystemService(Context.NSD_SERVICE);
                 initializeDiscoveryListener();
-                initializeResolveListener();
-                //NsdHelper nsdHelper = new NsdHelper(nsdManager, serviceName, serviceType);
-                //nsdHelper.discoverServices();
-                //NsdServiceInfo serviceInfo = nsdHelper.getServiceInfo();
                 nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
                 return null;
             }
         }.execute();
+    }
+
+    private void initStatus(View view) {
+        status = (TextView) view.findViewById(R.id.status);
+        status.setEnabled(false);
+        status.setFocusable(false);
+        status.setText("Searching...");
     }
 
     private void initIpField(View view) {
@@ -92,7 +98,7 @@ public class DiscoverServerDialog extends HestiaDialog {
 
     private void initDiscoverButton(View view) {
         discoverButton = (Button) view.findViewById(R.id.discover);
-        discoverButton.setText("Searching...");
+        discoverButton.setText("Autocomplete!");
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,11 +113,10 @@ public class DiscoverServerDialog extends HestiaDialog {
     @Override
     void pressConfirm() {
         String enteredIp = ipField.getText().toString();
-        if(enteredIp!=null) {
+        if(!enteredIp.isEmpty()) {
             handler.setIp(enteredIp);
             Log.i(TAG, "My ip is changed to: " + enteredIp);
-            Toast.makeText(getContext(), handler.getIp(),
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), handler.getIp(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -119,6 +124,7 @@ public class DiscoverServerDialog extends HestiaDialog {
     void pressCancel() {
         Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
         nsdManager.stopServiceDiscovery(discoveryListener);
+        discoveryListener = null;
     }
 
 
@@ -141,6 +147,7 @@ public class DiscoverServerDialog extends HestiaDialog {
                     Log.d(TAG, "Same machine: " + serviceName);
                 } else {
                     Log.d(TAG, "Found a different Host: " + serviceName);
+                    initializeResolveListener();
                     nsdManager.resolveService(service, resolveListener);
                 }
             }
@@ -152,9 +159,18 @@ public class DiscoverServerDialog extends HestiaDialog {
 
             @Override
             public void onDiscoveryStopped(String serviceType) {
-                Log.d(TAG, "Discovery stopped: " + serviceType);
-                discoverButton.setText("Server Not Found");
-//                discoverButton.setBackgroundColor(Color.RED);
+                Log.d(TAG, "Discovery stopped: " + serviceType);;
+                Handler mainHandler = new Handler(DiscoverServerDialog.this.getContext().getMainLooper());
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        //discoverButton.setText("Server Not Found");
+                        status.setText("Server Not Found");
+                        //int color = DiscoverServerDialog.this.getContext().getColor(R.color.lightRed);
+                        //discoverButton.setBackgroundColor(color);
+                    }
+                };
+                mainHandler.post(myRunnable);
             }
 
             @Override
@@ -182,8 +198,18 @@ public class DiscoverServerDialog extends HestiaDialog {
                 }
                 String ip = serviceInfo.getHost().getHostAddress();
                 foundIp = ip;
-                discoverButton.setText("Server Found: " + ip);
-                discoverButton.setBackgroundColor(Color.GREEN);
+                Handler mainHandler = new Handler(DiscoverServerDialog.this.getContext().getMainLooper());
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        status.setText("Server Found: " + foundIp);
+//                        discoverButton.setText("Server Found: " + foundIp);
+                        //int color = DiscoverServerDialog.this.getContext().getColor(R.color.fadedGreen);
+                        //discoverButton.setBackgroundColor(color);
+                        discoverButton.setEnabled(true);
+                    }
+                };
+                mainHandler.post(myRunnable);
             }
 
             @Override

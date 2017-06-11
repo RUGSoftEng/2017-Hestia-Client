@@ -14,5 +14,6 @@
     <color name="textitem">#25224A</color>
     <color name="fab">#25224A</color>
     <color name="switch_color">#25224A</color>
-
+    <color name="lightRed">#FF6031</color>
+    <color name="fadedGreen">#7DEA7B</color>
 </resources>
