@@ -44,7 +44,7 @@ before_script:
     - adb shell input keyevent 82 &
 
 script:
-    - bash gradlew app:connectedCheck
+    - bash gradlew app:test -Dtest.single=Hestia/app/src/androidTest/java/com/rugged/application/hestia/backend/
     - bash gradlew app:createDebugCoverageReport
 
 after_failure:
