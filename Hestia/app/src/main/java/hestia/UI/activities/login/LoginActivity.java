@@ -123,8 +123,8 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private boolean checkCredentials(String username,String password){
-        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), "");
-        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), "");
+        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), hashString("admin"));
+        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString("password"));
         String hashedUser = hashString(username);
         String hashedPass = hashString(password);
         return (hashedUser.equals(corrUser) && hashedPass.equals(corrPass));

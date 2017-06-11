@@ -11,6 +11,8 @@ import com.rugged.application.hestia.R;
 
 import hestia.UI.activities.login.LoginActivity;
 
+import static com.rugged.application.hestia.R.string.standardPass;
+import static com.rugged.application.hestia.R.string.standardUser;
 import static hestia.UI.activities.login.LoginActivity.hashString;
 
 /**
@@ -90,7 +92,7 @@ public class ChangeCredentialsDialog extends HestiaDialog {
     }
 
     private boolean checkOldPass(String oldPass){
-        String corrpass = loginPreferences.getString(getString(R.string.loginPrefsPass), "");
+        String corrpass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString(getString(standardPass)));
         return corrpass.equals(hashString(oldPass));
     }
 
