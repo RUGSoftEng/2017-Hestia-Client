@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
