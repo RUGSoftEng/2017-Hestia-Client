@@ -66,8 +66,6 @@ public class ChangeIpDialog extends HestiaDialog {
         String ip = ipField.getText().toString();
         if(checkIp(ip)) {
             serverCollectionsInteractor.getHandler().setIp(ip);
-            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler().getIp(),
-                    Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(),getString(R.string.incorr_ip),Toast.LENGTH_SHORT).show();
             refreshUserInterface();
