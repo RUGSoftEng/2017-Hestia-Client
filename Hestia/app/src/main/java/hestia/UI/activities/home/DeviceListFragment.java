@@ -46,9 +46,8 @@ public class DeviceListFragment extends Fragment {
     }
 
     /**
-     * This method replaces the non-default constructor in Android. A bundle is constructed and
-     * passed to the fragment. This ensures that we will get the same
-     * @param serverCollectionsInteractor The interactor which has to be reinstantiated
+     * This method replaces the non-default constructor in Android. The default constructor should
+     * always be used in Android fragments, so we need to pass any other arguments using this method
      * @return The fragment which was constructed
      */
     public static DeviceListFragment newInstance() {
@@ -125,7 +124,7 @@ public class DeviceListFragment extends Fragment {
                             listDataChild.add(new ArrayList<DeviceBar>());
                             listDataChild.get(listDataChild.size() - 1).add(bar);
                         } else {
-                            listDataChild.get(getDeviceType(device)).add(bar);
+                            listDataChild.get(getDeviceBarIndex(device)).add(bar);
                         }
                     }
                 }
@@ -135,6 +134,12 @@ public class DeviceListFragment extends Fragment {
         }.execute();
     }
 
+    /**
+     * This method checks whether a device of this type already exists. If it does, we can add the 
+     * device under this bar, if it does not, we need to make a new bar for this type.
+     * @param device The device we are checking against the existing device bars
+     * @return A boolean indicating whether a device of this type is already in a devicebar 
+     */
     private boolean typeExists(Device device) {
         String deviceType = device.getType();
         for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
@@ -146,7 +151,13 @@ public class DeviceListFragment extends Fragment {
         return false;
     }
 
-    private int getDeviceType(Device device) {
+    /**
+     * Returns the index for the device with the current type, if a bar for this type already exists
+     * in the UI. If it does not, we return -1.
+     * @param device The device whose type we are checking
+     * @return The index of the bar in the UI
+     */
+    private int getDeviceBarIndex(Device device) {
         String deviceType = device.getType();
         for(ArrayList<DeviceBar> groupOfDevices : listDataChild) {
             Device checkDevice = groupOfDevices.get(0).getDevice();
@@ -173,6 +184,11 @@ public class DeviceListFragment extends Fragment {
         });
     }
 
+    /**
+     * This method creates a new, empty listAdapter and adds it to the view it receives as a
+     * parameter.
+     * @param deviceListView The view which is to be filled with a listAdapter
+     */
     private void initDeviceList(View deviceListView) {
         listDataChild = new ArrayList<>();
         setExpListView((ExpandableListView) deviceListView.findViewById(R.id.lvExp));
@@ -181,6 +197,11 @@ public class DeviceListFragment extends Fragment {
         setOnScrollListeners();
     }
 
+    /**
+     * This method refreshes the deviceList, possibly resulting in new devices being added, by
+     * calling the populateUI method.
+     * @param deviceListView
+     */
     private void initRefreshLayout(View deviceListView) {
         swipeRefreshLayout = (SwipeRefreshLayout) deviceListView.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
