@@ -61,4 +61,6 @@
     <string name="changeIpTitle">Change IP</string>
     <string name="changeNameTitle">Change name</string>
     <string name="cancelPressed">cancel pressed</string>
+    <string name="hashCodeMultiplier">31</string>
+    <string name="toggleRank">0</string>
 </resources>

@@ -17,6 +17,9 @@ import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,6 +29,7 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 public class DeviceTest {
     private Device deviceTest;
+    private Activator dummyActivator;
     private ArrayList<Activator> activators;
     private NetworkHandler handler;
     private final String DEFAULT_DEVICE_ID = "12";
@@ -34,16 +38,19 @@ public class DeviceTest {
 
     @Before
     public void createDevice(){
-        ActivatorState<Boolean> testState = new ActivatorState<>(false,"bool");
-        Activator testButton = new Activator("0",0,testState,"testButton");
+        ActivatorState<Boolean> testState = new ActivatorState<>(false, "bool");
+        dummyActivator = new Activator("0", 0, testState, "testButton");
         activators = new ArrayList<>();
-        activators.add(testButton);
+        activators.add(dummyActivator);
 
         String defaultIp = "127.0.0.1";
         Integer defaultPort = 1000;
         handler = new NetworkHandler(defaultIp, defaultPort);
 
-        deviceTest = new Device(DEFAULT_DEVICE_ID,DEFAULT_DEVICE_NAME,DEFAULT_DEVICE_TYPE,activators, handler);
+        deviceTest = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,
+                                activators, handler);
+        dummyActivator.setDevice(deviceTest);
+        dummyActivator.setHandler(handler);
     }
 
     @Test
@@ -164,10 +171,30 @@ public class DeviceTest {
     }
 
     @Test
-    public void equalsTest() {
-        // create a new Device object with the same data as the deviceTest object
-        Device dummyDevice = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,activators, handler);
-        assertTrue(dummyDevice.equals(deviceTest));
-        assertEquals(dummyDevice, deviceTest);
+    public void equalsAndHashCodeSamePropertiesTest() {
+        Device deviceSameProperties = new Device(DEFAULT_DEVICE_ID, DEFAULT_DEVICE_NAME, DEFAULT_DEVICE_TYPE,activators, handler);
+        assertTrue(deviceSameProperties.equals(deviceTest));
+        assertEquals(deviceSameProperties, deviceTest);
+        assertEquals(deviceSameProperties.hashCode(), deviceTest.hashCode());
+    }
+
+    @Test
+    public void equalsNullTest() {
+        Device deviceNull = null;
+        assertNull(deviceNull);
+        assertFalse(deviceTest.equals(deviceNull));
+    }
+
+    @Test
+    public void equalsAndHashCodeDifferentPropertiesTest() {
+        String newId = "newDeviceId";
+        String newName = "newDeviceName";
+        String newType = "newDeviceType";
+        ArrayList<Activator> newActivators = new ArrayList<>();
+        NetworkHandler newHandler = new NetworkHandler("newIp", 5050);
+        Device deviceDifferentProperties = new Device(newId, newName, newType, newActivators, newHandler);
+        assertNotNull(deviceDifferentProperties);
+        assertFalse(deviceTest.equals(deviceDifferentProperties));
+        assertNotSame(deviceTest.hashCode(), deviceDifferentProperties.hashCode());
     }
 }

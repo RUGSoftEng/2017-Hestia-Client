@@ -13,8 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
+
 import java.io.IOException;
+
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;
@@ -25,7 +28,7 @@ import hestia.backend.models.Device;
 
 /**
  *  This class takes care of the deviceBar.
- * The devicebar is the 'row' in the expandable list of a single device.
+ * The DeviceBar is the 'row' in the expandable list of a single device.
  */
 
 public class DeviceBar extends RelativeLayout {
@@ -58,7 +61,8 @@ public class DeviceBar extends RelativeLayout {
         switc.setVisibility(View.INVISIBLE);
 
         for(final Activator activator : device.getActivators()){
-            if(activator.getRank() == 0){
+            int toggleRank = Integer.valueOf(context.getResources().getString(R.string.toggleRank));
+            if(activator.getRank() == toggleRank) {
                 if(activator.getState().getType().equals("bool")){
                     switc.setEnabled(true);
                     switc.setVisibility(View.VISIBLE);
@@ -79,7 +83,7 @@ public class DeviceBar extends RelativeLayout {
         if(deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     new SlidersDialog(getContext(), device).show();
                 }
             });
@@ -101,9 +105,7 @@ public class DeviceBar extends RelativeLayout {
                             case R.id.change_name:
                                 ChangeNameDialog fragment = ChangeNameDialog.newInstance();
                                 fragment.setDevice(device);
-
                                 fragment.show(fm, "dialog");
-
                                 break;
                             default:
                                 break;
@@ -136,18 +138,6 @@ public class DeviceBar extends RelativeLayout {
 
     public void setDevice(Device device) {
         this.device = device;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        boolean equal = false;
-
-        if (object != null && object instanceof DeviceBar) {
-            if(this.device.getId() == ((DeviceBar) object).getDevice().getId()){
-                equal = true;
-            }
-        }
-        return equal;
     }
 
     private void checked(final ActivatorState<Boolean> state, final Activator activator) {
@@ -206,5 +196,18 @@ public class DeviceBar extends RelativeLayout {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
         }.execute();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof DeviceBar)) return false;
+        DeviceBar deviceBar = (DeviceBar) object;
+        return (this == deviceBar || (this.getDevice().equals(deviceBar.getDevice())));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getDevice().hashCode();
+        return result;
     }
 }

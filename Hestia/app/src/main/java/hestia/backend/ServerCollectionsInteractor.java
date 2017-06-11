@@ -10,8 +10,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.rugged.application.hestia.R;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
