@@ -41,7 +41,6 @@
     <string name="changeUserPass">Change user/pass</string>
     <string name="login">login</string>
     <string name="logoutExtraValue">logout</string>
-    <string name="mystore_password">some-password</string>
     <string name="fixedFieldCol">collection</string>
     <string name="fixedFieldPlugin">plugin</string>
     <string name="passOldWrong">Old password is incorrect </string>
