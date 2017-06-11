@@ -20,7 +20,7 @@ public class ExceptionFactory {
     }
 
 
-    public ServerException getException(){
+    public ServerException getException(    ){
         String exceptionName=exception.get("exception").getAsString();
         JsonObject details=exception.get("details").getAsJsonObject();
         switch(exceptionName){

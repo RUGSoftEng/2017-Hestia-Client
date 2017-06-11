@@ -14,6 +14,7 @@ import java.util.HashMap;
 import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
+import hestia.backend.exceptions.ServerExceptions.ServerException;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
 import static junit.framework.Assert.assertNull;
@@ -92,7 +93,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = ComFaultException.class)
-    public void getDevicesTestComFaultException() throws IOException, ComFaultException {
+    public void getDevicesTestComFaultException() throws IOException, ComFaultException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);

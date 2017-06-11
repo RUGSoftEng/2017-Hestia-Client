@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import hestia.backend.exceptions.ComFaultException;
+import hestia.backend.exceptions.ExceptionFactory;
+import hestia.backend.exceptions.ServerExceptions.ServerException;
 import hestia.backend.models.Device;
 import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.RequiredInfo;
@@ -24,12 +26,13 @@ import hestia.backend.models.deserializers.RequiredInfoDeserializer;
  */
 public class ServerCollectionsInteractor implements Serializable{
     private NetworkHandler handler;
+    ExceptionFactory factory;
 
     public ServerCollectionsInteractor(NetworkHandler handler){
         this.handler = handler;
     }
 
-    public ArrayList<Device> getDevices() throws IOException, ComFaultException {
+    public ArrayList<Device> getDevices() throws IOException, ServerException {
         String endpoint = "devices/";
         JsonElement payload = handler.GET(endpoint);
         if(payload.isJsonArray()) {
@@ -44,14 +47,12 @@ public class ServerCollectionsInteractor implements Serializable{
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
-            String error = jsonObject.get("error").getAsString();
-            String message = jsonObject.get("message").getAsString();
-            throw new ComFaultException(error, message);
+            factory=new ExceptionFactory(jsonObject.get("error").getAsJsonObject());
+            throw factory.getException();
         }
     }
 
-    public void sendLoginData(String username, String password) throws IOException,
-            ComFaultException {
+    public void sendLoginData(String username, String password) throws IOException, ServerException {
         JsonObject loginData = new JsonObject();
         loginData.addProperty("username",username);
         loginData.addProperty("password",password);
@@ -60,12 +61,13 @@ public class ServerCollectionsInteractor implements Serializable{
         if(result.isJsonObject()){
             JsonObject object = result.getAsJsonObject();
             if(object.has("error")){
-                throw new ComFaultException(object.get("error").getAsString(),object.get("message").getAsString());
+                factory=new ExceptionFactory(object.get("error").getAsJsonObject());
+                throw factory.getException() ;
             }
         }
     }
 
-    public void addDevice(RequiredInfo info) throws IOException, ComFaultException {
+    public void addDevice(RequiredInfo info) throws IOException,ServerException {
         JsonObject send = new JsonObject();
         send.addProperty("collection", info.getCollection());
         send.addProperty("plugin_name", info.getPlugin());
@@ -79,50 +81,62 @@ public class ServerCollectionsInteractor implements Serializable{
         if(payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+              factory=new ExceptionFactory(object.get("error").getAsJsonObject());
+                throw factory.getException();
             }
         }
     }
 
-    public void removeDevice(Device device) throws IOException, ComFaultException {
+    public void removeDevice(Device device) throws IOException,ServerException {
         String endpoint = "devices/" + device.getId();
         JsonElement payload = handler.DELETE(endpoint);
         if(payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
             if(jsonObject.has("error")) {
-                String error = jsonObject.get("error").getAsString();
-                String message = jsonObject.get("message").getAsString();
-                throw new ComFaultException(error, message);
+                factory=new ExceptionFactory(jsonObject.get("error").getAsJsonObject());
+                throw factory.getException();
+
             }
         }
     }
 
-    public ArrayList<String> getCollections() throws IOException, ComFaultException {
+    public ArrayList<String> getCollections() throws IOException, ServerException {
         String endpoint = "plugins";
         JsonElement payload = handler.GET(endpoint);
+        if(payload.isJsonObject()){
+            JsonObject object = payload.getAsJsonObject();
+            if(object.has("error")){
+                factory=new ExceptionFactory(object.get("error").getAsJsonObject());
+                throw factory.getException();
+            }
+        }
         ArrayList<String> collections = this.parseInfo(payload);
         return collections;
     }
 
-    public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
+    public ArrayList<String> getPlugins(String collection) throws IOException, ServerException {
         String endpoint = "plugins/" + collection;
         JsonElement payload = handler.GET(endpoint);
+        if(payload.isJsonObject()){
+            JsonObject object = payload.getAsJsonObject();
+            if(object.has("error")){
+                factory=new ExceptionFactory(object.get("error").getAsJsonObject());
+                throw factory.getException();
+            }
+        }
         ArrayList<String> plugins = this.parseInfo(payload);
         return plugins;
     }
 
-    public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
+    public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ServerException {
         String endpoint = "plugins/" + collection + "/plugins/" + plugin;
         JsonElement payload = handler.GET(endpoint);
         RequiredInfo requiredInfo = null;
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+               factory = new ExceptionFactory(object.get("error").getAsJsonObject());
+                throw factory.getException();
             } else {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
@@ -133,7 +147,7 @@ public class ServerCollectionsInteractor implements Serializable{
         return requiredInfo;
     }
 
-    private ArrayList<String> parseInfo(JsonElement element) throws ComFaultException {
+    private ArrayList<String> parseInfo(JsonElement element) throws ServerException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         ArrayList<String> list = new ArrayList<>();
@@ -143,8 +157,8 @@ public class ServerCollectionsInteractor implements Serializable{
         } else if (element != null && element.isJsonObject()) {
             JsonObject object = element.getAsJsonObject();
             if(object.has("error")) {
-                ComFaultException comFaultException = gson.fromJson(element, ComFaultException.class);
-                throw comFaultException;
+              factory= new ExceptionFactory(object.get("error").getAsJsonObject());
+                throw factory.getException();
             }
         }
         return list;
