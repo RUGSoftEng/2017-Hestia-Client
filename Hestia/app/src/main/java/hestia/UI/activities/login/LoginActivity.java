@@ -1,26 +1,26 @@
 package hestia.UI.activities.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.rugged.application.hestia.R;
 
-import java.io.IOException;
+import com.rugged.application.hestia.R;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+
+import hestia.UI.HestiaApplication;
 import hestia.UI.activities.home.HomeActivity;
+import hestia.UI.dialogs.DiscoverServerDialog;
 import hestia.backend.NetworkHandler;
-import hestia.backend.ServerCollectionsInteractor;
-import hestia.backend.exceptions.ComFaultException;
 
 /**
  *  This class handles the login activity.
@@ -28,53 +28,56 @@ import hestia.backend.exceptions.ComFaultException;
  *  Furthermore it first checks the shared preferences of the phone if the user is remembered.
  */
 
-public class LoginActivity extends Activity  {
+public class LoginActivity extends FragmentActivity {
     private Button loginButton;
+    private Button setServerButton;
     private EditText userField,passField;
     private CheckBox rememberButton;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
     private TextView attemptsText;
-    private int counter = 10;
+    private int counter;
     private String username,password;
     private static final String SALT = "RuGg3Ds0ftWarE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        Intent fromIntent = getIntent();
-        String extra = fromIntent.getStringExtra(getString(R.string.loginIntentExtra));
-
+        setContentView(R.layout.login_activity);
+        counter = Integer.valueOf(getString(R.string.initialCount));
         loginPreferences = getSharedPreferences(getString(R.string.loginPrefs), MODE_PRIVATE);
-        if(loginPreferences.getString(getString(R.string.loginPrefsUser),"").equals("")){
-            setSharedPreferences(getString(R.string.standardUser), getString(R.string.standardPass),false);
+        if(!ipSetToValidServer()){
+            showSetIpDialog();
+        } else if(rememberMeSelected()){
+            gotoMainActivity();
         }
-        Boolean saveLogin = loginPreferences.getBoolean(getString(R.string.saveLogin), false);
-        if (saveLogin) {
-            if(extra==null) {
-                gotoMainActivity();
-            }
-            else{
-                clearSaveLogin();
-            }
-        }
+        clearSaveLogin();
+        buildView();
+    }
 
+    private void buildView() {
+        initLoginButton();
+        initServerButton();
+        addWidgets();
+    }
+
+    private void addWidgets() {
         loginButton = (Button)findViewById(R.id.loginButton);
         userField = (EditText)findViewById(R.id.username);
         passField = (EditText)findViewById(R.id.password);
         rememberButton = (CheckBox) findViewById(R.id.rememberButton);
         attemptsText = (TextView)findViewById(R.id.textView4);
         attemptsText.setVisibility(View.GONE);
+    }
 
+    private void initLoginButton() {
+        loginButton = (Button)findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
-            /* Button has been clicked, get and check credentials */
             @Override
             public void onClick(View view) {
                 username = userField.getText().toString();
                 password = passField.getText().toString();
-                if(checkCredentials(username,password)){
+                if(checkCredentials(username,password)) {
                     if (rememberButton.isChecked()) {
                         setSharedPreferences(username,password,true);
                     } else {
@@ -82,20 +85,49 @@ public class LoginActivity extends Activity  {
                     }
                     showLoginToast(getString(R.string.correctLoginToast));
                     gotoMainActivity();
-                }else{
+                } else {
                     showLoginToast(getString(R.string.incorrectLoginToast));
-                    editLoginAttempts();
+                    decreaseLoginAttempts();
                 }
             }
         });
     }
 
+    private void initServerButton() {
+        setServerButton = (Button)findViewById(R.id.setServerButton);
+        setServerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSetIpDialog();
+            }
+        });
+    }
+
+    private void showSetIpDialog() {
+        DiscoverServerDialog fragment = DiscoverServerDialog.newInstance();
+        fragment.setNetworkHandler(((HestiaApplication)getApplication()).getNetworkHandler());
+        fragment.show(getSupportFragmentManager(), "tag");
+    }
+
+    private boolean rememberMeSelected() {
+        if(loginPreferences.getString(getString(R.string.loginPrefsUser),"").equals("")){
+            setSharedPreferences(getString(R.string.standardUser), getString(R.string.standardPass), false);
+        }
+        Boolean saveLogin = loginPreferences.getBoolean(getString(R.string.saveLogin), false);
+        return saveLogin;
+    }
+
+    private boolean ipSetToValidServer() {
+        NetworkHandler handler = ((HestiaApplication) this.getApplication()).getNetworkHandler();
+        return (handler != null && !(handler.getIp() == null || handler.getIp().isEmpty()));
+    }
+
     private boolean checkCredentials(String username,String password){
-        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), "");
-        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), "");
+        String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), hashString("admin"));
+        String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString("password"));
         String hashedUser = hashString(username);
         String hashedPass = hashString(password);
-        return(hashedUser.equals(corrUser)&&hashedPass.equals(corrPass));
+        return (hashedUser.equals(corrUser) && hashedPass.equals(corrPass));
     }
 
     private void gotoMainActivity(){
@@ -118,7 +150,7 @@ public class LoginActivity extends Activity  {
         loginPrefsEditor.apply();
     }
 
-    private void editLoginAttempts(){
+    private void decreaseLoginAttempts(){
         attemptsText.setVisibility(View.VISIBLE);
         counter--;
         attemptsText.setText(String.format(Locale.getDefault(), "%d",counter));

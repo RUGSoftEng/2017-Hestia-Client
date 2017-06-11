@@ -8,7 +8,6 @@ import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.NetworkHandler;

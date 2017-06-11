@@ -3,7 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="black">#000000</color>
     <color name="loginHighlight">#37ff37</color>
     <color name="white">#FFFFFF</color>
     <color name="hint">#a7a7a7</color>
@@ -14,5 +13,4 @@
     <color name="textitem">#25224A</color>
     <color name="fab">#25224A</color>
     <color name="switch_color">#25224A</color>
-
 </resources>

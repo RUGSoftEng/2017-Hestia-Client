@@ -16,7 +16,6 @@
             android:background="@color/background"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
             <ImageView
-                android:id="@+id/imageView"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

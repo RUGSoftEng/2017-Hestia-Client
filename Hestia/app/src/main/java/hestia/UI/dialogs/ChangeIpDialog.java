@@ -1,23 +1,28 @@
 package hestia.UI.dialogs;
 
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.rugged.application.hestia.R;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import hestia.backend.ServerCollectionsInteractor;
 
 /**
  * This class represents the dialog screen with which the IP-address of the server is asked from the
  * user.
  */
-
 public class ChangeIpDialog extends HestiaDialog {
-    private final static String TAG = "ChangeIpDialog";
-    private String ip;
     private EditText ipField;
+    private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
     public static ChangeIpDialog newInstance() {
@@ -31,42 +36,52 @@ public class ChangeIpDialog extends HestiaDialog {
 
     @Override
     String buildTitle() {
-        return "Change IP";
+        return getString(R.string.changeIpTitle);
     }
 
     @Override
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.ip_dialog, null);
+        View view = inflater.inflate(R.layout.discover_server_dialog, null);
 
         ipField = (EditText) view.findViewById(R.id.ip);
         ipField.setRawInputType(Configuration.KEYBOARD_12KEY);
 
         String currentIP = serverCollectionsInteractor.getHandler().getIp();
         if (currentIP == null) {
-            ipField.setHint("Enter ip here");
+            ipField.setHint(getString(R.string.setIpHint));
         } else {
             ipField.setText(currentIP);
         }
-
         return view;
     }
 
+    /**
+     * After pressing confirm the entered ip is checked and, if it is a valid address,
+     * sent to the handler. A text message is displayed to the user showing the new IP-address.
+     */
     @Override
     void pressConfirm() {
-        ip = ipField.getText().toString();
-        Log.i(TAG, "My ip is now:" + ip);
-        if(ip!=null) {
+        String ip = ipField.getText().toString();
+        if(checkIp(ip)) {
             serverCollectionsInteractor.getHandler().setIp(ip);
-            Log.i(TAG, "My ip is changed to: " + ip);
-            Toast.makeText(getContext(), serverCollectionsInteractor.getHandler()
-                            .getIp(),
-                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(),getString(R.string.incorr_ip),Toast.LENGTH_SHORT).show();
+            refreshUserInterface();
         }
     }
 
+    /**
+     * Pressing cancel on the dialog simply displays a text message.
+     */
     @Override
     void pressCancel() {
-        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
+        refreshUserInterface();
+    }
+
+    private boolean checkIp(String ip) {
+        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
     }
 }

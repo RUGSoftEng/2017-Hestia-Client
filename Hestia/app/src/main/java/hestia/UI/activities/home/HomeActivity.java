@@ -4,72 +4,64 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
+import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.SSLSocketFactory;
-
+import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
-import hestia.UI.dialogs.ChangeIpDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
-public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
+/**
+ * This activity marks the main screen for the app. It contains the serverCollectionsInteractor for
+ * talking to the server.
+ */
+public class HomeActivity extends AppCompatActivity implements OnMenuItemClickListener {
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects;
     private ServerCollectionsInteractor serverCollectionsInteractor;
-
-    private final int IP = 1;
-    private final int CHANGECREDENTIALS = 2;
-    private final int LOGOUT = 3;
+    private final int CHANGECREDENTIALS = 1;
+    private final int LOGOUT = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.home_activity);
 
-        setupCache();
+        setupServerCollectionInteractor();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-
-        if (fragment == null) {
-            fragment = new DeviceListFragment(this.getApplicationContext(), this.serverCollectionsInteractor);
-            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
+        DeviceListFragment fragment = DeviceListFragment.newInstance();
+        fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
+        fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         menuObjects = getMenuObjects();
+
         initMenuFragment();
 
         mMenuDialogFragment.setItemClickListener(this);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -84,21 +76,39 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         super.onDestroy();
     }
 
+    /**
+     * This method retrieves the IP as it is currently set in the networkHandler of the
+     * serverCollectionsInteractor and adds it to the SharedPreferences. The SharedPreferences
+     * object can be used as a local database on the Android platform.
+     */
     private void storeIP() {
         SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
-        prefs.edit().putString(getString(R.string.ipOfServer)
-                ,serverCollectionsInteractor.getHandler().getIp()).apply();
+        prefs.edit().putString(getString(R.string.ipOfServer), serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
-    private void setupCache() {
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
-        String ip = prefs.getString(getString(R.string.ipOfServer)
-                , getApplicationContext().getString(R.string.default_ip));
-        NetworkHandler handler = new NetworkHandler(ip, Integer.valueOf(
-                getApplicationContext().getString(R.string.default_port)));
+    /**
+     * Creates a new networkHandler and serverCollectionsInteractor. These classes are used for
+     * communicating with the server.
+     */
+    private void setupServerCollectionInteractor() {
+        NetworkHandler handler = ((HestiaApplication)this.getApplication()).getNetworkHandler();
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
     }
 
+    /**
+     * This method contacts the server to update the list of devices in the GUI if a change has
+     * occurred.
+     */
+    public void refreshUserInterface(){
+        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
+        if(fragment != null){
+            fragment.populateUI();
+        }
+    }
+
+    /**
+     * This method creates the fragment for the Menu in the top right corner of the application.
+     */
     private void initMenuFragment() {
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
@@ -109,23 +119,16 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> objects = new ArrayList<>();
-        MenuObject close = new MenuObject();
-        close.setResource(R.drawable.ic_action);
-        objects.add(close);
-
-        MenuObject ip = new MenuObject(getString(R.string.setIp));
-        ip.setResource(R.mipmap.ic_router);
-        objects.add(ip);
-
-        MenuObject changeCredentials = new MenuObject(getString(R.string.changeUserPass));
-        changeCredentials.setResource(R.mipmap.ic_key);
-        objects.add(changeCredentials);
-
-        MenuObject logout = new MenuObject(getString(R.string.logout));
-        logout.setResource(R.mipmap.ic_exit_to_app);
-        objects.add(logout);
-
+        addMenuObjects(objects, R.drawable.ic_action, null);
+        addMenuObjects(objects, R.mipmap.ic_key, getString(R.string.changeUserPass));
+        addMenuObjects(objects, R.mipmap.ic_exit_to_app, getString(R.string.logout));
         return objects;
+    }
+
+    private void addMenuObjects(List<MenuObject> objectList, int id, String title) {
+        MenuObject obj = new MenuObject(title);
+        obj.setResource(id);
+        objectList.add(obj);
     }
 
     @Override
@@ -142,7 +145,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
                     mMenuDialogFragment.show(fragmentManager, "ContextMenuDialogFragment");
                 }
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -151,16 +153,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     @Override
     public void onMenuItemClick(View clickedView, int position) {
         switch(position) {
-            case IP:
-                showIpDialog();
-                break;
             case CHANGECREDENTIALS:
                 showChangeCredentialsDialog();
                 break;
             case LOGOUT:
                 gotoLoginActivity();
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -170,16 +170,8 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         startActivity(toIntent);
         finish();
     }
-
-    private void showIpDialog() {
-        ChangeIpDialog fragment = ChangeIpDialog.newInstance();
-        fragment.setInteractor(serverCollectionsInteractor);
-        fragment.show(getSupportFragmentManager(), "dialog");
-    }
-
     private void showChangeCredentialsDialog() {
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
     }
-
 }

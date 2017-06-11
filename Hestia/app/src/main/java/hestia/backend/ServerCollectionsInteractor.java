@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
-import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.RequiredInfo;
+import hestia.backend.models.deserializers.DeviceDeserializer;
 import hestia.backend.models.deserializers.RequiredInfoDeserializer;
 
 /**
@@ -163,4 +164,5 @@ public class ServerCollectionsInteractor implements Serializable{
             device.setHandler(this.handler);
         }
     }
+
 }
