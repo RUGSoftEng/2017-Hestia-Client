@@ -1,16 +1,14 @@
 package hestia.backend.exceptions.ServerExceptions;
 
-import com.google.gson.JsonObject;
 
 public class InvalidStateException extends ServerException {
 
     String expectedType;
     String valueType;
 
-    public InvalidStateException(String error, JsonObject details){
-        super(error);
-        expectedType= details.get("expected_type").getAsString();
-        valueType= details.get("value_type").getAsString();
+    public InvalidStateException(String expectedType,String valueType){
+        this.expectedType=expectedType;
+        this.valueType=valueType;
     }
 
     public String getExpectedType() {

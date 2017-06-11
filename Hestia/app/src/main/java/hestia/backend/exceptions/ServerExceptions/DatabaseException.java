@@ -7,10 +7,9 @@ public class DatabaseException extends ServerException {
     String type;
     String message;
 
-    public DatabaseException(String error, JsonObject details){
-        super(error);
-        type= details.get("type").getAsString();
-        message=details.get("message").getAsString();
+    public DatabaseException(String type,String message){
+        this.type=type;
+        this.message=message;
     }
 
     public String getType() {

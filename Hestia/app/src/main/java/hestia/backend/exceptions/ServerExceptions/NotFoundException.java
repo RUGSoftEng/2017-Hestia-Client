@@ -5,9 +5,8 @@ import com.google.gson.JsonObject;
 public class NotFoundException extends ServerException {
     String type;
 
-    public NotFoundException(String error, JsonObject details){
-        super(error);
-        type = details.get("type").getAsString();
+    public NotFoundException(String type){
+        this.type = type;
     }
 
     public String getType() {
