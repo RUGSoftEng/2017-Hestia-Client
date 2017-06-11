@@ -5,5 +5,10 @@ public class UndefinedServerException extends ServerException {
         public UndefinedServerException(){
             message= "InternalServerError";
         }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
+}
 

@@ -19,24 +19,18 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class SetupFailedExceptionTest {
     private SetupFailedException testException;
-    private JsonObject testDetails=new JsonObject();
-    private String testError;
     private String field;
     private String hint;
 
     @Before
     public void setUp() {
-        testError="testError";
         field="testfield";
         hint= "error hint";
-        testDetails.addProperty("field",field);
-        testDetails.addProperty("hint",hint);
-        testException = new SetupFailedException(testError,testDetails);
+        testException = new SetupFailedException(field,hint);
 
     }
     @Test
     public void ExceptionTest(){
-        assertEquals("testError",testException.getError());
         assertEquals("error hint",testException.getHint());
         assertEquals("testfield",testException.getField());
     }

@@ -18,23 +18,17 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class DataBaseExceptionTest {
     private DatabaseException testException;
-    private JsonObject testDetails=new JsonObject();
-    private String testError;
     private String type;
     private String message;
 
     @Before
     public void setUp() {
-        testError="testError";
         type="testType";
         message= "error message";
-        testDetails.addProperty("type",type);
-        testDetails.addProperty("message",message);
-        testException   = new DatabaseException(testError,testDetails);
+        testException   = new DatabaseException(type,message);
     }
     @Test
     public void ExceptionTest(){
-        assertEquals("testError",testException.getError());
         assertEquals("error message",testException.getMessage());
         assertEquals("testType",testException.getType());
     }

@@ -13,23 +13,17 @@ import static org.junit.Assert.assertEquals;
 
 public class InvalidStateExceptionTest {
     private InvalidStateException testException;
-    private JsonObject testDetails=new JsonObject();
-    private String testError;
     private String testExpectedType;
     private String testActualType;
 
     @Before
     public void setUp() {
-        testError="testError";
         testExpectedType="test";
         testActualType="bool";
-        testDetails.addProperty("expected_type",testExpectedType);
-        testDetails.addProperty("value_type",testActualType);
-        testException = new InvalidStateException(testError,testDetails);
+        testException = new InvalidStateException(testExpectedType,testActualType);
     }
     @Test
     public void ExceptionTest(){
-        assertEquals("testError",testException.getError());
         assertEquals("test",testException.getExpectedType());
         assertEquals("bool",testException.getValueType());
     }

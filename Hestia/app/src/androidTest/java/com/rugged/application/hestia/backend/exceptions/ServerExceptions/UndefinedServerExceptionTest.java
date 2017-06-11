@@ -13,16 +13,14 @@ import static org.junit.Assert.assertEquals;
 
 public class UndefinedServerExceptionTest {
     private UndefinedServerException testException;
-    private String testError;
 
     @Before
     public void setUp() {
-        testError="testError";
-        testException = new UndefinedServerException(testError);
+        testException = new UndefinedServerException();
 
     }
     @Test
     public void ExceptionTest(){
-        assertEquals("testError",testException.getError());
+        assertEquals("InternalServerError",testException.getMessage());
     }
 }
