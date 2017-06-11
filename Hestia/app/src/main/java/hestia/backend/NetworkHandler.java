@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.rugged.application.hestia.R;
 
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 
@@ -24,6 +25,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import hestia.UI.HestiaApplication;
 
 
 /**
@@ -166,16 +169,6 @@ public class NetworkHandler extends Application {
         return "https://" + ip + ":" + port + "/";
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (!(object instanceof NetworkHandler)) return false;
-
-        NetworkHandler networkHandler = (NetworkHandler) object;
-        if (!this.getPort().equals(networkHandler.getPort())) return false;
-        return this.getIp().equals(networkHandler.getIp());
-    }
-
     /**
      * This code creates a socketFactory which trusts all certificates. <b>WARNING</b> this cannot
      * be used in production code as it leaves the app vulnerable to MITM attacks.
@@ -208,5 +201,20 @@ public class NetworkHandler extends Application {
         } catch (GeneralSecurityException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof NetworkHandler)) return false;
+        NetworkHandler networkHandler = (NetworkHandler) object;
+        return (this == networkHandler || (this.getPort().equals(networkHandler.getPort()) &&
+                                           this.getIp().equals(networkHandler.getIp())));
+    }
+
+    @Override
+    public int hashCode() {
+        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
+        int result = getIp().hashCode() * multiplier + getPort().hashCode();
+        return result;
     }
 }

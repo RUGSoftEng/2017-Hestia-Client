@@ -58,4 +58,6 @@
     <string name="serverFound">Server Found: </string>
     <string name="serverNotFound">Server Not Found</string>
     <string name="findServerTitle">"Find server"</string>
+    <string name="hashCodeMultiplier">31</string>
+    <string name="toggleRank">0</string>
 </resources>
