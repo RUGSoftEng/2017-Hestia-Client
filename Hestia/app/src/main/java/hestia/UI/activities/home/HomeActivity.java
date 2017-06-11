@@ -34,13 +34,6 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     private List<MenuObject> menuObjects;
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
-    private static final String HESTIA_IP = "HESTIA.IP";
-    private static final String SERVER_IP = "IP_OF_SERVER";
-    private final String changeIpText = "Set IP ";
-    public static final String logoutText = "Logout ";
-    public static final String changeCredentialsText = "Change user/pass";
-    private final String extraName = "login";
-    private final String logoutExtraValue = "logout";
     private final int IP = 1;
     private final int CHANGECREDENTIALS = 2;
     private final int LOGOUT = 3;
@@ -88,8 +81,9 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
     }
 
     private void storeIP() {
-        SharedPreferences prefs = getSharedPreferences(HESTIA_IP, Context.MODE_PRIVATE);
-        prefs.edit().putString(SERVER_IP,serverCollectionsInteractor.getHandler().getIp()).apply();
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
+        prefs.edit().putString(getString(R.string.ipOfServer)
+                ,serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
     private void setupServerCollectionInteractor() {
@@ -116,15 +110,15 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         close.setResource(R.drawable.ic_action);
         objects.add(close);
 
-        MenuObject ip = new MenuObject(changeIpText);
+        MenuObject ip = new MenuObject(getString(R.string.setIp));
         ip.setResource(R.mipmap.ic_router);
         objects.add(ip);
 
-        MenuObject changeCredentials = new MenuObject(changeCredentialsText);
+        MenuObject changeCredentials = new MenuObject(getString(R.string.changeUserPass));
         changeCredentials.setResource(R.mipmap.ic_key);
         objects.add(changeCredentials);
 
-        MenuObject logout = new MenuObject(logoutText);
+        MenuObject logout = new MenuObject(getString(R.string.logout));
         logout.setResource(R.mipmap.ic_exit_to_app);
         objects.add(logout);
 
@@ -169,7 +163,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
 
     private void gotoLoginActivity() {
         Intent toIntent = new Intent(HomeActivity.this, LoginActivity.class);
-        toIntent.putExtra(extraName, logoutExtraValue);
+        toIntent.putExtra(getString(R.string.login), getString(R.string.logoutExtraValue));
         startActivity(toIntent);
         finish();
     }

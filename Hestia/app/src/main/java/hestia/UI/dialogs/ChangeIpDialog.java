@@ -1,18 +1,12 @@
 package hestia.UI.dialogs;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
-
 import hestia.backend.ServerCollectionsInteractor;
 
 /**
@@ -24,7 +18,6 @@ public class ChangeIpDialog extends HestiaDialog {
     private final static String TAG = "ChangeIpDialog";
     private String ip;
     private EditText ipField;
-
     private ServerCollectionsInteractor serverCollectionsInteractor;
 
     public static ChangeIpDialog newInstance() {

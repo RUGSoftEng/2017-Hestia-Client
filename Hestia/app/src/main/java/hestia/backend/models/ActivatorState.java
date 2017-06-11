@@ -1,6 +1,9 @@
 package hestia.backend.models;
 
 import com.google.gson.JsonPrimitive;
+import com.rugged.application.hestia.R;
+
+import hestia.UI.HestiaApplication;
 import hestia.backend.models.deserializers.ActivatorDeserializer;
 
 /**
@@ -75,21 +78,18 @@ public class ActivatorState<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ActivatorState)) return false;
-
-        ActivatorState<?> that = (ActivatorState<?>) o;
-
-        if (!getRawState().equals(that.getRawState())) return false;
-        return getType().equals(that.getType());
+    public boolean equals(Object object) {
+        if(!(object instanceof ActivatorState)) return false;
+        ActivatorState activatorState = (ActivatorState) object;
+        return (this == activatorState || (this.getType().equals(activatorState.getType()) &&
+                                           this.getRawState().equals(activatorState.getRawState())));
 
     }
 
     @Override
     public int hashCode() {
-        int result = getRawState().hashCode();
-        result = 31 * result + getType().hashCode();
+        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
+        int result = getRawState().hashCode() * multiplier + getType().hashCode();
         return result;
     }
 }
