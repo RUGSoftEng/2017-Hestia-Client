@@ -19,17 +19,10 @@ import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
 
 /**
-<<<<<<< HEAD
- * This class opens the dialog to enter the collection name and plugin name.
- * It then sends this to the networkHandler which tries to get the required info.
- * If this works it consecutively opens a new dialog for the other info.
-=======
  * This class opens a dialog to enter the collection name and plugin name.
  * It then sends this information to the networkHandler which tries to obtain the required info from
  * the server. If this works it consecutively opens a new dialog so the user can enter the specific
  * information relevant to the device.
->>>>>>> test/dialogTests
- *
  * @see EnterRequiredInfoDialog
  */
 
