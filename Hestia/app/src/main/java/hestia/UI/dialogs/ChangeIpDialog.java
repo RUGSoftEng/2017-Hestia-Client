@@ -65,6 +65,7 @@ public class ChangeIpDialog extends HestiaDialog {
                     Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(),getString(R.string.incorr_ip),Toast.LENGTH_SHORT).show();
+            refreshUserInterface();
         }
     }
 

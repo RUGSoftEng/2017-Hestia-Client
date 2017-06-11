@@ -20,6 +20,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import hestia.UI.HestiaApplication;
+
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.UI.dialogs.ChangeIpDialog;
@@ -41,7 +43,8 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        setupCache();
+        setupServerCollectionInteractor();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -51,6 +54,7 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
         fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
         fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         menuObjects = getMenuObjects();
+
         initMenuFragment();
 
         mMenuDialogFragment.setItemClickListener(this);
@@ -79,13 +83,14 @@ public  class HomeActivity extends AppCompatActivity implements OnMenuItemClickL
                 ,serverCollectionsInteractor.getHandler().getIp()).apply();
     }
 
-    private void setupCache() {
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.hestiaIp), Context.MODE_PRIVATE);
-        String ip = prefs.getString(getString(R.string.ipOfServer)
-                , getApplicationContext().getString(R.string.default_ip));
-        NetworkHandler handler = new NetworkHandler(ip, Integer.valueOf(
-                getApplicationContext().getString(R.string.default_port)));
+    private void setupServerCollectionInteractor() {
+        NetworkHandler handler = ((HestiaApplication)this.getApplication()).getNetworkHandler();
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
+    }
+
+    public void refreshUserInterface(){
+        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
+        fragment.populateUI();
     }
 
     private void initMenuFragment() {

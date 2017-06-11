@@ -76,7 +76,7 @@ public class DeviceListFragment extends Fragment {
         return deviceListView;
     }
     
-    private void populateUI() {
+    public void populateUI() {
         new AsyncTask<Object, String, ArrayList<Device> >() {
             @Override
             protected ArrayList<Device>  doInBackground(Object... params) {
