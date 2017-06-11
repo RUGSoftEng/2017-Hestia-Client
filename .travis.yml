@@ -33,24 +33,7 @@ before_install:
 install:
     - bash gradlew tasks --all --stacktrace --info
 
-before_script:
-    - android update sdk --no-ui --filter build-tools-25.0.3,android-25,extra-android-m2repository
-    # Start emulator
-    - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
-    - emulator -avd test -no-audio -no-window &
-    - android-wait-for-emulator
-    - adb shell input keyevent 82 &
-
 script:
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.exceptions.ComFaultExceptionTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.deserializers.ActivatorDeserializerTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.ActivatorStateTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.ActivatorTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.DeviceTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.models.RequiredInfoTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.NetworkHandlerTest
-    - bash gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rugged.application.hestia.backend.ServerCollectionsInteractorTest
-
     - bash gradlew app:createDebugCoverageReport
 
 after_failure:
