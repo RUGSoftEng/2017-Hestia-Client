@@ -23,9 +23,7 @@ android:
     - addon-google_apis-google-19
 
     #System images
-    - sys-img-armeabi-v7a-android-22
-    - sys-img-armeabi-v7a-android-17
-
+    - sys-img-armeabi-v7a-android-26
 before_install:
   # copy the licenses to the correct file on the Travis system
     - pip install --user codecov    #Install codecov
