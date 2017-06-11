@@ -56,7 +56,7 @@
     <string name="ioExceptionMessage">Could not connect to the server</string>
     <string name="enterIpHint">Enter ip here</string>
     <string name="credentialsCorrectlyChanged">Credentials successfully changed</string>
-    <string name="addDeviceTitle">new Add device</string>
+    <string name="addDeviceTitle">Add device</string>
     <string name="changeCredentialsTile">Change credentials</string>
     <string name="changeIpTitle">Change IP</string>
     <string name="changeNameTitle">Change name</string>
