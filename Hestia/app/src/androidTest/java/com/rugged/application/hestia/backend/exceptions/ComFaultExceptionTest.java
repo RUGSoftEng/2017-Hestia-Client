@@ -2,11 +2,13 @@ package com.rugged.application.hestia.backend.exceptions;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import com.rugged.application.hestia.R;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -21,7 +23,7 @@ public class ComFaultExceptionTest {
     @Before
     public void setUp() {
         DEFAULT_ERROR = "default_error";
-        DEFAULT_MESSAGE = "An error occured";
+        DEFAULT_MESSAGE = HestiaApplication.getContext().getString(R.string.errorMessage);
         dummyComFaultException = new ComFaultException(DEFAULT_ERROR);
         assertNotNull(dummyComFaultException);
     }
