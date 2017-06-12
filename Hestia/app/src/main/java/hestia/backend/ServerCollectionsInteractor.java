@@ -106,17 +106,15 @@ public class ServerCollectionsInteractor implements Serializable {
     }
 
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
-        String endpoint = "plugins";
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginPathFront);
         JsonElement payload = handler.GET(endpoint);
-        ArrayList<String> collections = this.parseInfo(payload);
-        return collections;
+        return this.parseInfo(payload);
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
         String endpoint = HestiaApplication.getContext().getString(R.string.pluginsPath) + collection;
         JsonElement payload = handler.GET(endpoint);
-        ArrayList<String> plugins = this.parseInfo(payload);
-        return plugins;
+        return this.parseInfo(payload);
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
