@@ -124,7 +124,6 @@ public class DiscoverServerDialog extends HestiaDialog {
             handler.setIp(ip);
         } else {
             Toast.makeText(getContext(), getString(R.string.incorrIp), Toast.LENGTH_SHORT).show();
-            refreshUserInterface();
         }
     }
 
