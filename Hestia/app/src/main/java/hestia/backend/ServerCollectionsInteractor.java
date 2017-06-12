@@ -112,6 +112,14 @@ public class ServerCollectionsInteractor implements Serializable{
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
         String endpoint = "plugins/" + collection;
         JsonElement payload = handler.GET(endpoint);
+        if(payload!=null&&payload.isJsonObject()){
+            JsonObject object = payload.getAsJsonObject();
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
+            }
+        }
         ArrayList<String> plugins = this.parseInfo(payload);
         return plugins;
     }
@@ -146,8 +154,9 @@ public class ServerCollectionsInteractor implements Serializable{
         } else if (element != null && element.isJsonObject()) {
             JsonObject object = element.getAsJsonObject();
             if(object.has("error")) {
-                ComFaultException comFaultException = gson.fromJson(element, ComFaultException.class);
-                throw comFaultException;
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
         return list;
