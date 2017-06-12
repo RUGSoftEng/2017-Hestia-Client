@@ -55,10 +55,33 @@ public class DeviceBar extends RelativeLayout {
 
         ImageView imageview = (ImageView) this.findViewById(R.id.imageview);
 
+
+
+        AddSwitch(device);
+
+        if (deviceHasSlider()) {
+            this.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new SlidersDialog(getContext(), device).show();
+                }
+            });
+        }
+
+        addClickListener(imageview);
+    }
+
+    /**
+     * This method is called to determine whether the DeviceBar should add a switch and if it does,
+     * what state the switch should be in (on or off), depending on the result obtained from the
+     * server.
+     *
+     * @param device        Object created in the constructor
+     */
+    private void AddSwitch(Device device) {
         final Switch hestiaSwitch = (Switch) this.findViewById(R.id.light_switch);
         hestiaSwitch.setEnabled(false);
         hestiaSwitch.setVisibility(View.INVISIBLE);
-
         for (final Activator activator : device.getActivators()) {
             int toggleRank = Integer.valueOf(context.getResources().getString(R.string.toggleRank));
             if (activator.getRank() == toggleRank) {
@@ -78,17 +101,16 @@ public class DeviceBar extends RelativeLayout {
                 break;
             }
         }
+    }
 
-        if (deviceHasSlider()) {
-            this.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new SlidersDialog(getContext(), device).show();
-                }
-            });
-        }
-
-        imageview.setOnClickListener(new View.OnClickListener() {
+    /**
+     * This method adds a clicklistener to the ImageView, such that it will pop up a menu where the
+     * user can interact with the menu.
+     *
+     * @param imageView Object receiving the clicklistener
+     */
+    private void addClickListener(ImageView imageView) {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = createPopupMenu(view);
@@ -158,6 +180,9 @@ public class DeviceBar extends RelativeLayout {
         this.device = device;
     }
 
+    /* This method checks whether the request of changing a state is successfully handled by the
+     * server.
+     */
     private void checked(final ActivatorState<Boolean> state, final Activator activator) {
         new AsyncTask<Object, String, Boolean>() {
             @Override
