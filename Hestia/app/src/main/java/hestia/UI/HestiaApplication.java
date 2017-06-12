@@ -10,10 +10,8 @@ import hestia.backend.NetworkHandler;
 
 /**
  * An extension of the Application class provided by Android, which additionally creates
- * the network handler
+ * and manages the network handler for the entire activity
  */
-
-
 public class HestiaApplication extends Application {
     private static Context mContext;
     private NetworkHandler networkHandler;
