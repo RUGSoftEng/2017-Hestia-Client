@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import hestia.UI.HestiaApplication;
@@ -60,6 +59,10 @@ public class Device {
         return handler;
     }
 
+    /**
+     * Setting the handler to the device will also set the handler to all the device's activators.
+     * @param handler NetworkHandler object used for sending requests to the server
+     */
     public void setHandler(NetworkHandler handler) {
         this.handler = handler;
         for(Activator activator : activators) {
@@ -71,6 +74,13 @@ public class Device {
         return name;
     }
 
+    /**
+     * Setting a new name to the device will trigger a PUT request, which will contain
+     * a JsonObject containing the the new name of the device.
+     * @param name the new name to be changed.
+     * @throws IOException exception generated due to a connection error.
+     * @throws ComFaultException exception generated due to faulty data sent to the server.
+     */
     public void setName(String name) throws IOException, ComFaultException {
         String endpoint = "devices/" + deviceId;
         JsonObject object = new JsonObject();

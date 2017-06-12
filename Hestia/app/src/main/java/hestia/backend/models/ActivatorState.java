@@ -2,7 +2,6 @@ package hestia.backend.models;
 
 import com.google.gson.JsonPrimitive;
 import com.rugged.application.hestia.R;
-
 import hestia.UI.HestiaApplication;
 import hestia.backend.models.deserializers.ActivatorDeserializer;
 
@@ -28,38 +27,26 @@ public class ActivatorState<T> {
         this.type = type;
     }
 
-    /**
-     * Returns the rawState, which is the actual value of the activator's state.
-     * @return the rawState of the activator's state
-     */
     public T getRawState() {
         return this.rawState;
     }
 
-    /**
-     * Replaces the current rawState of the activator's state with the specified one.
-     * @param rawState the new rawState of the activator's state
-     */
     public void setRawState(T rawState){
         this.rawState = rawState;
     }
 
-    /**
-     * Returns the type of the activator's state.
-     * @return the type of the activator's state
-     */
     public String getType(){
         return this.type;
     }
 
-    /**
-     * Replaces the current type of the activator's state with the specified one.
-     * @param type the new type of the activator's state
-     */
     public void setType(String type){
         this.type = type;
     }
 
+    /**
+     * Get the JSON representation of the RawS State, which could be a Boolean, a Float or a String.
+     * @return the JSON representation of the RawState.
+     */
     public JsonPrimitive getRawStateJSON() {
         switch (this.getType().toLowerCase()) {
             case "bool":

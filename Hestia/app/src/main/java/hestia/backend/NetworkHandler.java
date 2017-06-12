@@ -2,16 +2,13 @@ package hestia.backend;
 
 import android.app.Application;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.rugged.application.hestia.R;
-
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,12 +18,10 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import hestia.UI.HestiaApplication;
 
 
