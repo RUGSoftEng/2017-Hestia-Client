@@ -26,6 +26,9 @@ import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 
+import static com.rugged.application.hestia.R.id.fragment_container;
+import static com.rugged.application.hestia.R.id.swipe_refresh;
+
 /**
  * This activity marks the main screen for the app. It contains the serverCollectionsInteractor for
  * talking to the server.
@@ -52,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         fragmentManager = getSupportFragmentManager();
         DeviceListFragment fragment = DeviceListFragment.newInstance();
         fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
-        fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        fragmentManager.beginTransaction().add(fragment_container, fragment).commit();
         menuObjects = getMenuObjects();
 
         initMenuFragment();
@@ -101,9 +104,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * This method contacts the server to update the list of devices in the GUI if a change has
      * occurred.
      */
-    public void refreshUserInterface() {
-        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
-        if (fragment != null) {
+    public void refreshUserInterface(){
+        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
+        if(fragment != null){
             fragment.populateUI();
         }
     }
@@ -172,15 +175,23 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
     /**
      * This method moves us back to the Login screen. It is called when we press the back button
      */
-    private void gotoLoginActivity() {
+    public void gotoLoginActivity() {
         Intent toIntent = new Intent(HomeActivity.this, LoginActivity.class);
         toIntent.putExtra(getString(R.string.login), getString(R.string.logoutExtraValue));
         startActivity(toIntent);
         finish();
     }
 
-    private void showChangeCredentialsDialog() {
+    public void showChangeCredentialsDialog() {
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor){
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
+        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
+        if(fragment != null){
+            fragment.setServerCollectionsInteractor(serverCollectionsInteractor);
+        }
     }
 }

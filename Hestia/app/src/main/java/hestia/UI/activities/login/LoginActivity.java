@@ -47,10 +47,9 @@ public class LoginActivity extends FragmentActivity {
         setContentView(R.layout.login_activity);
         counter = Integer.valueOf(getString(R.string.initialCount));
         loginPreferences = getSharedPreferences(getString(R.string.loginPrefs), MODE_PRIVATE);
-        if (!ipSetToValidServer()) {
-            showSetIpDialog();
-        } else if (rememberMeSelected()) {
+        if(rememberMeSelected()){
             gotoMainActivity();
+            return;
         }
         clearSaveLogin();
         buildView();
@@ -121,12 +120,7 @@ public class LoginActivity extends FragmentActivity {
         return saveLogin;
     }
 
-    private boolean ipSetToValidServer() {
-        NetworkHandler handler = ((HestiaApplication) this.getApplication()).getNetworkHandler();
-        return (handler != null && !(handler.getIp() == null || handler.getIp().isEmpty()));
-    }
-
-    private boolean checkCredentials(String username, String password) {
+    private boolean checkCredentials(String username,String password){
         String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), hashString("admin"));
         String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString("password"));
         String hashedUser = hashString(username);
