@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -21,25 +22,27 @@ import hestia.backend.models.deserializers.RequiredInfoDeserializer;
  * This class is a facade, performing the basic operations between the User and the Server.
  * It does so using the NetworkHandler, which implements 4 requests methods:
  * GET, POST, PUT and DELETE.
+ *
  * @see NetworkHandler
  */
-public class ServerCollectionsInteractor implements Serializable{
+public class ServerCollectionsInteractor implements Serializable {
     private NetworkHandler handler;
 
-    public ServerCollectionsInteractor(NetworkHandler handler){
+    public ServerCollectionsInteractor(NetworkHandler handler) {
         this.handler = handler;
     }
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
         String endpoint = "devices/";
         JsonElement payload = handler.GET(endpoint);
-        if(payload.isJsonArray()) {
+        if (payload.isJsonArray()) {
             JsonArray jsonArray = payload.getAsJsonArray();
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(Device.class, new DeviceDeserializer(handler));
             Gson gson = gsonBuilder.create();
 
-            Type type = new TypeToken<ArrayList<Device>>(){}.getType();
+            Type type = new TypeToken<ArrayList<Device>>() {
+            }.getType();
             ArrayList<Device> devices = gson.fromJson(jsonArray, type);
             this.connectDevicesToHandler(devices);
             return devices;
@@ -54,14 +57,14 @@ public class ServerCollectionsInteractor implements Serializable{
     public void sendLoginData(String username, String password) throws IOException,
             ComFaultException {
         JsonObject loginData = new JsonObject();
-        loginData.addProperty("username",username);
-        loginData.addProperty("password",password);
+        loginData.addProperty("username", username);
+        loginData.addProperty("password", password);
         String endpoint = "login/";
-        JsonElement result = handler.PUT(loginData,endpoint);
-        if(result.isJsonObject()){
+        JsonElement result = handler.PUT(loginData, endpoint);
+        if (result.isJsonObject()) {
             JsonObject object = result.getAsJsonObject();
-            if(object.has("error")){
-                throw new ComFaultException(object.get("error").getAsString(),object.get("message").getAsString());
+            if (object.has("error")) {
+                throw new ComFaultException(object.get("error").getAsString(), object.get("message").getAsString());
             }
         }
     }
@@ -71,15 +74,15 @@ public class ServerCollectionsInteractor implements Serializable{
         send.addProperty("collection", info.getCollection());
         send.addProperty("plugin_name", info.getPlugin());
         JsonObject required = new JsonObject();
-        for(String key : info.getInfo().keySet()){
+        for (String key : info.getInfo().keySet()) {
             required.addProperty(key, info.getInfo().get(key));
         }
         send.add("required_info", required);
         String endpoint = "devices/";
         JsonElement payload = handler.POST(send, endpoint);
-        if(payload != null && payload.isJsonObject()) {
+        if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
-            if(object.has("error")) {
+            if (object.has("error")) {
                 String error = object.get("error").getAsString();
                 String message = object.get("message").getAsString();
                 throw new ComFaultException(error, message);
@@ -90,9 +93,9 @@ public class ServerCollectionsInteractor implements Serializable{
     public void removeDevice(Device device) throws IOException, ComFaultException {
         String endpoint = "devices/" + device.getId();
         JsonElement payload = handler.DELETE(endpoint);
-        if(payload != null && payload.isJsonObject()) {
+        if (payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
-            if(jsonObject.has("error")) {
+            if (jsonObject.has("error")) {
                 String error = jsonObject.get("error").getAsString();
                 String message = jsonObject.get("message").getAsString();
                 throw new ComFaultException(error, message);
@@ -120,7 +123,7 @@ public class ServerCollectionsInteractor implements Serializable{
         RequiredInfo requiredInfo = null;
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
-            if(object.has("error")) {
+            if (object.has("error")) {
                 String error = object.get("error").getAsString();
                 String message = object.get("message").getAsString();
                 throw new ComFaultException(error, message);
@@ -138,12 +141,13 @@ public class ServerCollectionsInteractor implements Serializable{
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         ArrayList<String> list = new ArrayList<>();
-        if(element != null && element.isJsonArray()) {
+        if (element != null && element.isJsonArray()) {
             JsonArray array = element.getAsJsonArray();
-            list = gson.fromJson(array, new TypeToken<ArrayList<String>>() {}.getType());
+            list = gson.fromJson(array, new TypeToken<ArrayList<String>>() {
+            }.getType());
         } else if (element != null && element.isJsonObject()) {
             JsonObject object = element.getAsJsonObject();
-            if(object.has("error")) {
+            if (object.has("error")) {
                 ComFaultException comFaultException = gson.fromJson(element, ComFaultException.class);
                 throw comFaultException;
             }
@@ -160,7 +164,7 @@ public class ServerCollectionsInteractor implements Serializable{
     }
 
     private void connectDevicesToHandler(ArrayList<Device> devices) {
-        for(Device device : devices) {
+        for (Device device : devices) {
             device.setHandler(this.handler);
         }
     }

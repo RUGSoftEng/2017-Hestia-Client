@@ -27,21 +27,17 @@ public class HestiaApplication extends Application {
 
     private void setupNetworkHandler() {
         SharedPreferences prefs = getSharedPreferences(
-                      getApplicationContext().getString(R.string.hestiaIp), Context.MODE_PRIVATE);
-        String ip = prefs.getString( getApplicationContext().getString(R.string.ipOfServer), null);
+                getApplicationContext().getString(R.string.hestiaIp), Context.MODE_PRIVATE);
+        String ip = prefs.getString(getApplicationContext().getString(R.string.ipOfServer), null);
         networkHandler = new NetworkHandler(ip, Integer.valueOf(getApplicationContext().
-                                                                getString(R.string.defaultPort)));
+                getString(R.string.defaultPort)));
     }
 
-    public NetworkHandler getNetworkHandler(){
+    public NetworkHandler getNetworkHandler() {
         return networkHandler;
     }
 
-    public void setNetworkHandler(NetworkHandler handler){
-        this.networkHandler = handler;
-    }
-
-    public static Context getContext(){
+    public static Context getContext() {
         return mContext;
     }
 }

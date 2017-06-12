@@ -28,7 +28,7 @@ import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 
 /**
- *  This class takes care of the deviceBar.
+ * This class takes care of the deviceBar.
  * The DeviceBar is the 'row' in the expandable list of a single device.
  */
 
@@ -57,14 +57,14 @@ public class DeviceBar extends RelativeLayout {
 
         ImageView imageview = (ImageView) this.findViewById(R.id.imageview);
 
-        final Switch switc = (Switch)this.findViewById(R.id.light_switch);
+        final Switch switc = (Switch) this.findViewById(R.id.light_switch);
         switc.setEnabled(false);
         switc.setVisibility(View.INVISIBLE);
 
-        for(final Activator activator : device.getActivators()){
+        for (final Activator activator : device.getActivators()) {
             int toggleRank = Integer.valueOf(context.getResources().getString(R.string.toggleRank));
-            if(activator.getRank() == toggleRank) {
-                if(activator.getState().getType().equals("bool")){
+            if (activator.getRank() == toggleRank) {
+                if (activator.getState().getType().equals("bool")) {
                     switc.setEnabled(true);
                     switc.setVisibility(View.VISIBLE);
                     final ActivatorState<Boolean> state = activator.getState();
@@ -81,7 +81,7 @@ public class DeviceBar extends RelativeLayout {
             }
         }
 
-        if(deviceHasSlider()) {
+        if (deviceHasSlider()) {
             this.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -119,7 +119,7 @@ public class DeviceBar extends RelativeLayout {
         });
     }
 
-    private PopupMenu createPopupMenu(View view){
+    private PopupMenu createPopupMenu(View view) {
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -141,11 +141,11 @@ public class DeviceBar extends RelativeLayout {
             }
         });
         return popup;
-   }
+    }
 
-    private boolean deviceHasSlider(){
-        for(Activator activator : device.getActivators()){
-            if(activator.getState().getType().equals("float")){
+    private boolean deviceHasSlider() {
+        for (Activator activator : device.getActivators()) {
+            if (activator.getState().getType().equals("float")) {
                 return true;
             }
         }
@@ -169,7 +169,7 @@ public class DeviceBar extends RelativeLayout {
                     activator.setState(state);
                     isSuccessful = true;
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
+                    Log.e(TAG, e.toString());
                     String exceptionMessage = HestiaApplication.getContext().
                             getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
@@ -199,7 +199,7 @@ public class DeviceBar extends RelativeLayout {
                     serverCollectionsInteractor.removeDevice(device);
                     isSuccessful = true;
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
+                    Log.e(TAG, e.toString());
                     String exceptionMessage = "Could not connect to the server";
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
@@ -221,7 +221,7 @@ public class DeviceBar extends RelativeLayout {
 
     @Override
     public boolean equals(Object object) {
-        if(!(object instanceof DeviceBar)) return false;
+        if (!(object instanceof DeviceBar)) return false;
         DeviceBar deviceBar = (DeviceBar) object;
         return (this == deviceBar || (this.getDevice().equals(deviceBar.getDevice())));
     }

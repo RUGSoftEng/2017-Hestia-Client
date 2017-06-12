@@ -10,19 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
-import com.rugged.application.hestia.R;
 import java.util.ArrayList;
 import java.util.List;
+
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
-import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
+import hestia.backend.ServerCollectionsInteractor;
 
 /**
  * This activity marks the main screen for the app. It contains the serverCollectionsInteractor for
@@ -91,7 +93,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * communicating with the server.
      */
     private void setupServerCollectionInteractor() {
-        NetworkHandler handler = ((HestiaApplication)this.getApplication()).getNetworkHandler();
+        NetworkHandler handler = ((HestiaApplication) this.getApplication()).getNetworkHandler();
         this.serverCollectionsInteractor = new ServerCollectionsInteractor(handler);
     }
 
@@ -99,9 +101,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * This method contacts the server to update the list of devices in the GUI if a change has
      * occurred.
      */
-    public void refreshUserInterface(){
+    public void refreshUserInterface() {
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
-        if(fragment != null){
+        if (fragment != null) {
             fragment.populateUI();
         }
     }
@@ -152,7 +154,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        switch(position) {
+        switch (position) {
             case CHANGECREDENTIALS:
                 showChangeCredentialsDialog();
                 break;
@@ -170,6 +172,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         startActivity(toIntent);
         finish();
     }
+
     private void showChangeCredentialsDialog() {
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
