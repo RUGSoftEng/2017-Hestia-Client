@@ -67,7 +67,7 @@ public class DiscoverServerDialog extends HestiaDialog {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             discoverServer();
         } else {
-            status.setText(R.string.versionToLow);
+            status.setText(R.string.versionTooLow);
         }
 
         return view;

@@ -64,7 +64,7 @@
     <string name="serverFound">Server Found: </string>
     <string name="findServerTitle">"Find server"</string>
     <string name="setIpHint">Enter ip here</string>
-    <string name="versionToLow">Android version to low</string>
+    <string name="versionTooLow">Android version too low</string>
 
     <!-- Dialog build titles -->
     <string name="addDeviceTitle">new Add device</string>
