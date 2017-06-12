@@ -45,9 +45,9 @@ public class ServerCollectionsInteractor implements Serializable{
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
-            String error = jsonObject.get("error").getAsString();
-            String message = jsonObject.get("message").getAsString();
-            throw new ComFaultException(error, message);
+            JsonObject errorObject = jsonObject.get("error").getAsJsonObject();
+            String error= errorObject.get("exception").getAsString();
+            throw new ComFaultException(error);
         }
     }
 
@@ -61,7 +61,9 @@ public class ServerCollectionsInteractor implements Serializable{
         if(result.isJsonObject()){
             JsonObject object = result.getAsJsonObject();
             if(object.has("error")){
-                throw new ComFaultException(object.get("error").getAsString(),object.get("message").getAsString());
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
@@ -80,9 +82,9 @@ public class ServerCollectionsInteractor implements Serializable{
         if(payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
@@ -93,9 +95,9 @@ public class ServerCollectionsInteractor implements Serializable{
         if(payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
             if(jsonObject.has("error")) {
-                String error = jsonObject.get("error").getAsString();
-                String message = jsonObject.get("message").getAsString();
-                throw new ComFaultException(error, message);
+                JsonObject errorObject = jsonObject.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
@@ -121,9 +123,9 @@ public class ServerCollectionsInteractor implements Serializable{
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
             if(object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             } else {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());

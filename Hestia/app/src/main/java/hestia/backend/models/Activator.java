@@ -65,8 +65,7 @@ public class Activator {
             JsonObject result = payload.getAsJsonObject();
             if(result.has("error")) {
                 String error = result.get("error").getAsString();
-                String message = result.get("message").getAsString();
-                throw new ComFaultException(error, message);
+                throw new ComFaultException(error);
             }
 
         }
