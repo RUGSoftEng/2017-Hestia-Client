@@ -14,12 +14,10 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
+import hestia.UI.HestiaApplication;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.UI.elements.DeviceBar;
 import hestia.backend.ServerCollectionsInteractor;
@@ -97,7 +95,7 @@ public class DeviceListFragment extends Fragment {
                     devices = serverCollectionsInteractor.getDevices();
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    String exceptionMessage = getString(R.string.serverNotFound);
+                    String exceptionMessage = HestiaApplication.getContext().getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -111,7 +109,9 @@ public class DeviceListFragment extends Fragment {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                if(getContext() != null) {
+                    Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

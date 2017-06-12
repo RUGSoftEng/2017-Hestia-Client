@@ -7,10 +7,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
-
 import hestia.backend.models.RequiredInfo;
 
 public class RequiredInfoDeserializer implements JsonDeserializer<RequiredInfo> {

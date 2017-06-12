@@ -13,12 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
-
-import hestia.UI.HestiaApplication;
 import hestia.UI.activities.home.HomeActivity;
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlidersDialog;
@@ -94,9 +90,7 @@ public class DeviceBar extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = createPopupMenu(view);
-
                 popup.show();
-
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

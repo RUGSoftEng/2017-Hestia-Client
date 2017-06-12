@@ -3,9 +3,7 @@ package hestia.UI;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.rugged.application.hestia.R;
-
 import hestia.backend.NetworkHandler;
 
 /**
