@@ -20,6 +20,7 @@ import hestia.backend.models.Device;
  * A JSON deserializer for the Device class.
  * It implements Google's JsonDeserializer interface, and it is used by GSON to deserialize the
  * devices from the list of devices, as well as their activators.
+ *
  * @see Device
  * @see ActivatorDeserializer
  */
@@ -46,10 +47,10 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
             throws JsonParseException {
 
         JsonObject jsonDevices = json.getAsJsonObject();
-        Log.i("JSONOBJECT - DEVICES",jsonDevices.toString());
+        Log.i("JSONOBJECT - DEVICES", jsonDevices.toString());
 
         String deviceId = jsonDevices.get("deviceId").getAsString();
-        String  type = jsonDevices.get("type").getAsString();
+        String type = jsonDevices.get("type").getAsString();
         String name = jsonDevices.get("name").getAsString();
 
         JsonArray jsonActivators = jsonDevices.get("activators").getAsJsonArray();
@@ -73,7 +74,7 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
      * @param device the device to be connected with its activators.
      */
     private void connectDeviceToActivators(ArrayList<Activator> activators, Device device) {
-        for(Activator activator : activators) {
+        for (Activator activator : activators) {
             activator.setDevice(device);
         }
     }
