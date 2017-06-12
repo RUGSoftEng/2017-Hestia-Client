@@ -128,7 +128,6 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
 
     /**
      * This methods creates a list of sliders, i.e. a list of activators of type "float".
-     *
      * @return the list of sliders of the device.
      */
     private ArrayList<Activator> getSliders() {

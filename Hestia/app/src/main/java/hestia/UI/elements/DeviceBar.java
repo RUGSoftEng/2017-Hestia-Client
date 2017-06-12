@@ -29,9 +29,8 @@ import hestia.backend.models.Device;
 
 /**
  * This class takes care of the deviceBar.
- * The DeviceBar is the 'row' in the expandable list of a single device.
+ * The DeviceBar represents a 'row' in the expandable list of a single device.
  */
-
 public class DeviceBar extends RelativeLayout {
     private Activity context;
     private Device device;
@@ -57,25 +56,25 @@ public class DeviceBar extends RelativeLayout {
 
         ImageView imageview = (ImageView) this.findViewById(R.id.imageview);
 
-        final Switch switc = (Switch) this.findViewById(R.id.light_switch);
-        switc.setEnabled(false);
-        switc.setVisibility(View.INVISIBLE);
+        final Switch hestiaSwitch = (Switch) this.findViewById(R.id.light_switch);
+        hestiaSwitch.setEnabled(false);
+        hestiaSwitch.setVisibility(View.INVISIBLE);
 
         for (final Activator activator : device.getActivators()) {
             int toggleRank = Integer.valueOf(context.getResources().getString(R.string.toggleRank));
             if (activator.getRank() == toggleRank) {
                 if (activator.getState().getType().equals("bool")) {
-                    switc.setEnabled(true);
-                    switc.setVisibility(View.VISIBLE);
+                    hestiaSwitch.setEnabled(true);
+                    hestiaSwitch.setVisibility(View.VISIBLE);
                     final ActivatorState<Boolean> state = activator.getState();
-                    switc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    hestiaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            state.setRawState(switc.isChecked());
+                            state.setRawState(hestiaSwitch.isChecked());
                             checked(state, activator);
                         }
                     });
-                    switc.setChecked(state.getRawState());
+                    hestiaSwitch.setChecked(state.getRawState());
                 }
                 break;
             }
