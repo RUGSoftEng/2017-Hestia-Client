@@ -164,6 +164,11 @@ public class LoginActivity extends FragmentActivity {
         Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * This method receives a string, which will be hashed using a salted SHA-512 hash.
+     * @param string The string to be hashed
+     * @return the hashed string
+     */
     public static String hashString(String string) {
         String hashedString = null;
         try {
