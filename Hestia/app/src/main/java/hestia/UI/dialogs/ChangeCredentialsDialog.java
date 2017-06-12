@@ -6,11 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import hestia.UI.activities.login.LoginActivity;
-
 import static com.rugged.application.hestia.R.string.standardPass;
 import static hestia.UI.activities.login.LoginActivity.hashString;
 

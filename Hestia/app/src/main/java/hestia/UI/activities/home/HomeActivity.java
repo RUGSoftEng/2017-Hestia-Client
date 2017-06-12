@@ -10,24 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.rugged.application.hestia.R;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
 import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
-
 import static com.rugged.application.hestia.R.id.fragment_container;
-import static com.rugged.application.hestia.R.id.swipe_refresh;
 
 /**
  * This activity marks the main screen for the app. It contains the serverCollectionsInteractor for

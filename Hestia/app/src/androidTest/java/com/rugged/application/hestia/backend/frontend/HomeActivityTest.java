@@ -1,50 +1,24 @@
 package com.rugged.application.hestia.backend.frontend;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.test.espresso.action.EspressoKey;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-
+import android.support.test.espresso.matcher.ViewMatchers;
+import com.rugged.application.hestia.R;
 import org.junit.After;
 import org.junit.Before;
-
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.view.KeyEvent;
-
-import com.rugged.application.hestia.R;
-
 import org.junit.Rule;
 import org.junit.Test;
-
-import hestia.UI.HestiaApplication;
-import hestia.UI.activities.home.DeviceListFragment;
 import hestia.UI.activities.home.HomeActivity;
-import hestia.UI.activities.login.LoginActivity;
 import hestia.backend.NetworkHandler;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.rugged.application.hestia.R.id.context_menu;
-import static com.rugged.application.hestia.R.id.fragment_container;
 import static hestia.UI.activities.login.LoginActivity.hashString;
-import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
-
-/**
- * Created by lars on 12-6-17.
- */
 
 public class HomeActivityTest {
     private MockServerCollectionsInteractor mockInteractor;
