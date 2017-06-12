@@ -110,7 +110,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = IOException.class)
-    public void getDevicesTestIOException() throws IOException, ComFaultException {
+    public void getDevicesTestIOException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -154,7 +154,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = ComFaultException.class)
-    public void addDeviceTestComFaultException() throws IOException, ComFaultException {
+    public void addDeviceTestComFaultException() throws IOException, ServerException {
         // Mock Network Handler so that the POST method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -175,7 +175,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = IOException.class)
-    public void addDeviceTestIOException() throws IOException, ComFaultException {
+    public void addDeviceTestIOException() throws IOException, ServerException {
         // Mock Network Handler so that the POST method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -220,8 +220,8 @@ public class ServerCollectionsInteractorTest {
         }
     }
 
-    @Test(expected = ComFaultException.class)
-    public void removeDeviceTestComFaultException() throws IOException, ComFaultException {
+    @Test(expected = ServerException.class)
+    public void removeDeviceTestComFaultException() throws IOException,ServerException {
         // Mock Network Handler so that the DELETE method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -240,7 +240,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = IOException.class)
-    public void removeDeviceTestIOException() throws IOException, ComFaultException {
+    public void removeDeviceTestIOException() throws IOException, ServerException {
         // Mock Network Handler so that the DELETE method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -257,7 +257,7 @@ public class ServerCollectionsInteractorTest {
      * getCollections tests
      */
     @Test
-    public void getCollectionsTestSuccess() throws IOException, ComFaultException {
+    public void getCollectionsTestSuccess() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonArray similar to
         // the one returned when the request was successful
         NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
@@ -276,8 +276,8 @@ public class ServerCollectionsInteractorTest {
         assertTrue(collections.isEmpty());
     }
 
-    @Test(expected = ComFaultException.class)
-    public void getCollectionsTestComFaultException() throws IOException, ComFaultException {
+    @Test(expected = ServerException.class)
+    public void getCollectionsTestComFaultException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -294,7 +294,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = IOException.class)
-    public void getCollectionsTestIOException() throws IOException, ComFaultException {
+    public void getCollectionsTestIOException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -309,7 +309,7 @@ public class ServerCollectionsInteractorTest {
      * getPlugins tests
      */
     @Test
-    public void getPluginsTestSuccess() throws IOException, ComFaultException {
+    public void getPluginsTestSuccess() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonArray similar to
         // the one returned when the request was successful
         NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
@@ -329,8 +329,8 @@ public class ServerCollectionsInteractorTest {
         assertTrue(plugins.isEmpty());
     }
 
-    @Test(expected = ComFaultException.class)
-    public void getPluginsTestComFaultException() throws IOException, ComFaultException {
+    @Test(expected = ServerException.class)
+    public void getPluginsTestComFaultException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -348,7 +348,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = IOException.class)
-    public void getPluginsTestIOException() throws IOException, ComFaultException {
+    public void getPluginsTestIOException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -364,7 +364,7 @@ public class ServerCollectionsInteractorTest {
      * getRequiredInfo tests
      */
     @Test
-    public void getRequiredInfoTestSuccessful() throws IOException, ComFaultException {
+    public void getRequiredInfoTestSuccessful() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request was successful.
         NetworkHandler mockHandlerSuccess = mock(NetworkHandler.class);
@@ -403,8 +403,8 @@ public class ServerCollectionsInteractorTest {
         assertNull(requiredInfo);
     }
 
-    @Test(expected = ComFaultException.class)
-    public void getRequiredInfoTestComFaultException() throws IOException, ComFaultException {
+    @Test(expected = ServerException.class)
+    public void getRequiredInfoTestComFaultException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an ComFaultException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
@@ -424,7 +424,7 @@ public class ServerCollectionsInteractorTest {
     }
 
     @Test(expected = IOException.class)
-    public void getRequiredInfoTestIOException() throws IOException, ComFaultException {
+    public void getRequiredInfoTestIOException() throws IOException, ServerException {
         // Mock Network Handler so that the GET method will return a JsonObject similar to
         // the one returned when the request failed and an IOException was thrown
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);

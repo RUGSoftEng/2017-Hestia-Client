@@ -19,6 +19,10 @@ import hestia.UI.elements.DeviceBar;
 import hestia.UI.dialogs.AddDeviceDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
+import hestia.backend.exceptions.ServerExceptions.DatabaseException;
+import hestia.backend.exceptions.ServerExceptions.NotFoundException;
+import hestia.backend.exceptions.ServerExceptions.ServerException;
+import hestia.backend.exceptions.ServerExceptions.UndefinedServerException;
 import hestia.backend.models.Device;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
@@ -89,6 +93,14 @@ public class DeviceListFragment extends Fragment {
                     String message = comFaultException.getMessage();
                     String exceptionMessage = error + ":" + message;
                     publishProgress(exceptionMessage);
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }  catch (DatabaseException e) {
+                    e.printStackTrace();
+                } catch (UndefinedServerException e) {
+                    e.printStackTrace();
+                } catch (ServerException e) {
+                    e.printStackTrace();
                 }
                 return devices;
             }
