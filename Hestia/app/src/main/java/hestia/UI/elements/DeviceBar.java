@@ -18,7 +18,6 @@ import com.rugged.application.hestia.R;
 
 import java.io.IOException;
 
-import hestia.UI.HestiaApplication;
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;

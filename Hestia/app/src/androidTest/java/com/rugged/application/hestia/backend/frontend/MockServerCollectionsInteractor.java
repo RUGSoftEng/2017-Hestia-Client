@@ -1,14 +1,6 @@
 package com.rugged.application.hestia.backend.frontend;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,16 +11,9 @@ import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
-import hestia.backend.models.deserializers.DeviceDeserializer;
-import hestia.backend.models.deserializers.RequiredInfoDeserializer;
 
-import static android.R.attr.type;
 
-/**
- * Created by lars on 12-6-17.
- */
-
-public class MockServerCollectionsInteractor extends ServerCollectionsInteractor{
+public class MockServerCollectionsInteractor extends ServerCollectionsInteractor {
 
     private ArrayList<Device> devices;
     private ArrayList<String> collections;
@@ -68,13 +53,13 @@ public class MockServerCollectionsInteractor extends ServerCollectionsInteractor
 
         //init devices
         devices = new ArrayList<>();
-        ArrayList<Activator> activators =  new ArrayList<>();
-        ActivatorState<Boolean>  lockState = new ActivatorState<>(true, "bool");
+        ArrayList<Activator> activators = new ArrayList<>();
+        ActivatorState<Boolean> lockState = new ActivatorState<>(true, "bool");
         Activator activatorLock = new Activator("idAct1", 0, lockState, "Switch");
         activators.add(activatorLock);
         Device lock = new Device("id", "name", "Lock", activators, handler);
 
-        ArrayList<Activator> activators_sliders =  new ArrayList<>();
+        ArrayList<Activator> activators_sliders = new ArrayList<>();
         ActivatorState<Boolean> lightState = new ActivatorState<>(true, "bool");
         Activator activatorLight = new Activator("idAct2", 0, lightState, "Switch");
         activators.add(activatorLight);
@@ -88,15 +73,15 @@ public class MockServerCollectionsInteractor extends ServerCollectionsInteractor
 
     }
 
-    public ArrayList<String> getCollections(){
+    public ArrayList<String> getCollections() {
         return collections;
     }
 
-    public ArrayList<String> getPlugins(String collection){
+    public ArrayList<String> getPlugins(String collection) {
         return plugins;
     }
 
-    public RequiredInfo getRequiredInfo(String collection, String plugin){
+    public RequiredInfo getRequiredInfo(String collection, String plugin) {
         return requiredInfo;
     }
 
