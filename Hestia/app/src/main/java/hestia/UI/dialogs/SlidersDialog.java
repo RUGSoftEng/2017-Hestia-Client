@@ -106,7 +106,7 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
                     isSuccessful = true;
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    String exceptionMessage = HestiaApplication.getContext()
+                    String exceptionMessage = context.getResources()
                             .getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {

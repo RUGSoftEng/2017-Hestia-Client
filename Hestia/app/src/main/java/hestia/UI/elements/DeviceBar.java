@@ -170,7 +170,7 @@ public class DeviceBar extends RelativeLayout {
                     isSuccessful = true;
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    String exceptionMessage = HestiaApplication.getContext().
+                    String exceptionMessage = context.getResources().
                             getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
@@ -200,7 +200,8 @@ public class DeviceBar extends RelativeLayout {
                     isSuccessful = true;
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    String exceptionMessage = context.getResources()
+                            .getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -228,7 +229,6 @@ public class DeviceBar extends RelativeLayout {
 
     @Override
     public int hashCode() {
-        int result = getDevice().hashCode();
-        return result;
+        return getDevice().hashCode();
     }
 }

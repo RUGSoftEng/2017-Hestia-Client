@@ -243,10 +243,6 @@ public class DeviceListFragment extends Fragment {
         });
     }
 
-    public ServerCollectionsInteractor getServerCollectionsInteractor() {
-        return serverCollectionsInteractor;
-    }
-
     public ExpandableDeviceList getListAdapter() {
         return listAdapter;
     }
