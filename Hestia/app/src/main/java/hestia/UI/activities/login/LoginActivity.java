@@ -43,7 +43,7 @@ public class LoginActivity extends FragmentActivity {
         setContentView(R.layout.login_activity);
         counter = Integer.valueOf(getString(R.string.initialCount));
         loginPreferences = getSharedPreferences(getString(R.string.loginPrefs), MODE_PRIVATE);
-        if(rememberMeSelected()){
+        if (rememberMeSelected()) {
             gotoMainActivity();
             return;
         }
@@ -110,10 +110,12 @@ public class LoginActivity extends FragmentActivity {
             setSharedPreferences(getString(R.string.standardUser), getString(R.string.standardPass), false);
         }
         Boolean saveLogin = loginPreferences.getBoolean(getString(R.string.saveLogin), false);
-        return saveLogin;
+        Intent fromIntent = getIntent();
+        String extra = fromIntent.getStringExtra(getString(R.string.login));
+        return saveLogin && extra == null;
     }
 
-    private boolean checkCredentials(String username,String password){
+    private boolean checkCredentials(String username, String password) {
         String corrUser = loginPreferences.getString(getString(R.string.loginPrefsUser), hashString("admin"));
         String corrPass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString("password"));
         String hashedUser = hashString(username);

@@ -99,9 +99,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * This method contacts the server to update the list of devices in the GUI if a change has
      * occurred.
      */
-    public void refreshUserInterface(){
+    public void refreshUserInterface() {
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
-        if(fragment != null){
+        if (fragment != null) {
             fragment.populateUI();
         }
     }
@@ -176,10 +176,10 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         fragment.show(getSupportFragmentManager(), "dialog");
     }
 
-    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor){
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor) {
         this.serverCollectionsInteractor = serverCollectionsInteractor;
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
-        if(fragment != null){
+        if (fragment != null) {
             fragment.setServerCollectionsInteractor(serverCollectionsInteractor);
         }
     }
