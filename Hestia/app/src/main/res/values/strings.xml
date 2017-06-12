@@ -72,6 +72,7 @@
     <string name="changeIpTitle">Change IP</string>
     <string name="changeNameTitle">Change name</string>
     <string name="serverNotFound">Could not connect to the server</string>
+    <string name="errorMessage">An error occurred</string>
 
     <!-- Server paths -->
     <string name="devicePath">devices/</string>

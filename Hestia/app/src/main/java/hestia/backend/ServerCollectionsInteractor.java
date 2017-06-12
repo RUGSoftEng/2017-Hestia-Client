@@ -48,9 +48,9 @@ public class ServerCollectionsInteractor implements Serializable {
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
-            String error = jsonObject.get("error").getAsString();
-            String message = jsonObject.get("message").getAsString();
-            throw new ComFaultException(error, message);
+            JsonObject errorObject = jsonObject.get("error").getAsJsonObject();
+            String error= errorObject.get("exception").getAsString();
+            throw new ComFaultException(error);
         }
     }
 
@@ -63,8 +63,10 @@ public class ServerCollectionsInteractor implements Serializable {
         JsonElement result = handler.PUT(loginData, endpoint);
         if (result.isJsonObject()) {
             JsonObject object = result.getAsJsonObject();
-            if (object.has("error")) {
-                throw new ComFaultException(object.get("error").getAsString(), object.get("message").getAsString());
+            if(object.has("error")){
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
@@ -82,10 +84,10 @@ public class ServerCollectionsInteractor implements Serializable {
         JsonElement payload = handler.POST(send, endpoint);
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
-            if (object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
@@ -95,10 +97,10 @@ public class ServerCollectionsInteractor implements Serializable {
         JsonElement payload = handler.DELETE(endpoint);
         if (payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
-            if (jsonObject.has("error")) {
-                String error = jsonObject.get("error").getAsString();
-                String message = jsonObject.get("message").getAsString();
-                throw new ComFaultException(error, message);
+            if(jsonObject.has("error")) {
+                JsonObject errorObject = jsonObject.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
@@ -122,10 +124,10 @@ public class ServerCollectionsInteractor implements Serializable {
         RequiredInfo requiredInfo = null;
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
-            if (object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             } else {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
@@ -146,9 +148,10 @@ public class ServerCollectionsInteractor implements Serializable {
             }.getType());
         } else if (element != null && element.isJsonObject()) {
             JsonObject object = element.getAsJsonObject();
-            if (object.has("error")) {
-                ComFaultException comFaultException = gson.fromJson(element, ComFaultException.class);
-                throw comFaultException;
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
         return list;

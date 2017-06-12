@@ -149,7 +149,7 @@ public class DiscoverServerDialog extends HestiaDialog {
 
             @Override
             public void onServiceFound(NsdServiceInfo service) {
-                if (!service.getServiceType().equals(getString(R.string.serviceType))) {
+                if (!service.getServiceType().equals(HestiaApplication.getContext().getString(R.string.serviceType))) {
                     Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
                 } else if (service.getServiceName().equals(getString(R.string.serviceName))) {
                     Log.d(TAG, "Same machine: " + getString(R.string.serviceName));
