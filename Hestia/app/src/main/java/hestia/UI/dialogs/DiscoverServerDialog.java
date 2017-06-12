@@ -25,9 +25,10 @@ import hestia.backend.NetworkHandler;
 
 /**
  * This class represents the dialog screen with which the IP-address of the server is asked from the
- * user.
+ * user. The automatic discovery uses ZeroConf. This requires an Android API level of at least
+ * JELLY_BEAN. If the user has a lower API level, the automatic discovery is simply turned off, and
+ * the user has to manually enter the IP address.
  */
-
 public class DiscoverServerDialog extends HestiaDialog {
     private final static String TAG = "DiscoverServerDialog";
     private String foundIp;
@@ -72,6 +73,10 @@ public class DiscoverServerDialog extends HestiaDialog {
         return view;
     }
 
+    /**
+     * A new AsyncTask is started which looks for the Hestia server in the local network. This
+     * AsyncTask runs in the background.
+     */
     private void discoverServer() {
         new AsyncTask<Object, Object, Void>() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

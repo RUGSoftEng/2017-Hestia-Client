@@ -173,7 +173,7 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     }
 
     /**
-     * Updates the required info with the entered information
+     * Updates the required info with the entered information. 
      */
     private void updateRequiredInfo(View v) {
         int count = 0;
