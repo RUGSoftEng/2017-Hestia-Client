@@ -78,6 +78,7 @@
     <string name="devicePath">devices/</string>
     <string name="activatorsPath">/activators/</string>
     <string name="loginPath">login/</string>
+    <string name="pluginPathFront">plugins</string>
     <string name="pluginsPath">plugins/</string>
     <string name="pluginsPathMid">/plugins/</string>
 
