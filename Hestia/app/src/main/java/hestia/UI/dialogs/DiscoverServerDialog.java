@@ -44,8 +44,7 @@ public class DiscoverServerDialog extends HestiaDialog {
             "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
     public static DiscoverServerDialog newInstance() {
-        DiscoverServerDialog fragment = new DiscoverServerDialog();
-        return fragment;
+        return new DiscoverServerDialog();
     }
 
     public void setNetworkHandler(NetworkHandler handler) {
@@ -130,7 +129,6 @@ public class DiscoverServerDialog extends HestiaDialog {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     void pressCancel() {
-        Toast.makeText(getContext(), "Cancel pressed", Toast.LENGTH_SHORT).show();
         nsdManager.stopServiceDiscovery(discoveryListener);
         discoveryListener = null;
     }
