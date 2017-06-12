@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
+import hestia.UI.activities.home.HomeActivity;
 import hestia.UI.dialogs.ChangeNameDialog;
 import hestia.UI.dialogs.SlidersDialog;
 import hestia.backend.ServerCollectionsInteractor;
@@ -89,9 +90,7 @@ public class DeviceBar extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = createPopupMenu(view);
-
                 popup.show();
-
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -102,6 +101,7 @@ public class DeviceBar extends RelativeLayout {
                             case R.id.change_name:
                                 ChangeNameDialog fragment = ChangeNameDialog.newInstance();
                                 fragment.setDevice(device);
+                                fragment.setActivity((HomeActivity)context);
                                 fragment.show(fm, "dialog");
                                 break;
                             default:
@@ -211,6 +211,11 @@ public class DeviceBar extends RelativeLayout {
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(context, exceptionMessage[0], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                ((HomeActivity)context).refreshUserInterface();
             }
         }.execute();
     }
