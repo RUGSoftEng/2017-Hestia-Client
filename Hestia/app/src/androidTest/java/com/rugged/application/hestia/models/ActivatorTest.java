@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.backend.models;
+package com.rugged.application.hestia.models;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.backend.exceptions;
+package com.rugged.application.hestia.exceptions;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

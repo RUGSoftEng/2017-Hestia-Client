@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.backend.frontend;
+package com.rugged.application.hestia.frontend;
 
 import java.io.IOException;
 import java.util.ArrayList;
