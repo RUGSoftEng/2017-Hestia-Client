@@ -123,7 +123,7 @@ public class DiscoverServerDialog extends HestiaDialog {
         if(checkIp(ip)) {
             handler.setIp(ip);
         } else {
-            Toast.makeText(getContext(),getString(R.string.incorr_ip),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),getString(R.string.incorrIp),Toast.LENGTH_SHORT).show();
             refreshUserInterface();
         }
     }

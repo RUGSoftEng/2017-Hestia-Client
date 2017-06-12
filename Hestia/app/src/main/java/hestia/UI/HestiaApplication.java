@@ -30,7 +30,7 @@ public class HestiaApplication extends Application {
                       getApplicationContext().getString(R.string.hestiaIp), Context.MODE_PRIVATE);
         String ip = prefs.getString( getApplicationContext().getString(R.string.ipOfServer), null);
         networkHandler = new NetworkHandler(ip, Integer.valueOf(getApplicationContext().
-                                                                getString(R.string.default_port)));
+                                                                getString(R.string.defaultPort)));
     }
 
     public NetworkHandler getNetworkHandler(){
