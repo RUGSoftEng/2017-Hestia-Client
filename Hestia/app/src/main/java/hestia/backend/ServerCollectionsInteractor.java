@@ -54,23 +54,6 @@ public class ServerCollectionsInteractor implements Serializable {
         }
     }
 
-    public void sendLoginData(String username, String password) throws IOException,
-            ComFaultException {
-        JsonObject loginData = new JsonObject();
-        loginData.addProperty("username", username);
-        loginData.addProperty("password", password);
-        String endpoint = HestiaApplication.getContext().getString(R.string.loginPath);
-        JsonElement result = handler.PUT(loginData, endpoint);
-        if (result.isJsonObject()) {
-            JsonObject object = result.getAsJsonObject();
-            if(object.has("error")){
-                JsonObject errorObject = object.get("error").getAsJsonObject();
-                String error= errorObject.get("exception").getAsString();
-                throw new ComFaultException(error);
-            }
-        }
-    }
-
     public void addDevice(RequiredInfo info) throws IOException, ComFaultException {
         JsonObject send = new JsonObject();
         send.addProperty("collection", info.getCollection());
