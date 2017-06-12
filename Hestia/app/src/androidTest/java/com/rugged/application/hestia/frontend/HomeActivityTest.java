@@ -1,4 +1,4 @@
-package com.rugged.application.hestia.backend.frontend;
+package com.rugged.application.hestia.frontend;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -118,7 +118,6 @@ public class Device {
                 this.getType().equals(device.getType()) &&
                 this.getActivators().equals(device.getActivators()) &&
                 this.getHandler().equals(device.getHandler())));
-
     }
 
     @Override
