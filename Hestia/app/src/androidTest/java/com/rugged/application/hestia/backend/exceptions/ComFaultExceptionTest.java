@@ -18,11 +18,13 @@ import static junit.framework.Assert.assertNotSame;
 @RunWith(JUnit4.class)
 public class ComFaultExceptionTest {
     private String DEFAULT_ERROR;
+    private String DEFAULT_MESSAGE;
     private ComFaultException dummyComFaultException;
 
     @Before
     public void setUp() {
         DEFAULT_ERROR = "default_error";
+        DEFAULT_MESSAGE = "An error occured";
         dummyComFaultException = new ComFaultException(DEFAULT_ERROR);
         assertNotNull(dummyComFaultException);
     }
@@ -44,9 +46,9 @@ public class ComFaultExceptionTest {
 
     @Test
     public void setAndGetMessageTest() {
-        assertEquals("An error occured", dummyComFaultException.getMessage());
+        assertEquals(DEFAULT_MESSAGE, dummyComFaultException.getMessage());
         String newMessage = "new_message";
-        assertNotSame("An error occured", newMessage);
+        assertNotSame(DEFAULT_MESSAGE, newMessage);
         dummyComFaultException.setMessage(newMessage);
         assertEquals(newMessage, dummyComFaultException.getMessage());
     }
