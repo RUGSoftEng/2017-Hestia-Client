@@ -30,6 +30,11 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         return getString(R.string.changeCredsTitle);
     }
 
+    /**
+     * Creates the view for the ChangeCredentialsDialog
+     * @return The ChangeCredentialsDialog which has been constructed
+     * @see HestiaDialog
+     */
     @Override
     View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -82,6 +87,12 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         refreshUserInterface();
     }
 
+    /**
+     * Obtains the loginPreferences from the system to check our current password against the old
+     * password
+     * @param oldPass The old password  which we want to check
+     * @return A boolean indicating whether we passed the build
+     */
     private boolean checkOldPass(String oldPass) {
         String corrpass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString(getString(standardPass)));
         return corrpass.equals(hashString(oldPass));

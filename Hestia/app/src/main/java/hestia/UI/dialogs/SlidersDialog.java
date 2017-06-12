@@ -24,7 +24,6 @@ import hestia.backend.models.Device;
  * This class handles the dialog which is opened if a Device has the 'slide' option.
  * It loads all the slider activators, and sends the new state onRelease.
  */
-
 public class SlidersDialog extends Dialog implements android.view.View.OnClickListener {
     private Device device;
     private Context context;

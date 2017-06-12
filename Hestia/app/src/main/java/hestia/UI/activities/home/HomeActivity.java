@@ -117,6 +117,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
     }
 
+    /**
+     * @return The list of MenuObjects which are instantiated when the HomeActivity is made.
+     */
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> objects = new ArrayList<>();
         addMenuObjects(objects, R.drawable.ic_action, null);
@@ -164,6 +167,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         }
     }
 
+    /**
+     * This method moves us back to the Login screen. It is called when we press the back button
+     */
     public void gotoLoginActivity() {
         Intent toIntent = new Intent(HomeActivity.this, LoginActivity.class);
         toIntent.putExtra(getString(R.string.login), getString(R.string.logoutExtraValue));
