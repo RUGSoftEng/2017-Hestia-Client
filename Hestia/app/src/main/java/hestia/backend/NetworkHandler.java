@@ -24,7 +24,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import hestia.UI.HestiaApplication;
 
-
 /**
  * A singleton class which handles interaction between front and back-end. It contains methods
  * for sending 4 types of requests (GET, PUT, POST AND DELETE), along with additional methods

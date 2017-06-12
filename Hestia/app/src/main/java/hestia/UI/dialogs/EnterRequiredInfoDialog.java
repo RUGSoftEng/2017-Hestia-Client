@@ -62,7 +62,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     View buildView() {
         int count = 0;
 
-
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         view = inflater.inflate(R.layout.enter_required_info_dialog, null);
 
@@ -178,7 +177,7 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     }
 
     /**
-     * Updates the required info with the entered information
+     * Updates the required info with the entered information.
      */
     private void updateRequiredInfo(View v) {
         int count = 0;

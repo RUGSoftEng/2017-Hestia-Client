@@ -33,26 +33,26 @@ public class LoginActivityTest {
         SharedPreferences.Editor editor = mIntentsRule.getActivity().getApplication().getSharedPreferences("LoginPreferences", Context.MODE_PRIVATE).edit();
         editor.clear();
         editor.commit();
-        ((HestiaApplication)mIntentsRule.getActivity().getApplication()).getNetworkHandler().setIp("");
+        ((HestiaApplication) mIntentsRule.getActivity().getApplication()).getNetworkHandler().setIp("");
     }
 
     @Test
-    public void ServerDiscoveryTest(){
+    public void ServerDiscoveryTest() {
         onView(ViewMatchers.withId(R.id.setServerButton)).perform(click());
         onView(ViewMatchers.withId(R.id.ip)).perform(typeText("192.168.178.30"), closeSoftKeyboard());
         onView(ViewMatchers.withText("Confirm")).perform(click());
-        String newIp = ((HestiaApplication)mIntentsRule.getActivity().getApplication()).getNetworkHandler().getIp();
+        String newIp = ((HestiaApplication) mIntentsRule.getActivity().getApplication()).getNetworkHandler().getIp();
         assertEquals("192.168.178.30", newIp);
 
     }
 
     @Test
-    public void loginTest(){
+    public void loginTest() {
         onView(ViewMatchers.withId(R.id.username)).perform(typeText("admin"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(typeText("password"), closeSoftKeyboard());
         onView(withId(R.id.rememberButton)).perform(click());
         onView(withId(R.id.loginButton)).perform(click());
-        intended(allOf(hasComponent(hasShortClassName("hestia.UI.activities.home.HomeActivity")),toPackage("com.rugged.application.hestia")));
+        intended(allOf(hasComponent(hasShortClassName("hestia.UI.activities.home.HomeActivity")), toPackage("com.rugged.application.hestia")));
     }
 
     @After
@@ -60,6 +60,6 @@ public class LoginActivityTest {
         SharedPreferences.Editor editor = mIntentsRule.getActivity().getApplication().getSharedPreferences("LoginPreferences", Context.MODE_PRIVATE).edit();
         editor.clear();
         editor.commit();
-        ((HestiaApplication)mIntentsRule.getActivity().getApplication()).getNetworkHandler().setIp("");
+        ((HestiaApplication) mIntentsRule.getActivity().getApplication()).getNetworkHandler().setIp("");
     }
 }

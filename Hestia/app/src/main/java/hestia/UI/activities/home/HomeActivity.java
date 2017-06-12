@@ -99,9 +99,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * This method contacts the server to update the list of devices in the GUI if a change has
      * occurred.
      */
-    public void refreshUserInterface(){
+    public void refreshUserInterface() {
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
-        if(fragment != null){
+        if (fragment != null) {
             fragment.populateUI();
         }
     }
@@ -117,6 +117,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
     }
 
+    /**
+     * @return The list of MenuObjects which are instantiated when the HomeActivity is made.
+     */
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> objects = new ArrayList<>();
         addMenuObjects(objects, R.drawable.ic_action, null);
@@ -164,6 +167,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         }
     }
 
+    /**
+     * This method moves us back to the Login screen. It is called when we press the back button
+     */
     public void gotoLoginActivity() {
         Intent toIntent = new Intent(HomeActivity.this, LoginActivity.class);
         toIntent.putExtra(getString(R.string.login), getString(R.string.logoutExtraValue));
@@ -176,10 +182,10 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         fragment.show(getSupportFragmentManager(), "dialog");
     }
 
-    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor){
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor) {
         this.serverCollectionsInteractor = serverCollectionsInteractor;
         DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
-        if(fragment != null){
+        if (fragment != null) {
             fragment.setServerCollectionsInteractor(serverCollectionsInteractor);
         }
     }

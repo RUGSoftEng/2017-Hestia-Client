@@ -1,12 +1,15 @@
 package hestia.backend.exceptions;
 
+import com.rugged.application.hestia.R;
+import hestia.UI.HestiaApplication;
+
 public class ComFaultException extends Exception {
     private String error;
     private String message;
 
-    public ComFaultException(String error, String message) {
+    public ComFaultException(String error){
         this.error = error;
-        this.message = message;
+        this.message = HestiaApplication.getContext().getString(R.string.errorMessage);
     }
 
     public String getError() {

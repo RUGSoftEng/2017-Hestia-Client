@@ -6,10 +6,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
@@ -31,7 +33,7 @@ public class ServerCollectionsInteractor implements Serializable {
     }
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
-        String endpoint = "devices/";
+        String endpoint = HestiaApplication.getContext().getString(R.string.devicePath);
         JsonElement payload = handler.GET(endpoint);
         if (payload.isJsonArray()) {
             JsonArray jsonArray = payload.getAsJsonArray();
@@ -46,9 +48,9 @@ public class ServerCollectionsInteractor implements Serializable {
             return devices;
         } else {
             JsonObject jsonObject = payload.getAsJsonObject();
-            String error = jsonObject.get("error").getAsString();
-            String message = jsonObject.get("message").getAsString();
-            throw new ComFaultException(error, message);
+            JsonObject errorObject = jsonObject.get("error").getAsJsonObject();
+            String error= errorObject.get("exception").getAsString();
+            throw new ComFaultException(error);
         }
     }
 
@@ -61,55 +63,54 @@ public class ServerCollectionsInteractor implements Serializable {
             required.addProperty(key, info.getInfo().get(key));
         }
         send.add("required_info", required);
-        String endpoint = "devices/";
+        String endpoint = HestiaApplication.getContext().getString(R.string.devicePath);
         JsonElement payload = handler.POST(send, endpoint);
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
-            if (object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
 
     public void removeDevice(Device device) throws IOException, ComFaultException {
-        String endpoint = "devices/" + device.getId();
+        String endpoint = HestiaApplication.getContext().getString(R.string.devicePath) + device.getId();
         JsonElement payload = handler.DELETE(endpoint);
         if (payload != null && payload.isJsonObject()) {
             JsonObject jsonObject = payload.getAsJsonObject();
-            if (jsonObject.has("error")) {
-                String error = jsonObject.get("error").getAsString();
-                String message = jsonObject.get("message").getAsString();
-                throw new ComFaultException(error, message);
+            if(jsonObject.has("error")) {
+                JsonObject errorObject = jsonObject.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
     }
 
     public ArrayList<String> getCollections() throws IOException, ComFaultException {
-        String endpoint = "plugins";
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginPathFront);
         JsonElement payload = handler.GET(endpoint);
-        ArrayList<String> collections = this.parseInfo(payload);
-        return collections;
+        return this.parseInfo(payload);
     }
 
     public ArrayList<String> getPlugins(String collection) throws IOException, ComFaultException {
-        String endpoint = "plugins/" + collection;
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginsPath) + collection;
         JsonElement payload = handler.GET(endpoint);
-        ArrayList<String> plugins = this.parseInfo(payload);
-        return plugins;
+        return this.parseInfo(payload);
     }
 
     public RequiredInfo getRequiredInfo(String collection, String plugin) throws IOException, ComFaultException {
-        String endpoint = "plugins/" + collection + "/plugins/" + plugin;
+        String endpoint = HestiaApplication.getContext().getString(R.string.pluginsPath) + collection
+                + HestiaApplication.getContext().getString(R.string.pluginsPathMid) + plugin;
         JsonElement payload = handler.GET(endpoint);
         RequiredInfo requiredInfo = null;
         if (payload != null && payload.isJsonObject()) {
             JsonObject object = payload.getAsJsonObject();
-            if (object.has("error")) {
-                String error = object.get("error").getAsString();
-                String message = object.get("message").getAsString();
-                throw new ComFaultException(error, message);
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             } else {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(RequiredInfo.class, new RequiredInfoDeserializer());
@@ -130,9 +131,10 @@ public class ServerCollectionsInteractor implements Serializable {
             }.getType());
         } else if (element != null && element.isJsonObject()) {
             JsonObject object = element.getAsJsonObject();
-            if (object.has("error")) {
-                ComFaultException comFaultException = gson.fromJson(element, ComFaultException.class);
-                throw comFaultException;
+            if(object.has("error")) {
+                JsonObject errorObject = object.get("error").getAsJsonObject();
+                String error= errorObject.get("exception").getAsString();
+                throw new ComFaultException(error);
             }
         }
         return list;

@@ -98,9 +98,7 @@ public class ServerCollectionsInteractorTest {
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
         // Creates a dummy error JsonObject.
-        JsonObject errorObject = new JsonObject();
-        errorObject.addProperty("error", "error_field");
-        errorObject.addProperty("message", "message_field");
+        JsonObject errorObject = buildComFaultException();
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
@@ -159,9 +157,7 @@ public class ServerCollectionsInteractorTest {
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
         // Creates a dummy error JsonObject.
-        JsonObject errorObject = new JsonObject();
-        errorObject.addProperty("error", "error_field");
-        errorObject.addProperty("message", "message_field");
+        JsonObject errorObject = buildComFaultException();
         when(mockHandlerFail.POST(any(JsonObject.class), any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
@@ -226,9 +222,7 @@ public class ServerCollectionsInteractorTest {
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
         // Creates a dummy error JsonObject.
-        JsonObject errorObject = new JsonObject();
-        errorObject.addProperty("error", "error_field");
-        errorObject.addProperty("message", "message_field");
+        JsonObject errorObject = buildComFaultException();
         when(mockHandlerFail.DELETE(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
@@ -282,9 +276,7 @@ public class ServerCollectionsInteractorTest {
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
         // Creates a dummy error JsonObject.
-        JsonObject errorObject = new JsonObject();
-        errorObject.addProperty("error", "error_field");
-        errorObject.addProperty("message", "message_field");
+        JsonObject errorObject = buildComFaultException();
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
@@ -335,9 +327,7 @@ public class ServerCollectionsInteractorTest {
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
         // Creates a dummy error JsonObject.
-        JsonObject errorObject = new JsonObject();
-        errorObject.addProperty("error", "error_field");
-        errorObject.addProperty("message", "message_field");
+        JsonObject errorObject = buildComFaultException();
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
@@ -409,9 +399,7 @@ public class ServerCollectionsInteractorTest {
         NetworkHandler mockHandlerFail = mock(NetworkHandler.class);
 
         // Creates a dummy error JsonObject.
-        JsonObject errorObject = new JsonObject();
-        errorObject.addProperty("error", "error_field");
-        errorObject.addProperty("message", "message_field");
+        JsonObject errorObject = buildComFaultException();
         when(mockHandlerFail.GET(any(String.class))).thenReturn(errorObject);
         dummyServerCollectionsInteractor.setHandler(mockHandlerFail);
 
@@ -435,5 +423,20 @@ public class ServerCollectionsInteractorTest {
         String dummyPlugin = "dummyPlugins";
         RequiredInfo requiredInfo = dummyServerCollectionsInteractor
                                         .getRequiredInfo(dummyCollection, dummyPlugin);
+    }
+
+    private JsonObject buildComFaultException(){
+        JsonObject details = new JsonObject();
+        details.addProperty("field", "value");
+
+        JsonObject exception = new JsonObject();
+        exception.addProperty("exception", "exception_name");
+        exception.add("details", details);
+
+        JsonObject error = new JsonObject();
+        error.addProperty("message", "unused_message");
+        error.add("error", exception);
+
+        return error;
     }
 }

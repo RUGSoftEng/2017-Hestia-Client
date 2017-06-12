@@ -31,13 +31,13 @@ public class HomeActivityTest {
     public void setUp() {
         SharedPreferences.Editor editor = mIntentsRule.getActivity().getApplication().getSharedPreferences("LoginPreferences", Context.MODE_PRIVATE).edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
         mockInteractor = new MockServerCollectionsInteractor(new NetworkHandler("192.168.178.30", 8000));
         mIntentsRule.getActivity().setServerCollectionsInteractor(mockInteractor);
     }
 
     @Test
-    public void setCredentialsTest(){
+    public void setCredentialsTest() {
         mIntentsRule.getActivity().showChangeCredentialsDialog();
         onView(withId(R.id.newUser)).perform(clearText(), typeText("newuser"), closeSoftKeyboard());
         onView(withId(R.id.oldPass)).perform(clearText(), typeText("password"), closeSoftKeyboard());
@@ -53,9 +53,7 @@ public class HomeActivityTest {
     public void addDeviceTest() {
         onView(withId(R.id.floating_action_button)).perform(click());
         onView(withId(R.id.collection)).perform(clearText(), typeText("CollectionOne"));
-        onView(ViewMatchers.withText("CollectionOne")).perform(click());
         onView(withId(R.id.pluginName)).perform(clearText(), typeText("PluginOne"));
-        onView(ViewMatchers.withText("CollectionOne")).perform(click());
         onView(ViewMatchers.withText("Confirm")).perform(click());
         onView(ViewMatchers.withHint("ip")).perform(typeText("192.168.178.39"));
         onView(ViewMatchers.withHint("username")).perform(typeText("Gebruiker"));
@@ -68,7 +66,7 @@ public class HomeActivityTest {
     public void breakdown() {
         SharedPreferences.Editor editor = mIntentsRule.getActivity().getApplication().getSharedPreferences("LoginPreferences", Context.MODE_PRIVATE).edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
         mIntentsRule.getActivity().setServerCollectionsInteractor(new MockServerCollectionsInteractor(new NetworkHandler("192.168.178.30", 8000)));
     }
 
