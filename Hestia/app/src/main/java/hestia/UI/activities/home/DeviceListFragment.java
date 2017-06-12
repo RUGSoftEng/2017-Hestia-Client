@@ -238,6 +238,7 @@ public class DeviceListFragment extends Fragment {
                 AddDeviceDialog fragment = AddDeviceDialog.newInstance();
                 fragment.setInteractor(serverCollectionsInteractor);
                 fragment.setFragmentManager(getActivity().getSupportFragmentManager());
+                fragment.setActivity((HomeActivity) getActivity());
                 fragment.show(getActivity().getSupportFragmentManager(), "dialog");
             }
         });

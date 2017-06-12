@@ -84,6 +84,11 @@ public class ChangeNameDialog extends HestiaDialog {
             protected void onProgressUpdate(String... exceptionMessage) {
                 Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                refreshUserInterface();
+            }
         }.execute();
     }
 

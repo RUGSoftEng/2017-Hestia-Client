@@ -1,5 +1,6 @@
 package hestia.UI.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import com.rugged.application.hestia.R;
 import hestia.UI.activities.home.HomeActivity;
 
 abstract class HestiaDialog extends DialogFragment {
+    private HomeActivity activity;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -38,8 +40,18 @@ abstract class HestiaDialog extends DialogFragment {
         return dialog;
     }
 
+    public void setActivity(HomeActivity activity){
+        this.activity = activity;
+    }
+
+    //Access the home activity to refresh the GUI, for this functionality the activity is
+    //passed around between the dialogs
     protected void refreshUserInterface() {
-        ((HomeActivity) this.getActivity()).refreshUserInterface();
+        activity.refreshUserInterface();
+    }
+
+    public HomeActivity getHomeActivity(){
+        return activity;
     }
 
     abstract String buildTitle();
