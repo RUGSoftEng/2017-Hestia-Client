@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
@@ -23,7 +24,6 @@ import hestia.backend.models.Device;
  * This class handles the dialog which is opened if a Device has the 'slide' option.
  * It loads all the slider activators, and sends the new state onRelease.
  */
-
 public class SlidersDialog extends Dialog implements android.view.View.OnClickListener {
     private Device device;
     private Context context;
@@ -124,6 +124,7 @@ public class SlidersDialog extends Dialog implements android.view.View.OnClickLi
 
     /**
      * This methods creates a list of sliders, i.e. a list of activators of type "float".
+     *
      * @return the list of sliders of the device.
      */
     private ArrayList<Activator> getSliders() {

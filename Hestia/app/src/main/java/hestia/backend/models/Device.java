@@ -84,7 +84,7 @@ public class Device {
      * @throws ComFaultException exception generated due to faulty data sent to the server.
      */
     public void setName(String name) throws IOException, ComFaultException {
-        String endpoint = "devices/" + deviceId;
+        String endpoint = HestiaApplication.getContext().getString(R.string.devicePath) + deviceId;
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
         JsonElement payload = handler.PUT(object, endpoint);
