@@ -3,7 +3,6 @@ package com.rugged.application.hestia.backend.frontend;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
@@ -11,7 +10,6 @@ import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
-
 
 public class MockServerCollectionsInteractor extends ServerCollectionsInteractor {
 
@@ -24,7 +22,7 @@ public class MockServerCollectionsInteractor extends ServerCollectionsInteractor
     public String setUsername = "";
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
-        return devices;
+        return new ArrayList<>();
     }
 
     public void addDevice(RequiredInfo info) throws IOException, ComFaultException {

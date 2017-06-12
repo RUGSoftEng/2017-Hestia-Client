@@ -15,12 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import hestia.UI.HestiaApplication;
 import hestia.backend.NetworkHandler;
 
 /**
@@ -80,7 +78,8 @@ public class DiscoverServerDialog extends HestiaDialog {
             protected Void doInBackground(Object... params) {
                 nsdManager = (NsdManager) getContext().getSystemService(Context.NSD_SERVICE);
                 initializeDiscoveryListener();
-                nsdManager.discoverServices(getString(R.string.serviceType), NsdManager.PROTOCOL_DNS_SD, discoveryListener);
+                nsdManager.discoverServices(HestiaApplication.getContext().getString(R.string.serviceType),
+                                            NsdManager.PROTOCOL_DNS_SD, discoveryListener);
                 return null;
             }
         }.execute();
@@ -171,7 +170,7 @@ public class DiscoverServerDialog extends HestiaDialog {
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        status.setText(getString(R.string.serverNotFound));
+                        status.setText(HestiaApplication.getContext().getString(R.string.serverNotFound));
                     }
                 };
                 mainHandler.post(myRunnable);
@@ -206,7 +205,7 @@ public class DiscoverServerDialog extends HestiaDialog {
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        status.setText(getString(R.string.serverFound) + foundIp);
+                        status.setText(HestiaApplication.getContext().getString(R.string.serverFound) + foundIp);
                         discoverButton.setEnabled(true);
                     }
                 };

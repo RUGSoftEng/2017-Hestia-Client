@@ -6,12 +6,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;

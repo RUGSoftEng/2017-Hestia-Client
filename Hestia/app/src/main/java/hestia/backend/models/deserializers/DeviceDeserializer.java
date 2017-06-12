@@ -1,7 +1,6 @@
 package hestia.backend.models.deserializers;
 
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -11,10 +10,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
 import hestia.backend.NetworkHandler;
 import hestia.backend.models.Activator;
 import hestia.backend.models.Device;
@@ -36,13 +33,14 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
     }
 
     /**
-     * Deserializes a JSON object, creating a Device.
-     *
-     * @param json    the JSON object to be deserialized
+     * Deserializes a JSON object, creating a Device. It also uses the ActivatorDeserializer,
+     * so that it deserializes the list of activators used by the device.
+     * @param json the JSON object to be deserialized
      * @param typeOfT the type of the Object to deserialize to
      * @param context the current context of application
      * @return a deserialized object of the specified type Device
      * @throws JsonParseException if the JSON is not in the expected format.
+     * @see ActivatorDeserializer
      */
     @Override
     public Device deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -61,8 +59,7 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
         gsonBuilder.registerTypeAdapter(Activator.class, new ActivatorDeserializer());
         Gson gson = gsonBuilder.create();
 
-        Type typeToken = new TypeToken<ArrayList<Activator>>() {
-        }.getType();
+        Type typeToken = new TypeToken<ArrayList<Activator>>(){}.getType();
         ArrayList<Activator> activators = gson.fromJson(jsonActivators, typeToken);
 
         Device device = new Device(deviceId, name, type, activators, handler);
@@ -71,6 +68,11 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
         return device;
     }
 
+    /**
+     * Connects the Device device to its activators.
+     * @param activators the activators to be connected with the device.
+     * @param device the device to be connected with its activators.
+     */
     private void connectDeviceToActivators(ArrayList<Activator> activators, Device device) {
         for (Activator activator : activators) {
             activator.setDevice(device);

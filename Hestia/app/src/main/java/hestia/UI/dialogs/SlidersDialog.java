@@ -11,9 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
