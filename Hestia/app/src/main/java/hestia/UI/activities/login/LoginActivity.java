@@ -59,10 +59,11 @@ public class LoginActivity extends FragmentActivity {
     private void buildView() {
         initLoginButton();
         initServerButton();
-        addWidgets();
+        getWidgets();
     }
 
-    private void addWidgets() {
+    // The getWidgets method finds all the UI elements and binds them to the variables
+    private void getWidgets() {
         loginButton = (Button) findViewById(R.id.loginButton);
         userField = (EditText) findViewById(R.id.username);
         passField = (EditText) findViewById(R.id.password);
@@ -71,6 +72,8 @@ public class LoginActivity extends FragmentActivity {
         attemptsText.setVisibility(View.GONE);
     }
 
+    // The initLoginButton initializes the login button with the variable.
+    // It also ties the actions and the checks to the login button.
     private void initLoginButton() {
         loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
