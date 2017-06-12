@@ -24,6 +24,9 @@ import hestia.UI.dialogs.ChangeCredentialsDialog;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.NetworkHandler;
 
+import static com.rugged.application.hestia.R.id.fragment_container;
+import static com.rugged.application.hestia.R.id.swipe_refresh;
+
 /**
  * This activity marks the main screen for the app. It contains the serverCollectionsInteractor for
  * talking to the server.
@@ -50,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         fragmentManager = getSupportFragmentManager();
         DeviceListFragment fragment = DeviceListFragment.newInstance();
         fragment.setServerCollectionsInteractor(this.serverCollectionsInteractor);
-        fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        fragmentManager.beginTransaction().add(fragment_container, fragment).commit();
         menuObjects = getMenuObjects();
 
         initMenuFragment();
@@ -100,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
      * occurred.
      */
     public void refreshUserInterface(){
-        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentByTag("DeviceListFragment");
+        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
         if(fragment != null){
             fragment.populateUI();
         }
@@ -177,5 +180,9 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor){
         this.serverCollectionsInteractor = serverCollectionsInteractor;
+        DeviceListFragment fragment = (DeviceListFragment) fragmentManager.findFragmentById(fragment_container);
+        if(fragment != null){
+            fragment.setServerCollectionsInteractor(serverCollectionsInteractor);
+        }
     }
 }
