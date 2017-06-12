@@ -63,18 +63,12 @@ public class ChangeCredentialsDialog extends HestiaDialog {
 
         String feedback = "";
         if(checkOldPass(oldPass)){
-            if(newPass.equals(newPassCheck) && !newPass.equals("")){
-                setSharedPrefs(getString(R.string.loginPrefsPass
-                ), hashString(newPass));
+            if(newPass.equals(newPassCheck) && !newPass.equals("") && newUser.length()>4){
+                setSharedPrefs(getString(R.string.loginPrefsPass), hashString(newPass));
+                setSharedPrefs(getString(R.string.loginPrefsUser),hashString(newUser));
                 feedback = getString(R.string.passSet);
             } else{
                 feedback = getString(R.string.passCheckWrong);
-            }
-            if(newUser.length()>4){
-                setSharedPrefs(getString(R.string.loginPrefsUser),hashString(newUser));
-                feedback = feedback + getString(R.string.userSet);
-            } else {
-                feedback = feedback + getString(R.string.userNotSet);
             }
             showToast(feedback);
         } else {

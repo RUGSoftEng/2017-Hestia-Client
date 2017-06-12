@@ -164,14 +164,18 @@ public class HomeActivity extends AppCompatActivity implements OnMenuItemClickLi
         }
     }
 
-    private void gotoLoginActivity() {
+    public void gotoLoginActivity() {
         Intent toIntent = new Intent(HomeActivity.this, LoginActivity.class);
         toIntent.putExtra(getString(R.string.login), getString(R.string.logoutExtraValue));
         startActivity(toIntent);
         finish();
     }
-    private void showChangeCredentialsDialog() {
+    public void showChangeCredentialsDialog() {
         ChangeCredentialsDialog fragment = ChangeCredentialsDialog.newInstance();
         fragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    public void setServerCollectionsInteractor(ServerCollectionsInteractor serverCollectionsInteractor){
+        this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 }
