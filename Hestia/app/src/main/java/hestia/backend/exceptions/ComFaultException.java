@@ -9,11 +9,11 @@ public class ComFaultException extends Exception {
         this.message= "An error occured";
     }
 
-    public String getError(){
+    public String getError() {
         return error;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 
