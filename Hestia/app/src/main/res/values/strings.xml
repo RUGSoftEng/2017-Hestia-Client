@@ -67,7 +67,7 @@
     <string name="versionTooLow">Android version too low</string>
 
     <!-- Dialog build titles -->
-    <string name="addDeviceTitle">new Add device</string>
+    <string name="addDeviceTitle">Add new device</string>
     <string name="changeCredsTitle">Change credentials</string>
     <string name="changeIpTitle">Change IP</string>
     <string name="changeNameTitle">Change name</string>
