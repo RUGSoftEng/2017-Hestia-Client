@@ -1,6 +1,6 @@
 <resources>
     <!--Application information text-->
-    <string name="app_name">Hestia</string>
+    <string name="appName">Hestia</string>
     <string name="hestiaIp">HESTIA.IP</string>
     <string name="ipOfServer">IP_OF_SERVER</string>
     <string name="server">server</string>
@@ -73,5 +73,13 @@
     <string name="changeIpTitle">Change IP</string>
     <string name="changeNameTitle">Change name</string>
     <string name="serverNotFound">Could not connect to the server</string>
+
+    <!-- Server paths -->
+    <string name="devicePath">devices/</string>
+    <string name="activatorsPath">/activators/</string>
+    <string name="loginPath">login/</string>
+    <string name="pluginsPath">plugins/</string>
+    <string name="pluginsPathMid">/plugins/</string>
+
 
 </resources>
