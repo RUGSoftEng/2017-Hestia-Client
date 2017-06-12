@@ -23,7 +23,6 @@ import hestia.backend.models.RequiredInfo;
  * It then sends this information to the networkHandler which tries to obtain the required info from
  * the server. If this works it consecutively opens a new dialog so the user can enter the specific
  * information relevant to the device.
- *
  * @see EnterRequiredInfoDialog
  */
 
@@ -129,7 +128,6 @@ public class AddDeviceDialog extends HestiaDialog {
     /**
      * Method for creating a text field for the plugin based on the plugins we retrieved from the
      * server.
-     *
      * @param view The view in which the list of plugins will be shown.
      */
     private void buildPluginField(View view) {
@@ -148,7 +146,6 @@ public class AddDeviceDialog extends HestiaDialog {
 
     /**
      * Method for creating the text field based on the collections we retrieved from the server.
-     *
      * @param view The view in which we will create the collections field.
      */
     private void buildCollectionsField(View view) {
@@ -209,7 +206,6 @@ public class AddDeviceDialog extends HestiaDialog {
     /**
      * This method retrieves, for a specific collection, the possible plugins from which devices can
      * be constructed from the server.
-     *
      * @param collection The specific collection of which we want to know the possible plugins.
      */
     private void getPlugins(final String collection) {
