@@ -7,21 +7,14 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import org.junit.After;
 import org.junit.Before;
 
-import android.app.Application;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.runner.AndroidJUnit4;
 import com.rugged.application.hestia.R;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
-import hestia.backend.NetworkHandler;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -32,8 +25,6 @@ import static android.support.test.espresso.intent.matcher.ComponentNameMatchers
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.rugged.application.hestia.R.id.context_menu;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
@@ -56,7 +47,6 @@ public class LoginActivityTest {
 
     @Test
     public void ServerDiscoveryTest(){
-        //onView(ViewMatchers.withText("CANCEL")).perform(click());
         onView(ViewMatchers.withId(R.id.setServerButton)).perform(click());
         onView(ViewMatchers.withId(R.id.ip)).perform(typeText("192.168.178.30"), closeSoftKeyboard());
         onView(ViewMatchers.withText("Confirm")).perform(click());
@@ -67,7 +57,6 @@ public class LoginActivityTest {
 
     @Test
     public void loginTest(){
-        //onView(ViewMatchers.withText("Cancel")).perform(click());
         onView(ViewMatchers.withId(R.id.username)).perform(typeText("admin"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(typeText("password"), closeSoftKeyboard());
         onView(withId(R.id.rememberButton)).perform(click());
