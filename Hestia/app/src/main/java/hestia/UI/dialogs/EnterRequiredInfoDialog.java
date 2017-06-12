@@ -140,9 +140,9 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        new AsyncTask<Object, String, Integer>() {
+        new AsyncTask<Object, String, Boolean>() {
             @Override
-            protected Integer doInBackground(Object... params) {
+            protected Boolean doInBackground(Object... params) {
                 updateRequiredInfo(view);
                 try {
                     serverCollectionsInteractor.addDevice(info);
@@ -157,7 +157,7 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                     String exceptionMessage = error + ":" + message;
                     publishProgress(exceptionMessage);
                 }
-                return 0;
+                return true;
             }
 
             @Override
@@ -165,6 +165,11 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                 if(getContext() != null) {
                     Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                refreshUserInterface();
             }
 
         }.execute();
