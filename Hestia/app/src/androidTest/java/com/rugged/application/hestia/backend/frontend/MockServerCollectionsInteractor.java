@@ -39,7 +39,7 @@ public class MockServerCollectionsInteractor extends ServerCollectionsInteractor
     public String setUsername = "";
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
-        return devices;
+        return new ArrayList<>();
     }
 
     public void addDevice(RequiredInfo info) throws IOException, ComFaultException {
