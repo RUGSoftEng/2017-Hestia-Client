@@ -14,12 +14,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.HashMap;
-
+import hestia.UI.HestiaApplication;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -127,8 +125,8 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                 return true;
             }
         });
-        if (key.equals(getString(R.string.fixedFieldCol)) ||
-                key.equals(getString(R.string.fixedFieldPlugin))) {
+        if (HestiaApplication.getContext().getString(R.string.fixedFieldCol).equals(key) ||
+                HestiaApplication.getContext().getString(R.string.fixedFieldPlugin).equals(key)) {
             field.setFocusable(false);
             field.setClickable(false);
         }
@@ -143,15 +141,15 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
 
     @Override
     void pressConfirm() {
-        new AsyncTask<Object, String, Integer>() {
+        new AsyncTask<Object, String, Boolean>() {
             @Override
-            protected Integer doInBackground(Object... params) {
+            protected Boolean doInBackground(Object... params) {
                 updateRequiredInfo(view);
                 try {
                     serverCollectionsInteractor.addDevice(info);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    String exceptionMessage = getString(R.string.serverNotFound);
+                    String exceptionMessage = HestiaApplication.getContext().getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -160,12 +158,19 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                     String exceptionMessage = error + ":" + message;
                     publishProgress(exceptionMessage);
                 }
-                return 0;
+                return true;
             }
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                if(getContext() != null) {
+                    Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                refreshUserInterface();
             }
 
         }.execute();

@@ -4,16 +4,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.rugged.application.hestia.R;
-
 import hestia.UI.activities.home.HomeActivity;
 
-abstract class HestiaDialog extends DialogFragment {
+public abstract class HestiaDialog extends DialogFragment {
+    private HomeActivity activity;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -22,7 +23,6 @@ abstract class HestiaDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 pressConfirm();
                 dismiss();
-
             }
         });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -38,8 +38,18 @@ abstract class HestiaDialog extends DialogFragment {
         return dialog;
     }
 
+    public void setActivity(HomeActivity activity){
+        this.activity = activity;
+    }
+
+    //Access the home activity to refresh the GUI, for this functionality the activity is
+    //passed around between the dialogs
     protected void refreshUserInterface() {
-        ((HomeActivity) this.getActivity()).refreshUserInterface();
+        activity.refreshUserInterface();
+    }
+
+    public HomeActivity getHomeActivity(){
+        return activity;
     }
 
     abstract String buildTitle();

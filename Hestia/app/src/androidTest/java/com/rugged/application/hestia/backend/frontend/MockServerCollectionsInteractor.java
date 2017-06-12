@@ -1,17 +1,8 @@
 package com.rugged.application.hestia.backend.frontend;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import hestia.backend.NetworkHandler;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
@@ -19,14 +10,6 @@ import hestia.backend.models.Activator;
 import hestia.backend.models.ActivatorState;
 import hestia.backend.models.Device;
 import hestia.backend.models.RequiredInfo;
-import hestia.backend.models.deserializers.DeviceDeserializer;
-import hestia.backend.models.deserializers.RequiredInfoDeserializer;
-
-import static android.R.attr.type;
-
-/**
- * Created by lars on 12-6-17.
- */
 
 public class MockServerCollectionsInteractor extends ServerCollectionsInteractor{
 
@@ -39,7 +22,7 @@ public class MockServerCollectionsInteractor extends ServerCollectionsInteractor
     public String setUsername = "";
 
     public ArrayList<Device> getDevices() throws IOException, ComFaultException {
-        return devices;
+        return new ArrayList<>();
     }
 
     public void addDevice(RequiredInfo info) throws IOException, ComFaultException {

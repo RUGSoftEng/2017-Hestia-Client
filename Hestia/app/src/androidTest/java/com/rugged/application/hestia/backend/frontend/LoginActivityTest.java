@@ -3,19 +3,14 @@ package com.rugged.application.hestia.backend.frontend;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-
-import org.junit.After;
-import org.junit.Before;
-
 import android.support.test.espresso.matcher.ViewMatchers;
 import com.rugged.application.hestia.R;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import hestia.UI.HestiaApplication;
 import hestia.UI.activities.login.LoginActivity;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -27,10 +22,6 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.toPack
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
-
-/**
- * Created by lars on 12-6-17.
- */
 
 public class LoginActivityTest {
     @Rule

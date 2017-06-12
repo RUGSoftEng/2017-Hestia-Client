@@ -2,15 +2,12 @@ package com.rugged.application.hestia.backend.exceptions;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
 import hestia.backend.exceptions.ComFaultException;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNotSame;
