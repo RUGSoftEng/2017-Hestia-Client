@@ -12,6 +12,7 @@ import com.rugged.application.hestia.R;
 import hestia.UI.activities.home.HomeActivity;
 
 public abstract class HestiaDialog extends DialogFragment {
+    private HomeActivity activity;
 
     @NonNull
     @Override
@@ -22,7 +23,6 @@ public abstract class HestiaDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 pressConfirm();
                 dismiss();
-
             }
         });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -38,8 +38,18 @@ public abstract class HestiaDialog extends DialogFragment {
         return dialog;
     }
 
+    public void setActivity(HomeActivity activity){
+        this.activity = activity;
+    }
+
+    //Access the home activity to refresh the GUI, for this functionality the activity is
+    //passed around between the dialogs
     protected void refreshUserInterface() {
-        ((HomeActivity) this.getActivity()).refreshUserInterface();
+        activity.refreshUserInterface();
+    }
+
+    public HomeActivity getHomeActivity(){
+        return activity;
     }
 
     abstract String buildTitle();
