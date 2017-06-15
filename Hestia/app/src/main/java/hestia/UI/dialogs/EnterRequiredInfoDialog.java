@@ -1,28 +1,23 @@
 package hestia.UI.dialogs;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.rugged.application.hestia.R;
-
 import java.io.IOException;
 import java.util.HashMap;
-
+import hestia.UI.HestiaApplication;
 import hestia.backend.ServerCollectionsInteractor;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.RequiredInfo;
@@ -38,10 +33,6 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     private RequiredInfo info;
     private ServerCollectionsInteractor serverCollectionsInteractor;
     private final String TAG = "EnterRequiredInfoDialog";
-    private final String fixedFieldCol = "collection";
-    private final String fixedFieldPlugin = "plugin";
-    private final String propReqInfo = "required_info";
-    private static final String EMPTY_STRING="";
     private View view;
 
     public static EnterRequiredInfoDialog newInstance() {
@@ -49,50 +40,33 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
         return fragment;
     }
 
+    /**
+     * This setter is used to set the information for the dialog after the
+     * AddDeviceDialog has created it.
+     *
+     * @param info                        The requiredInfo which was obtained from the server by the AddDeviceDialog
+     * @param serverCollectionsInteractor The object used for interacting with the server
+     * @see AddDeviceDialog
+     */
     public void setData(RequiredInfo info, ServerCollectionsInteractor serverCollectionsInteractor) {
         this.info = info;
         this.serverCollectionsInteractor = serverCollectionsInteractor;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    String buildTitle() {
+        return "Adding " + info.getPlugin() + " from " + info.getCollection();
+    }
+
+    @Override
+    View buildView() {
         int count = 0;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Adding " + info.getPlugin() + " from " + info.getCollection())
-
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
-
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
-                        // Do something else
-                    }
-
-                });
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        view = inflater.inflate(R.layout.enter_device_info, null);
+        view = inflater.inflate(R.layout.enter_required_info_dialog, null);
 
         final LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.linearMain);
-        mainLayout.setLayoutParams(params);
-        float scale = getResources().getDisplayMetrics().density;
-        int padding = 8;
-        int dpAsPixels = (int) (padding*scale + 0.5f);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setPadding(0, dpAsPixels, 0, 0);
+        setLayoutProperties(mainLayout);
 
         final HashMap<String, String> fields = info.getInfo();
 
@@ -100,7 +74,7 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         for (final String key : fields.keySet()) {
-            EditText field = createEditText(key, editParams , count, fields);
+            EditText field = createEditText(key, editParams, count, fields);
             if (field.getId() == 0) {
                 field.requestFocus();
 
@@ -110,12 +84,18 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
             count++;
         }
 
-        builder.setView(view);
+        return view;
+    }
 
-        AlertDialog dlg = builder.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        return dlg;
+    private void setLayoutProperties(LinearLayout layout) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layout.setLayoutParams(params);
+        float scale = getResources().getDisplayMetrics().density;
+        int padding = 8;
+        int dpAsPixels = (int) (padding * scale + 0.5f);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(0, dpAsPixels, 0, 0);
     }
 
     private EditText createEditText(final String key, LinearLayout.LayoutParams params, int count,
@@ -125,7 +105,7 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
         field.setHint(key);
         field.setInputType(InputType.TYPE_CLASS_TEXT);
         field.setMaxLines(1);
-        field.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        field.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
         field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
 
@@ -144,32 +124,31 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                 return true;
             }
         });
-        if (key.equals(fixedFieldCol)||key.equals(fixedFieldPlugin)) {
+        if (HestiaApplication.getContext().getString(R.string.fixedFieldCol).equals(key) ||
+                HestiaApplication.getContext().getString(R.string.fixedFieldPlugin).equals(key)) {
             field.setFocusable(false);
             field.setClickable(false);
         }
         field.setLayoutParams(params);
-
 
         return field;
     }
 
     @Override
     void pressCancel() {
-        Toast.makeText(getActivity(), R.string.cancel, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     void pressConfirm() {
-        new AsyncTask<Object, String, Integer>() {
+        new AsyncTask<Object, String, Boolean>() {
             @Override
-            protected Integer doInBackground(Object... params) {
+            protected Boolean doInBackground(Object... params) {
                 updateRequiredInfo(view);
                 try {
                     serverCollectionsInteractor.addDevice(info);
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    Log.e(TAG, e.toString());
+                    String exceptionMessage = HestiaApplication.getContext().getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -178,12 +157,19 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
                     String exceptionMessage = error + ":" + message;
                     publishProgress(exceptionMessage);
                 }
-                return 0;
+                return true;
             }
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                if(getContext() != null) {
+                    Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                refreshUserInterface();
             }
 
         }.execute();
@@ -191,11 +177,11 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
     }
 
     /**
-     * Updates the required info with the entered information
+     * Updates the required info with the entered information.
      */
     private void updateRequiredInfo(View v) {
         int count = 0;
-        for(String key : this.info.getInfo().keySet()) {
+        for (String key : this.info.getInfo().keySet()) {
             EditText field = (EditText) v.findViewById(count);
             String valueField = field.getText().toString();
 
@@ -203,5 +189,4 @@ public class EnterRequiredInfoDialog extends HestiaDialog {
             count++;
         }
     }
-
 }

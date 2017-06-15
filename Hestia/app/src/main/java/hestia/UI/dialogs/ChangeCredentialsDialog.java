@@ -1,65 +1,42 @@
 package hestia.UI.dialogs;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import hestia.UI.activities.login.LoginActivity;
+import static com.rugged.application.hestia.R.string.standardPass;
 import static hestia.UI.activities.login.LoginActivity.hashString;
 
 /**
  * This class opens the dialog to change the username and password to login.
- * It uses some of the static variables and the static hashing function form LoginActivity.
+ * It uses some of the static variables and the static hashing function from the LoginActivity.
+ *
  * @see LoginActivity
  */
-
 public class ChangeCredentialsDialog extends HestiaDialog {
     private EditText oldPassField, newPassField, newPassCheckField, newUserField;
     private SharedPreferences loginPreferences;
-    private SharedPreferences.Editor loginPrefsEditor;
-    private final String pass_old_wrong = "Old password is incorrect ";
-    private final String pass_check_wrong = "New password not set ";
-    private final String pass_set = "Password set to : ";
-    private final String user_set = "Username set to : ";
-    private final String user_not_set = "Username not changed (length<5)";
 
     public static ChangeCredentialsDialog newInstance() {
-        ChangeCredentialsDialog fragment = new ChangeCredentialsDialog();
-        return fragment;
+        return new ChangeCredentialsDialog();
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    String buildTitle() {
+        return getString(R.string.changeCredsTitle);
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Change Credentials")
-
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
-
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
-                        // Do something else
-                    }
-
-                });
+    /**
+     * Creates the view for the ChangeCredentialsDialog
+     * @return The ChangeCredentialsDialog which has been constructed
+     * @see HestiaDialog
+     */
+    @Override
+    View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.change_credentials_dialog, null);
 
@@ -69,61 +46,71 @@ public class ChangeCredentialsDialog extends HestiaDialog {
         newPassCheckField = (EditText) view.findViewById(R.id.newPassCheck);
         oldPassField = (EditText) view.findViewById(R.id.oldPass);
 
-        builder.setView(view);
-
-        AlertDialog dlg = builder.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        return dlg;
+        return view;
     }
 
+    /**
+     * This method is called when the confirm button is pressed on the dialog. We store the new
+     * password and username in variables. Next we check whether the credentials are admissible,
+     * after first verifying that the old password which was provided is correct.
+     */
     @Override
     void pressConfirm() {
         String newUser = newUserField.getText().toString();
         String newPass = newPassField.getText().toString();
         String newPassCheck = newPassCheckField.getText().toString();
         String oldPass = oldPassField.getText().toString();
-        loginPreferences = getActivity().getSharedPreferences(LoginActivity.LOGIN_PREFERENCES
+        loginPreferences = getActivity().getSharedPreferences(getString(R.string.loginPrefs)
                 , Context.MODE_PRIVATE);
 
         String feedback = "";
-        if(checkOldPass(oldPass)){
-            if(newPass.equals(newPassCheck) && !newPass.equals("")){
-                setSharedPrefs(LoginActivity.prefsPass, hashString(newPass));
-                feedback = pass_set + newPass + "\n";
-            } else{
-                feedback = pass_check_wrong + "\n";
-            }
-            if(newUser.length()>4){
-                setSharedPrefs(LoginActivity.prefsUser,hashString(newUser));
-                feedback = feedback + user_set + newUser;
+        if (checkOldPass(oldPass)) {
+            if (newPass.equals(newPassCheck) && !newPass.equals("") && newUser.length() > 4) {
+                setSharedPrefs(getString(R.string.loginPrefsPass), hashString(newPass));
+                setSharedPrefs(getString(R.string.loginPrefsUser), hashString(newUser));
+                feedback = getString(R.string.passSet);
             } else {
-                feedback = feedback + user_not_set;
+                feedback = getString(R.string.passCheckWrong);
             }
             showToast(feedback);
         } else {
-            showToast(pass_old_wrong);
+            showToast(getString(R.string.passOldWrong));
         }
         dismiss();
     }
 
+    /**
+     * This method displays a simple message if the cancel button is pressed.
+     */
     @Override
     void pressCancel() {
-
+        refreshUserInterface();
     }
 
-    private boolean checkOldPass(String oldPass){
-        String corrpass = loginPreferences.getString(LoginActivity.prefsPass, "");
+    /**
+     * Obtains the loginPreferences from the system to check our current password against the old
+     * password
+     * @param oldPass The old password  which we want to check
+     * @return A boolean indicating whether we passed the build
+     */
+    private boolean checkOldPass(String oldPass) {
+        String corrpass = loginPreferences.getString(getString(R.string.loginPrefsPass), hashString(getString(standardPass)));
         return corrpass.equals(hashString(oldPass));
     }
 
-    private void setSharedPrefs(String name, String value){
-        loginPrefsEditor = loginPreferences.edit();
+    /**
+     * A method for changing the value of a specific resource stored in the system.
+     *
+     * @param name  The key of the string as it is stored in the system
+     * @param value The new value for the string in the system
+     */
+    private void setSharedPrefs(String name, String value) {
+        SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.putString(name, value);
         loginPrefsEditor.apply();
     }
 
-    private void showToast(String text){
-        Toast.makeText(getActivity(), text , Toast.LENGTH_LONG).show();
+    private void showToast(String text) {
+        Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
     }
 }

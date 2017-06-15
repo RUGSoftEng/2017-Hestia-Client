@@ -4,10 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rugged.application.hestia.R;
 import java.io.IOException;
 import java.util.ArrayList;
-import hestia.backend.exceptions.ComFaultException;
+
+import hestia.UI.HestiaApplication;
 import hestia.backend.NetworkHandler;
+import hestia.backend.exceptions.ComFaultException;
 
 /**
  * Represents the internal representation of the device class on the client. The device contains an
@@ -19,6 +22,7 @@ import hestia.backend.NetworkHandler;
  * or an intensity slider.
  * Finally, there is an instance of NetworkHandler, which holds information needed to send
  * data to the server via a POST request when the name is changed.
+ *
  * @see Activator
  */
 
@@ -57,9 +61,13 @@ public class Device {
         return handler;
     }
 
+    /**
+     * Setting the handler to the device will also set the handler to all the device's activators.
+     * @param handler NetworkHandler object used for sending requests to the server
+     */
     public void setHandler(NetworkHandler handler) {
         this.handler = handler;
-        for(Activator activator : activators) {
+        for (Activator activator : activators) {
             activator.setHandler(handler);
         }
     }
@@ -68,19 +76,29 @@ public class Device {
         return name;
     }
 
+    /**
+     * Setting a new name to the device will trigger a PUT request, which will contain
+     * a JsonObject containing the the new name of the device.
+     * @param name the new name to be changed.
+     * @throws IOException exception generated due to a connection error.
+     * @throws ComFaultException exception generated due to faulty data sent to the server.
+     */
     public void setName(String name) throws IOException, ComFaultException {
-        String path = "devices/" + deviceId;
+        String endpoint = HestiaApplication.getContext().getString(R.string.devicePath) + deviceId;
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
-        JsonElement payload = handler.PUT(object, path);
-        if(payload.isJsonObject() && payload.getAsJsonObject().has("error")){
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            ComFaultException comFaultException = gson.fromJson(payload, ComFaultException.class);
-            throw comFaultException;
-        }else {
-            this.name = name;
+        JsonElement payload = handler.PUT(object, endpoint);
+
+        if (payload != null && payload.isJsonObject()) {
+            JsonObject payloadObject = payload.getAsJsonObject();
+            if (payloadObject.has("error")) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson gson = gsonBuilder.create();
+                ComFaultException comFaultException = gson.fromJson(payload, ComFaultException.class);
+                throw comFaultException;
+            }
         }
+        this.name = name;
     }
 
     public ArrayList<Activator> getActivators() {
@@ -93,30 +111,27 @@ public class Device {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
         if (!(object instanceof Device)) return false;
-
         Device device = (Device) object;
-
-        if (!getId().equals(device.getId())) return false;
-        if (!getName().equals(device.getName())) return false;
-        if (!getType().equals(device.getType())) return false;
-        if (!getActivators().equals(device.getActivators())) return false;
-        return getHandler().equals(device.getHandler());
-
+        return (this == device || (this.getId().equals(device.getId()) &&
+                this.getName().equals(device.getName()) &&
+                this.getType().equals(device.getType()) &&
+                this.getActivators().equals(device.getActivators()) &&
+                this.getHandler().equals(device.getHandler())));
     }
 
     @Override
     public int hashCode() {
+        int multiplier = Integer.valueOf(HestiaApplication.getContext().getString(R.string.hashCodeMultiplier));
         int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
-        result = 31 * result + getType().hashCode();
-        result = 31 * result + getActivators().hashCode();
-        result = 31 * result + getHandler().hashCode();
+        result = result * multiplier + getName().hashCode();
+        result = result * multiplier + getType().hashCode();
+        result = result * multiplier + getActivators().hashCode();
+        result = result * multiplier + getHandler().hashCode();
         return result;
     }
 
-    public String toString(){
-        return name +" "+ deviceId + " " + activators + "\n";
+    public String toString() {
+        return name + " " + deviceId + " " + activators + "\n";
     }
 }

@@ -20,6 +20,7 @@ import hestia.backend.models.Device;
  * A JSON deserializer for the Device class.
  * It implements Google's JsonDeserializer interface, and it is used by GSON to deserialize the
  * devices from the list of devices, as well as their activators.
+ *
  * @see Device
  * @see ActivatorDeserializer
  */
@@ -32,22 +33,24 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
     }
 
     /**
-     * Deserializes a JSON object, creating a Device.
+     * Deserializes a JSON object, creating a Device. It also uses the ActivatorDeserializer,
+     * so that it deserializes the list of activators used by the device.
      * @param json the JSON object to be deserialized
      * @param typeOfT the type of the Object to deserialize to
      * @param context the current context of application
      * @return a deserialized object of the specified type Device
      * @throws JsonParseException if the JSON is not in the expected format.
+     * @see ActivatorDeserializer
      */
     @Override
     public Device deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
 
         JsonObject jsonDevices = json.getAsJsonObject();
-        Log.i("JSONOBJECT - DEVICES",jsonDevices.toString());
+        Log.i("JSONOBJECT - DEVICES", jsonDevices.toString());
 
         String deviceId = jsonDevices.get("deviceId").getAsString();
-        String  type = jsonDevices.get("type").getAsString();
+        String type = jsonDevices.get("type").getAsString();
         String name = jsonDevices.get("name").getAsString();
 
         JsonArray jsonActivators = jsonDevices.get("activators").getAsJsonArray();
@@ -65,8 +68,13 @@ public class DeviceDeserializer implements JsonDeserializer<Device> {
         return device;
     }
 
+    /**
+     * Connects the Device device to its activators.
+     * @param activators the activators to be connected with the device.
+     * @param device the device to be connected with its activators.
+     */
     private void connectDeviceToActivators(ArrayList<Activator> activators, Device device) {
-        for(Activator activator : activators) {
+        for (Activator activator : activators) {
             activator.setDevice(device);
         }
     }

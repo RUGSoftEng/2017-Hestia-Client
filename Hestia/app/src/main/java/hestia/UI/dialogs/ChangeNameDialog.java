@@ -1,21 +1,20 @@
 package hestia.UI.dialogs;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.rugged.application.hestia.R;
 import java.io.IOException;
+import hestia.UI.HestiaApplication;
 import hestia.backend.exceptions.ComFaultException;
 import hestia.backend.models.Device;
 
+/**
+ * This dialog can be used for changing the name of a particular device.
+ */
 public class ChangeNameDialog extends HestiaDialog {
     private EditText editText;
     private Device device;
@@ -26,53 +25,35 @@ public class ChangeNameDialog extends HestiaDialog {
         return fragment;
     }
 
-    public void setDevice(Device d) {
-        device = d;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set Dialog Title
-        builder.setTitle("Change name")
+    String buildTitle() {
+        return getString(R.string.changeNameTitle);
+    }
 
-                // Positive button
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressConfirm();
-                        dismiss();
-
-                    }
-                })
-
-                // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
-                        pressCancel();
-
-                    }
-
-                });
+    @Override
+    View buildView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.set_name, null);
-
-
+        View view = inflater.inflate(R.layout.change_name_dialog, null);
         editText = (EditText) view.findViewById(R.id.change_name_device);
         editText.setText(device.getName());
-        builder.setView(view);
 
-        AlertDialog dlg = builder.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        return dlg;
+        return view;
     }
 
     @Override
     void pressCancel() {
+        Toast.makeText(getContext(), getResources().getText(R.string.cancelNameChange),
+                Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Upon confirming a new name, the server is contacted to set the name. This method does not
+     * require any further action from the client.
+     */
     @Override
     void pressConfirm() {
         final String result = editText.getText().toString();
@@ -84,8 +65,8 @@ public class ChangeNameDialog extends HestiaDialog {
                     device.setName(result);
                     isSuccessful = true;
                 } catch (IOException e) {
-                    Log.e(TAG,e.toString());
-                    String exceptionMessage = "Could not connect to the server";
+                    Log.e(TAG, e.toString());
+                    String exceptionMessage = HestiaApplication.getContext().getString(R.string.serverNotFound);
                     publishProgress(exceptionMessage);
                 } catch (ComFaultException comFaultException) {
                     Log.e(TAG, comFaultException.toString());
@@ -99,7 +80,14 @@ public class ChangeNameDialog extends HestiaDialog {
 
             @Override
             protected void onProgressUpdate(String... exceptionMessage) {
-                Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                if(getContext() != null) {
+                    Toast.makeText(getContext(), exceptionMessage[0], Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                refreshUserInterface();
             }
         }.execute();
     }
