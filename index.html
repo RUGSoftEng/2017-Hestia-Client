@@ -1,45 +1,15 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Hestia Home</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Hestia</h1>
-        <p>Home automation made simple again</p>
-        <p class="view"><a href="https://github.com/RUGSoftEng/2017-Hestia-Client">Android application on Github</a></p>
-        <p class="view"><a href="https://github.com/RUGSoftEng/2017-Hestia-Server">Hestia server on Github</a></p>        
-        <ul>
-          <li><a href="https://google.com/">Playstore<strong>Android Client</strong></a></li>
-          <li><a href="ArchitectureDocument.pdf">Download<strong>Architecture</strong></a></li>
-          <li><a href="Userstories.pdf">Download<strong>Requirements</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>Hestia home</h1>
-        <p>There are a lot of different platforms for home automation currently available. Most of them however have quite a few problems. One of the main problems is the way in which these platforms limit themselves to only work with a certain set of devices. Even when the platform is able to work with a wide variety of devices, adding new ones still requires the developers of the platform to manually update it. A good example of this is the struggle most platforms have with the new <a href=”http://www.ikea.com/gb/en/products/lighting/smart-lighting/”>Ikea smart lighting system.</a> All, or at least all well known, platforms currently available require an update to handle the smart hub hardware used for these lights. </p>
-        <p>With the Hestia system we strive to provide a platform that can extend to new types of devices without requiring structural changes. In the end it should be possible for consumers to create their own plugins for the system. Using these plugins the Hestia platform will also be able to control privately developed peripherals.</p>
-        <p>The goal of this project is to develop an easily extendable, secure platform that allows our user to control and setup their home automation in a breeze. All devices that have a way of being remotely controlled should be able to work with the system. This includes, but is not limited to, locks, lights and refrigerators. </p>
-        <h2>System overview</h2>
-        <p>The Hestia platform is built from three different components;  the client, the server and the peripherals. A peripheral is any device which can be remotely controlled using the Hestia system. The client and the peripherals are centered around the server and depend on it for communicating with each other. </p>
-        <p>Using the client, the user can request actions that a peripheral should perform. To use a peripheral it should first be added to the platform. One of the main strengths of the Hestia platform should be that it is easy to create plugins, these plugins are specific for each kind of peripheral and define a way to interact with the peripheral. It should be possible for people outside the development team to define these plugins for their peripheral. The user of our platform should then simply be able to select a plugin and add it to the system to communicate with the peripheral. </p>
-        <p>All information regarding the plugins and peripherals is managed in the server. This is where the clients send its requests. The server is responsible for translating and forwarding the incoming requests to the peripherals.</p>
-      </section>
-      <footer>
-        <p>This project is part of <a href="https://github.com/RUGSoftEng">Rugged Software</a></p>
-        <p><small>Rugged software is an initiative from the <a href="http://www.rug.nl/">University of Groningen</small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-  </body>
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="1; url=https://rugsofteng.github.io/2017-Hestia-Server/">
+  <script type="text/javascript">
+      window.location.href = "https://rugsofteng.github.io/2017-Hestia-Server/"
+  </script>
+  <title>Page Redirection</title>
+</head>
+<body>
+<!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
+If you are not redirected automatically, follow this <a href='https://rugsofteng.github.io/2017-Hestia-Server/'>link to example</a>.
+</body>
 </html>
